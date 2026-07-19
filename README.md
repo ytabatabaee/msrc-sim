@@ -1,17 +1,25 @@
-# msrc-sim
+# msrc-sim — Milestone 2
 
-Milestone 1 implementation of the conditional quartet simulator for the two-state rearrangement-structured coalescent (MSRC).
+This release contains two simulation modes for the two-state
+**Multi-Species Rearrangement Coalescent (MSRC)**.
 
-## Model
+1. **Conditional quartet mode** reproduces the exact 16-state CTMC matrix
+   \(H_m(t)\) and simulates quartet topologies by a Gillespie process.
+2. **Mechanistic quartet mode** simulates one neutral inversion forward through
+   a balanced quartet species tree using Wright–Fisher drift, samples terminal
+   arrangement states, and then simulates local genealogies backward through
+   the same species tree under arrangement-dependent switching and coalescence.
 
-Four lineages coexist in one ancestral population for a structured interval of duration `t`.
+The second mode implements the map
 
-- Each lineage switches arrangement background: `0 -> 1` at rate `m01`, and `1 -> 0` at rate `m10`.
-- Two lineages coalesce only when they occupy the same arrangement.
-- Same-arrangement pairwise coalescence rates are `lambda0` and `lambda1`.
-- If no first coalescence occurs before time `t`, the unresolved quartet enters an exchangeable ancestor and each topology receives probability `1/3`.
+\[
+\Theta_R \longrightarrow \mathcal P_R
+\longrightarrow Z
+\longrightarrow G_1,\ldots,G_L,
+\]
 
-Rows of the exact matrix `H_m(t)` correspond to initial configurations `0000,...,1111`. Columns are `12|34`, `13|24`, and `14|23`.
+where \(\mathcal P_R\) is one realized inversion-frequency history shared by
+all loci in the simulated inversion block.
 
 ## Install and test
 
@@ -20,22 +28,25 @@ pip install -e ".[test]"
 pytest
 ```
 
-## Run
+## Conditional example
 
 ```bash
 msrc-sim --config examples/conditional_quartet.yaml
 ```
 
-or
+## Mechanistic example
 
 ```bash
-python scripts/simulate_msrc.py --config examples/conditional_quartet.yaml
+msrc-sim --config examples/mechanistic_quartet.yaml
 ```
 
-For symmetric rates, the exact asymmetry from `1010` is
+The mechanistic output directory contains the resolved configuration, the
+frequency history, sampled terminal arrangements, true gene trees, quartet
+counts, and run metadata.
 
-\[
-P(13|24\mid1010)-P(14|23\mid1010)
-=
-\frac{\lambda}{\lambda+2m}\left(1-e^{-2(\lambda+2m)t}\right).
-\]
+## Scope
+
+This milestone supports a balanced quartet species tree with integer branch
+lengths in generations. It is intentionally not yet a full linked-genome or
+ARG simulator. Loci share one inversion-frequency history and one sampled
+terminal arrangement pattern, but genealogies are conditionally independent.

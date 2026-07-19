@@ -1,0 +1,15 @@
+mode: mechanistic
+seed: 264
+num_loci: 2000
+output_dir: mechanistic_output
+species_tree:
+  cherry_age: 100
+  root_age: 220
+  origin_age: 500
+  effective_population_size: 100
+  ancestral_population_size: 100
+rearrangement:
+  initial_copies: 40
+  selection_coefficient: 0.0
+  recombination_rate: 0.02
+  suppression_factor: 0.1

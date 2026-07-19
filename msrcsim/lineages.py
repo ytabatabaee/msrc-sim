@@ -1,15 +1,14 @@
+from __future__ import annotations
 from dataclasses import dataclass
-from typing import FrozenSet
 
-@dataclass(frozen=True)
+@dataclass
 class Lineage:
     lineage_id: int
-    descendants: FrozenSet[str]
+    descendants: frozenset[str]
+    population_id: str
     arrangement: int
+    node_age: float = 0.0
+    newick: str | None = None
 
-@dataclass(frozen=True)
-class CoalescenceEvent:
-    time: float
-    left_id: int
-    right_id: int
-    topology_index: int
+    def label(self) -> str:
+        return next(iter(self.descendants)) if len(self.descendants)==1 else "".join(sorted(self.descendants))

@@ -1,13 +1,9 @@
 mode: conditional
 seed: 12345
 num_loci: 100000
-output_dir: example_output
+output_dir: conditional_output
 structured_interval:
   duration: 1.0
   configuration: "1010"
-  migration:
-    m01: 0.05
-    m10: 0.05
-  coalescence:
-    lambda0: 1.0
-    lambda1: 1.0
+  migration: {m01: 0.05, m10: 0.05}
+  coalescence: {lambda0: 1.0, lambda1: 1.0}
