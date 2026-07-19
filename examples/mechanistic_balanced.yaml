@@ -1,0 +1,32 @@
+mode: mechanistic
+seed: 265
+num_loci: 2000
+species_tree:
+  newick: "((1:100,2:100)A:120,(3:100,4:100)B:120)ROOT;"
+  time_units: generations
+  root_extension: 280
+  default_effective_population_size: 100
+rearrangement:
+  id: inv_1
+  type: inversion
+  origin_branch: ROOT
+  origin_time_from_branch_start: 0
+  initial_copy_count: 40
+  selection:
+    model: genic
+    coefficient: 0.0
+recombination:
+  baseline_rate: 0.02
+  effective_cross_arrangement_fraction: 0.1
+sampling:
+  samples_per_species: 1
+output:
+  directory: balanced_output
+  record_resolved_config: true
+  record_frequency_history: true
+  record_sampled_arrangements: true
+  record_gene_trees: true
+  record_coalescence_times: true
+  record_backward_events: true
+  event_log_loci:
+    first_n: 10

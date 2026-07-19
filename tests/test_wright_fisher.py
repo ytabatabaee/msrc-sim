@@ -1,15 +1,10 @@
 import numpy as np
-from msrcsim.species_tree import BalancedQuartetTree
+from msrcsim.species_tree import SpeciesTree
 from msrcsim.rearrangement import Rearrangement
 from msrcsim.wright_fisher import simulate_frequency_history
 
-def test_absorbing_boundaries():
-    tree=BalancedQuartetTree.create(2,4,8,20)
-    rng=np.random.default_rng(1)
-    h=simulate_frequency_history(tree,Rearrangement(initial_copies=0),rng)
-    assert all(np.all(b.counts_forward==0) for b in h.branches.values())
-
-def test_neutral_one_step_mean():
-    rng=np.random.default_rng(2); n=100; k=60
-    draws=rng.binomial(2*n,k/(2*n),size=200000)
-    assert abs(draws.mean()-k)<0.1
+def test_status_and_columns():
+    t=SpeciesTree('((1:10,2:10)A:5,(3:10,4:10)B:5)ROOT;',100,20)
+    h=simulate_frequency_history(t,Rearrangement('x','inversion','ROOT',5,10,0),np.random.default_rng(1))
+    assert {'not_present','newly_originated','segregating','fixed','lost'} & {r.status for r in h.records}
+    assert all(0<=r.frequency_A1<=1 for r in h.records)

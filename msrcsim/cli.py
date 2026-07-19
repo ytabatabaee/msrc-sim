@@ -1,44 +1,21 @@
 from __future__ import annotations
-import argparse,json
-from pathlib import Path
-import numpy as np
+import argparse, numpy as np
 from .config import load_config
-from .structured_coalescent import simulate_conditional_quartets,simulate_genealogy
-from .species_tree import BalancedQuartetTree
+from .species_tree import SpeciesTree
 from .rearrangement import Rearrangement
-from .wright_fisher import simulate_frequency_history,sample_terminal_arrangements
-from .io import write_mechanistic_output
-
-
-def _conditional(raw):
-    s=raw["structured_interval"]; m=s["migration"]; c=s["coalescence"]
-    r=simulate_conditional_quartets(s["configuration"],float(s["duration"]),float(m["m01"]),float(m["m10"]),
-                                    float(c["lambda0"]),float(c["lambda1"]),int(raw["num_loci"]),int(raw.get("seed",1)))
-    out=Path(raw.get("output_dir","conditional_output")); out.mkdir(parents=True,exist_ok=True)
-    d={"counts":r.counts.tolist(),"empirical":r.empirical_probabilities.tolist(),
-       "exact":r.exact_probabilities.tolist(),"absolute_error":r.absolute_error.tolist()}
-    (out/"summary.json").write_text(json.dumps(d,indent=2)); print(json.dumps(d,indent=2))
-
-
-def _mechanistic(raw):
-    st=raw["species_tree"]
-    tree=BalancedQuartetTree.create(int(st["cherry_age"]),int(st["root_age"]),int(st["origin_age"]),
-                                    int(st["effective_population_size"]),int(st.get("ancestral_population_size",st["effective_population_size"])))
-    rr=raw["rearrangement"]
-    rearr=Rearrangement(initial_copies=int(rr.get("initial_copies",1)),selection_coefficient=float(rr.get("selection_coefficient",0)),
-                         recombination_rate=float(rr["recombination_rate"]),suppression_factor=float(rr.get("suppression_factor",1)))
-    seed=int(raw.get("seed",1)); rng=np.random.default_rng(seed)
-    history=simulate_frequency_history(tree,rearr,rng)
-    arrangements=sample_terminal_arrangements(history,tree,rng)
-    genealogies=[simulate_genealogy(tree,history,arrangements,rearr.effective_recombination_rate,rng)
-                 for _ in range(int(raw["num_loci"]))]
-    out=Path(raw.get("output_dir","mechanistic_output")); write_mechanistic_output(out,raw,history,arrangements,genealogies)
-    print(f"sampled arrangement pattern: {''.join(str(arrangements[str(i)]) for i in range(1,5))}")
-    print(f"output directory: {out}")
-
+from .wright_fisher import simulate_frequency_history
+from .structured_coalescent import simulate_genealogy
+from .io import write_outputs
 
 def main():
-    p=argparse.ArgumentParser(); p.add_argument("--config",required=True); a=p.parse_args()
-    raw=load_config(a.config).raw
-    _conditional(raw) if raw["mode"]=="conditional" else _mechanistic(raw)
-if __name__=="__main__": main()
+    ap=argparse.ArgumentParser(); ap.add_argument('--config',required=True); a=ap.parse_args(); c=load_config(a.config); rng=np.random.default_rng(c['seed'])
+    st=c['species_tree']; tree=SpeciesTree(st['newick'],st['default_effective_population_size'],st['root_extension'],st.get('branch_parameters'))
+    rr=c['rearrangement']; sel=rr.get('selection',{}).get('coefficient',rr.get('selection_coefficient',0.0))
+    rearr=Rearrangement(rr.get('id','inv_1'),rr['type'],rr['origin_branch'],int(rr['origin_time_from_branch_start']),int(rr.get('initial_copy_count',1)),float(sel))
+    hist=simulate_frequency_history(tree,rearr,rng)
+    sampled={t:int(rng.random()<hist.terminal_frequency(t)) for t in tree.taxa}
+    rec=c['recombination']; base=rec.get('baseline_rate',rec.get('rate')); frac=rec.get('effective_cross_arrangement_fraction',rec.get('suppression_factor'))
+    logopt=c['output']['event_log_loci']; first_n=logopt.get('first_n',c['num_loci']) if isinstance(logopt,dict) else c['num_loci']
+    results=[simulate_genealogy(i,tree,hist,sampled,float(base),float(frac),rng,c['output']['record_backward_events'] and i<first_n) for i in range(c['num_loci'])]
+    out=write_outputs(c,tree,rearr,hist,sampled,results); print(f"Wrote {out}")
+if __name__=='__main__': main()

@@ -1,89 +1,65 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import Dict, List
 import numpy as np
-from .species_tree import BalancedQuartetTree
+from .species_tree import SpeciesTree
 from .rearrangement import Rearrangement
 
 @dataclass(frozen=True)
-class BranchFrequencyHistory:
-    branch_id: str
-    younger_age: int
-    older_age: int
-    counts_forward: np.ndarray
-    effective_size: int
+class FrequencyRecord:
+    rearrangement_id:str; branch_id:str; parent_branch_id:str|None; forward_generation:int; absolute_age:float
+    copy_count_A1:int; copy_count_A0:int; population_chromosomes:int; frequency_A1:float; frequency_A0:float
+    status:str; is_origin:bool; is_branch_start:bool; is_branch_end:bool; selection_coefficient:float; effective_population_size:int
 
-    @property
-    def frequencies_forward(self) -> np.ndarray:
-        return self.counts_forward/(2*self.effective_size)
-
-    @property
-    def end_frequency(self) -> float:
-        return float(self.frequencies_forward[-1])
-
-    def frequency_at_age(self, age: float) -> float:
-        if not (self.younger_age <= age <= self.older_age):
-            raise ValueError(f"age {age} outside branch {self.branch_id}")
-        # Forward index 0 is at older boundary; age decreases forward.
-        elapsed=self.older_age-age
-        idx=int(np.floor(elapsed))
-        idx=max(0,min(idx,len(self.counts_forward)-1))
-        return float(self.counts_forward[idx]/(2*self.effective_size))
-
-@dataclass(frozen=True)
+@dataclass
 class FrequencyHistory:
-    branches: Dict[str, BranchFrequencyHistory]
-    terminal_frequencies: Dict[str,float]
-    origin_age: int
+    records:list[FrequencyRecord]
+    by_branch:dict[str,list[FrequencyRecord]]
+    def frequency_at(self,branch_id,age):
+        recs=self.by_branch[branch_id]
+        return min(recs,key=lambda r:abs(r.absolute_age-age)).frequency_A1
+    def terminal_frequency(self,taxon): return self.frequency_at(taxon,0.0)
 
-    def frequency(self, branch_id: str, age: float) -> float:
-        return self.branches[branch_id].frequency_at_age(age)
+def _status(k,total,ever):
+    if not ever: return 'not_present'
+    if k==0: return 'lost'
+    if k==total: return 'fixed'
+    return 'segregating'
 
-
-def _selected_frequency(p: float, s: float) -> float:
+def _selected_p(p,s):
     if s==0: return p
-    denom=1+s*p
-    if denom<=0: raise ValueError("selection coefficient produces invalid fitness")
-    return p*(1+s)/denom
+    return p*(1+s)/(1+s*p)
 
-
-def _simulate_branch(branch_id: str,younger: int,older: int,Ne: int,initial_count: int,
-                     s: float,rng: np.random.Generator) -> BranchFrequencyHistory:
-    duration=older-younger
-    counts=np.empty(duration+1,dtype=np.int64); counts[0]=initial_count
-    total=2*Ne
-    for g in range(duration):
-        k=int(counts[g])
-        if k==0 or k==total:
-            counts[g+1]=k
+def simulate_frequency_history(tree:SpeciesTree,rearrangement:Rearrangement,rng:np.random.Generator):
+    if rearrangement.origin_branch not in tree.branches: raise ValueError("Unknown origin branch")
+    records=[]; by={k:[] for k in tree.branches}
+    # branch state at its older end; None means inversion absent
+    starts={k:None for k in tree.branches}
+    ob=tree.branches[rearrangement.origin_branch]
+    origin_age=ob.older_age-rearrangement.origin_time_from_branch_start
+    if not (ob.younger_age<=origin_age<=ob.older_age): raise ValueError("Origin time falls outside origin branch")
+    # process branches from older to younger
+    order=sorted(tree.branches.values(), key=lambda b:b.older_age, reverse=True)
+    end_counts={}
+    for b in order:
+        total=2*b.effective_population_size
+        if b.branch_id==rearrangement.origin_branch:
+            start_count=None
         else:
-            p=_selected_frequency(k/total,s)
-            counts[g+1]=rng.binomial(total,p)
-    return BranchFrequencyHistory(branch_id,younger,older,counts,Ne)
-
-
-def simulate_frequency_history(tree: BalancedQuartetTree,rearrangement: Rearrangement,
-                               rng: np.random.Generator) -> FrequencyHistory:
-    if rearrangement.origin_branch!="root":
-        raise NotImplementedError("milestone 2 currently supports origin_branch='root'")
-    root=tree.branches["root"]
-    if not (0 <= rearrangement.initial_copies <= 2*root.effective_size):
-        raise ValueError("invalid initial copy count")
-    hist: Dict[str,BranchFrequencyHistory]={}
-    hist["root"]=_simulate_branch("root",root.younger_age,root.older_age,root.effective_size,
-                                  rearrangement.initial_copies,rearrangement.selection_coefficient,rng)
-    # At each split, descendants are independently founded by binomial draws from parent frequency.
-    for parent_id,child_ids in [("root",("left","right")),("left",("t1","t2")),("right",("t3","t4"))]:
-        p=hist[parent_id].end_frequency
-        for cid in child_ids:
-            b=tree.branches[cid]
-            initial=rng.binomial(2*b.effective_size,p)
-            hist[cid]=_simulate_branch(cid,b.younger_age,b.older_age,b.effective_size,initial,
-                                       rearrangement.selection_coefficient,rng)
-    terminal={taxon:hist[bid].end_frequency for taxon,bid in tree.terminal_by_taxon.items()}
-    return FrequencyHistory(hist,terminal,tree.origin_age)
-
-
-def sample_terminal_arrangements(history: FrequencyHistory,tree: BalancedQuartetTree,
-                                 rng: np.random.Generator) -> Dict[str,int]:
-    return {taxon:int(rng.random()<history.terminal_frequencies[taxon]) for taxon in tree.taxa}
+            parent=end_counts.get(b.parent_branch_id,None)
+            if parent is None: start_count=None
+            else: start_count=int(rng.binomial(total,parent[0]/parent[1]))
+        ages=list(np.arange(b.older_age,b.younger_age-1e-9,-1.0))
+        if ages[-1]!=b.younger_age: ages.append(b.younger_age)
+        k=start_count; ever=k is not None and k>0
+        for gi,age in enumerate(ages):
+            is_origin=False
+            if b.branch_id==rearrangement.origin_branch and age<=origin_age and k is None:
+                k=min(rearrangement.initial_copy_count,total); ever=True; is_origin=True
+            if k is None: kk=0; status='not_present'
+            else: kk=k; status='newly_originated' if is_origin else _status(kk,total,ever)
+            rec=FrequencyRecord(rearrangement.rearrangement_id,b.branch_id,b.parent_branch_id,gi,float(age),kk,total-kk,total,kk/total,1-kk/total,status,is_origin,gi==0,gi==len(ages)-1,rearrangement.selection_coefficient,b.effective_population_size)
+            records.append(rec); by[b.branch_id].append(rec)
+            if gi<len(ages)-1 and k is not None and 0<k<total:
+                p=_selected_p(k/total,rearrangement.selection_coefficient); k=int(rng.binomial(total,p))
+        end_counts[b.branch_id]=None if k is None else (k,total)
+    return FrequencyHistory(records,by)

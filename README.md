@@ -1,52 +1,30 @@
-# msrc-sim — Milestone 2
+# msrc-sim 0.3.0
 
-This release contains two simulation modes for the two-state
-**Multi-Species Rearrangement Coalescent (MSRC)**.
+This release adds a general dated-Newick quartet engine (balanced or unbalanced), branch-specific effective population sizes, a single-origin forward Wright–Fisher inversion process, backward MSRC genealogy simulation, full optional event logging, explicit coalescence times, and expanded frequency-history metadata.
 
-1. **Conditional quartet mode** reproduces the exact 16-state CTMC matrix
-   \(H_m(t)\) and simulates quartet topologies by a Gillespie process.
-2. **Mechanistic quartet mode** simulates one neutral inversion forward through
-   a balanced quartet species tree using Wright–Fisher drift, samples terminal
-   arrangement states, and then simulates local genealogies backward through
-   the same species tree under arrangement-dependent switching and coalescence.
-
-The second mode implements the map
-
-\[
-\Theta_R \longrightarrow \mathcal P_R
-\longrightarrow Z
-\longrightarrow G_1,\ldots,G_L,
-\]
-
-where \(\mathcal P_R\) is one realized inversion-frequency history shared by
-all loci in the simulated inversion block.
-
-## Install and test
+## Install
 
 ```bash
 pip install -e ".[test]"
 pytest
 ```
 
-## Conditional example
+## Run
 
 ```bash
-msrc-sim --config examples/conditional_quartet.yaml
+msrc-sim --config examples/mechanistic_balanced.yaml
+msrc-sim --config examples/mechanistic_unbalanced.yaml
 ```
 
-## Mechanistic example
+## Main outputs
 
-```bash
-msrc-sim --config examples/mechanistic_quartet.yaml
-```
+- `config.resolved.yaml`
+- `frequency_history.csv` with status, A0/A1 counts, frequencies, origin/start/end indicators, selection coefficient, and population size
+- `sampled_arrangements.csv`
+- `true_gene_trees.nwk`
+- `coalescence_times.csv`
+- `coalescence_events.csv`
+- optional `genealogy_events.csv`
+- `summary.json`
 
-The mechanistic output directory contains the resolved configuration, the
-frequency history, sampled terminal arrangements, true gene trees, quartet
-counts, and run metadata.
-
-## Scope
-
-This milestone supports a balanced quartet species tree with integer branch
-lengths in generations. It is intentionally not yet a full linked-genome or
-ARG simulator. Loci share one inversion-frequency history and one sampled
-terminal arrangement pattern, but genealogies are conditionally independent.
+The branch identifier is the child node label for each Newick edge. The root label identifies the ancestral root-extension population. `origin_time_from_branch_start` is measured forward from the older end of the specified branch.

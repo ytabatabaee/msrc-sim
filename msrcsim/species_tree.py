@@ -1,61 +1,94 @@
 from __future__ import annotations
-from dataclasses import dataclass
-from typing import Dict, Tuple
+from dataclasses import dataclass, field
+from typing import Optional
+
+@dataclass
+class Node:
+    name: str
+    length: float = 0.0
+    children: list["Node"] = field(default_factory=list)
+    parent: Optional["Node"] = None
+    age: float = 0.0
+    def is_tip(self): return not self.children
 
 @dataclass(frozen=True)
 class PopulationBranch:
     branch_id: str
-    parent_id: str | None
-    children: Tuple[str, ...]
-    younger_age: int
-    older_age: int
-    effective_size: int
-    taxon: str | None = None
+    parent_branch_id: str|None
+    younger_age: float
+    older_age: float
+    effective_population_size: int
+    child_node: str
 
-    @property
-    def duration(self) -> int:
-        return self.older_age-self.younger_age
+class _Parser:
+    def __init__(self,s): self.s=s.strip().rstrip(';'); self.i=0; self.auto=0
+    def parse(self):
+        n=self.node();
+        if self.i!=len(self.s): raise ValueError(f"Unexpected Newick text at {self.s[self.i:]}")
+        return n
+    def node(self):
+        if self.s[self.i]=='(':
+            self.i+=1; kids=[self.node()]
+            while self.s[self.i]==',': self.i+=1; kids.append(self.node())
+            if self.s[self.i]!=')': raise ValueError("Malformed Newick")
+            self.i+=1; name=self.label()
+            if not name: self.auto+=1; name=f"N{self.auto}"
+            length=self.branch_length(); n=Node(name,length,kids)
+            for c in kids: c.parent=n
+            return n
+        name=self.label()
+        if not name: raise ValueError("Tip names are required")
+        return Node(name,self.branch_length())
+    def label(self):
+        j=self.i
+        while self.i<len(self.s) and self.s[self.i] not in ':,()': self.i+=1
+        return self.s[j:self.i].strip()
+    def branch_length(self):
+        if self.i<len(self.s) and self.s[self.i]==':':
+            self.i+=1; j=self.i
+            while self.i<len(self.s) and self.s[self.i] not in ',()': self.i+=1
+            return float(self.s[j:self.i])
+        return 0.0
 
-    def contains_age(self, age: float) -> bool:
-        return self.younger_age <= age < self.older_age
-
-@dataclass(frozen=True)
-class BalancedQuartetTree:
-    branches: Dict[str, PopulationBranch]
-    terminal_by_taxon: Dict[str, str]
-    ancestral_population_size: int
-
-    @classmethod
-    def create(cls, cherry_age: int, root_age: int, origin_age: int,
-               effective_size: int, ancestral_population_size: int | None=None):
-        if not (0 < cherry_age < root_age < origin_age):
-            raise ValueError("require 0 < cherry_age < root_age < origin_age")
-        if effective_size<=0: raise ValueError("effective_size must be positive")
-        na=ancestral_population_size or effective_size
-        b={
-          "root": PopulationBranch("root",None,("left","right"),root_age,origin_age,effective_size),
-          "left": PopulationBranch("left","root",("t1","t2"),cherry_age,root_age,effective_size),
-          "right": PopulationBranch("right","root",("t3","t4"),cherry_age,root_age,effective_size),
-          "t1": PopulationBranch("t1","left",(),0,cherry_age,effective_size,"1"),
-          "t2": PopulationBranch("t2","left",(),0,cherry_age,effective_size,"2"),
-          "t3": PopulationBranch("t3","right",(),0,cherry_age,effective_size,"3"),
-          "t4": PopulationBranch("t4","right",(),0,cherry_age,effective_size,"4"),
-        }
-        return cls(b,{str(i):f"t{i}" for i in range(1,5)},na)
-
-    @property
-    def origin_age(self)->int: return self.branches["root"].older_age
-    @property
-    def root_age(self)->int: return self.branches["root"].younger_age
-    @property
-    def taxa(self): return ("1","2","3","4")
-
-    def parent_of(self, branch_id: str) -> str | None:
-        return self.branches[branch_id].parent_id
-
-    def boundary_age(self, branch_id: str) -> int:
-        return self.branches[branch_id].older_age
-
-    def effective_size(self, branch_id: str | None) -> int:
-        if branch_id is None or branch_id=="ancestral": return self.ancestral_population_size
-        return self.branches[branch_id].effective_size
+class SpeciesTree:
+    def __init__(self,newick,default_ne,root_extension,branch_parameters=None):
+        self.root=_Parser(newick).parse(); self.default_ne=int(default_ne); self.root_extension=float(root_extension)
+        self.branch_parameters=branch_parameters or {}; self._assign_ages(); self._name_nodes(); self.branches=self._make_branches()
+        self.taxa=tuple(sorted(n.name for n in self.nodes() if n.is_tip()))
+        if len(self.taxa)!=4: raise ValueError("This release supports exactly four sampled taxa")
+    def nodes(self):
+        out=[]
+        def rec(n): out.append(n); [rec(c) for c in n.children]
+        rec(self.root); return out
+    def _assign_ages(self):
+        def height(n):
+            if n.is_tip(): n.age=0; return 0.0
+            vals=[height(c)+c.length for c in n.children]
+            if max(vals)-min(vals)>1e-8: raise ValueError("Species tree must be ultrametric")
+            n.age=vals[0]; return n.age
+        height(self.root)
+    def _name_nodes(self):
+        seen=set()
+        for n in self.nodes():
+            if n.name in seen: raise ValueError(f"Duplicate node name {n.name}")
+            seen.add(n.name)
+    def _ne(self,bid): return int(self.branch_parameters.get(bid,{}).get('effective_population_size',self.default_ne))
+    def _make_branches(self):
+        d={}
+        for n in self.nodes():
+            if n is self.root:
+                d[n.name]=PopulationBranch(n.name,None,n.age,n.age+self.root_extension,self._ne(n.name),n.name)
+            else:
+                parent_id=n.parent.name
+                d[n.name]=PopulationBranch(n.name,parent_id,n.age,n.parent.age,self._ne(n.name),n.name)
+        return d
+    def branch_for_tip(self,taxon): return taxon
+    def parent_branch(self,bid): return self.branches[bid].parent_branch_id
+    def next_boundary(self,bid): return self.branches[bid].older_age
+    def descendants(self,node_name):
+        n=next(x for x in self.nodes() if x.name==node_name); out=[]
+        def rec(x):
+            if x.is_tip(): out.append(x.name)
+            else:
+                for c in x.children: rec(c)
+        rec(n); return tuple(out)
