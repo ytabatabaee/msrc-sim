@@ -18,6 +18,7 @@ from .species_tree import SpeciesTree
 from .statistics import summarize_replicates
 from .structured_coalescent import simulate_genealogy
 from .wright_fisher import simulate_frequency_history
+from .model_fitting import compare_models
 
 
 @dataclass(frozen=True)
@@ -36,6 +37,9 @@ class ReplicateRecord:
     persisted_to_target: bool
     is_2_2_pattern: bool
     num_loci: int
+    n1: int
+    n2: int
+    n3: int
     q1: float
     q2: float
     q3: float
@@ -46,6 +50,25 @@ class ReplicateRecord:
     simplex_y: float
     mean_switches_per_locus: float
     mean_coalescence_time: float
+    nearest_msc_topology: int
+    distance_to_nearest_msc_arm: float
+    off_arm_difference: float
+    off_arm_standard_error: float
+    off_arm_z_score: float
+    off_arm_p_value: float
+    off_arm_ci95_low: float
+    off_arm_ci95_high: float
+    best_msc_log_likelihood: float
+    best_network_log_likelihood: float
+    best_network_parent_1: int
+    best_network_parent_2: int
+    best_network_gamma: float
+    best_network_t1: float
+    best_network_t2: float
+    best_network_representation_error: float
+    best_network_nondegenerate: bool
+    delta_aic_network_vs_msc: float
+    model_classification: str
 
 
 def _tree_from_config(config: Mapping[str, Any]) -> SpeciesTree:
@@ -128,10 +151,20 @@ def simulate_replicates(config: Mapping[str, Any]) -> tuple[list[ReplicateRecord
                     persisted_to_target=False,
                     is_2_2_pattern=_is_two_two(terminal_pattern(sampled, tree.taxa)),
                     num_loci=0,
+                    n1=0, n2=0, n3=0,
                     q1=float("nan"), q2=float("nan"), q3=float("nan"),
                     q2_minus_q3=float("nan"), absolute_asymmetry=float("nan"),
                     dominant_topology=-1, simplex_x=float("nan"), simplex_y=float("nan"),
                     mean_switches_per_locus=float("nan"), mean_coalescence_time=float("nan"),
+                    nearest_msc_topology=-1, distance_to_nearest_msc_arm=float("nan"),
+                    off_arm_difference=float("nan"), off_arm_standard_error=float("nan"),
+                    off_arm_z_score=float("nan"), off_arm_p_value=float("nan"),
+                    off_arm_ci95_low=float("nan"), off_arm_ci95_high=float("nan"),
+                    best_msc_log_likelihood=float("nan"), best_network_log_likelihood=float("nan"),
+                    best_network_parent_1=-1, best_network_parent_2=-1,
+                    best_network_gamma=float("nan"), best_network_t1=float("nan"), best_network_t2=float("nan"),
+                    best_network_representation_error=float("nan"), best_network_nondegenerate=False,
+                    delta_aic_network_vs_msc=float("nan"), model_classification="rejected",
                 )
             )
             continue
@@ -144,6 +177,7 @@ def simulate_replicates(config: Mapping[str, Any]) -> tuple[list[ReplicateRecord
         ]
         counts = np.bincount([r.topology_index for r in results], minlength=3)
         q = counts / loci_per_replicate
+        model = compare_models(counts)
         x, y = barycentric_to_cartesian(float(q[0]), float(q[1]), float(q[2]))
         switches = [sum(e.event_type == "switch" for e in r.events) for r in results]
         coal_times = [t for r in results for t in r.coalescence_times]
@@ -167,6 +201,7 @@ def simulate_replicates(config: Mapping[str, Any]) -> tuple[list[ReplicateRecord
                 persisted_to_target=persisted,
                 is_2_2_pattern=_is_two_two(pattern),
                 num_loci=loci_per_replicate,
+                n1=int(counts[0]), n2=int(counts[1]), n3=int(counts[2]),
                 q1=float(q[0]), q2=float(q[1]), q3=float(q[2]),
                 q2_minus_q3=float(q[1] - q[2]),
                 absolute_asymmetry=float(abs(q[1] - q[2])),
@@ -174,6 +209,25 @@ def simulate_replicates(config: Mapping[str, Any]) -> tuple[list[ReplicateRecord
                 simplex_x=x, simplex_y=y,
                 mean_switches_per_locus=float(np.mean(switches)),
                 mean_coalescence_time=float(np.mean(coal_times)),
+                nearest_msc_topology=int(model["nearest_msc_topology"]),
+                distance_to_nearest_msc_arm=float(model["distance_to_nearest_msc_arm"]),
+                off_arm_difference=float(model["off_arm_difference"]),
+                off_arm_standard_error=float(model["off_arm_standard_error"]),
+                off_arm_z_score=float(model["off_arm_z_score"]),
+                off_arm_p_value=float(model["off_arm_p_value"]),
+                off_arm_ci95_low=float(model["off_arm_ci95_low"]),
+                off_arm_ci95_high=float(model["off_arm_ci95_high"]),
+                best_msc_log_likelihood=float(model["best_msc_log_likelihood"]),
+                best_network_log_likelihood=float(model["best_network_log_likelihood"]),
+                best_network_parent_1=int(model["best_network_parent_1"]),
+                best_network_parent_2=int(model["best_network_parent_2"]),
+                best_network_gamma=float(model["best_network_gamma"]),
+                best_network_t1=float(model["best_network_t1"]),
+                best_network_t2=float(model["best_network_t2"]),
+                best_network_representation_error=float(model["best_network_representation_error"]),
+                best_network_nondegenerate=bool(model["best_network_nondegenerate"]),
+                delta_aic_network_vs_msc=float(model["delta_aic_network_vs_msc"]),
+                model_classification=str(model["model_classification"]),
             )
         )
         if accepted_count >= requested:
@@ -200,7 +254,7 @@ def write_replicate_outputs(config: Mapping[str, Any], records: Iterable[Replica
         writer.writeheader(); writer.writerows(rows)
     accepted = [r for r in rows if r["accepted"]]
     with (out / "simplex_points.csv").open("w", newline="") as handle:
-        fields = ["replicate_id", "q1", "q2", "q3", "simplex_x", "simplex_y", "terminal_pattern", "q2_minus_q3", "dominant_topology"]
+        fields = ["replicate_id", "q1", "q2", "q3", "simplex_x", "simplex_y", "terminal_pattern", "q2_minus_q3", "dominant_topology", "distance_to_nearest_msc_arm", "off_arm_difference", "off_arm_p_value", "model_classification"]
         writer = csv.DictWriter(handle, fieldnames=fields)
         writer.writeheader(); writer.writerows({k: r[k] for k in fields} for r in accepted)
     with (out / "prevalence_summary.json").open("w") as handle:

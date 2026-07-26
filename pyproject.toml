@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "msrc-sim"
-version = "0.4.1"
+version = "0.5.0"
 description = "Simulator for the Multi-Species Rearrangement Coalescent"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -17,6 +17,7 @@ test = ["pytest>=7.4"]
 msrc-sim = "msrcsim.cli:main"
 msrc-sim-replicates = "msrcsim.replicate_cli:main"
 msrc-sim-grid = "msrcsim.grid_cli:main"
+msrc-sim-compare = "msrcsim.model_comparison_cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]

@@ -14,7 +14,8 @@ The simulator currently focuses on four sampled taxa. It can be used to:
   interval;
 - run independent evolutionary replicates and estimate prevalence statistics;
 - condition replicates on persistence or terminal arrangement patterns;
-- run multidimensional parameter grids for prevalence analyses.
+- run multidimensional parameter grids for prevalence analyses;
+- compare quartet probability vectors with MSC arms and two-tree mixture fits.
 
 The independent unit in prevalence analyses is an evolutionary replicate, not a
 locus. Each accepted replicate draws one rearrangement frequency history, and
@@ -42,8 +43,8 @@ The package requires Python 3.9 or later, NumPy, SciPy, and PyYAML.
 
 ## Commands
 
-The package installs three command-line programs. Each command reads a YAML
-configuration file.
+The package installs four command-line programs. The simulation commands read
+YAML configuration files.
 
 ```bash
 msrc-sim --config <config.yaml>
@@ -65,12 +66,20 @@ msrc-sim-grid --config <config.yaml>
 Runs a parameter grid from a `parameter_grid` configuration. Each grid cell is
 run as a replicate experiment.
 
+```bash
+msrc-sim-compare --input <replicate_summary.csv> --output <model_comparison.csv>
+```
+
+Fits MSC and two-tree quartet-mixture models to accepted quartet-count rows
+from `replicate_summary.csv` or an equivalent table.
+
 Equivalent script wrappers are provided in `scripts/`:
 
 ```bash
 python scripts/simulate_msrc.py --config examples/mechanistic_balanced.yaml
 python scripts/simulate_replicates.py --config examples/replicates_unconditional.yaml
 python scripts/simulate_parameter_grid.py --config examples/parameter_grid.yaml
+python scripts/compare_quartet_models.py --input replicate_output/replicate_summary.csv --output model_comparison.csv
 ```
 
 ## Simulation Modes
@@ -79,7 +88,10 @@ python scripts/simulate_parameter_grid.py --config examples/parameter_grid.yaml
 
 Mechanistic mode simulates a rearrangement history forward through a dated
 quartet species tree and then simulates locus genealogies backward through that
-realized history.
+realized history. Backward genealogy simulation is piecewise exact with respect
+to the generation-by-generation Wright-Fisher frequency path, so a proposed
+Gillespie event cannot cross a frequency-change boundary while retaining
+outdated rates.
 
 ```bash
 msrc-sim --config examples/mechanistic_balanced.yaml
@@ -257,6 +269,29 @@ parameter_grid:
 Each grid cell is written to its own `cell_####` directory, and the grid-level
 summary is written to `parameter_grid_summary.csv`.
 
+### Quartet Model Comparison
+
+The `msrc-sim-compare` command fits model summaries to an existing table of
+quartet counts or probabilities. It accepts `replicate_summary.csv` from a
+replicate experiment, or any CSV with either `n1`, `n2`, and `n3` topology
+counts or `num_loci` plus `q1`, `q2`, and `q3` probabilities.
+
+```bash
+msrc-sim-compare \
+  --input replicate_output/replicate_summary.csv \
+  --output model_comparison.csv
+```
+
+The comparison reports the nearest MSC arm, an off-arm contrast with standard
+error, z-score, p-value, and 95% confidence interval, maximum-likelihood MSC
+fits, and a quartet-level two-tree mixture fit. It is intended to distinguish a
+strong alternative-tree signal from a genuine off-arm signal.
+
+For a vector whose best MSC topology is `T2`, the off-arm contrast compares the
+two minor probabilities, `q1 - q3`. The two-tree mixture is a quartet-level
+model-comparison device; its fitted parameters should not be interpreted as
+uniquely identifiable demographic estimates from one quartet.
+
 ## Outputs
 
 ### Mechanistic Outputs
@@ -292,10 +327,16 @@ Replicate experiments write:
 - `replicate_summary.csv`: one row per attempted history, including rejected
   attempts;
 - `simplex_points.csv`: accepted replicate quartet probabilities and simplex
-  coordinates;
+  coordinates, with selected MSC-distance, off-arm, and model-classification
+  fields;
 - `prevalence_summary.json`: acceptance rate, terminal pattern counts,
   prevalence estimates, and 95% Wilson intervals;
 - `config.resolved.yaml`: the experiment configuration.
+
+Accepted rows in `replicate_summary.csv` include topology counts (`n1`, `n2`,
+`n3`), quartet probabilities (`q1`, `q2`, `q3`), distance to the nearest MSC
+arm, off-arm statistics, best MSC and two-tree mixture fits, and a model
+classification.
 
 The prevalence summary includes estimates for:
 
@@ -313,6 +354,14 @@ Parameter grids write:
 - `cell_####/simplex_points.csv`: accepted quartet-simplex points for each cell;
 - `cell_####/prevalence_summary.json`: prevalence summary for each cell;
 - `cell_####/config.resolved.yaml`: resolved cell configuration.
+
+### Model-Comparison Outputs
+
+`msrc-sim-compare` writes one CSV row per accepted input row. The output keeps
+the input columns and appends nearest-MSC-arm fields, off-arm confidence
+statistics, best MSC fit fields, best two-tree mixture fit fields,
+`delta_aic_network_vs_msc`, `network_loglik_gain`, and
+`model_classification`.
 
 ## Configuration Reference
 
@@ -372,11 +421,3 @@ The `examples/` directory contains ready-to-run configurations:
 - `replicates_conditioned.yaml`: terminal-pattern-conditioned prevalence
   experiment;
 - `parameter_grid.yaml`: multidimensional parameter grid.
-
-## Development
-
-Run the test suite with:
-
-```bash
-pytest
-```

@@ -44,7 +44,9 @@ def simulate_genealogy(locus_id,tree:SpeciesTree,history:FrequencyHistory,sample
                 l0=1/(2*N*max(1-p,1/(2*N))); l1=1/(2*N*max(p,1/(2*N))); rate=l0 if a.arrangement==0 else l1
                 possible.append(('coal',(a,b),rate,p,rho*p,rho*(1-p),l0,l1))
         total=sum(x[2] for x in possible)
-        next_boundary=min([tree.branches[L.population_id].older_age for L in lineages if tree.branches[L.population_id].parent_branch_id is not None]+[float('inf')])
+        next_species_boundary=min([tree.branches[L.population_id].older_age for L in lineages if tree.branches[L.population_id].parent_branch_id is not None]+[float('inf')])
+        next_frequency_boundary=min([history.next_frequency_boundary(L.population_id, t) for L in lineages]+[float('inf')])
+        next_boundary=min(next_species_boundary,next_frequency_boundary)
         if total<=0:
             if next_boundary<float('inf'): t=next_boundary; continue
             # root fallback: ordinary panmictic coalescence

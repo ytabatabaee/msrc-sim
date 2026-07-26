@@ -14,9 +14,33 @@ class FrequencyRecord:
 class FrequencyHistory:
     records:list[FrequencyRecord]
     by_branch:dict[str,list[FrequencyRecord]]
-    def frequency_at(self,branch_id,age):
-        recs=self.by_branch[branch_id]
-        return min(recs,key=lambda r:abs(r.absolute_age-age)).frequency_A1
+
+    def _ascending(self, branch_id):
+        return sorted(self.by_branch[branch_id], key=lambda r: r.absolute_age)
+
+    def frequency_at(self, branch_id, age):
+        """Return the piecewise-constant frequency at backward age ``age``.
+
+        A Wright-Fisher record at integer age g describes the population during
+        the backward-time interval [g, g+1). Beyond the oldest recorded root
+        generation, the oldest state is held constant.
+        """
+        recs = self._ascending(branch_id)
+        chosen = recs[0]
+        for rec in recs:
+            if rec.absolute_age <= age + 1e-12:
+                chosen = rec
+            else:
+                break
+        return chosen.frequency_A1
+
+    def next_frequency_boundary(self, branch_id, age):
+        """Smallest recorded age strictly greater than ``age``."""
+        for rec in self._ascending(branch_id):
+            if rec.absolute_age > age + 1e-10:
+                return rec.absolute_age
+        return float('inf')
+
     def terminal_frequency(self,taxon): return self.frequency_at(taxon,0.0)
 
 def _status(k,total,ever):
