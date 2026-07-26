@@ -38,7 +38,7 @@ pip install -e ".[test]"
 pytest
 ```
 
-The package requires Python 3.10 or later, NumPy, SciPy, and PyYAML.
+The package requires Python 3.9 or later, NumPy, SciPy, and PyYAML.
 
 ## Commands
 
@@ -380,4 +380,3 @@ Run the test suite with:
 ```bash
 pytest
 ```
-
