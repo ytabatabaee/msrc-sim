@@ -1,0 +1,32 @@
+mode: replicate_experiment
+seed: 264
+species_tree:
+  newick: "((1:20,2:20)A:10,(3:20,4:20)B:10)ROOT;"
+  time_units: generations
+  root_extension: 50
+  default_effective_population_size: 50
+rearrangement:
+  id: inv_1
+  type: inversion
+  origin_branch: ROOT
+  origin_time_from_branch_start: 5
+  initial_copy_count: 20
+  selection:
+    model: genic
+    coefficient: 0.0
+recombination:
+  baseline_rate: 0.02
+  effective_cross_arrangement_fraction: 0.1
+sampling:
+  samples_per_species: 1
+conditioning:
+  mode: terminal_pattern
+  accepted_patterns: ["1010", "0101"]
+  max_attempts: 10000
+experiment:
+  replicates: 10
+  loci_per_replicate: 200
+  asymmetry_threshold: 0.10
+  persistence_target_branches: [ROOT]
+output:
+  directory: replicate_conditioned_output
