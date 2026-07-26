@@ -1,70 +1,213 @@
-# msrc-sim 0.4.0
+# msrc-sim
 
-This release adds the prevalence-analysis milestone for the two-state Multi-Species Rearrangement Coalescent (MSRC).
+`msrc-sim` simulates quartet gene-tree distributions under the Multi-Species
+Rearrangement Coalescent (MSRC) model. It is designed for experiments where a
+chromosomal rearrangement, such as an inversion, arises in a species tree,
+evolves forward in time with a Wright-Fisher process, and then affects
+backward-time genealogies through arrangement-dependent coalescence and
+recombination.
 
-## Existing functionality
+The simulator currently focuses on four sampled taxa. It can be used to:
 
-- exact conditional quartet matrix `H_m(t)`;
-- balanced or unbalanced dated-Newick quartet species trees;
-- a single-origin Wright–Fisher inversion process;
-- backward arrangement-structured genealogy simulation;
-- coalescence and optional full backward-event logs.
+- simulate a single mechanistic MSRC history and its gene trees;
+- compute empirical and exact quartet probabilities for a fixed structured
+  interval;
+- run independent evolutionary replicates and estimate prevalence statistics;
+- condition replicates on persistence or terminal arrangement patterns;
+- run multidimensional parameter grids for prevalence analyses.
 
-## New functionality
+The independent unit in prevalence analyses is an evolutionary replicate, not a
+locus. Each accepted replicate draws one rearrangement frequency history, and
+the loci within that replicate estimate the quartet distribution conditional on
+that history.
 
-- independent evolutionary replicates, each with a new inversion-frequency history;
-- unconditional, persistent-polymorphism, terminal-pattern, and combined conditioning;
-- explicit attempted/accepted replicate counts and conditioning acceptance rates;
-- prevalence estimates with 95% Wilson intervals;
-- raw quartet-simplex points;
-- reproducible multidimensional parameter grids.
+## Installation
 
-The independent unit for prevalence is an **evolutionary replicate**, not a locus. Multiple loci within a replicate estimate the quartet distribution conditional on one realized inversion history.
+Clone the repository and install it in editable mode:
 
-## Install and test
+```bash
+git clone https://github.com/ytabatabaee/msrc-sim.git
+cd msrc-sim
+pip install -e .
+```
+
+For development and tests, install the test dependencies:
 
 ```bash
 pip install -e ".[test]"
 pytest
 ```
 
-## Single mechanistic run
+The package requires Python 3.10 or later, NumPy, SciPy, and PyYAML.
+
+## Commands
+
+The package installs three command-line programs. Each command reads a YAML
+configuration file.
+
+```bash
+msrc-sim --config <config.yaml>
+```
+
+Runs one simulation. The config `mode` can be `mechanistic` or `conditional`.
+
+```bash
+msrc-sim-replicates --config <config.yaml>
+```
+
+Runs independent evolutionary replicates from a `replicate_experiment`
+configuration.
+
+```bash
+msrc-sim-grid --config <config.yaml>
+```
+
+Runs a parameter grid from a `parameter_grid` configuration. Each grid cell is
+run as a replicate experiment.
+
+Equivalent script wrappers are provided in `scripts/`:
+
+```bash
+python scripts/simulate_msrc.py --config examples/mechanistic_balanced.yaml
+python scripts/simulate_replicates.py --config examples/replicates_unconditional.yaml
+python scripts/simulate_parameter_grid.py --config examples/parameter_grid.yaml
+```
+
+## Simulation Modes
+
+### Mechanistic MSRC Simulation
+
+Mechanistic mode simulates a rearrangement history forward through a dated
+quartet species tree and then simulates locus genealogies backward through that
+realized history.
 
 ```bash
 msrc-sim --config examples/mechanistic_balanced.yaml
 ```
 
-## Unconditional replicate experiment
+The main configuration sections are:
+
+- `mode`: set to `mechanistic`;
+- `seed`: random seed;
+- `num_loci`: number of loci to simulate;
+- `species_tree`: ultrametric four-taxon Newick tree, root extension, and
+  effective population sizes;
+- `rearrangement`: rearrangement type, origin branch, origin time, initial copy
+  count, and selection coefficient;
+- `recombination`: baseline recombination rate and effective cross-arrangement
+  fraction;
+- `sampling`: currently one sample per species;
+- `output`: output directory and which intermediate files to record.
+
+Example:
+
+```yaml
+mode: mechanistic
+seed: 12345
+num_loci: 200
+species_tree:
+  newick: "((1:100,2:100)A:50,(3:100,4:100)B:50)ROOT;"
+  time_units: generations
+  root_extension: 500
+  default_effective_population_size: 1000
+rearrangement:
+  id: inv_1
+  type: inversion
+  origin_branch: ROOT
+  origin_time_from_branch_start: 120
+  initial_copy_count: 20
+  selection:
+    model: genic
+    coefficient: 0.0
+recombination:
+  baseline_rate: 0.01
+  effective_cross_arrangement_fraction: 0.05
+sampling:
+  samples_per_species: 1
+output:
+  directory: balanced_output
+  record_frequency_history: true
+  record_sampled_arrangements: true
+  record_gene_trees: true
+  record_backward_events: true
+```
+
+Species trees must be ultrametric and must have exactly four sampled taxa.
+Internal node names are used as branch identifiers, so named internal nodes such
+as `A`, `B`, and `ROOT` are recommended.
+
+### Conditional Quartet Simulation
+
+Conditional mode simulates quartet outcomes for a fixed four-lineage
+arrangement configuration over one structured interval. It also computes the
+exact conditional quartet matrix `H_m(t)` for the same model parameters.
+
+```bash
+msrc-sim --config examples/conditional_quartet.yaml
+```
+
+Example:
+
+```yaml
+mode: conditional
+seed: 12345
+num_loci: 100000
+structured_interval:
+  duration: 1.0
+  configuration: "1010"
+  migration:
+    m01: 0.05
+    m10: 0.05
+  coalescence:
+    lambda0: 1.0
+    lambda1: 1.0
+output:
+  directory: conditional_output
+```
+
+The `configuration` string gives the arrangement state of the four lineages.
+For example, `1010` means lineages 1 and 3 carry state `1`, while lineages 2
+and 4 carry state `0`.
+
+### Replicate Experiments
+
+Replicate experiments simulate many independent rearrangement histories. For
+each accepted history, the simulator samples terminal arrangements and then
+simulates a fixed number of loci to estimate the replicate's quartet
+distribution.
 
 ```bash
 msrc-sim-replicates --config examples/replicates_unconditional.yaml
 ```
 
-## Pattern-conditioned experiment
+The `experiment` section controls the number of accepted replicates, loci per
+replicate, and prevalence statistics:
 
-```bash
-msrc-sim-replicates --config examples/replicates_conditioned.yaml
+```yaml
+experiment:
+  replicates: 20
+  loci_per_replicate: 200
+  asymmetry_threshold: 0.10
+  persistence_target_branches: [ROOT]
 ```
 
-## Parameter grid
+The simulator records both attempted and accepted histories. This is important
+for conditioned experiments because rare conditioning events should remain
+visible in the reported acceptance rate.
 
-```bash
-msrc-sim-grid --config examples/parameter_grid.yaml
-```
+### Conditioning
 
-## Replicate outputs
+Replicate experiments can be unconditioned or conditioned on features of the
+forward rearrangement history.
 
-- `replicate_summary.csv`: one row per attempted history, including rejected attempts;
-- `simplex_points.csv`: accepted quartet probability vectors and simplex coordinates;
-- `prevalence_summary.json`: persistence, 2:2 sorting, asymmetry, and discordant-dominance estimates;
-- `config.resolved.yaml`.
-
-## Conditioning
+Unconditional simulation:
 
 ```yaml
 conditioning:
   mode: none
 ```
+
+Require the rearrangement to remain segregating at specified branch ends:
 
 ```yaml
 conditioning:
@@ -73,6 +216,8 @@ conditioning:
   max_attempts: 10000
 ```
 
+Require one of a set of sampled terminal arrangement patterns:
+
 ```yaml
 conditioning:
   mode: terminal_pattern
@@ -80,16 +225,159 @@ conditioning:
   max_attempts: 100000
 ```
 
-The simulator always reports the number of attempted and accepted histories, so conditioning does not hide rarity.
+Require both persistence and terminal pattern conditions:
 
-
-## Backward-compatible single-run CLI
-
-The `msrc-sim` command supports both standalone modes:
-
-```bash
-msrc-sim --config examples/conditional_quartet.yaml
-msrc-sim --config examples/mechanistic_balanced.yaml
+```yaml
+conditioning:
+  mode: persistent_and_pattern
+  require_segregating_at: [ROOT]
+  accepted_patterns: ["1010", "0101"]
+  max_attempts: 100000
 ```
 
-Use `mode: conditional` for a fixed four-lineage arrangement configuration and `mode: mechanistic` for a forward Wright--Fisher history followed by backward structured coalescence.
+### Parameter Grids
+
+Parameter-grid mode runs a replicate experiment for every combination of values
+in `parameter_grid`. Grid keys are dotted paths into the base YAML
+configuration.
+
+```bash
+msrc-sim-grid --config examples/parameter_grid.yaml
+```
+
+Example:
+
+```yaml
+parameter_grid:
+  species_tree.default_effective_population_size: [25, 50]
+  rearrangement.initial_copy_count: [10, 20]
+  recombination.effective_cross_arrangement_fraction: [0.01, 0.1]
+```
+
+Each grid cell is written to its own `cell_####` directory, and the grid-level
+summary is written to `parameter_grid_summary.csv`.
+
+## Outputs
+
+### Mechanistic Outputs
+
+Mechanistic runs write files to `output.directory`. Depending on the output
+flags, the directory can contain:
+
+- `config.resolved.yaml`: YAML configuration after defaults are applied;
+- `frequency_history.csv`: forward Wright-Fisher frequency path on each branch;
+- `sampled_arrangements.csv`: sampled terminal arrangement state for each taxon;
+- `true_gene_trees.nwk`: simulated true gene trees in Newick format;
+- `coalescence_times.csv`: coalescence times for each locus;
+- `coalescence_events.csv`: coalescence-event records;
+- `genealogy_events.csv`: optional full backward-event log for selected loci;
+- `summary.json`: topology counts, topology frequencies, taxa, and sampled
+  arrangements.
+
+### Conditional Outputs
+
+Conditional runs write:
+
+- `config.resolved.yaml`: YAML configuration after defaults are applied;
+- `quartet_probabilities.csv`: topology counts, empirical probabilities, exact
+  probabilities, and absolute errors;
+- `summary.json`: the same conditional summary in JSON format.
+
+The three quartet topologies are reported as `12|34`, `13|24`, and `14|23`.
+
+### Replicate Outputs
+
+Replicate experiments write:
+
+- `replicate_summary.csv`: one row per attempted history, including rejected
+  attempts;
+- `simplex_points.csv`: accepted replicate quartet probabilities and simplex
+  coordinates;
+- `prevalence_summary.json`: acceptance rate, terminal pattern counts,
+  prevalence estimates, and 95% Wilson intervals;
+- `config.resolved.yaml`: the experiment configuration.
+
+The prevalence summary includes estimates for:
+
+- persistent polymorphism on target branches;
+- 2:2 terminal arrangement patterns;
+- asymmetric quartet distributions;
+- discordant-topology dominance.
+
+### Grid Outputs
+
+Parameter grids write:
+
+- `parameter_grid_summary.csv`: one row per parameter combination;
+- `cell_####/replicate_summary.csv`: replicate-level records for each cell;
+- `cell_####/simplex_points.csv`: accepted quartet-simplex points for each cell;
+- `cell_####/prevalence_summary.json`: prevalence summary for each cell;
+- `cell_####/config.resolved.yaml`: resolved cell configuration.
+
+## Configuration Reference
+
+Common fields:
+
+- `mode`: one of `mechanistic`, `conditional`, `replicate_experiment`, or
+  `parameter_grid`;
+- `seed`: random seed, defaulting to `1` for single-run modes;
+- `num_loci`: number of loci for single-run modes;
+- `output.directory`: output directory.
+
+Species-tree fields:
+
+- `species_tree.newick`: ultrametric four-taxon Newick tree;
+- `species_tree.root_extension`: length of the population above the root;
+- `species_tree.default_effective_population_size`: default diploid effective
+  population size used by branches;
+- `species_tree.branch_parameters.<branch>.effective_population_size`: optional
+  branch-specific effective population size.
+
+Rearrangement fields:
+
+- `rearrangement.id`: identifier written to outputs;
+- `rearrangement.type`: rearrangement type, such as `inversion`;
+- `rearrangement.origin_branch`: branch where the rearrangement originates;
+- `rearrangement.origin_time_from_branch_start`: forward-time origin location on
+  the origin branch;
+- `rearrangement.initial_copy_count`: initial number of rearranged chromosomes;
+- `rearrangement.selection.coefficient`: genic selection coefficient.
+
+Recombination fields:
+
+- `recombination.baseline_rate`: baseline switching/recombination rate;
+- `recombination.effective_cross_arrangement_fraction`: fraction of the
+  baseline rate retained across arrangements.
+
+Output flags for mechanistic runs:
+
+- `record_resolved_config`;
+- `record_frequency_history`;
+- `record_sampled_arrangements`;
+- `record_gene_trees`;
+- `record_coalescence_times`;
+- `record_backward_events`;
+- `event_log_loci.first_n`.
+
+## Examples
+
+The `examples/` directory contains ready-to-run configurations:
+
+- `mechanistic_balanced.yaml`: mechanistic simulation on a balanced quartet tree;
+- `mechanistic_unbalanced.yaml`: mechanistic simulation on an unbalanced quartet
+  tree;
+- `conditional_quartet.yaml`: fixed-configuration conditional quartet
+  simulation;
+- `replicates_unconditional.yaml`: unconditioned prevalence experiment;
+- `replicates_conditioned.yaml`: terminal-pattern-conditioned prevalence
+  experiment;
+- `parameter_grid.yaml`: multidimensional parameter grid.
+
+## Development
+
+Run the test suite with:
+
+```bash
+pytest
+```
+
