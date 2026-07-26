@@ -22,9 +22,9 @@ sampling:
 conditioning:
   mode: none
 experiment:
-  replicates: 20
-  loci_per_replicate: 200
-  asymmetry_threshold: 0.10
+  replicates: 1000
+  loci_per_replicate: 1000
+  asymmetry_threshold: 0.05
   persistence_target_branches: [ROOT]
 output:
   directory: replicate_unconditional_output

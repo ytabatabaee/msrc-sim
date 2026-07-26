@@ -1,10 +1,10 @@
 mode: replicate_experiment
 seed: 264
 species_tree:
-  newick: "((1:20,2:20)A:10,(3:20,4:20)B:10)ROOT;"
+  newick: "((1:30,2:30)A:30,(3:10,4:10)B:50)ROOT;"
   time_units: generations
   root_extension: 50
-  default_effective_population_size: 50
+  default_effective_population_size: 100
 rearrangement:
   id: inv_1
   type: inversion
@@ -25,7 +25,7 @@ conditioning:
   max_attempts: 10000
 experiment:
   replicates: 10
-  loci_per_replicate: 200
+  loci_per_replicate: 1000
   asymmetry_threshold: 0.10
   persistence_target_branches: [ROOT]
 output:
