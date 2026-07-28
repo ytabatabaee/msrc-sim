@@ -67,7 +67,20 @@ class ReplicateRecord:
     best_network_t2: float
     best_network_representation_error: float
     best_network_nondegenerate: bool
+    best_network_well_interior: bool
+    best_network_boundary_warning: bool
+    best_network_gamma_near_boundary: bool
+    best_network_t1_near_zero: bool
+    best_network_t2_near_zero: bool
+    best_network_t1_near_upper_bound: bool
+    best_network_t2_near_upper_bound: bool
+    network_representable: bool
+    off_arm_supported: bool
+    network_aic_preferred: bool
+    network_strongly_preferred: bool
     delta_aic_network_vs_msc: float
+    model_geometry_classification: str
+    model_evidence_classification: str
     model_classification: str
 
 
@@ -164,7 +177,14 @@ def simulate_replicates(config: Mapping[str, Any]) -> tuple[list[ReplicateRecord
                     best_network_parent_1=-1, best_network_parent_2=-1,
                     best_network_gamma=float("nan"), best_network_t1=float("nan"), best_network_t2=float("nan"),
                     best_network_representation_error=float("nan"), best_network_nondegenerate=False,
-                    delta_aic_network_vs_msc=float("nan"), model_classification="rejected",
+                    best_network_well_interior=False, best_network_boundary_warning=False,
+                    best_network_gamma_near_boundary=False, best_network_t1_near_zero=False,
+                    best_network_t2_near_zero=False, best_network_t1_near_upper_bound=False,
+                    best_network_t2_near_upper_bound=False, network_representable=False,
+                    off_arm_supported=False, network_aic_preferred=False, network_strongly_preferred=False,
+                    delta_aic_network_vs_msc=float("nan"),
+                    model_geometry_classification="rejected", model_evidence_classification="rejected",
+                    model_classification="rejected",
                 )
             )
             continue
@@ -226,7 +246,20 @@ def simulate_replicates(config: Mapping[str, Any]) -> tuple[list[ReplicateRecord
                 best_network_t2=float(model["best_network_t2"]),
                 best_network_representation_error=float(model["best_network_representation_error"]),
                 best_network_nondegenerate=bool(model["best_network_nondegenerate"]),
+                best_network_well_interior=bool(model["best_network_well_interior"]),
+                best_network_boundary_warning=bool(model["best_network_boundary_warning"]),
+                best_network_gamma_near_boundary=bool(model["best_network_gamma_near_boundary"]),
+                best_network_t1_near_zero=bool(model["best_network_t1_near_zero"]),
+                best_network_t2_near_zero=bool(model["best_network_t2_near_zero"]),
+                best_network_t1_near_upper_bound=bool(model["best_network_t1_near_upper_bound"]),
+                best_network_t2_near_upper_bound=bool(model["best_network_t2_near_upper_bound"]),
+                network_representable=bool(model["network_representable"]),
+                off_arm_supported=bool(model["off_arm_supported"]),
+                network_aic_preferred=bool(model["network_aic_preferred"]),
+                network_strongly_preferred=bool(model["network_strongly_preferred"]),
                 delta_aic_network_vs_msc=float(model["delta_aic_network_vs_msc"]),
+                model_geometry_classification=str(model["model_geometry_classification"]),
+                model_evidence_classification=str(model["model_evidence_classification"]),
                 model_classification=str(model["model_classification"]),
             )
         )
@@ -254,7 +287,7 @@ def write_replicate_outputs(config: Mapping[str, Any], records: Iterable[Replica
         writer.writeheader(); writer.writerows(rows)
     accepted = [r for r in rows if r["accepted"]]
     with (out / "simplex_points.csv").open("w", newline="") as handle:
-        fields = ["replicate_id", "q1", "q2", "q3", "simplex_x", "simplex_y", "terminal_pattern", "q2_minus_q3", "dominant_topology", "distance_to_nearest_msc_arm", "off_arm_difference", "off_arm_p_value", "model_classification"]
+        fields = ["replicate_id", "q1", "q2", "q3", "simplex_x", "simplex_y", "terminal_pattern", "q2_minus_q3", "dominant_topology", "distance_to_nearest_msc_arm", "off_arm_difference", "off_arm_p_value", "network_representable", "off_arm_supported", "network_aic_preferred", "network_strongly_preferred", "best_network_boundary_warning", "model_geometry_classification", "model_evidence_classification", "model_classification"]
         writer = csv.DictWriter(handle, fieldnames=fields)
         writer.writeheader(); writer.writerows({k: r[k] for k in fields} for r in accepted)
     with (out / "prevalence_summary.json").open("w") as handle:

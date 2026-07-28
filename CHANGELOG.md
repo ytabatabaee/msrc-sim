@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.5.1
+
+- Preserve and normalize four-character terminal arrangement patterns (for example, `0101`).
+- Separate network geometric representability from statistical model preference.
+- Add `network_representable`, `off_arm_supported`, `network_aic_preferred`, and `network_strongly_preferred`.
+- Add practical network-boundary diagnostics for gamma and branch lengths.
+- Split model output into geometry and evidence classifications.
+- Expand replicate and prevalence outputs with these diagnostics.
+
+
 ## 0.5.0
 
 - Made the backward structured-coalescent simulation piecewise exact across

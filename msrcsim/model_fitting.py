@@ -83,6 +83,13 @@ class NetworkFit:
     aic: float
     representation_error: float
     nondegenerate: bool
+    well_interior: bool
+    gamma_near_boundary: bool
+    t1_near_zero: bool
+    t2_near_zero: bool
+    t1_near_upper_bound: bool
+    t2_near_upper_bound: bool
+    boundary_warning: bool
 
 
 def fit_network_pair(counts: Iterable[int], parent_1: int, parent_2: int, max_branch: float = 20.0) -> NetworkFit:
@@ -111,8 +118,24 @@ def fit_network_pair(counts: Iterable[int], parent_1: int, parent_2: int, max_br
     q = network_probabilities(parent_1, parent_2, gamma, t1, t2)
     ll = multinomial_log_likelihood(n.astype(int), q)
     error = float(np.linalg.norm(empirical - q))
-    nondegenerate = 1e-4 < gamma < 1.0 - 1e-4 and t1 > 1e-4 and t2 > 1e-4
-    return NetworkFit(parent_1, parent_2, gamma, t1, t2, float(q[0]), float(q[1]), float(q[2]), ll, 6.0 - 2.0 * ll, error, nondegenerate)
+    formal_eps = 1e-4
+    practical_gamma_eps = 0.02
+    practical_t_eps = 0.02
+    upper_margin = max(0.05, 0.01 * max_branch)
+    nondegenerate = formal_eps < gamma < 1.0 - formal_eps and t1 > formal_eps and t2 > formal_eps
+    gamma_near_boundary = gamma <= practical_gamma_eps or gamma >= 1.0 - practical_gamma_eps
+    t1_near_zero = t1 <= practical_t_eps
+    t2_near_zero = t2 <= practical_t_eps
+    t1_near_upper_bound = t1 >= max_branch - upper_margin
+    t2_near_upper_bound = t2 >= max_branch - upper_margin
+    boundary_warning = gamma_near_boundary or t1_near_zero or t2_near_zero or t1_near_upper_bound or t2_near_upper_bound
+    well_interior = nondegenerate and not boundary_warning
+    return NetworkFit(
+        parent_1, parent_2, gamma, t1, t2, float(q[0]), float(q[1]), float(q[2]),
+        ll, 6.0 - 2.0 * ll, error, nondegenerate, well_interior,
+        gamma_near_boundary, t1_near_zero, t2_near_zero,
+        t1_near_upper_bound, t2_near_upper_bound, boundary_warning,
+    )
 
 
 def fit_all_networks(counts: Iterable[int]) -> tuple[NetworkFit, tuple[NetworkFit, ...]]:
@@ -157,15 +180,41 @@ def compare_models(counts: Iterable[int]) -> dict[str, object]:
     result.update(off_arm_statistics(counts, best_msc.topology))
     result.update({f"best_msc_{k}": v for k, v in asdict(best_msc).items()})
     result.update({f"best_network_{k}": v for k, v in asdict(best_net).items()})
-    result["delta_aic_network_vs_msc"] = best_net.aic - best_msc.aic
+    delta_aic = best_net.aic - best_msc.aic
+    result["delta_aic_network_vs_msc"] = delta_aic
     result["network_loglik_gain"] = best_net.log_likelihood - best_msc.log_likelihood
-    if abs(result["off_arm_difference"]) < 1e-12:
-        classification = "single_tree_msc_arm"
-    elif best_net.representation_error < 1e-6 and best_net.nondegenerate:
-        classification = "network_interior"
-    elif best_net.representation_error < 1e-6:
-        classification = "network_boundary"
+
+    network_representable = best_net.representation_error < 1e-6
+    off_arm_supported = float(result["off_arm_p_value"]) < 0.05
+    network_aic_preferred = delta_aic < 0.0
+    network_strongly_preferred = delta_aic < -4.0
+    result["network_representable"] = network_representable
+    result["off_arm_supported"] = off_arm_supported
+    result["network_aic_preferred"] = network_aic_preferred
+    result["network_strongly_preferred"] = network_strongly_preferred
+
+    if abs(float(result["off_arm_difference"])) < 1e-12:
+        geometry = "single_tree_msc_arm"
+    elif network_representable and best_net.well_interior:
+        geometry = "network_interior_well_parameterized"
+    elif network_representable and best_net.nondegenerate:
+        geometry = "network_interior_boundary_warning"
+    elif network_representable:
+        geometry = "network_boundary"
     else:
-        classification = "poor_fit"
-    result["model_classification"] = classification
+        geometry = "poor_fit"
+
+    if not off_arm_supported:
+        evidence = "off_arm_not_supported"
+    elif network_strongly_preferred:
+        evidence = "network_strongly_preferred"
+    elif network_aic_preferred:
+        evidence = "network_weakly_preferred"
+    else:
+        evidence = "off_arm_supported_but_msc_aic_preferred"
+
+    result["model_geometry_classification"] = geometry
+    result["model_evidence_classification"] = evidence
+    # Backward-compatible column; geometry and evidence columns should be preferred.
+    result["model_classification"] = geometry
     return result

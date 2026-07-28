@@ -33,7 +33,10 @@ def summarize_replicates(rows: Iterable[Mapping[str, Any]], asymmetry_threshold:
         or float(r.get("off_arm_ci95_high", float("nan"))) < 0.0
         for r in accepted
     )
-    network_interior = sum(str(r.get("model_classification", "")) == "network_interior" for r in accepted)
+    network_representable = sum(bool(r.get("network_representable", False)) for r in accepted)
+    network_aic_preferred = sum(bool(r.get("network_aic_preferred", False)) for r in accepted)
+    network_strongly_preferred = sum(bool(r.get("network_strongly_preferred", False)) for r in accepted)
+    boundary_warnings = sum(bool(r.get("best_network_boundary_warning", False)) for r in accepted)
 
     def prop_with_ci(k: int) -> dict[str, float]:
         lo, hi = wilson_interval(k, n)
@@ -50,6 +53,9 @@ def summarize_replicates(rows: Iterable[Mapping[str, Any]], asymmetry_threshold:
         "discordant_topology_dominant": prop_with_ci(discordant_dominant),
         "mechanistically_discordant_two_two": prop_with_ci(mechanistic_discordant),
         "statistically_supported_off_arm": prop_with_ci(supported_off_arm),
-        "network_interior_fit": prop_with_ci(network_interior),
+        "network_representable": prop_with_ci(network_representable),
+        "network_aic_preferred": prop_with_ci(network_aic_preferred),
+        "network_strongly_preferred": prop_with_ci(network_strongly_preferred),
+        "network_boundary_warning": prop_with_ci(boundary_warnings),
         "terminal_pattern_counts": dict(sorted(patterns.items())),
     }

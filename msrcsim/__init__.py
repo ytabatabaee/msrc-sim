@@ -3,5 +3,5 @@ from .species_tree import SpeciesTree
 from .wright_fisher import simulate_frequency_history
 from .structured_coalescent import simulate_genealogy
 
-__version__ = "0.5.0"
+__version__ = "0.5.1"
 __all__ = ["asymmetry_1010", "compute_Hm", "SpeciesTree", "simulate_frequency_history", "simulate_genealogy"]

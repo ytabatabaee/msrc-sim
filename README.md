@@ -284,8 +284,20 @@ msrc-sim-compare \
 
 The comparison reports the nearest MSC arm, an off-arm contrast with standard
 error, z-score, p-value, and 95% confidence interval, maximum-likelihood MSC
-fits, and a quartet-level two-tree mixture fit. It is intended to distinguish a
-strong alternative-tree signal from a genuine off-arm signal.
+fits, and a quartet-level two-tree mixture fit. It separates three questions:
+
+- `network_representable`: whether the two-tree mixture can reproduce the
+  observed quartet vector geometrically;
+- `off_arm_supported`: whether the empirical vector significantly violates the
+  nearest single-tree MSC arm at the 0.05 level;
+- `network_aic_preferred` and `network_strongly_preferred`: whether the network
+  likelihood is worth its additional parameters, using `delta AIC < 0` and
+  `< -4`.
+
+The `best_network_boundary_warning` field is true when the fitted gamma is
+close to 0 or 1, a branch length is close to zero, or a branch length reaches
+the optimization ceiling. Such a fit can still be geometrically valid, but its
+parameters should not be described as a well-interior introgression estimate.
 
 For a vector whose best MSC topology is `T2`, the off-arm contrast compares the
 two minor probabilities, `q1 - q3`. The two-tree mixture is a quartet-level
@@ -335,8 +347,9 @@ Replicate experiments write:
 
 Accepted rows in `replicate_summary.csv` include topology counts (`n1`, `n2`,
 `n3`), quartet probabilities (`q1`, `q2`, `q3`), distance to the nearest MSC
-arm, off-arm statistics, best MSC and two-tree mixture fits, and a model
-classification.
+arm, off-arm statistics, best MSC and two-tree mixture fits, and model
+classification fields. Terminal patterns are written as four-character strings
+such as `0101`.
 
 The prevalence summary includes estimates for:
 
@@ -360,7 +373,9 @@ Parameter grids write:
 `msrc-sim-compare` writes one CSV row per accepted input row. The output keeps
 the input columns and appends nearest-MSC-arm fields, off-arm confidence
 statistics, best MSC fit fields, best two-tree mixture fit fields,
-`delta_aic_network_vs_msc`, `network_loglik_gain`, and
+`delta_aic_network_vs_msc`, `network_loglik_gain`, representation and evidence
+flags, boundary-warning fields, `model_geometry_classification`,
+`model_evidence_classification`, and the backward-compatible
 `model_classification`.
 
 ## Configuration Reference
@@ -421,3 +436,4 @@ The `examples/` directory contains ready-to-run configurations:
 - `replicates_conditioned.yaml`: terminal-pattern-conditioned prevalence
   experiment;
 - `parameter_grid.yaml`: multidimensional parameter grid.
+

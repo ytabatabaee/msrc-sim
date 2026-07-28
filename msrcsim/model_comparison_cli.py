@@ -4,6 +4,18 @@ from pathlib import Path
 from .model_fitting import compare_models
 
 
+def _normalize_terminal_pattern(value: object) -> str:
+    text = str(value).strip()
+    if text == "" or text.lower() == "nan":
+        return text
+    # Patterns are categorical binary strings. CSV/spreadsheet software may turn 0101 into 101.
+    if text.endswith(".0") and text[:-2].isdigit():
+        text = text[:-2]
+    if set(text) <= {"0", "1"} and len(text) <= 4:
+        return text.zfill(4)
+    return text
+
+
 def _counts(row: dict[str, str]) -> tuple[int, int, int]:
     if all(k in row for k in ("n1", "n2", "n3")):
         return int(row["n1"]), int(row["n2"]), int(row["n3"])
@@ -28,6 +40,8 @@ def main() -> None:
         if str(row.get("accepted", "True")).lower() in {"false", "0"}:
             continue
         result = dict(row)
+        if "terminal_pattern" in result:
+            result["terminal_pattern"] = _normalize_terminal_pattern(result["terminal_pattern"])
         result.update(compare_models(_counts(row)))
         out_rows.append(result)
     if not out_rows:
