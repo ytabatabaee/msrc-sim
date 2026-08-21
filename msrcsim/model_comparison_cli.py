@@ -46,6 +46,15 @@ def main() -> None:
         out_rows.append(result)
     if not out_rows:
         raise ValueError("no accepted rows found")
+    # Benjamini-Hochberg FDR correction across accepted histories.
+    pvals=[float(r.get("off_arm_p_value",1.0)) for r in out_rows]
+    order=sorted(range(len(pvals)), key=lambda i:pvals[i])
+    qvals=[1.0]*len(pvals); running=1.0; m=len(pvals)
+    for rank0,i in reversed(list(enumerate(order))):
+        rank=rank0+1; running=min(running,pvals[i]*m/rank); qvals[i]=min(1.0,running)
+    for r,q in zip(out_rows,qvals):
+        r["off_arm_q_value"]=q
+        r["off_arm_supported_fdr_0_05"]=bool(q<0.05)
     path = Path(args.output)
     with path.open("w", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(out_rows[0]))

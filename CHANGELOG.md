@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.0
+- Freeze and replay complete Wright–Fisher rearrangement histories.
+- Export branch-level trajectory summaries and integrated arrangement exposure.
+- Add Benjamini–Hochberg FDR-adjusted off-arm tests.
+- Add automated quartet-simplex, off-arm, pattern-prevalence, and model-comparison figures.
+- Preserve all v0.5.1 single-run, replicate, grid, and comparison commands.
+
+# Changelog
+
 ## 0.5.1
 
 - Preserve and normalize four-character terminal arrangement patterns (for example, `0101`).

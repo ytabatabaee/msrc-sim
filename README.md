@@ -14,8 +14,7 @@ The simulator currently focuses on four sampled taxa. It can be used to:
   interval;
 - run independent evolutionary replicates and estimate prevalence statistics;
 - condition replicates on persistence or terminal arrangement patterns;
-- run multidimensional parameter grids for prevalence analyses;
-- compare quartet probability vectors with MSC arms and two-tree mixture fits.
+- run multidimensional parameter grids for prevalence analyses.
 
 The independent unit in prevalence analyses is an evolutionary replicate, not a
 locus. Each accepted replicate draws one rearrangement frequency history, and
@@ -43,8 +42,8 @@ The package requires Python 3.9 or later, NumPy, SciPy, and PyYAML.
 
 ## Commands
 
-The package installs four command-line programs. The simulation commands read
-YAML configuration files.
+The package installs four command-line programs. Each command reads a YAML
+configuration file.
 
 ```bash
 msrc-sim --config <config.yaml>
@@ -66,20 +65,12 @@ msrc-sim-grid --config <config.yaml>
 Runs a parameter grid from a `parameter_grid` configuration. Each grid cell is
 run as a replicate experiment.
 
-```bash
-msrc-sim-compare --input <replicate_summary.csv> --output <model_comparison.csv>
-```
-
-Fits MSC and two-tree quartet-mixture models to accepted quartet-count rows
-from `replicate_summary.csv` or an equivalent table.
-
 Equivalent script wrappers are provided in `scripts/`:
 
 ```bash
 python scripts/simulate_msrc.py --config examples/mechanistic_balanced.yaml
 python scripts/simulate_replicates.py --config examples/replicates_unconditional.yaml
 python scripts/simulate_parameter_grid.py --config examples/parameter_grid.yaml
-python scripts/compare_quartet_models.py --input replicate_output/replicate_summary.csv --output model_comparison.csv
 ```
 
 ## Simulation Modes
@@ -88,10 +79,7 @@ python scripts/compare_quartet_models.py --input replicate_output/replicate_summ
 
 Mechanistic mode simulates a rearrangement history forward through a dated
 quartet species tree and then simulates locus genealogies backward through that
-realized history. Backward genealogy simulation is piecewise exact with respect
-to the generation-by-generation Wright-Fisher frequency path, so a proposed
-Gillespie event cannot cross a frequency-change boundary while retaining
-outdated rates.
+realized history.
 
 ```bash
 msrc-sim --config examples/mechanistic_balanced.yaml
@@ -269,41 +257,6 @@ parameter_grid:
 Each grid cell is written to its own `cell_####` directory, and the grid-level
 summary is written to `parameter_grid_summary.csv`.
 
-### Quartet Model Comparison
-
-The `msrc-sim-compare` command fits model summaries to an existing table of
-quartet counts or probabilities. It accepts `replicate_summary.csv` from a
-replicate experiment, or any CSV with either `n1`, `n2`, and `n3` topology
-counts or `num_loci` plus `q1`, `q2`, and `q3` probabilities.
-
-```bash
-msrc-sim-compare \
-  --input replicate_output/replicate_summary.csv \
-  --output model_comparison.csv
-```
-
-The comparison reports the nearest MSC arm, an off-arm contrast with standard
-error, z-score, p-value, and 95% confidence interval, maximum-likelihood MSC
-fits, and a quartet-level two-tree mixture fit. It separates three questions:
-
-- `network_representable`: whether the two-tree mixture can reproduce the
-  observed quartet vector geometrically;
-- `off_arm_supported`: whether the empirical vector significantly violates the
-  nearest single-tree MSC arm at the 0.05 level;
-- `network_aic_preferred` and `network_strongly_preferred`: whether the network
-  likelihood is worth its additional parameters, using `delta AIC < 0` and
-  `< -4`.
-
-The `best_network_boundary_warning` field is true when the fitted gamma is
-close to 0 or 1, a branch length is close to zero, or a branch length reaches
-the optimization ceiling. Such a fit can still be geometrically valid, but its
-parameters should not be described as a well-interior introgression estimate.
-
-For a vector whose best MSC topology is `T2`, the off-arm contrast compares the
-two minor probabilities, `q1 - q3`. The two-tree mixture is a quartet-level
-model-comparison device; its fitted parameters should not be interpreted as
-uniquely identifiable demographic estimates from one quartet.
-
 ## Outputs
 
 ### Mechanistic Outputs
@@ -339,17 +292,10 @@ Replicate experiments write:
 - `replicate_summary.csv`: one row per attempted history, including rejected
   attempts;
 - `simplex_points.csv`: accepted replicate quartet probabilities and simplex
-  coordinates, with selected MSC-distance, off-arm, and model-classification
-  fields;
+  coordinates;
 - `prevalence_summary.json`: acceptance rate, terminal pattern counts,
   prevalence estimates, and 95% Wilson intervals;
 - `config.resolved.yaml`: the experiment configuration.
-
-Accepted rows in `replicate_summary.csv` include topology counts (`n1`, `n2`,
-`n3`), quartet probabilities (`q1`, `q2`, `q3`), distance to the nearest MSC
-arm, off-arm statistics, best MSC and two-tree mixture fits, and model
-classification fields. Terminal patterns are written as four-character strings
-such as `0101`.
 
 The prevalence summary includes estimates for:
 
@@ -367,16 +313,6 @@ Parameter grids write:
 - `cell_####/simplex_points.csv`: accepted quartet-simplex points for each cell;
 - `cell_####/prevalence_summary.json`: prevalence summary for each cell;
 - `cell_####/config.resolved.yaml`: resolved cell configuration.
-
-### Model-Comparison Outputs
-
-`msrc-sim-compare` writes one CSV row per accepted input row. The output keeps
-the input columns and appends nearest-MSC-arm fields, off-arm confidence
-statistics, best MSC fit fields, best two-tree mixture fit fields,
-`delta_aic_network_vs_msc`, `network_loglik_gain`, representation and evidence
-flags, boundary-warning fields, `model_geometry_classification`,
-`model_evidence_classification`, and the backward-compatible
-`model_classification`.
 
 ## Configuration Reference
 
@@ -437,3 +373,72 @@ The `examples/` directory contains ready-to-run configurations:
   experiment;
 - `parameter_grid.yaml`: multidimensional parameter grid.
 
+## Development
+
+Run the test suite with:
+
+```bash
+pytest
+```
+
+## Version 0.5.0: off-arm and quartet-model comparison
+
+Version 0.5.0 makes backward genealogy simulation piecewise exact with respect
+to the generation-by-generation Wright–Fisher frequency path. A proposed
+Gillespie event can no longer cross a frequency-change boundary while retaining
+outdated rates.
+
+Replicate outputs now include topology counts, distance to the nearest MSC arm,
+an off-arm contrast and confidence interval, maximum-likelihood MSC fits, and a
+quartet-level two-tree introgression-mixture fit.
+
+Run model comparison on an existing replicate table with:
+
+```bash
+msrc-sim-compare \
+  --input replicate_output/replicate_summary.csv \
+  --output model_comparison.csv
+```
+
+The comparison distinguishes a strong alternative-tree signal from a genuine
+off-arm signal. For a vector whose best MSC topology is `T2`, the off-arm
+contrast compares the two minor probabilities, `q1 - q3`. The two-tree mixture
+is a quartet-level model-comparison device; its fitted parameters should not be
+interpreted as uniquely identifiable demographic estimates from one quartet.
+
+
+## v0.5.1 model-comparison interpretation
+
+The comparison output deliberately separates three questions:
+
+- `network_representable`: can the two-tree mixture reproduce the observed quartet vector geometrically?
+- `off_arm_supported`: does the empirical vector significantly violate the nearest single-tree MSC arm at the 0.05 level?
+- `network_aic_preferred` / `network_strongly_preferred`: is the network likelihood worth its additional parameters (`delta AIC < 0` / `< -4`)?
+
+`best_network_boundary_warning` is true when the fitted gamma is close to 0 or 1, a branch length is close to zero, or a branch length reaches the optimization ceiling. Such a fit can still be geometrically valid, but its parameters should not be described as a well-interior introgression estimate. Terminal patterns are always written as four-character strings such as `0101`.
+
+
+## v0.6.0: frozen-history validation and automated figures
+
+Freeze one accepted evolutionary history:
+
+```bash
+msrc-sim-freeze-history --config examples/replicates_conditioned.yaml --output frozen_history.yaml
+```
+
+Replay genealogy simulations on exactly that history:
+
+```bash
+msrc-sim-replay-history --history frozen_history.yaml --num-loci 100000 --seed 7 --output replay_100k
+```
+
+The replay output includes `replay_summary.json`, `branch_history_summary.csv`, and `true_gene_trees.nwk`.
+This supports locus-count convergence experiments without resimulating the Wright–Fisher trajectory.
+
+Create automated figures from a replicate or comparison table:
+
+```bash
+msrc-sim-plot --input replicate_output/replicate_summary.csv --output figures --format png
+```
+
+The command creates quartet-simplex, off-arm-distance, terminal-pattern-prevalence, and MSC-versus-network AIC figures. `msrc-sim-compare` now also adds Benjamini–Hochberg adjusted off-arm q-values.
