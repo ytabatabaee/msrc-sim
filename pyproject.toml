@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "msrc-sim"
-version = "0.6.0"
+version = "0.7.0"
 description = "Simulator for the Multi-Species Rearrangement Coalescent"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -21,6 +21,10 @@ msrc-sim-compare = "msrcsim.model_comparison_cli:main"
 msrc-sim-freeze-history = "msrcsim.freeze_history_cli:main"
 msrc-sim-replay-history = "msrcsim.replay_history_cli:main"
 msrc-sim-plot = "msrcsim.plot_cli:main"
+msrc-sim-plot-history = "msrcsim.plot_history_cli:main"
+msrc-sim-spatial = "msrcsim.spatial_cli:main"
+msrc-sim-plot-spatial = "msrcsim.spatial_plot_cli:main"
+msrc-sim-spatial-summarize = "msrcsim.spatial_summarize_cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]

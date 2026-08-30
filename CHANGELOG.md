@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.7.0
+- Add `msrc-sim-plot-history` for schematic Wright-Fisher frequency-history
+  trees from existing `frequency_history.csv` output.
+- Add opt-in `output.make_history_plot` support for generating that figure
+  directly during mechanistic runs.
+- Keep the history-tree visualizer separate from replicate/model-comparison
+  plotting.
+
 ## 0.6.0
 - Freeze and replay complete Wright–Fisher rearrangement histories.
 - Export branch-level trajectory summaries and integrated arrangement exposure.

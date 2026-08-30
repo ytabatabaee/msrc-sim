@@ -1,0 +1,37 @@
+mode: mechanistic
+seed: 260830
+num_loci: 20
+species_tree:
+  newick: "((1:40,2:40)A:20,(3:40,4:40)B:20)ROOT;"
+  time_units: generations
+  root_extension: 60
+  default_effective_population_size: 5000
+rearrangement:
+  id: inv_1
+  type: inversion
+  origin_branch: ROOT
+  origin_time_from_branch_start: 20
+  initial_copy_count: 5000
+  selection:
+    model: genic
+    coefficient: 0.0
+recombination:
+  baseline_rate: 0.01
+  effective_cross_arrangement_fraction: 0.05
+sampling:
+  samples_per_species: 1
+output:
+  directory: polymorphic_tips_output
+  record_resolved_config: true
+  record_frequency_history: true
+  record_sampled_arrangements: true
+  record_gene_trees: true
+  record_coalescence_times: true
+  record_backward_events: false
+  make_history_plot: true
+  history_plot:
+    filename: wright_fisher_history.png
+    glyphs_per_row: 14
+    max_rows_per_branch: 35
+    tip_order: [1, 2, 3, 4]
+    title: Wright-Fisher history with polymorphic tips

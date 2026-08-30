@@ -5,7 +5,8 @@ import yaml
 
 def _set_output_defaults(d):
     d.setdefault('output', {})
-    d['output'].setdefault('directory', 'mechanistic_output' if d.get('mode') == 'mechanistic' else 'conditional_output')
+    default_dir = 'spatial_output' if d.get('mode') == 'spatial' else ('mechanistic_output' if d.get('mode') == 'mechanistic' else 'conditional_output')
+    d['output'].setdefault('directory', default_dir)
     d['output'].setdefault('record_resolved_config', True)
     d['output'].setdefault('record_frequency_history', True)
     d['output'].setdefault('record_sampled_arrangements', True)
@@ -13,6 +14,8 @@ def _set_output_defaults(d):
     d['output'].setdefault('record_coalescence_times', True)
     d['output'].setdefault('record_backward_events', False)
     d['output'].setdefault('event_log_loci', {'first_n': 100})
+    d['output'].setdefault('make_history_plot', False)
+    d['output'].setdefault('history_plot', {})
 
 
 def load_config(path):
@@ -22,14 +25,19 @@ def load_config(path):
         raise ValueError('Configuration must be a YAML mapping')
 
     mode = d.get('mode')
-    if mode not in {'mechanistic', 'conditional'}:
-        raise ValueError("Supported modes are 'mechanistic' and 'conditional'")
+    if mode not in {'mechanistic', 'conditional', 'spatial'}:
+        raise ValueError("Supported modes are 'mechanistic', 'conditional', and 'spatial'")
 
     d.setdefault('seed', 1)
     d.setdefault('num_loci', 1000)
     _set_output_defaults(d)
 
-    if mode == 'mechanistic':
+    if mode == 'spatial':
+        required = ['species_tree', 'rearrangement', 'recombination', 'genome']
+        missing = [k for k in required if k not in d]
+        if missing:
+            raise ValueError(f"Missing spatial configuration sections: {missing}")
+    elif mode == 'mechanistic':
         if d.get('sampling', {}).get('samples_per_species', 1) != 1:
             raise ValueError('Only one sample per species is supported')
         required = ['species_tree', 'rearrangement', 'recombination']

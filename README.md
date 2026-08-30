@@ -2,7 +2,7 @@
 
 `msrc-sim` simulates quartet gene-tree distributions under the Multi-Species
 Rearrangement Coalescent (MSRC) model. It is designed for experiments where a
-chromosomal rearrangement, such as an inversion, arises in a species tree,
+chromosomal rearrangement, such as an inversion, arises in a population,
 evolves forward in time with a Wright-Fisher process, and then affects
 backward-time genealogies through arrangement-dependent coalescence and
 recombination.
@@ -42,8 +42,8 @@ The package requires Python 3.9 or later, NumPy, SciPy, and PyYAML.
 
 ## Commands
 
-The package installs four command-line programs. Each command reads a YAML
-configuration file.
+The package installs these command-line programs. Simulation commands read YAML
+configuration files.
 
 ```bash
 msrc-sim --config <config.yaml>
@@ -64,6 +64,29 @@ msrc-sim-grid --config <config.yaml>
 
 Runs a parameter grid from a `parameter_grid` configuration. Each grid cell is
 run as a replicate experiment.
+
+```bash
+msrc-sim-compare --input <replicate_summary.csv> --output <comparison.csv>
+msrc-sim-freeze-history --config <config.yaml> --output <history.yaml>
+msrc-sim-replay-history --history <history.yaml> --num-loci <n> --output <dir>
+msrc-sim-plot --input <replicate_summary.csv> --output <figures>
+msrc-sim-plot-history --run-dir <run_output> --output <history.pdf>
+```
+
+Compare quartet vectors, freeze and replay realized rearrangement histories,
+create automated replicate/model-comparison figures, and render a static
+Wright-Fisher frequency-history tree. Mechanistic simulations can also render
+that history figure automatically with `output.make_history_plot: true`.
+
+```bash
+msrc-sim-spatial --config examples/spatial_inversion.yaml
+msrc-sim-plot-spatial --input spatial_output --format png
+msrc-sim-spatial-summarize --input loci.csv --breakpoints 25000000,65000000 --window-loci 50 --step-loci 10 --output summary_dir
+```
+
+Run the v0.7.0 spatially ordered locus prototype, replot a spatial output
+directory, or summarize an external ordered table with `position` and
+`topology` columns.
 
 Equivalent script wrappers are provided in `scripts/`:
 
@@ -130,6 +153,11 @@ output:
   record_sampled_arrangements: true
   record_gene_trees: true
   record_backward_events: true
+  make_history_plot: true
+  history_plot:
+    filename: wright_fisher_history.pdf
+    glyphs_per_row: 12
+    max_rows_per_branch: 30
 ```
 
 Species trees must be ultrametric and must have exactly four sampled taxa.
@@ -257,6 +285,41 @@ parameter_grid:
 Each grid cell is written to its own `cell_####` directory, and the grid-level
 summary is written to `parameter_grid_summary.csv`.
 
+### Spatially Ordered Loci
+
+Spatial mode simulates one realized forward rearrangement history, samples one
+terminal arrangement pattern, places loci along a chromosome, and uses a local
+model at each ordered locus. Loci inside the configured rearrangement interval
+use the mechanistic MSRC genealogy simulator with the shared realized
+Wright-Fisher history and sampled terminal arrangements. Loci outside the
+interval use an ordinary unstructured MSC genealogy on the same species tree.
+
+```bash
+msrc-sim-spatial --config examples/spatial_inversion.yaml
+```
+
+Spatial mode is designed for comparing a bag-of-genes quartet vector with a
+chromosome-wide quartet-support track. If genomic positions are discarded, the
+analysis retains only the total counts of `12|34`, `13|24`, and `14|23`.
+With ordered positions retained, the output can show whether quartet support is
+localized around a physical rearrangement interval and its known structural
+breakpoints.
+
+This is not a linked-locus ARG simulator. In v0.7.0, loci are conditionally
+independent given the realized rearrangement history and local region
+parameters. The simulator does not generate topology autocorrelation or
+tract-length information from a multi-locus genealogy.
+
+Spatial mode supports frozen-history replay:
+
+```bash
+msrc-sim-spatial --config spatial.yaml --history frozen_history.yaml
+```
+
+This allows different genomic or recombination configurations to be compared
+while holding the same forward rearrangement history and sampled terminal
+arrangements fixed.
+
 ## Outputs
 
 ### Mechanistic Outputs
@@ -267,6 +330,8 @@ flags, the directory can contain:
 - `config.resolved.yaml`: YAML configuration after defaults are applied;
 - `frequency_history.csv`: forward Wright-Fisher frequency path on each branch;
 - `sampled_arrangements.csv`: sampled terminal arrangement state for each taxon;
+- `wright_fisher_history.png` or `.pdf`: optional static visualization created
+  by `msrc-sim-plot-history`;
 - `true_gene_trees.nwk`: simulated true gene trees in Newick format;
 - `coalescence_times.csv`: coalescence times for each locus;
 - `coalescence_events.csv`: coalescence-event records;
@@ -284,6 +349,46 @@ Conditional runs write:
 - `summary.json`: the same conditional summary in JSON format.
 
 The three quartet topologies are reported as `12|34`, `13|24`, and `14|23`.
+
+### Wright-Fisher History Visualization
+
+The Wright-Fisher history plot uses `frequency_history.csv` to render the
+realized rearrangement-frequency trajectory directly on the species tree.
+Colored arrows summarize the proportion of ancestral and rearranged chromosomes
+at selected generations. The visualization does not resimulate the process and
+does not treat displayed arrows as individual chromosome copies.
+
+Set `output.make_history_plot: true` in a mechanistic configuration to write
+`wright_fisher_history.png` automatically, or set
+`output.history_plot.filename` to choose a different output file such as
+`wright_fisher_history.pdf`.
+
+Existing runs can be replotted with explicit display controls:
+
+```bash
+msrc-sim-plot-history \
+  --run-dir balanced_output \
+  --output balanced_output/wright_fisher_history.png \
+  --glyphs-per-row 14 \
+  --max-rows-per-branch 35 \
+  --tip-order 1,2,3,4
+```
+
+`frequency_history.csv` is the only required data file. When present,
+`sampled_arrangements.csv` is used for terminal taxon labels; otherwise the
+plot labels terminal population frequencies without implying sampled
+chromosome states.
+
+For a compact example where all four present-day populations remain
+polymorphic:
+
+```bash
+msrc-sim --config examples/mechanistic_balanced_polymorphic_tips.yaml
+```
+
+That example enables `output.make_history_plot: true`, so the run writes
+`polymorphic_tips_output/wright_fisher_history.png` alongside
+`frequency_history.csv`.
 
 ### Replicate Outputs
 
@@ -314,12 +419,32 @@ Parameter grids write:
 - `cell_####/prevalence_summary.json`: prevalence summary for each cell;
 - `cell_####/config.resolved.yaml`: resolved cell configuration.
 
+### Spatial Outputs
+
+Spatial runs write:
+
+- `spatial_loci.csv`: one row per ordered locus with `locus_id`, `position`,
+  region, local model, topology, terminal pattern, switch count, and
+  coalescence-time summary;
+- `spatial_gene_trees.tsv`: optional position-aware gene trees with
+  `locus_id`, `position`, and `newick`;
+- `spatial_windows.csv`: sliding-window topology counts, local quartet
+  concordance factors, nearest-MSC-arm distance, off-arm statistic, and
+  fraction of loci inside the rearrangement interval;
+- `spatial_summary.json`: whole-chromosome bag-of-genes vector, inside/outside
+  vectors, spatial contrasts, breakpoint-aligned jump summaries, strongest
+  adjacent-window jumps, and metadata stating that linked loci are not modeled;
+- `spatial_quartet_profile.png`: chromosome-wide quartet-support track when
+  plotting dependencies are available;
+- `spatial_bag_inside_outside.png`: comparison of overall, inside, and outside
+  quartet vectors when plotting dependencies are available.
+
 ## Configuration Reference
 
 Common fields:
 
-- `mode`: one of `mechanistic`, `conditional`, `replicate_experiment`, or
-  `parameter_grid`;
+- `mode`: one of `mechanistic`, `conditional`, `replicate_experiment`,
+  `parameter_grid`, or `spatial`;
 - `seed`: random seed, defaulting to `1` for single-run modes;
 - `num_loci`: number of loci for single-run modes;
 - `output.directory`: output directory.
@@ -358,12 +483,34 @@ Output flags for mechanistic runs:
 - `record_coalescence_times`;
 - `record_backward_events`;
 - `event_log_loci.first_n`.
+- `make_history_plot`: render `frequency_history.csv` as a static species-tree
+  history figure after a mechanistic run, default `false`;
+- `history_plot.filename`, `.format`, `.dpi`, `.glyphs_per_row`,
+  `.max_rows_per_branch`, `.tip_order`, `.width_mode`,
+  `.show_frequency_trace`, and `.title`: optional display controls for the
+  automatic history figure.
+
+Spatial fields:
+
+- `genome.length`: chromosome length in integer coordinate units;
+- `genome.loci.count`: number of ordered loci;
+- `genome.loci.placement`: `evenly_spaced` or `uniform_random`;
+- `genome.rearrangement_interval.start` and `.end`: one physical interval,
+  requiring `0 <= start < end <= genome.length`;
+- `genome.inside_model.type`: `msrc`;
+- `genome.inside_model.effective_cross_arrangement_fraction`: local
+  cross-arrangement fraction inside the interval;
+- `genome.outside_model.type`: `msc`;
+- `spatial_summary.window_loci`, `.step_loci`, and
+  `.breakpoint_bandwidth_loci`: sliding-window and breakpoint summary sizes.
 
 ## Examples
 
 The `examples/` directory contains ready-to-run configurations:
 
 - `mechanistic_balanced.yaml`: mechanistic simulation on a balanced quartet tree;
+- `mechanistic_balanced_polymorphic_tips.yaml`: short neutral balanced-tree
+  example designed to keep the terminal populations segregating;
 - `mechanistic_unbalanced.yaml`: mechanistic simulation on an unbalanced quartet
   tree;
 - `conditional_quartet.yaml`: fixed-configuration conditional quartet
@@ -371,7 +518,8 @@ The `examples/` directory contains ready-to-run configurations:
 - `replicates_unconditional.yaml`: unconditioned prevalence experiment;
 - `replicates_conditioned.yaml`: terminal-pattern-conditioned prevalence
   experiment;
-- `parameter_grid.yaml`: multidimensional parameter grid.
+- `parameter_grid.yaml`: multidimensional parameter grid;
+- `spatial_inversion.yaml`: ordered-locus spatial inversion prototype.
 
 ## Development
 
@@ -442,3 +590,19 @@ msrc-sim-plot --input replicate_output/replicate_summary.csv --output figures --
 ```
 
 The command creates quartet-simplex, off-arm-distance, terminal-pattern-prevalence, and MSC-versus-network AIC figures. `msrc-sim-compare` now also adds Benjamini–Hochberg adjusted off-arm q-values.
+
+## v0.7.0: spatial profiles
+
+Version 0.7.0 adds ordered genomic loci and rearrangement-interval quartet
+profiles. The primary spatial figure is analogous to empirical chromosome-wide
+quartet-support plots: local `q1(x)`, `q2(x)`, and `q3(x)` tracks are plotted
+against genomic position, with the rearrangement interval shaded and structural
+breakpoints marked.
+
+The scientific target is spatial identifiability. Genome-averaged quartet
+counts can be non-identifying when two mechanisms produce the same average
+quartet vector. Ordered profiles can contain additional information through the
+alignment of local quartet support with rearrangement breakpoints, orientation,
+recombination suppression, and arrangement-state partition. Localization alone
+is not claimed to uniquely identify MSRC, because introgression/network models
+can also generate spatial ancestry patterns.
