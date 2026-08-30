@@ -1,0 +1,37 @@
+mode: mechanistic
+seed: 668
+num_loci: 20
+species_tree:
+  newick: "((1:80,2:80)A:40,(3:80,4:80)B:40)ROOT;"
+  time_units: generations
+  root_extension: 100
+  default_effective_population_size: 20
+rearrangement:
+  id: inv_1
+  type: inversion
+  origin_branch: ROOT
+  origin_time_from_branch_start: 5
+  initial_copy_count: 4
+  selection:
+    model: genic
+    coefficient: 0.0
+recombination:
+  baseline_rate: 0.01
+  effective_cross_arrangement_fraction: 0.05
+sampling:
+  samples_per_species: 1
+output:
+  directory: mixed_fates_output
+  record_resolved_config: true
+  record_frequency_history: true
+  record_sampled_arrangements: true
+  record_gene_trees: true
+  record_coalescence_times: true
+  record_backward_events: false
+  make_history_plot: true
+  history_plot:
+    filename: wright_fisher_history_mixed_fates.png
+    glyphs_per_row: 16
+    max_rows_per_branch: 35
+    tip_order: [1, 2, 3, 4]
+    title: Wright-Fisher history with mixed terminal fates

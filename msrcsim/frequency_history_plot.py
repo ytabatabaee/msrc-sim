@@ -233,10 +233,17 @@ def _draw_row(ax: Any, x: float, y: float, frequency_a1: float, glyphs_per_row: 
             _draw_arrow(ax, xi, y, -1, A1_COLOR, scale)
 
 
-def _tube_width(branch: InferredBranch, width_mode: str, max_ne: float | None) -> float:
+def _tube_data_width(branch: InferredBranch, width_mode: str, max_ne: float | None, row_width: float) -> float:
+    base = row_width + 0.26
     if width_mode == "ne" and branch.effective_population_size and max_ne:
-        return 9.0 + 8.0 * math.sqrt(branch.effective_population_size / max_ne)
-    return 15.0
+        return base * (1.0 + 0.45 * math.sqrt(branch.effective_population_size / max_ne))
+    return base
+
+
+def _draw_tube_rect(ax: Any, x0: float, y0: float, width: float, height: float) -> None:
+    from matplotlib.patches import Rectangle
+
+    ax.add_patch(Rectangle((x0, y0), width, height, facecolor=TUBE_COLOR, edgecolor="none", alpha=0.42, zorder=1))
 
 
 def _terminal_frequency_label(record: dict[str, Any]) -> str:
@@ -284,11 +291,22 @@ def plot_frequency_history_tree(
 
     for branch_id, branch in branches.items():
         bx = x[branch_id]
-        lw = _tube_width(branch, width_mode, max_ne)
+        tube_width = _tube_data_width(branch, width_mode, max_ne, row_width)
+        tube_half = tube_width / 2
+        connector_height = max(span * 0.018, 1.0)
         if branch.parent_branch_id and branch.parent_branch_id in x:
             px = x[branch.parent_branch_id]
-            ax.plot([px, bx], [branch.older_age, branch.older_age], color=TUBE_COLOR, linewidth=lw, alpha=0.42, solid_capstyle="round", zorder=1)
-        ax.plot([bx, bx], [branch.older_age, branch.younger_age], color=TUBE_COLOR, linewidth=lw, alpha=0.42, solid_capstyle="round", zorder=1)
+            _draw_tube_rect(ax, min(px, bx), branch.older_age - connector_height / 2, abs(px - bx), connector_height)
+        _draw_tube_rect(ax, bx - tube_half, branch.younger_age, tube_width, branch.older_age - branch.younger_age)
+        ax.scatter(
+            [bx, bx],
+            [branch.older_age, branch.younger_age],
+            s=(30 * tube_width) ** 2,
+            color=TUBE_COLOR,
+            alpha=0.42,
+            linewidths=0,
+            zorder=1,
+        )
 
     if show_frequency_trace:
         for branch_id, rows in grouped.items():
@@ -308,12 +326,13 @@ def plot_frequency_history_tree(
         oy = float(origin["absolute_age"])
         side = 1 if ox <= (min(x.values()) + max(x.values())) / 2 else -1
         sx = ox + side * 0.78
+        text_dy = -0.12 * span if oy > age_min + 0.72 * span else 0.08 * span
         ax.scatter([sx], [oy], marker="*", s=180, color=ORIGIN_COLOR, edgecolor="#5f4300", linewidth=0.8, zorder=8)
         ax.plot([sx - side * 0.08, ox + side * 0.35], [oy, oy], color="#5f4300", linewidth=0.8, zorder=7)
         ax.annotate(
             f"Origin of inversion A1\nage = {oy:g} generations\ninitial p = {float(origin.get('frequency_A1', 0.0)):.2f}",
             xy=(sx, oy),
-            xytext=(sx + side * 0.42, oy + 0.08 * span),
+            xytext=(sx + side * 0.42, oy + text_dy),
             ha="left" if side > 0 else "right",
             va="center",
             fontsize=9,

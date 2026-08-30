@@ -390,6 +390,16 @@ That example enables `output.make_history_plot: true`, so the run writes
 `polymorphic_tips_output/wright_fisher_history.png` alongside
 `frequency_history.csv`.
 
+For a higher-variance example with mixed terminal fates:
+
+```bash
+msrc-sim --config examples/mechanistic_balanced_mixed_fates.yaml
+```
+
+This run writes `mixed_fates_output/wright_fisher_history_mixed_fates.png` and
+shows a combination of loss, low-frequency polymorphism, and A1 fixation at
+the present-day tips.
+
 ### Replicate Outputs
 
 Replicate experiments write:
@@ -509,6 +519,8 @@ Spatial fields:
 The `examples/` directory contains ready-to-run configurations:
 
 - `mechanistic_balanced.yaml`: mechanistic simulation on a balanced quartet tree;
+- `mechanistic_balanced_mixed_fates.yaml`: short balanced-tree example with a
+  mix of terminal loss, polymorphism, and A1 fixation;
 - `mechanistic_balanced_polymorphic_tips.yaml`: short neutral balanced-tree
   example designed to keep the terminal populations segregating;
 - `mechanistic_unbalanced.yaml`: mechanistic simulation on an unbalanced quartet
