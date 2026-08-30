@@ -7,6 +7,9 @@
   directly during mechanistic runs.
 - Keep the history-tree visualizer separate from replicate/model-comparison
   plotting.
+- Add spatially ordered MSRC profiles and `msrc-sim-hybridization`, a
+  pulse-hybridization ancestry-tract comparator with moving-window quartet
+  summaries and an automated chromosome-wide profile figure.
 
 ## 0.6.0
 - Freeze and replay complete Wright–Fisher rearrangement histories.

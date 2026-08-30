@@ -1,0 +1,40 @@
+mode: pulse_hybridization
+seed: 12345
+
+chromosome:
+  length_bp: 100000000
+  num_loci: 5000
+  locus_positions:
+    mode: evenly_spaced
+
+hybridization:
+  gamma: 0.20
+  generations_since_pulse: 200
+
+  major:
+    topology: "12|34"
+    internal_branch_length: 0.50
+
+  introgressed:
+    topology: "14|23"
+    internal_branch_length: 1.00
+
+  donor: "3"
+  recipient: "2"
+
+recombination:
+  rate_per_bp_per_generation: 1.0e-8
+
+windows:
+  loci_per_window: 50
+  step_loci: 10
+
+spatial_statistics:
+  lags_bp: [10000, 100000, 1000000, 5000000]
+
+output:
+  directory: hybridization_output
+  record_tracts: true
+  record_loci: true
+  record_windows: true
+  make_plots: true

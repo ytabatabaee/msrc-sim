@@ -14,7 +14,8 @@ The simulator currently focuses on four sampled taxa. It can be used to:
   interval;
 - run independent evolutionary replicates and estimate prevalence statistics;
 - condition replicates on persistence or terminal arrangement patterns;
-- run multidimensional parameter grids for prevalence analyses.
+- run multidimensional parameter grids for prevalence analyses;
+- run spatially ordered MSRC and pulse-hybridization comparator simulations.
 
 The independent unit in prevalence analyses is an evolutionary replicate, not a
 locus. Each accepted replicate draws one rearrangement frequency history, and
@@ -82,11 +83,12 @@ that history figure automatically with `output.make_history_plot: true`.
 msrc-sim-spatial --config examples/spatial_inversion.yaml
 msrc-sim-plot-spatial --input spatial_output --format png
 msrc-sim-spatial-summarize --input loci.csv --breakpoints 25000000,65000000 --window-loci 50 --step-loci 10 --output summary_dir
+msrc-sim-hybridization --config examples/pulse_hybridization.yaml
 ```
 
 Run the v0.7.0 spatially ordered locus prototype, replot a spatial output
-directory, or summarize an external ordered table with `position` and
-`topology` columns.
+directory, summarize an external ordered table with `position` and `topology`
+columns, or run the pulse-hybridization spatial comparator.
 
 Equivalent script wrappers are provided in `scripts/`:
 
@@ -320,6 +322,74 @@ This allows different genomic or recombination configurations to be compared
 while holding the same forward rearrangement history and sampled terminal
 arrangements fixed.
 
+### Pulse-Hybridization Spatial Comparator
+
+`msrc-sim-hybridization` implements a spatial pulse-hybridization comparator.
+A hybridization event introduces a fraction `gamma` of ancestry from an
+alternative parental history. Recombination during the subsequent `h`
+generations breaks that ancestry into tracts along the chromosome. Local
+quartet topologies are sampled from the MSC distribution associated with the
+local ancestry state. The model therefore captures spatially correlated
+introgressed ancestry but is not a full ARG or full multispecies-network-
+coalescent simulator.
+
+The causal interpretation is explicit:
+
+- hybridization = origin of introgressed ancestry;
+- recombination = fragmentation of that ancestry into tracts.
+
+For each genomic position, the latent ancestry state is `0` for the major/native
+parental history and `1` for the introgressed parental history. Conditional on
+that state, the local quartet topology is sampled independently from
+`msc_probabilities(topology, internal_branch_length)`. The ancestry mosaic is
+linked along the chromosome, but this release does not simulate a full ARG or
+full linked multispecies-network coalescent. Conditional on the ancestry state
+at a locus, the local quartet topology is sampled independently from the
+corresponding MSC distribution.
+
+The genome-wide bag-of-genes vector is written as `expected_marginal_q`:
+
+```text
+(1 - gamma) * q_major + gamma * q_introgressed
+```
+
+This is the same two-tree mixture formula used by `msrcsim.model_fitting`.
+The ordered output keeps the spatial information needed to ask whether MSRC and
+hybridization can produce similar genome-wide quartet-frequency vectors while
+producing different chromosome-wide profiles.
+
+Example:
+
+```yaml
+mode: pulse_hybridization
+seed: 12345
+chromosome:
+  length_bp: 100000000
+  num_loci: 5000
+  locus_positions:
+    mode: evenly_spaced
+hybridization:
+  gamma: 0.25
+  generations_since_pulse: 200
+  major:
+    topology: "12|34"
+    internal_branch_length: 0.5
+  introgressed:
+    topology: "13|24"
+    internal_branch_length: 1.5
+  donor: "3"
+  recipient: "2"
+recombination:
+  rate_per_bp_per_generation: 1.0e-8
+windows:
+  loci_per_window: 50
+  step_loci: 10
+```
+
+The `donor` and `recipient` fields are recorded as biological metadata. In this
+release, the explicitly supplied parental topology and internal branch length
+fields are authoritative.
+
 ## Outputs
 
 ### Mechanistic Outputs
@@ -449,12 +519,32 @@ Spatial runs write:
 - `spatial_bag_inside_outside.png`: comparison of overall, inside, and outside
   quartet vectors when plotting dependencies are available.
 
+### Hybridization Outputs
+
+Pulse-hybridization runs write:
+
+- `hybridization_tracts.csv`: ancestry tracts with start, end, length, state,
+  and `major`/`introgressed` labels;
+- `hybridization_loci.csv`: ordered loci with `position_bp`, `model`,
+  ancestry state, tract ID, sampled topology, topology label, and conditional
+  MSC probabilities;
+- `hybridization_windows.csv`: moving-window `q1`, `q2`, `q3`,
+  introgressed fraction, dominant topology, nearest-MSC-arm distance, and
+  off-arm difference;
+- `hybridization_spatial_autocorrelation.csv`: same-topology and same-ancestry
+  probabilities at configured genomic lags;
+- `hybridization_summary.json`: expected and observed marginal quartet
+  vectors, realized ancestry fractions, tract-length summaries, topology
+  counts/frequencies, parental parameters, and model-limitation metadata;
+- `hybridization_spatial_profile.png`: ancestry mosaic, moving quartet support,
+  and moving introgressed fraction when plotting is enabled.
+
 ## Configuration Reference
 
 Common fields:
 
 - `mode`: one of `mechanistic`, `conditional`, `replicate_experiment`,
-  `parameter_grid`, or `spatial`;
+  `parameter_grid`, `spatial`, or `pulse_hybridization`;
 - `seed`: random seed, defaulting to `1` for single-run modes;
 - `num_loci`: number of loci for single-run modes;
 - `output.directory`: output directory.
@@ -514,6 +604,25 @@ Spatial fields:
 - `spatial_summary.window_loci`, `.step_loci`, and
   `.breakpoint_bandwidth_loci`: sliding-window and breakpoint summary sizes.
 
+Pulse-hybridization fields:
+
+- `chromosome.length_bp`: chromosome length in base pairs;
+- `chromosome.num_loci`: number of ordered loci;
+- `chromosome.locus_positions.mode`: `evenly_spaced`, `random_uniform`, or
+  `file`;
+- `hybridization.gamma`: initial introgressed ancestry fraction created by the
+  pulse;
+- `hybridization.generations_since_pulse`: generations of recombination after
+  the pulse;
+- `hybridization.major` and `.introgressed`: authoritative parental topology
+  labels (`12|34`, `13|24`, `14|23`) and internal branch lengths;
+- `hybridization.donor` and `.recipient`: metadata only in this release;
+- `recombination.rate_per_bp_per_generation`: recombination rate per bp per
+  generation for ancestry-tract breakpoints;
+- `windows.loci_per_window` and `.step_loci`: moving-window sizes;
+- `spatial_statistics.lags_bp`: genomic lags for same-topology and
+  same-ancestry probabilities.
+
 ## Examples
 
 The `examples/` directory contains ready-to-run configurations:
@@ -531,7 +640,8 @@ The `examples/` directory contains ready-to-run configurations:
 - `replicates_conditioned.yaml`: terminal-pattern-conditioned prevalence
   experiment;
 - `parameter_grid.yaml`: multidimensional parameter grid;
-- `spatial_inversion.yaml`: ordered-locus spatial inversion prototype.
+- `spatial_inversion.yaml`: ordered-locus spatial inversion prototype;
+- `pulse_hybridization.yaml`: spatial pulse-hybridization comparator.
 
 ## Development
 
@@ -605,11 +715,12 @@ The command creates quartet-simplex, off-arm-distance, terminal-pattern-prevalen
 
 ## v0.7.0: spatial profiles
 
-Version 0.7.0 adds ordered genomic loci and rearrangement-interval quartet
-profiles. The primary spatial figure is analogous to empirical chromosome-wide
-quartet-support plots: local `q1(x)`, `q2(x)`, and `q3(x)` tracks are plotted
-against genomic position, with the rearrangement interval shaded and structural
-breakpoints marked.
+Version 0.7.0 adds ordered genomic loci, rearrangement-interval quartet
+profiles, and a pulse-hybridization spatial comparator. The primary spatial
+figures are analogous to empirical chromosome-wide quartet-support plots:
+local `q1(x)`, `q2(x)`, and `q3(x)` tracks are plotted against genomic
+position, with either a rearrangement interval or hybrid ancestry tracts shown
+on the same chromosome axis.
 
 The scientific target is spatial identifiability. Genome-averaged quartet
 counts can be non-identifying when two mechanisms produce the same average
@@ -617,4 +728,10 @@ quartet vector. Ordered profiles can contain additional information through the
 alignment of local quartet support with rearrangement breakpoints, orientation,
 recombination suppression, and arrangement-state partition. Localization alone
 is not claimed to uniquely identify MSRC, because introgression/network models
-can also generate spatial ancestry patterns.
+can also generate spatial ancestry patterns. The hybridization comparator is
+intended to enable experiments where `qbar_MSRC ~= qbar_HYB` while ordered
+profiles may differ:
+
+```text
+q_MSRC(x) != q_HYB(x)
+```
