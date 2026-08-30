@@ -163,7 +163,7 @@ def make_spatial_compare_figure(msrc_run: SpatialModelRun, hyb_run: SpatialModel
     axes[1, 1].legend(frameon=False, loc="upper right", ncols=3)
     _plot_fraction(axes[2, 0], msrc_run, "fraction_rearranged", MSRC_FEATURE, show_ylabel=True)
     _plot_fraction(axes[2, 1], hyb_run, "introgressed_fraction", HYB_INTRO, show_ylabel=False)
-    axes[2, 0].set_title("Fraction in rearranged interval")
+    axes[2, 0].set_title("Window overlap with rearranged interval")
     axes[2, 1].set_title("Introgressed ancestry fraction")
     _plot_bag_summary(axes[3, 0], msrc_run, hyb_run, show_ylabel=True)
     _plot_bag_summary(axes[3, 1], hyb_run, msrc_run, show_ylabel=False)
@@ -173,9 +173,30 @@ def make_spatial_compare_figure(msrc_run: SpatialModelRun, hyb_run: SpatialModel
     axes[2, 1].set_xlabel("Genomic position (bp)")
     for i, ax in enumerate(axes.flat):
         ax.text(-0.04, 1.04, chr(ord("A") + i), transform=ax.transAxes, ha="right", va="bottom", fontweight="bold")
-    q_text = "Genome-wide qbar: MSRC ~= HYB" if marginal_l1_distance(msrc_run.marginal_q, hyb_run.marginal_q) <= 0.05 else "Genome-wide qbar differs; inspect spatial profiles"
-    fig.suptitle(title or f"Similar bag-of-genes summaries can hide different spatial organization ({q_text})", y=0.995)
+    q_text = "Same/matched genome-wide quartet frequencies, different spatial organization" if marginal_l1_distance(msrc_run.marginal_q, hyb_run.marginal_q) <= 0.05 else "Genome-wide quartet frequencies differ; inspect spatial profiles"
+    params = _hybridization_parameter_text(hyb_run)
+    suffix = f" ({params})" if params else ""
+    fig.suptitle(title or f"{q_text}{suffix}", y=0.995)
     return fig
+
+
+def _hybridization_parameter_text(run: SpatialModelRun) -> str:
+    summary = run.summary
+    pieces = []
+    if "gamma" in summary:
+        pieces.append(f"gamma={float(summary['gamma']):.3g}")
+    h = summary.get("generations_since_pulse", summary.get("generations_since_hybridization"))
+    if h is not None:
+        pieces.append(f"h={float(h):.3g}")
+    r = summary.get("recombination_rate_per_bp_per_generation", summary.get("recombination_rate"))
+    if r is not None:
+        pieces.append(f"r={float(r):.3g}")
+    mean_len = summary.get("expected_mean_introgressed_tract_length_bp")
+    if mean_len is None and h is not None and r is not None and "gamma" in summary and float(h) > 0 and float(r) > 0 and float(summary["gamma"]) < 1.0:
+        mean_len = 1.0 / (float(h) * float(r) * max(1e-15, 1.0 - float(summary["gamma"])))
+    if mean_len is not None:
+        pieces.append(f"E[L_intro]={float(mean_len):.3g} bp")
+    return ", ".join(pieces)
 
 
 def make_spatial_overlay_figure(msrc_run: SpatialModelRun, hyb_run: SpatialModelRun, *, focal_topology: int | None = None) -> Any:

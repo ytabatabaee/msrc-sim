@@ -86,6 +86,8 @@ msrc-sim-spatial-summarize --input loci.csv --breakpoints 25000000,65000000 --wi
 msrc-sim-hybridization --config examples/pulse_hybridization.yaml
 msrc-sim-plot-spatial-compare --msrc-dir spatial_output --hyb-dir hybridization_output --output comparison/spatial_compare.png
 msrc-sim-find-matched-hybridization --msrc-dir spatial_output --hyb-grid-dir hybridization_grid --output matched_hybridization.json
+msrc-sim-match-hybridization --msrc-dir spatial_output --major-topology '12|34' --introgressed-topology '13|24' --output matched_hybridization.yaml
+msrc-sim-spatial-distinguishability --msrc-dir spatial_output --matched-hybridization-yaml matched_hybridization.yaml --output-dir distinguishability
 ```
 
 Run the v0.7.0 spatially ordered locus prototype, replot a spatial output
@@ -432,6 +434,57 @@ by distance between marginal quartet vectors, and records the selected
 `best_hyb_dir`. It does not simulate new hybridization parameters; it selects
 from the runs already present under `--hyb-grid-dir`.
 
+For exact expected bag-of-genes calibration, use
+`msrc-sim-match-hybridization`. This fits `gamma`, the major-parent MSC branch
+length, and the introgressed-parent MSC branch length so the expected two-tree
+mixture vector
+
+```text
+(1 - gamma) q_MSC(T_major, t_major) + gamma q_MSC(T_intro, t_intro)
+```
+
+matches the MSRC marginal quartet vector as closely as possible:
+
+```bash
+msrc-sim-match-hybridization \
+  --msrc-dir spatial_output \
+  --major-topology '12|34' \
+  --introgressed-topology '13|24' \
+  --output matched_hybridization.yaml
+```
+
+The YAML records the target vector, fitted vector, fitted `gamma`, `t_major`,
+`t_introgressed`, and L1/Euclidean errors. When the target vector lies on the
+chosen two-tree mixture surface, the expected-vector fit should be essentially
+exact; finite simulated chromosomes can still have sampling error in their
+observed quartet frequencies.
+
+The fitted expected mixture can be used in an age/recombination experiment that
+holds bag-of-genes quartet frequencies fixed while changing ancestry-tract
+structure:
+
+```bash
+msrc-sim-spatial-distinguishability \
+  --msrc-dir spatial_output \
+  --matched-hybridization-yaml matched_hybridization.yaml \
+  --output-dir distinguishability \
+  --h-values 10,25,50,100,250,500,1000 \
+  --r-multipliers 0.25,0.5,1,2 \
+  --baseline-r 1e-8 \
+  --replicates 100
+```
+
+This writes one feature row per model/parameter/replicate to
+`spatial_distinguishability.csv`, including marginal quartet frequencies,
+tract summaries, topology change-point counts, same-topology probabilities at
+configured lags, longest focal-topology interval, focal support concentrated in
+the model-specific interval or tract, and MSRC breakpoint-distance summaries.
+It also trains a simple reproducible logistic classifier from spatial features
+only and writes accuracy/ROC-AUC summaries plus a four-panel figure. The
+analysis is intended to reveal regimes where spatial organization separates
+the models and regimes where long hybridization tracts can make them difficult
+to distinguish; it is not a universal identifiability claim.
+
 Example:
 
 ```yaml
@@ -627,6 +680,17 @@ Spatial comparison runs write:
   `msrc-sim-find-matched-hybridization`, the selected `best_hyb_dir`, MSRC and
   hybridization marginal quartet vectors, the matching distance, ranked
   candidate runs, and a warning flag when no close match was found.
+- `matched_hybridization.yaml`: when written by
+  `msrc-sim-match-hybridization`, exact expected-mixture fit parameters
+  `gamma`, `t_major`, `t_introgressed`, target and fitted quartet vectors, and
+  L1/Euclidean fit errors;
+- `spatial_distinguishability.csv`: one row per MSRC bootstrap or
+  hybridization chromosome replicate with matched marginal-q fields and spatial
+  features;
+- `spatial_distinguishability_metrics.csv`: train/test classification accuracy
+  and ROC-AUC by hybridization age and recombination rate;
+- `spatial_distinguishability.png`: example matched profiles, latent tracks,
+  accuracy versus age, and accuracy heatmap over `h x r`.
 
 ## Configuration Reference
 

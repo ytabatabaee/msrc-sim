@@ -28,6 +28,8 @@ msrc-sim-spatial-summarize = "msrcsim.spatial_summarize_cli:main"
 msrc-sim-hybridization = "msrcsim.hybridization_cli:main"
 msrc-sim-plot-spatial-compare = "msrcsim.spatial_compare_cli:main"
 msrc-sim-find-matched-hybridization = "msrcsim.spatial_match_cli:main"
+msrc-sim-match-hybridization = "msrcsim.hybridization_match_cli:main"
+msrc-sim-spatial-distinguishability = "msrcsim.spatial_distinguishability_cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]

@@ -41,6 +41,17 @@ def _overlay_path(output: Path, fmt: str) -> Path:
     return base.parent / f"{base.name}_overlay.{fmt}"
 
 
+def _expected_introgressed_tract_length(summary: dict) -> float | None:
+    if "expected_mean_introgressed_tract_length_bp" in summary:
+        return float(summary["expected_mean_introgressed_tract_length_bp"])
+    gamma = summary.get("gamma")
+    h = summary.get("generations_since_pulse", summary.get("generations_since_hybridization"))
+    r = summary.get("recombination_rate_per_bp_per_generation", summary.get("recombination_rate"))
+    if gamma is None or h is None or r is None or float(h) <= 0.0 or float(r) <= 0.0 or float(gamma) >= 1.0:
+        return None
+    return 1.0 / (float(h) * float(r) * max(1e-15, 1.0 - float(gamma)))
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Plot matched spatial comparison panels for MSRC and pulse-hybridization runs")
     parser.add_argument("--msrc-dir", required=True, help="Directory containing MSRC spatial outputs")
@@ -103,6 +114,12 @@ def main(argv: list[str] | None = None) -> int:
             "msrc_num_loci": len(msrc_run.loci),
             "hyb_num_loci": len(hyb_run.loci),
             "has_overlay": bool(overlay_paths),
+            "hybridization_parameters": {
+                "gamma": hyb_run.summary.get("gamma"),
+                "generations_since_hybridization": hyb_run.summary.get("generations_since_pulse", hyb_run.summary.get("generations_since_hybridization")),
+                "recombination_rate": hyb_run.summary.get("recombination_rate_per_bp_per_generation", hyb_run.summary.get("recombination_rate")),
+                "expected_mean_introgressed_tract_length_bp": _expected_introgressed_tract_length(hyb_run.summary),
+            },
             "figures": [str(path) for path in figure_paths],
             "overlay_figures": [str(path) for path in overlay_paths],
         }
