@@ -84,11 +84,17 @@ msrc-sim-spatial --config examples/spatial_inversion.yaml
 msrc-sim-plot-spatial --input spatial_output --format png
 msrc-sim-spatial-summarize --input loci.csv --breakpoints 25000000,65000000 --window-loci 50 --step-loci 10 --output summary_dir
 msrc-sim-hybridization --config examples/pulse_hybridization.yaml
+msrc-sim-plot-spatial-compare --msrc-dir spatial_output --hyb-dir hybridization_output --output comparison/spatial_compare.png
+msrc-sim-find-matched-hybridization --msrc-dir spatial_output --hyb-grid-dir hybridization_grid --output matched_hybridization.json
 ```
 
 Run the v0.7.0 spatially ordered locus prototype, replot a spatial output
 directory, summarize an external ordered table with `position` and `topology`
-columns, or run the pulse-hybridization spatial comparator.
+columns, run the pulse-hybridization spatial comparator, or make a matched
+side-by-side MSRC versus hybridization spatial comparison figure. When the
+scientific question requires comparable bag-of-genes outcomes, use the matcher
+to select a precomputed hybridization run with a marginal quartet vector close
+to the MSRC run before plotting.
 
 Equivalent script wrappers are provided in `scripts/`:
 
@@ -358,6 +364,74 @@ The ordered output keeps the spatial information needed to ask whether MSRC and
 hybridization can produce similar genome-wide quartet-frequency vectors while
 producing different chromosome-wide profiles.
 
+### MSRC vs Hybridization Spatial Comparison
+
+`msrc-sim-plot-spatial-compare` creates matched spatial comparison plots for an
+MSRC spatial run and a pulse-hybridization run. The figure is designed to show
+how two models may have similar genome-wide averaged quartet frequencies while
+differing in the spatial organization of local quartet support along a
+chromosome. In the MSRC model, local signal can be associated with rearranged
+structural intervals; in the hybridization model, local signal can follow
+recombined ancestry tracts.
+
+This is a visualization and reporting tool for studying identifiability. A
+bag-of-genes comparison alone may be non-identifiable because it discards
+genomic order, while spatially ordered loci may provide additional
+identifiability through the organization of `q1(x)`, `q2(x)`, and `q3(x)`.
+The command does not claim that MSRC and hybridization are always spatially
+distinguishable.
+
+Example:
+
+```bash
+msrc-sim-spatial --config examples/spatial_inversion.yaml
+msrc-sim-hybridization --config examples/pulse_hybridization.yaml
+
+msrc-sim-plot-spatial-compare \
+  --msrc-dir spatial_output \
+  --hyb-dir hybridization_output \
+  --output comparison/spatial_compare.png
+```
+
+If window files are absent, windows can be recomputed from locus-level outputs:
+
+```bash
+msrc-sim-plot-spatial-compare \
+  --msrc-dir spatial_output \
+  --hyb-dir hybridization_output \
+  --window-size-loci 50 \
+  --step-loci 10 \
+  --output comparison/spatial_compare.pdf
+```
+
+Use `--formats png,pdf,svg` to write multiple figure formats from the same
+comparison. The command also writes `spatial_compare_summary.json`, recording
+the compared marginal quartet vectors and their L1 difference. By default it
+also writes a compact `spatial_compare_overlay.<format>` figure that overlays
+the model-specific local fraction and one topology-support track.
+
+For calibrated comparisons, first run a grid or collection of hybridization
+simulations, then select the run whose marginal quartet vector is closest to
+the MSRC run:
+
+```bash
+msrc-sim-find-matched-hybridization \
+  --msrc-dir spatial_output \
+  --hyb-grid-dir hybridization_grid_results \
+  --metric l1 \
+  --output matched_hybridization.json
+
+msrc-sim-plot-spatial-compare \
+  --msrc-dir spatial_output \
+  --matched-hybridization-json matched_hybridization.json \
+  --output comparison/spatial_compare.png
+```
+
+The matcher scans precomputed hybridization run directories, ranks candidates
+by distance between marginal quartet vectors, and records the selected
+`best_hyb_dir`. It does not simulate new hybridization parameters; it selects
+from the runs already present under `--hyb-grid-dir`.
+
 Example:
 
 ```yaml
@@ -538,6 +612,21 @@ Pulse-hybridization runs write:
   counts/frequencies, parental parameters, and model-limitation metadata;
 - `hybridization_spatial_profile.png`: ancestry mosaic, moving quartet support,
   and moving introgressed fraction when plotting is enabled.
+
+Spatial comparison runs write:
+
+- `spatial_compare.png`, `.pdf`, or `.svg`: a two-column MSRC versus
+  hybridization figure with latent interval structure, local quartet support,
+  local model-specific fraction, and bag-of-genes summaries;
+- `spatial_compare_summary.json`: compared marginal quartet vectors, their L1
+  difference, run sizes, chromosome length, figure paths, and a warning when
+  the marginal vectors are not closely matched;
+- `spatial_compare_overlay.<format>`: optional direct overlay of local feature
+  fraction and a focal quartet-support track.
+- `matched_hybridization.json`: when written by
+  `msrc-sim-find-matched-hybridization`, the selected `best_hyb_dir`, MSRC and
+  hybridization marginal quartet vectors, the matching distance, ranked
+  candidate runs, and a warning flag when no close match was found.
 
 ## Configuration Reference
 
