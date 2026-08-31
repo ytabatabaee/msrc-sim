@@ -190,6 +190,8 @@ def compute_marginal_q_from_loci_or_windows(
     run_or_loci: SpatialModelRun | list[dict[str, Any]],
     windows: list[dict[str, Any]] | None = None,
     summary: dict[str, Any] | None = None,
+    *,
+    preferred_summary_key: str | None = None,
 ) -> tuple[float, float, float]:
     if isinstance(run_or_loci, SpatialModelRun):
         loci = run_or_loci.loci
@@ -199,7 +201,11 @@ def compute_marginal_q_from_loci_or_windows(
         loci = run_or_loci
         windows = [] if windows is None else windows
         summary = {} if summary is None else summary
-    for key in ("observed_marginal_q", "expected_marginal_q", "topology_frequencies"):
+    ordered_keys = []
+    if preferred_summary_key:
+        ordered_keys.append(preferred_summary_key)
+    ordered_keys.extend(["observed_marginal_q", "expected_marginal_q", "topology_frequencies"])
+    for key in dict.fromkeys(ordered_keys):
         value = summary.get(key)
         if isinstance(value, list) and len(value) >= 3:
             return (float(value[0]), float(value[1]), float(value[2]))
@@ -264,6 +270,7 @@ def load_spatial_model_run(
     *,
     window_size_loci: int = 50,
     step_loci: int = 10,
+    marginal_q_source: str = "observed",
 ) -> SpatialModelRun:
     run_path = Path(run_dir)
     normalized_model = model_type.lower()
@@ -298,7 +305,14 @@ def load_spatial_model_run(
     else:
         windows = compute_windows_from_loci(loci, "msrc" if normalized_model == "msrc" else "hybridization", window_size_loci, step_loci)
     _fill_window_fraction_from_loci(windows, loci, "msrc" if normalized_model == "msrc" else "hybridization")
-    marginal_q = compute_marginal_q_from_loci_or_windows(loci, windows, summary)
+    preferred_key = None
+    if marginal_q_source == "expected":
+        preferred_key = "expected_marginal_q"
+    elif marginal_q_source == "observed":
+        preferred_key = "observed_marginal_q"
+    elif marginal_q_source != "auto":
+        raise ValueError("marginal_q_source must be observed, expected, or auto")
+    marginal_q = compute_marginal_q_from_loci_or_windows(loci, windows, summary, preferred_summary_key=preferred_key)
     length = _chromosome_length(summary, loci, windows, feature_intervals)
     model_name = "MSRC" if normalized_model == "msrc" else "Hybridization"
     return SpatialModelRun(model_name, length, loci, windows, summary, marginal_q, feature_intervals, run_path)

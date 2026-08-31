@@ -248,7 +248,7 @@ def main(argv: list[str] | None = None) -> int:
                     run_dir = out / "hybridization_runs" / f"h_{h:g}_r_{r:.3e}" / f"rep_{rep:04d}"
                     cfg = _hybridization_config(match, h, r, int(rng.integers(1, 2**31 - 1)), run_dir, args.num_loci, args.window_size_loci, args.step_loci, lags)
                     simulate_hybridization(cfg)
-                    hyb_run = load_spatial_model_run(run_dir, "hybridization", window_size_loci=args.window_size_loci, step_loci=args.step_loci)
+                    hyb_run = load_spatial_model_run(run_dir, "hybridization", window_size_loci=args.window_size_loci, step_loci=args.step_loci, marginal_q_source="expected")
                     hyb_run.summary["expected_mean_introgressed_tract_length_bp"] = None if h <= 0 or r <= 0 or float(match["hybridization"]["gamma"]) >= 1.0 else 1.0 / (h * r * max(1e-15, 1.0 - float(match["hybridization"]["gamma"])))
                     if example_hyb is None:
                         example_hyb = hyb_run

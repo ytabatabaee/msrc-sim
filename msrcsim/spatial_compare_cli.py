@@ -63,6 +63,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--step-loci", type=int, default=10, help="Window step when windows must be recomputed from loci")
     parser.add_argument("--title", help="Optional figure title")
     parser.add_argument("--marginal-match-threshold", type=float, default=0.05, help="L1 threshold used for mismatch warning")
+    parser.add_argument("--hyb-marginal-source", choices=["expected", "observed", "auto"], default="expected", help="Hybridization qbar source used for bag-of-genes matching display")
     parser.add_argument("--overlay", action=argparse.BooleanOptionalAction, default=True, help="Also write direct overlay figure")
     parser.add_argument("--focal-topology", type=int, choices=[1, 2, 3], help="Topology index for overlay support track, using 1-based q numbering")
     return parser
@@ -82,7 +83,7 @@ def main(argv: list[str] | None = None) -> int:
         if hyb_dir is None:
             raise ValueError("--hyb-dir is required unless --matched-hybridization-json supplies best_hyb_dir")
         msrc_run = load_spatial_model_run(args.msrc_dir, "msrc", window_size_loci=args.window_size_loci, step_loci=args.step_loci)
-        hyb_run = load_spatial_model_run(hyb_dir, "hybridization", window_size_loci=args.window_size_loci, step_loci=args.step_loci)
+        hyb_run = load_spatial_model_run(hyb_dir, "hybridization", window_size_loci=args.window_size_loci, step_loci=args.step_loci, marginal_q_source=args.hyb_marginal_source)
         output.parent.mkdir(parents=True, exist_ok=True)
         fig = make_spatial_compare_figure(msrc_run, hyb_run, title=args.title)
         figure_paths = _outputs_for_formats(output, formats)
@@ -106,6 +107,9 @@ def main(argv: list[str] | None = None) -> int:
             "chromosome_length_bp": max(msrc_run.chromosome_length_bp, hyb_run.chromosome_length_bp),
             "msrc_marginal_q": [float(x) for x in msrc_run.marginal_q],
             "hyb_marginal_q": [float(x) for x in hyb_run.marginal_q],
+            "hyb_marginal_q_source": args.hyb_marginal_source,
+            "hyb_observed_marginal_q": hyb_run.summary.get("observed_marginal_q"),
+            "hyb_expected_marginal_q": hyb_run.summary.get("expected_marginal_q"),
             "marginal_q_l1_difference": float(l1),
             "marginal_match_threshold": float(args.marginal_match_threshold),
             "warning": "Spatial comparison generated, but marginal quartet vectors are not closely matched." if l1 > args.marginal_match_threshold else None,
