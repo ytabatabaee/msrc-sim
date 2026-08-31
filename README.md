@@ -88,6 +88,7 @@ msrc-sim-plot-spatial-compare --msrc-dir spatial_output --hyb-dir hybridization_
 msrc-sim-find-matched-hybridization --msrc-dir spatial_output --hyb-grid-dir hybridization_grid --output matched_hybridization.json
 msrc-sim-match-hybridization --msrc-dir spatial_output --major-topology '12|34' --introgressed-topology '13|24' --output matched_hybridization.yaml
 msrc-sim-spatial-distinguishability --msrc-dir spatial_output --matched-hybridization-yaml matched_hybridization.yaml --output-dir distinguishability
+msrc-sim-spatial-identifiability --msrc-dir spatial_output --output-dir identifiability --replicates 100
 ```
 
 Run the v0.7.0 spatially ordered locus prototype, replot a spatial output
@@ -485,6 +486,55 @@ analysis is intended to reveal regimes where spatial organization separates
 the models and regimes where long hybridization tracts can make them difficult
 to distinguish; it is not a universal identifiability claim.
 
+`msrc-sim-spatial-identifiability` runs the paper-oriented matched experiment
+using the closed-form T1/T2 mixture. For a target MSRC quartet vector
+`q = (q1, q2, q3)` and selected major/introgressed topologies, it computes the
+mathematically feasible `gamma` interval, samples interior gamma values across
+that interval, and sets:
+
+```text
+d_major = q_major - q_shared
+d_intro = q_intro - q_shared
+t_major = -log(1 - d_major / (1 - gamma))
+t_intro = -log(1 - d_intro / gamma)
+```
+
+The main spatial grid is `eta = E[L_intro] / L_R`, where `L_R` is the
+rearranged interval length. For each `(gamma, eta)`, the command solves
+`h*r = 1 / (eta * L_R * (1 - gamma))`, simulates matched hybridization
+chromosomes, generates independent MSRC resampled chromosomes on the same locus
+positions, and trains two reproducible classifiers:
+
+- a bag-of-genes baseline using only matched `q1`, `q2`, and `q3`;
+- a spatial classifier using topology-run, autocorrelation, off-arm, focal-run,
+  and breakpoint-distance features.
+
+Hybridization-specific latent quantities such as ancestry-tract counts and
+realized introgressed fraction are written as diagnostics but excluded from the
+main spatial classifier.
+
+Example:
+
+```bash
+msrc-sim-spatial-identifiability \
+  --msrc-dir spatial_output_q2_dominant \
+  --major-topology '12|34' \
+  --introgressed-topology '13|24' \
+  --num-gamma 10 \
+  --eta-values 0.02,0.05,0.1,0.25,0.5,1,2,5,10 \
+  --replicates 100 \
+  --output-dir identifiability_q2_dominant
+```
+
+The result is designed to show that identical expected bag-of-genes quartet
+frequencies can be non-identifying, while spatial organization can restore
+information about the mechanism in some parameter regimes.
+The command rejects very small replicate counts by default because ROC-AUC and
+accuracy estimates are not interpretable with only a few chromosomes per
+class. Use at least the default `--replicates 100` for analysis. The
+`--allow-small-sample` flag exists only for debugging and automated smoke
+tests.
+
 Example:
 
 ```yaml
@@ -691,6 +741,17 @@ Spatial comparison runs write:
   and ROC-AUC by hybridization age and recombination rate;
 - `spatial_distinguishability.png`: example matched profiles, latent tracks,
   accuracy versus age, and accuracy heatmap over `h x r`.
+- `spatial_identifiability_replicates.csv`: one row per matched MSRC or
+  hybridization chromosome replicate across the closed-form `gamma x eta`
+  grid;
+- `spatial_identifiability_summary.csv`: bag-of-genes and spatial classifier
+  accuracy/ROC-AUC with cross-validation confidence intervals for each
+  `(gamma, eta)` cell;
+- `identifiability_heatmap.pdf`: spatial ROC-AUC heatmap over `gamma x eta`;
+- `auc_vs_eta.pdf`: spatial ROC-AUC versus `eta` for the gamma grid;
+- `bag_vs_spatial_auc.pdf`: bag-of-genes baseline versus spatial classifier;
+- `example_profiles.pdf`: matched MSRC/HYB example profiles for small,
+  intermediate, and large `eta`.
 
 ## Configuration Reference
 

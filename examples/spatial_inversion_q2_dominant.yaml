@@ -1,0 +1,47 @@
+mode: spatial
+seed: 883
+
+species_tree:
+  newick: "((1:100,2:100)A:50,(3:100,4:100)B:50)ROOT;"
+  time_units: generations
+  root_extension: 300
+  default_effective_population_size: 100
+
+rearrangement:
+  id: inv_1
+  type: inversion
+  origin_branch: ROOT
+  origin_time_from_branch_start: 120
+  initial_copy_count: 40
+  selection:
+    model: genic
+    coefficient: 0.0
+
+recombination:
+  baseline_rate: 0.02
+  effective_cross_arrangement_fraction: 0.1
+
+genome:
+  length: 100000000
+  loci:
+    count: 1000
+    placement: evenly_spaced
+  rearrangement_interval:
+    start: 5000000
+    end: 75000000
+  inside_model:
+    type: msrc
+    effective_cross_arrangement_fraction: 0.05
+  outside_model:
+    type: msc
+
+spatial_summary:
+  window_loci: 50
+  step_loci: 10
+  breakpoint_bandwidth_loci: 50
+
+output:
+  directory: spatial_output_q2_dominant
+  record_gene_trees: true
+  record_frequency_history: true
+  make_plots: true

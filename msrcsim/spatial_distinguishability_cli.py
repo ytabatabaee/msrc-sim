@@ -99,6 +99,26 @@ def _auc(y_true: np.ndarray, scores: np.ndarray) -> float:
     return float(wins / (len(pos) * len(neg)))
 
 
+def _sigmoid(values: np.ndarray) -> np.ndarray:
+    out = np.empty_like(values, dtype=float)
+    positive = values >= 0.0
+    out[positive] = 1.0 / (1.0 + np.exp(-values[positive]))
+    exp_values = np.exp(values[~positive])
+    out[~positive] = exp_values / (1.0 + exp_values)
+    return out
+
+
+def _ci95(values: np.ndarray) -> tuple[float, float]:
+    if len(values) == 0:
+        return (math.nan, math.nan)
+    if len(values) == 1:
+        value = float(values[0])
+        return (value, value)
+    mean = float(np.mean(values))
+    half_width = float(1.96 * np.std(values, ddof=1) / math.sqrt(len(values)))
+    return (max(0.0, mean - half_width), min(1.0, mean + half_width))
+
+
 def _fit_logistic(train_x: np.ndarray, train_y: np.ndarray) -> np.ndarray:
     x = np.column_stack([np.ones(train_x.shape[0]), train_x])
 
@@ -140,9 +160,13 @@ def _classifier_metrics(rows: list[dict[str, Any]], feature_cols: list[str], see
         test_x = (x[test_idx] - mean) / sd
         beta = _fit_logistic(train_x, y[train_idx])
         logits = np.column_stack([np.ones(test_x.shape[0]), test_x]) @ beta
-        scores = 1.0 / (1.0 + np.exp(-logits))
+        scores = _sigmoid(logits)
         pred = (scores >= 0.5).astype(int)
-        out.append({"h": h, "r": r, "accuracy": float(np.mean(pred == y[test_idx])), "roc_auc": _auc(y[test_idx], scores), "n_train": int(len(train_idx)), "n_test": int(len(test_idx))})
+        accuracy = np.asarray([float(np.mean(pred == y[test_idx]))], dtype=float)
+        auc = np.asarray([_auc(y[test_idx], scores)], dtype=float)
+        acc_low, acc_high = _ci95(accuracy)
+        auc_low, auc_high = _ci95(auc[np.isfinite(auc)])
+        out.append({"h": h, "r": r, "accuracy": float(accuracy[0]), "accuracy_ci95_low": acc_low, "accuracy_ci95_high": acc_high, "roc_auc": float(auc[0]), "roc_auc_ci95_low": auc_low, "roc_auc_ci95_high": auc_high, "n_train": int(len(train_idx)), "n_test": int(len(test_idx))})
     return out
 
 
