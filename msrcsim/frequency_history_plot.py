@@ -298,15 +298,6 @@ def plot_frequency_history_tree(
             px = x[branch.parent_branch_id]
             _draw_tube_rect(ax, min(px, bx), branch.older_age - connector_height / 2, abs(px - bx), connector_height)
         _draw_tube_rect(ax, bx - tube_half, branch.younger_age, tube_width, branch.older_age - branch.younger_age)
-        ax.scatter(
-            [bx, bx],
-            [branch.older_age, branch.younger_age],
-            s=(30 * tube_width) ** 2,
-            color=TUBE_COLOR,
-            alpha=0.42,
-            linewidths=0,
-            zorder=1,
-        )
 
     if show_frequency_trace:
         for branch_id, rows in grouped.items():
