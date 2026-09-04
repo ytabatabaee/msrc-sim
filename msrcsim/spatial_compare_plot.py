@@ -9,6 +9,7 @@ import tempfile
 import numpy as np
 
 from .spatial_compare import SpatialModelRun, marginal_l1_distance
+from .simplex import barycentric_to_cartesian
 
 
 QUARTET_COLORS = ["#1b9e77", "#d95f02", "#7570b3"]
@@ -141,6 +142,49 @@ def _plot_bag_summary(ax: Any, run: SpatialModelRun, other: SpatialModelRun, *, 
             bbox={"facecolor": "white", "edgecolor": "0.75", "boxstyle": "round,pad=0.25", "linewidth": 0.6})
 
 
+def _simplex_xy(q1: float, q2: float, q3: float) -> tuple[float, float] | None:
+    vals = np.asarray([q1, q2, q3], dtype=float)
+    if not np.all(np.isfinite(vals)):
+        return None
+    total = float(vals.sum())
+    if total <= 0:
+        return None
+    vals = vals / total
+    return barycentric_to_cartesian(float(vals[0]), float(vals[1]), float(vals[2]))
+
+
+def _plot_simplex(ax: Any, run: SpatialModelRun, *, title: str) -> None:
+    verts = np.asarray([[0.0, 0.0], [1.0, 0.0], [0.5, math.sqrt(3.0) / 2.0], [0.0, 0.0]])
+    centroid = np.asarray([0.5, math.sqrt(3.0) / 6.0])
+    ax.plot(verts[:, 0], verts[:, 1], color="0.2", linewidth=0.9)
+    for vertex in verts[:3]:
+        ax.plot([centroid[0], vertex[0]], [centroid[1], vertex[1]], color="0.45", linestyle="--", linewidth=0.8)
+
+    points = [_simplex_xy(float(row.get("q1", math.nan)), float(row.get("q2", math.nan)), float(row.get("q3", math.nan))) for row in run.windows]
+    points = [p for p in points if p is not None]
+    if points:
+        arr = np.asarray(points)
+        color = MSRC_FEATURE if str(run.model_name).lower() == "msrc" else HYB_INTRO
+        ax.scatter(arr[:, 0], arr[:, 1], s=16, color=color, alpha=0.48, linewidths=0, label="windows")
+
+    marginal = _simplex_xy(float(run.marginal_q[0]), float(run.marginal_q[1]), float(run.marginal_q[2]))
+    if marginal is not None:
+        ax.scatter([marginal[0]], [marginal[1]], marker="X", s=72, color="black", linewidths=0.6, label="genome-wide")
+
+    for label, xy, offset in (
+        ("q1", (0.0, 0.0), (-0.035, -0.035)),
+        ("q2", (1.0, 0.0), (0.035, -0.035)),
+        ("q3", (0.5, math.sqrt(3.0) / 2.0), (0.0, 0.035)),
+    ):
+        ax.text(xy[0] + offset[0], xy[1] + offset[1], label, ha="center", va="center", fontsize=8, color="0.25")
+    ax.set_title(title)
+    ax.set_aspect("equal")
+    ax.set_xlim(-0.08, 1.08)
+    ax.set_ylim(-0.08, math.sqrt(3.0) / 2.0 + 0.08)
+    ax.axis("off")
+    ax.legend(frameon=False, loc="lower center", ncols=2, fontsize=7)
+
+
 def make_spatial_compare_figure(msrc_run: SpatialModelRun, hyb_run: SpatialModelRun, *, title: str | None = None) -> Any:
     configure_matplotlib_cache()
     import matplotlib.pyplot as plt
@@ -148,11 +192,11 @@ def make_spatial_compare_figure(msrc_run: SpatialModelRun, hyb_run: SpatialModel
     _setup_common_style(plt)
     xmax = _xmax(msrc_run, hyb_run)
     fig, axes = plt.subplots(
-        4,
+        5,
         2,
-        figsize=(12.0, 8.8),
+        figsize=(12.0, 10.7),
         constrained_layout=True,
-        gridspec_kw={"height_ratios": [0.7, 2.25, 1.15, 1.45], "hspace": 0.28, "wspace": 0.12},
+        gridspec_kw={"height_ratios": [0.7, 2.25, 1.15, 1.45, 1.85], "hspace": 0.28, "wspace": 0.12},
     )
     axes[0, 0].set_ylabel("MSRC", rotation=0, labelpad=28, va="center", fontweight="bold")
     axes[0, 1].set_ylabel("Hybridization", rotation=0, labelpad=46, va="center", fontweight="bold")
@@ -167,6 +211,8 @@ def make_spatial_compare_figure(msrc_run: SpatialModelRun, hyb_run: SpatialModel
     axes[2, 1].set_title("Introgressed ancestry fraction")
     _plot_bag_summary(axes[3, 0], msrc_run, hyb_run, show_ylabel=True)
     _plot_bag_summary(axes[3, 1], hyb_run, msrc_run, show_ylabel=False)
+    _plot_simplex(axes[4, 0], msrc_run, title="Window q-vectors against MSC arms")
+    _plot_simplex(axes[4, 1], hyb_run, title="Window q-vectors against MSC arms")
     for ax in axes[:3, :].flat:
         ax.set_xlim(0, xmax)
     axes[2, 0].set_xlabel("Genomic position (bp)")

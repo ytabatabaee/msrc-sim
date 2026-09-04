@@ -61,6 +61,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--formats", help="Comma-separated extra/requested formats: png,pdf,svg. Defaults to the --output suffix.")
     parser.add_argument("--window-size-loci", type=int, default=50, help="Window size when windows must be recomputed from loci")
     parser.add_argument("--step-loci", type=int, default=10, help="Window step when windows must be recomputed from loci")
+    parser.add_argument("--window-size-bp", type=float, help="Recompute both model runs on fixed-bp windows of this size, ignoring saved window tables")
+    parser.add_argument("--step-bp", type=float, help="Fixed-bp window step; required with --window-size-bp")
     parser.add_argument("--title", help="Optional figure title")
     parser.add_argument("--marginal-match-threshold", type=float, default=0.05, help="L1 threshold used for mismatch warning")
     parser.add_argument("--hyb-marginal-source", choices=["expected", "observed", "auto"], default="expected", help="Hybridization qbar source used for bag-of-genes matching display")
@@ -82,8 +84,25 @@ def main(argv: list[str] | None = None) -> int:
             hyb_dir = matched.get("best_hyb_dir")
         if hyb_dir is None:
             raise ValueError("--hyb-dir is required unless --matched-hybridization-json supplies best_hyb_dir")
-        msrc_run = load_spatial_model_run(args.msrc_dir, "msrc", window_size_loci=args.window_size_loci, step_loci=args.step_loci)
-        hyb_run = load_spatial_model_run(hyb_dir, "hybridization", window_size_loci=args.window_size_loci, step_loci=args.step_loci, marginal_q_source=args.hyb_marginal_source)
+        if (args.window_size_bp is None) != (args.step_bp is None):
+            raise ValueError("--window-size-bp and --step-bp must be supplied together")
+        msrc_run = load_spatial_model_run(
+            args.msrc_dir,
+            "msrc",
+            window_size_loci=args.window_size_loci,
+            step_loci=args.step_loci,
+            window_size_bp=args.window_size_bp,
+            step_bp=args.step_bp,
+        )
+        hyb_run = load_spatial_model_run(
+            hyb_dir,
+            "hybridization",
+            window_size_loci=args.window_size_loci,
+            step_loci=args.step_loci,
+            window_size_bp=args.window_size_bp,
+            step_bp=args.step_bp,
+            marginal_q_source=args.hyb_marginal_source,
+        )
         output.parent.mkdir(parents=True, exist_ok=True)
         fig = make_spatial_compare_figure(msrc_run, hyb_run, title=args.title)
         figure_paths = _outputs_for_formats(output, formats)
@@ -117,6 +136,13 @@ def main(argv: list[str] | None = None) -> int:
             "hyb_num_windows": len(hyb_run.windows),
             "msrc_num_loci": len(msrc_run.loci),
             "hyb_num_loci": len(hyb_run.loci),
+            "windowing": {
+                "mode": "fixed_bp" if args.window_size_bp is not None else "saved_or_locus_count",
+                "window_size_bp": args.window_size_bp,
+                "step_bp": args.step_bp,
+                "window_size_loci": args.window_size_loci,
+                "step_loci": args.step_loci,
+            },
             "has_overlay": bool(overlay_paths),
             "hybridization_parameters": {
                 "gamma": hyb_run.summary.get("gamma"),

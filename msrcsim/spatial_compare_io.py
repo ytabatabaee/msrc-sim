@@ -170,6 +170,62 @@ def compute_windows_from_loci(
     return out
 
 
+def compute_windows_from_loci_bp(
+    loci: list[dict[str, Any]],
+    model_type: str = "msrc",
+    window_size_bp: float = 10_000_000.0,
+    step_bp: float = 2_000_000.0,
+    chromosome_length_bp: float | None = None,
+) -> list[dict[str, Any]]:
+    if window_size_bp <= 0 or step_bp <= 0:
+        raise ValueError("window_size_bp and step_bp must be positive")
+    ordered = sorted(loci, key=lambda r: float(r["position_bp"]))
+    if not ordered:
+        raise ValueError("cannot compute bp windows without loci")
+    length = float(chromosome_length_bp) if chromosome_length_bp is not None else max(float(r["position_bp"]) for r in ordered)
+    if length <= 0:
+        raise ValueError("chromosome_length_bp must be positive")
+    if window_size_bp > length:
+        raise ValueError("window_size_bp cannot exceed chromosome_length_bp")
+
+    out: list[dict[str, Any]] = []
+    num_starts = int(math.floor((length - window_size_bp) / step_bp)) + 1
+    starts = [i * step_bp for i in range(num_starts)]
+    for window_id, start in enumerate(starts):
+        end = min(start + window_size_bp, length)
+        if window_id == len(starts) - 1:
+            chunk = [r for r in ordered if start <= float(r["position_bp"]) <= end]
+        else:
+            chunk = [r for r in ordered if start <= float(r["position_bp"]) < end]
+        if not chunk:
+            continue
+        counts = _counts(_as_int(row["topology_index"]) for row in chunk)
+        total = int(counts.sum())
+        q = counts / total
+        stats = off_arm_statistics(counts)
+        row: dict[str, Any] = {
+            "window_id": len(out),
+            "start_bp": float(start),
+            "end_bp": float(end),
+            "center_bp": (float(start) + float(end)) / 2.0,
+            "num_loci": len(chunk),
+            "q1": float(q[0]),
+            "q2": float(q[1]),
+            "q3": float(q[2]),
+            "dominant_topology": int(np.argmax(q)),
+            "distance_to_nearest_msc_arm": float(stats["distance_to_nearest_msc_arm"]),
+            "off_arm_difference": float(stats["off_arm_difference"]),
+        }
+        if model_type == "msrc":
+            row["fraction_rearranged"] = float(np.mean([bool(r.get("is_inside_rearranged_interval", False)) for r in chunk]))
+        else:
+            row["introgressed_fraction"] = float(np.mean([_as_int(r.get("ancestry_state", 0)) == 1 for r in chunk]))
+        out.append(row)
+    if not out:
+        raise ValueError("no fixed-bp windows contained loci")
+    return out
+
+
 def _fill_window_fraction_from_loci(windows: list[dict[str, Any]], loci: list[dict[str, Any]], model_type: str) -> None:
     for window in windows:
         if model_type == "msrc":
@@ -270,6 +326,8 @@ def load_spatial_model_run(
     *,
     window_size_loci: int = 50,
     step_loci: int = 10,
+    window_size_bp: float | None = None,
+    step_bp: float | None = None,
     marginal_q_source: str = "observed",
 ) -> SpatialModelRun:
     run_path = Path(run_dir)
@@ -300,7 +358,12 @@ def load_spatial_model_run(
         tract_path = _first_existing(run_path, HYB_TRACT_FILES, "Hybridization tract outputs", required=False)
         feature_intervals = _tract_intervals(tract_path)
     loci = _normalize_loci(_read_csv(loci_path), "msrc" if normalized_model == "msrc" else "hybridization") if loci_path else []
-    if windows_path is not None:
+    length = _chromosome_length(summary, loci, [], feature_intervals)
+    if window_size_bp is not None or step_bp is not None:
+        if window_size_bp is None or step_bp is None:
+            raise ValueError("window_size_bp and step_bp must be supplied together")
+        windows = compute_windows_from_loci_bp(loci, "msrc" if normalized_model == "msrc" else "hybridization", window_size_bp, step_bp, length)
+    elif windows_path is not None:
         windows = _normalize_windows(_read_csv(windows_path), "msrc" if normalized_model == "msrc" else "hybridization")
     else:
         windows = compute_windows_from_loci(loci, "msrc" if normalized_model == "msrc" else "hybridization", window_size_loci, step_loci)

@@ -75,3 +75,23 @@ def test_cli_uses_matched_hybridization_json(tmp_path):
     assert code == 0
     summary = json.loads((output.parent / "spatial_compare_summary.json").read_text())
     assert summary["hyb_dir"] == str(hyb)
+
+
+def test_cli_can_recompute_fixed_bp_windows(tmp_path):
+    msrc = msrc_dir(tmp_path)
+    hyb = hyb_dir(tmp_path)
+    output = tmp_path / "fixed_bp" / "spatial_compare.png"
+    code = main([
+        "--msrc-dir", str(msrc),
+        "--hyb-dir", str(hyb),
+        "--output", str(output),
+        "--window-size-bp", "300",
+        "--step-bp", "300",
+        "--no-overlay",
+    ])
+    assert code == 0
+    summary = json.loads((output.parent / "spatial_compare_summary.json").read_text())
+    assert summary["windowing"]["mode"] == "fixed_bp"
+    assert summary["windowing"]["window_size_bp"] == 300.0
+    assert summary["msrc_num_windows"] == 3
+    assert summary["hyb_num_windows"] == 4

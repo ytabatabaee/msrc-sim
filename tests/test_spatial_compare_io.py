@@ -5,7 +5,7 @@ import json
 
 import pytest
 
-from msrcsim.spatial_compare_io import compute_windows_from_loci, load_spatial_model_run
+from msrcsim.spatial_compare_io import compute_windows_from_loci, compute_windows_from_loci_bp, load_spatial_model_run
 
 
 def _write_csv(path, rows, fieldnames=None):
@@ -93,6 +93,35 @@ def test_fallback_window_computation_from_loci(tmp_path):
     assert run.windows[0]["fraction_rearranged"] == 0.5
     assert run.windows[0]["q1"] == 0.5
     assert run.windows[0]["q2"] == 0.5
+
+
+def test_fixed_bp_window_computation_from_loci():
+    loci = [
+        {"position_bp": i * 100, "topology_index": 1 if i in {2, 3, 4} else 0, "is_inside_rearranged_interval": 2 <= i <= 4}
+        for i in range(10)
+    ]
+    windows = compute_windows_from_loci_bp(loci, "msrc", window_size_bp=300, step_bp=300, chromosome_length_bp=900)
+    assert len(windows) == 3
+    assert [row["num_loci"] for row in windows] == [3, 3, 4]
+    assert windows[0]["q1"] == pytest.approx(2 / 3)
+    assert windows[1]["q2"] == pytest.approx(2 / 3)
+    assert windows[1]["fraction_rearranged"] == pytest.approx(2 / 3)
+
+
+def test_fixed_bp_window_grid_includes_last_exact_start():
+    loci = [{"position_bp": i * 1_000_000, "topology_index": 0, "is_inside_rearranged_interval": False} for i in range(100)]
+    windows = compute_windows_from_loci_bp(loci, "msrc", window_size_bp=10_000_000, step_bp=2_000_000, chromosome_length_bp=100_000_000)
+    assert len(windows) == 46
+    assert windows[-1]["start_bp"] == 90_000_000
+    assert windows[-1]["end_bp"] == 100_000_000
+
+
+def test_load_recomputes_fixed_bp_windows_even_when_saved_windows_exist(tmp_path):
+    run = load_spatial_model_run(_msrc_dir(tmp_path), "msrc", window_size_bp=300, step_bp=300)
+    assert len(run.windows) == 3
+    assert run.windows[0]["start_bp"] == 0
+    assert run.windows[0]["end_bp"] == 300
+    assert run.windows[0]["num_loci"] == 3
 
 
 def test_marginal_q_from_loci_when_summary_missing_q(tmp_path):

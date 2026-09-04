@@ -114,6 +114,7 @@ def simulate_spatial(config: Mapping[str, Any]) -> Path:
     inside_fraction = float(genome.get("inside_model", {}).get("effective_cross_arrangement_fraction", default_fraction))
     summary_cfg = config.get("spatial_summary", {})
     terminal = _terminal_pattern(sampled, tree.taxa)
+    record_gene_trees = bool(config.get("output", {}).get("record_gene_trees", True))
     locus_rows: list[dict[str, Any]] = []
     gene_tree_rows: list[dict[str, Any]] = []
 
@@ -143,7 +144,8 @@ def simulate_spatial(config: Mapping[str, Any]) -> Path:
             "num_switch_events": int(switches),
             "mean_or_first_coalescence_time": mean_time,
         })
-        gene_tree_rows.append({"locus_id": locus_id, "position": int(position), "newick": result.newick})
+        if record_gene_trees:
+            gene_tree_rows.append({"locus_id": locus_id, "position": int(position), "newick": result.newick})
 
     windows = sliding_windows(
         locus_rows,
@@ -184,7 +186,7 @@ def simulate_spatial(config: Mapping[str, Any]) -> Path:
         writer = csv.DictWriter(handle, fieldnames=LOCUS_FIELDS)
         writer.writeheader()
         writer.writerows(locus_rows)
-    if config.get("output", {}).get("record_gene_trees", True):
+    if record_gene_trees:
         with (out / "spatial_gene_trees.tsv").open("w", newline="") as handle:
             writer = csv.DictWriter(handle, fieldnames=["locus_id", "position", "newick"], delimiter="\t")
             writer.writeheader()
@@ -196,4 +198,3 @@ def simulate_spatial(config: Mapping[str, Any]) -> Path:
     with (out / "spatial_summary.json").open("w") as handle:
         json.dump(summary, handle, indent=2)
     return out
-

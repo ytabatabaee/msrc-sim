@@ -124,13 +124,31 @@ def choose_display_records(
     for record in records:
         grouped[str(record["branch_id"])].append(record)
 
+    if max_rows_per_branch is not None and max_rows_per_branch > 0:
+        spans = []
+        for rows in grouped.values():
+            ages = [float(r["absolute_age"]) for r in rows]
+            spans.append(max(ages) - min(ages))
+        max_span = max(spans, default=0.0)
+        global_stride = max(1.0, math.ceil(max_span / max(max_rows_per_branch - 1, 1)))
+    else:
+        global_stride = None
+
     selected: list[dict[str, Any]] = []
     for branch_id in sorted(grouped, key=_natural_key):
         rows = sorted(grouped[branch_id], key=lambda r: (float(r["absolute_age"]), float(r.get("forward_generation", 0))), reverse=True)
-        if max_rows_per_branch is None or max_rows_per_branch <= 0 or len(rows) <= max_rows_per_branch:
+        if global_stride is None:
             selected.extend(rows)
             continue
         keep: set[int] = set()
+        older_age = float(rows[0]["absolute_age"])
+        younger_age = float(rows[-1]["absolute_age"])
+        target_age = older_age
+        while target_age >= younger_age:
+            closest = min(range(len(rows)), key=lambda i: abs(float(rows[i]["absolute_age"]) - target_age))
+            keep.add(closest)
+            target_age -= global_stride
+        keep.add(len(rows) - 1)
         if preserve_events:
             for i, row in enumerate(rows):
                 if row.get("is_branch_start") or row.get("is_branch_end") or row.get("is_origin"):
@@ -138,21 +156,6 @@ def choose_display_records(
                 if i and row.get("status") != rows[i - 1].get("status"):
                     keep.add(i - 1)
                     keep.add(i)
-        slots = max(max_rows_per_branch - len(keep), 0)
-        if slots:
-            if slots == 1:
-                keep.add(len(rows) // 2)
-            else:
-                for j in range(slots):
-                    keep.add(round(j * (len(rows) - 1) / (slots - 1)))
-        if len(keep) > max_rows_per_branch:
-            essential = {i for i in keep if rows[i].get("is_branch_start") or rows[i].get("is_branch_end") or rows[i].get("is_origin")}
-            transitions = sorted(keep - essential)
-            keep = set(sorted(essential))
-            for i in transitions:
-                if len(keep) >= max_rows_per_branch:
-                    break
-                keep.add(i)
         selected.extend(rows[i] for i in sorted(keep))
     return selected
 

@@ -1,4 +1,4 @@
-# msrc-sim
+# MSRC Simulator
 
 `msrc-sim` simulates quartet gene-tree distributions under the Multi-Species
 Rearrangement Coalescent (MSRC) model. It is designed for experiments where a
@@ -865,87 +865,4 @@ Run the test suite with:
 pytest
 ```
 
-## Version 0.5.0: off-arm and quartet-model comparison
-
-Version 0.5.0 makes backward genealogy simulation piecewise exact with respect
-to the generation-by-generation Wright–Fisher frequency path. A proposed
-Gillespie event can no longer cross a frequency-change boundary while retaining
-outdated rates.
-
-Replicate outputs now include topology counts, distance to the nearest MSC arm,
-an off-arm contrast and confidence interval, maximum-likelihood MSC fits, and a
-quartet-level two-tree introgression-mixture fit.
-
-Run model comparison on an existing replicate table with:
-
-```bash
-msrc-sim-compare \
-  --input replicate_output/replicate_summary.csv \
-  --output model_comparison.csv
-```
-
-The comparison distinguishes a strong alternative-tree signal from a genuine
-off-arm signal. For a vector whose best MSC topology is `T2`, the off-arm
-contrast compares the two minor probabilities, `q1 - q3`. The two-tree mixture
-is a quartet-level model-comparison device; its fitted parameters should not be
-interpreted as uniquely identifiable demographic estimates from one quartet.
-
-
-## v0.5.1 model-comparison interpretation
-
-The comparison output deliberately separates three questions:
-
-- `network_representable`: can the two-tree mixture reproduce the observed quartet vector geometrically?
-- `off_arm_supported`: does the empirical vector significantly violate the nearest single-tree MSC arm at the 0.05 level?
-- `network_aic_preferred` / `network_strongly_preferred`: is the network likelihood worth its additional parameters (`delta AIC < 0` / `< -4`)?
-
-`best_network_boundary_warning` is true when the fitted gamma is close to 0 or 1, a branch length is close to zero, or a branch length reaches the optimization ceiling. Such a fit can still be geometrically valid, but its parameters should not be described as a well-interior introgression estimate. Terminal patterns are always written as four-character strings such as `0101`.
-
-
-## v0.6.0: frozen-history validation and automated figures
-
-Freeze one accepted evolutionary history:
-
-```bash
-msrc-sim-freeze-history --config examples/replicates_conditioned.yaml --output frozen_history.yaml
-```
-
-Replay genealogy simulations on exactly that history:
-
-```bash
-msrc-sim-replay-history --history frozen_history.yaml --num-loci 100000 --seed 7 --output replay_100k
-```
-
-The replay output includes `replay_summary.json`, `branch_history_summary.csv`, and `true_gene_trees.nwk`.
-This supports locus-count convergence experiments without resimulating the Wright–Fisher trajectory.
-
-Create automated figures from a replicate or comparison table:
-
-```bash
-msrc-sim-plot --input replicate_output/replicate_summary.csv --output figures --format png
-```
-
-The command creates quartet-simplex, off-arm-distance, terminal-pattern-prevalence, and MSC-versus-network AIC figures. `msrc-sim-compare` now also adds Benjamini–Hochberg adjusted off-arm q-values.
-
-## v0.7.0: spatial profiles
-
-Version 0.7.0 adds ordered genomic loci, rearrangement-interval quartet
-profiles, and a pulse-hybridization spatial comparator. The primary spatial
-figures are analogous to empirical chromosome-wide quartet-support plots:
-local `q1(x)`, `q2(x)`, and `q3(x)` tracks are plotted against genomic
-position, with either a rearrangement interval or hybrid ancestry tracts shown
-on the same chromosome axis.
-
-The scientific target is spatial identifiability. Genome-averaged quartet
-counts can be non-identifying when two mechanisms produce the same average
-quartet vector. Ordered profiles can contain additional information through the
-alignment of local quartet support with rearrangement breakpoints, orientation,
-recombination suppression, and arrangement-state partition. Localization alone
-is not claimed to uniquely identify MSRC, because introgression/network models
-can also generate spatial ancestry patterns. The hybridization comparator is
-intended to enable experiments where `qbar_MSRC ~= qbar_HYB` while ordered
-profiles may differ:
-
-```text
-q_MSRC(x) != q_HYB(x)
-```
+Release notes are maintained in [CHANGELOG.md](CHANGELOG.md).
