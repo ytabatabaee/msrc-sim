@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from math import sqrt
 from typing import Any, Callable, Iterable, Mapping
 
 import numpy as np
@@ -61,12 +62,28 @@ def contribution_weights(
         return [1.0] * len(rows)
     if strategy == "oracle_filter":
         return [0.0 if bool(row.get("is_rearranged", False)) else 1.0 for row in rows]
-    if strategy == "block_collapse":
+    if strategy in {"block_collapse", "genealogy_block_collapse"}:
         counts: dict[int, int] = {}
         for row in rows:
             block_id = int(row["block_id"])
             counts[block_id] = counts.get(block_id, 0) + 1
         return [1.0 / counts[int(row["block_id"])] for row in rows]
+    if strategy == "rearrangement_interval_collapse":
+        counts: dict[tuple[str, str], int] = {}
+        for row in rows:
+            if bool(row.get("is_rearranged", False)):
+                key = ("rearrangement", str(row.get("rearrangement_id", "")))
+            else:
+                key = ("background_block", str(row["block_id"]))
+            counts[key] = counts.get(key, 0) + 1
+        weights = []
+        for row in rows:
+            if bool(row.get("is_rearranged", False)):
+                key = ("rearrangement", str(row.get("rearrangement_id", "")))
+            else:
+                key = ("background_block", str(row["block_id"]))
+            weights.append(1.0 / counts[key])
+        return weights
     if strategy == "soft_weight":
         if soft_weight is None:
             def soft_weight(row: Mapping[str, Any]) -> float:
@@ -78,7 +95,7 @@ def contribution_weights(
                     return 1.0 - float(row["p_msrc"])
                 return 0.0 if bool(row.get("is_rearranged", False)) else 1.0
         return [float(soft_weight(row)) for row in rows]
-    raise ValueError("strategy must be all_windows, oracle_filter, block_collapse, or soft_weight")
+    raise ValueError("strategy must be all_windows, oracle_filter, genealogy_block_collapse, rearrangement_interval_collapse, or soft_weight")
 
 
 def infer_with_strategy(
@@ -96,3 +113,22 @@ def support_fraction(result: QuartetInferenceResult, topology: int) -> float:
     if result.total_weight <= 0.0:
         return float("nan")
     return float(result.support[int(topology)] / result.total_weight)
+
+
+def binomial_confidence_interval(successes: int, trials: int, z: float = 1.959963984540054) -> tuple[float, float]:
+    if trials <= 0:
+        return (float("nan"), float("nan"))
+    p = successes / trials
+    denom = 1.0 + z * z / trials
+    center = (p + z * z / (2.0 * trials)) / denom
+    half = z * sqrt((p * (1.0 - p) + z * z / (4.0 * trials)) / trials) / denom
+    return (max(0.0, center - half), min(1.0, center + half))
+
+
+def theoretical_flip_threshold(t1_msc: float, t2_msc: float, t1_msrc: float, t2_msrc: float) -> float | None:
+    delta_msc = float(t1_msc) - float(t2_msc)
+    beta = float(t2_msrc) - float(t1_msrc)
+    denom = delta_msc + beta
+    if delta_msc <= 0.0 or beta <= 0.0 or denom <= 0.0:
+        return None
+    return delta_msc / denom

@@ -135,11 +135,34 @@ Linked mode writes `spatial_genealogies.csv` with at least
 `spatial_gene_trees.nwk` for external species-tree tools.
 
 The species-tree robustness benchmark compares all-window quartet support,
-oracle filtering of rearranged blocks, block collapse where each linked block
-has total weight 1, and soft weights such as `w_l = 1 - P_l(MSRC)`. For four
-taxa the package uses exact maximum quartet support internally as the minimal
-proxy for ASTRAL, and also exports Newick gene trees so ASTRAL can be run
-externally later.
+oracle filtering of rearranged blocks, genealogy-block collapse where each
+`block_id` has total weight 1, rearrangement-interval collapse where each
+rearrangement interval has bounded total weight 1 even if it contains many
+genealogy blocks, and soft weights such as `w_l = 1 - P_l(MSRC)`. Soft MSRC
+probabilities can be oracle 0/1 labels for debugging or simulated noisy
+probabilities controlled by sensitivity, specificity, and noise. For four taxa
+the package uses exact maximum quartet support internally as the minimal proxy
+for ASTRAL, and also exports Newick gene trees so ASTRAL can be run externally
+later.
+
+The benchmark defaults to an independent replicated sweep with fractions
+`0.00, 0.05, ..., 0.60` and 200 replicates per fraction:
+
+```bash
+msrc-sim-species-tree-robustness --output-dir robustness_output
+```
+
+Use paired mode to fix a baseline MSC chromosome realization within each
+replicate and replace increasing central fractions with MSRC signal:
+
+```bash
+msrc-sim-species-tree-robustness --mode paired --output-dir robustness_paired
+```
+
+Outputs include `species_tree_robustness.csv`,
+`species_tree_recovery.csv`, `spatial_genealogies.csv`, `gene_trees.nwk`,
+`quartet_support_vs_rearrangement_fraction.pdf`, and
+`species_tree_recovery_vs_rearrangement_fraction.pdf`.
 
 Equivalent script wrappers are provided in `scripts/`:
 

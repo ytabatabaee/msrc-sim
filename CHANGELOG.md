@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.8.1
+- Refine the species-tree robustness benchmark with proper replicated sweeps
+  over rearrangement fractions from 0.00 to 0.60 in 0.05 increments.
+- Separate genealogy-block collapse from rearrangement-interval collapse:
+  `genealogy_block_collapse` gives each `block_id` total weight 1, while
+  `rearrangement_interval_collapse` gives each rearrangement interval bounded
+  total weight 1 even when it contains multiple genealogy blocks.
+- Add genuinely soft MSRC-aware weights using `w_l = 1 - P_l(MSRC)`, with
+  oracle 0/1 probabilities for debugging and noisy probability simulation via
+  sensitivity, specificity, and Gaussian noise controls.
+- Add paired benchmark mode that keeps one baseline MSC chromosome realization
+  fixed while increasing central fractions are replaced by MSRC signal.
+- Add recovery summaries and PDF figures for weighted quartet support and
+  `P(inferred quartet = T1)` with constrained binomial confidence intervals and
+  the theoretical flip threshold when available.
+
 ## 0.8.0
 - Add opt-in linked spatial genealogies with real bp coordinates, ordered windows,
   contiguous block IDs, rearrangement intervals, and rearrangement-specific
