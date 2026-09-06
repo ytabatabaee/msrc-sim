@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.8.3
+- Replace deterministic benchmark genealogy-block lengths with stochastic
+  Poisson/exponential breakpoint sampling while preserving
+  `rho_inside = kappa * rho_background`.
+- Keep rearrangement interval starts and ends as structural boundaries without
+  forcing internal one-window blocks.
+- Add per-replicate and aggregate linkage diagnostics for block counts,
+  mean/median block length, breakpoint density, inside/outside density ratio,
+  expected `kappa`, and rearrangement intervals with 1, 2, or 3+ genealogy
+  blocks.
+- Preserve MSRC/MSC quartet marginal draws, robustness strategies, and existing
+  CLI defaults.
+
 ## 0.8.2
 - Fix the linked spatial benchmark block process so `kappa` is interpreted as a
   multiplier on the rearranged genealogy-breakpoint rate. Expected rearranged

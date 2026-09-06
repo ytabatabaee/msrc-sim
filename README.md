@@ -117,6 +117,11 @@ rearrangement is approximately `E[L_bg] / kappa`. The interval start and end are
 structural boundaries, but internal rearranged windows are not forced to be
 separate blocks.
 
+In v0.8.3, benchmark genealogy blocks are stochastic: breakpoint distances are
+sampled from the equivalent Poisson/exponential process, so block coordinates
+vary across independent replicates while preserving the same `kappa` rate
+multiplier.
+
 This is a piecewise-correlated genealogy process, not a full ARG. Dense windows
 within one `block_id` are correlated observations, not independent replicates.
 
@@ -170,7 +175,11 @@ msrc-sim-species-tree-robustness --mode paired --output-dir robustness_paired
 Outputs include `species_tree_robustness.csv`,
 `species_tree_recovery.csv`, `spatial_genealogies.csv`, `gene_trees.nwk`,
 `quartet_support_vs_rearrangement_fraction.pdf`, and
-`species_tree_recovery_vs_rearrangement_fraction.pdf`.
+`species_tree_recovery_vs_rearrangement_fraction.pdf`. The benchmark also writes
+`spatial_linkage_diagnostics.csv` and
+`spatial_linkage_diagnostic_summary.csv` with inside/outside block counts,
+mean/median block lengths, breakpoint densities, observed density ratios, and
+rearrangement interval block-count categories.
 
 Equivalent script wrappers are provided in `scripts/`:
 

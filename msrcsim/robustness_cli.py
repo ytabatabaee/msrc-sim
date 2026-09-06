@@ -9,6 +9,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from .analytic import TOPOLOGY_NAMES
+from .genomic import GenomicInterval
+from .linked_spatial import generate_genealogy_breakpoints
 from .model_fitting import msc_probabilities
 from .robustness import (
     binomial_confidence_interval,
@@ -39,12 +41,24 @@ RECOVERY_FIELDS = [
 ]
 GENEALOGY_FIELDS = [
     "rearrangement_fraction", "replicate_id", "window_id", "chrom", "start",
-    "end", "midpoint", "block_id", "topology", "topology_index",
+    "end", "midpoint", "block_id", "block_start", "block_end", "topology", "topology_index",
     "is_rearranged", "rearrangement_id", "msrc_probability", "weight",
 ]
 LINKAGE_DIAGNOSTIC_FIELDS = [
     "rearrangement_fraction", "replicate_id", "region", "num_windows",
-    "num_genealogy_blocks", "mean_block_length_bp", "breakpoint_density_per_bp",
+    "num_genealogy_blocks", "mean_block_length_bp", "median_block_length_bp",
+    "breakpoint_density_per_bp", "observed_inside_outside_rate_ratio", "expected_kappa",
+    "fraction_rearrangement_intervals_with_1_block",
+    "fraction_rearrangement_intervals_with_2_blocks",
+    "fraction_rearrangement_intervals_with_3plus_blocks",
+]
+LINKAGE_SUMMARY_FIELDS = [
+    "rearrangement_fraction", "region", "replicates", "mean_num_genealogy_blocks",
+    "mean_block_length_bp", "median_block_length_bp", "breakpoint_density_per_bp",
+    "observed_inside_outside_rate_ratio", "expected_kappa",
+    "fraction_rearrangement_intervals_with_1_block",
+    "fraction_rearrangement_intervals_with_2_blocks",
+    "fraction_rearrangement_intervals_with_3plus_blocks",
 ]
 
 
@@ -105,30 +119,131 @@ def _assign_background(
     block_windows: int,
     rng: np.random.Generator,
 ) -> list[dict[str, Any]]:
+    if not rows:
+        return []
+    length = max(float(row["end"]) for row in rows)
+    chrom = str(rows[0]["chrom"])
+    window_size = length / len(rows)
+    background_rate = 1.0 / (max(1, block_windows) * window_size)
+    blocks = _sample_background_blocks(chrom=chrom, length=length, background_rate=background_rate, q_msc=q_msc, rng=rng)
     out = []
-    current_key = None
-    block_topology = 0
+    seen_blocks: set[int] = set()
     for row in rows:
-        key = int(row["window_id"]) // max(1, block_windows)
-        if key != current_key:
-            current_key = key
-            block_topology = int(rng.choice(3, p=q_msc))
+        block = _block_at(blocks, float(row["midpoint"]))
+        block_idx = blocks.index(block)
         item = dict(row)
-        item["base_block_key"] = key
-        item["base_topology_index"] = block_topology
+        item["base_block_key"] = block_idx
+        item["base_block_start"] = float(block["start"])
+        item["base_block_end"] = float(block["end"])
+        item["base_block_first"] = block_idx not in seen_blocks
+        item["base_topology_index"] = int(block["topology_index"])
+        seen_blocks.add(block_idx)
         out.append(item)
     return out
 
 
-def _inside_block_windows(block_windows: int, msrc_block_windows: int | None, kappa: float) -> int:
-    if not (0.0 <= kappa <= 1.0):
-        raise ValueError("kappa must be between 0 and 1")
-    if kappa == 0.0:
-        scaled = 10**12
-    else:
-        scaled = int(round(max(1, block_windows) / kappa))
-    legacy_floor = 1 if msrc_block_windows is None else int(msrc_block_windows)
-    return max(1, legacy_floor, scaled)
+def _sample_blocks(
+    *,
+    chrom: str,
+    length: float,
+    intervals: list[GenomicInterval],
+    background_rate: float,
+    kappa: float,
+    q_msc: np.ndarray,
+    q_msrc: np.ndarray,
+    rng: np.random.Generator,
+) -> list[dict[str, Any]]:
+    breakpoints = generate_genealogy_breakpoints(length, intervals, background_rate, kappa, rng)
+    blocks = []
+    for start, end in zip(breakpoints, breakpoints[1:]):
+        midpoint = (start + end) / 2.0
+        interval = next((item for item in intervals if item.contains(midpoint)), None)
+        is_rearranged = interval is not None
+        topology = int(rng.choice(3, p=q_msrc if is_rearranged else q_msc))
+        blocks.append({
+            "chrom": chrom,
+            "start": float(start),
+            "end": float(end),
+            "is_rearranged": bool(is_rearranged),
+            "rearrangement_id": interval.interval_id if interval else "",
+            "topology_index": topology,
+        })
+    return blocks
+
+
+def _sample_background_blocks(
+    *,
+    chrom: str,
+    length: float,
+    background_rate: float,
+    q_msc: np.ndarray,
+    rng: np.random.Generator,
+) -> list[dict[str, Any]]:
+    breakpoints = generate_genealogy_breakpoints(length, [], background_rate, 1.0, rng)
+    blocks = []
+    for start, end in zip(breakpoints, breakpoints[1:]):
+        blocks.append({
+            "chrom": chrom,
+            "start": float(start),
+            "end": float(end),
+            "is_rearranged": False,
+            "rearrangement_id": "",
+            "topology_index": int(rng.choice(3, p=q_msc)),
+        })
+    return blocks
+
+
+def _block_at(blocks: list[dict[str, Any]], position: float) -> dict[str, Any]:
+    starts = np.asarray([float(block["start"]) for block in blocks], dtype=float)
+    idx = int(np.searchsorted(starts, position, side="right") - 1)
+    return blocks[min(max(idx, 0), len(blocks) - 1)]
+
+
+def _split_baseline_blocks(
+    baseline_blocks: list[dict[str, Any]],
+    intervals: list[GenomicInterval],
+    q_msrc: np.ndarray,
+    rng: np.random.Generator,
+    background_rate: float,
+    kappa: float,
+    length: float,
+) -> list[dict[str, Any]]:
+    if not intervals:
+        return [dict(block) for block in baseline_blocks]
+    points = {0.0, float(length)}
+    for block in baseline_blocks:
+        for point in (float(block["start"]), float(block["end"])):
+            if not any(interval.start < point < interval.end for interval in intervals):
+                points.add(point)
+    for interval in intervals:
+        points.add(interval.start)
+        points.add(interval.end)
+        inside_bps = generate_genealogy_breakpoints(interval.end - interval.start, [], background_rate * kappa, 1.0, rng)
+        for bp in inside_bps[1:-1]:
+            points.add(interval.start + bp)
+    ordered = sorted(points)
+    out = []
+    for start, end in zip(ordered, ordered[1:]):
+        midpoint = (start + end) / 2.0
+        interval = next((item for item in intervals if item.contains(midpoint)), None)
+        if interval is None:
+            base = _block_at(baseline_blocks, midpoint)
+            topology = int(base["topology_index"])
+            rearrangement_id = ""
+            is_rearranged = False
+        else:
+            topology = int(rng.choice(3, p=q_msrc))
+            rearrangement_id = interval.interval_id
+            is_rearranged = True
+        out.append({
+            "chrom": baseline_blocks[0]["chrom"],
+            "start": float(start),
+            "end": float(end),
+            "is_rearranged": is_rearranged,
+            "rearrangement_id": rearrangement_id,
+            "topology_index": topology,
+        })
+    return out
 
 
 def _rows_for_fraction(
@@ -140,7 +255,6 @@ def _rows_for_fraction(
     windows: int,
     block_windows: int,
     msrc_block_windows: int,
-    kappa: float = 0.25,
     rng: np.random.Generator,
     q_msc: np.ndarray,
     q_msrc: np.ndarray,
@@ -148,40 +262,66 @@ def _rows_for_fraction(
     soft_sensitivity: float,
     soft_specificity: float,
     soft_noise_sd: float,
+    kappa: float = 0.25,
     baseline_rows: list[dict[str, Any]] | None = None,
 ) -> list[dict[str, Any]]:
-    skeleton = baseline_rows if baseline_rows is not None else _assign_background(
-        _make_window_skeleton(chrom, length, windows),
-        q_msc=q_msc,
-        block_windows=block_windows,
-        rng=rng,
-    )
+    skeleton = baseline_rows if baseline_rows is not None else _make_window_skeleton(chrom, length, windows)
     rearranged_windows = int(round(windows * fraction))
     start_window = max(0, (windows - rearranged_windows) // 2)
     end_window = start_window + rearranged_windows
-    inside_block_windows = _inside_block_windows(block_windows, msrc_block_windows, kappa)
+    window_size = length / windows
+    background_rate = 1.0 / (max(1, block_windows) * window_size)
+    interval_start = start_window * window_size
+    interval_end = end_window * window_size
+    intervals = []
+    if interval_end > interval_start:
+        intervals.append(GenomicInterval(chrom, interval_start, interval_end, "central_msrc_interval"))
+    if baseline_rows is None:
+        blocks = _sample_blocks(
+            chrom=chrom,
+            length=length,
+            intervals=intervals,
+            background_rate=background_rate,
+            kappa=kappa,
+            q_msc=q_msc,
+            q_msrc=q_msrc,
+            rng=rng,
+        )
+    elif baseline_rows and "base_block_start" in baseline_rows[0]:
+        baseline_blocks = [
+            {
+                "chrom": chrom,
+                "start": float(row["base_block_start"]),
+                "end": float(row["base_block_end"]),
+                "topology_index": int(row["base_topology_index"]),
+            }
+            for row in baseline_rows
+            if bool(row.get("base_block_first", False))
+        ]
+        blocks = _split_baseline_blocks(baseline_blocks, intervals, q_msrc, rng, background_rate, kappa, length)
+    else:
+        blocks = _sample_blocks(
+            chrom=chrom,
+            length=length,
+            intervals=intervals,
+            background_rate=background_rate,
+            kappa=kappa,
+            q_msc=q_msc,
+            q_msrc=q_msrc,
+            rng=rng,
+        )
     rows: list[dict[str, Any]] = []
-    current_key: tuple[str, int] | None = None
-    block_id = -1
-    block_topology = 0
+    used_blocks: dict[int, int] = {}
     for base in skeleton:
         window_id = int(base["window_id"])
-        is_rearranged = start_window <= window_id < end_window
-        if is_rearranged:
-            local_index = window_id - start_window
-            key = ("rearrangement", local_index // inside_block_windows)
-            if key != current_key:
-                block_id += 1
-                current_key = key
-                block_topology = int(rng.choice(3, p=q_msrc))
-            rearrangement_id = "central_msrc_interval"
-        else:
-            key = ("background", int(base["base_block_key"]))
-            if key != current_key:
-                block_id += 1
-                current_key = key
-            block_topology = int(base["base_topology_index"])
-            rearrangement_id = ""
+        block_idx = blocks.index(_block_at(blocks, float(base["midpoint"])))
+        if block_idx not in used_blocks:
+            used_blocks[block_idx] = len(used_blocks)
+        block = blocks[block_idx]
+        block_id = used_blocks[block_idx]
+        is_rearranged = bool(block["is_rearranged"])
+        block_topology = int(block["topology_index"])
+        rearrangement_id = str(block["rearrangement_id"])
         p_msrc = _sample_probabilities(
             is_rearranged,
             mode=soft_probability_mode,
@@ -199,6 +339,8 @@ def _rows_for_fraction(
             "end": float(base["end"]),
             "midpoint": float(base["midpoint"]),
             "block_id": int(block_id),
+            "block_start": float(block["start"]),
+            "block_end": float(block["end"]),
             "topology": TOPOLOGY_NAMES[block_topology],
             "topology_index": int(block_topology),
             "is_rearranged": bool(is_rearranged),
@@ -247,27 +389,93 @@ def _summarize_replicate(
 
 def _linkage_diagnostics(rows: list[dict[str, Any]], *, fraction: float, replicate_id: int) -> list[dict[str, Any]]:
     out = []
+    by_region: dict[str, dict[str, Any]] = {}
+    ordered_rows = sorted(rows, key=lambda row: int(row["window_id"]))
     for region, rearranged in (("inside", True), ("outside", False)):
         chunk = [row for row in rows if bool(row["is_rearranged"]) is rearranged]
         block_ids = sorted({int(row["block_id"]) for row in chunk})
         if chunk:
             length = sum(float(row["end"]) - float(row["start"]) for row in chunk)
             blocks = len(block_ids)
-            breakpoints = max(0, blocks - 1)
-            mean_length = length / blocks if blocks else float("nan")
+            breakpoints = 0
+            run_blocks: set[int] = set()
+            for row in ordered_rows:
+                if bool(row["is_rearranged"]) is rearranged:
+                    run_blocks.add(int(row["block_id"]))
+                elif run_blocks:
+                    breakpoints += max(0, len(run_blocks) - 1)
+                    run_blocks = set()
+            if run_blocks:
+                breakpoints += max(0, len(run_blocks) - 1)
+            block_lengths = [
+                max(float(row["block_end"]) - float(row["block_start"]) for row in chunk if int(row["block_id"]) == block_id)
+                for block_id in block_ids
+            ]
+            mean_length = float(np.mean(block_lengths)) if block_lengths else float("nan")
+            median_length = float(np.median(block_lengths)) if block_lengths else float("nan")
             density = breakpoints / length if length > 0.0 else float("nan")
         else:
             blocks = 0
             mean_length = float("nan")
+            median_length = float("nan")
             density = float("nan")
-        out.append({
+        by_region[region] = {
             "rearrangement_fraction": float(fraction),
             "replicate_id": int(replicate_id),
             "region": region,
             "num_windows": int(len(chunk)),
             "num_genealogy_blocks": int(blocks),
             "mean_block_length_bp": float(mean_length),
+            "median_block_length_bp": float(median_length),
             "breakpoint_density_per_bp": float(density),
+        }
+    inside_density = float(by_region["inside"]["breakpoint_density_per_bp"])
+    outside_density = float(by_region["outside"]["breakpoint_density_per_bp"])
+    ratio = inside_density / outside_density if np.isfinite(inside_density) and np.isfinite(outside_density) and outside_density > 0.0 else float("nan")
+    interval_counts: dict[str, set[int]] = {}
+    for row in rows:
+        if row["rearrangement_id"]:
+            interval_counts.setdefault(str(row["rearrangement_id"]), set()).add(int(row["block_id"]))
+    counts = [len(value) for value in interval_counts.values()]
+    denom = len(counts)
+    fractions = {
+        "fraction_rearrangement_intervals_with_1_block": sum(value == 1 for value in counts) / denom if denom else float("nan"),
+        "fraction_rearrangement_intervals_with_2_blocks": sum(value == 2 for value in counts) / denom if denom else float("nan"),
+        "fraction_rearrangement_intervals_with_3plus_blocks": sum(value >= 3 for value in counts) / denom if denom else float("nan"),
+    }
+    expected = ""
+    for row in by_region.values():
+        row["observed_inside_outside_rate_ratio"] = ratio
+        row["expected_kappa"] = expected
+        row.update(fractions)
+        out.append(row)
+    return out
+
+
+def _aggregate_linkage_diagnostics(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    def mean_or_nan(values: list[float]) -> float:
+        finite = [value for value in values if np.isfinite(value)]
+        return float(np.mean(finite)) if finite else float("nan")
+
+    out = []
+    keys = sorted({(float(row["rearrangement_fraction"]), row["region"]) for row in rows})
+    for fraction, region in keys:
+        chunk = [row for row in rows if float(row["rearrangement_fraction"]) == fraction and row["region"] == region]
+        finite_ratio = [float(row["observed_inside_outside_rate_ratio"]) for row in chunk if row["observed_inside_outside_rate_ratio"] != "" and np.isfinite(float(row["observed_inside_outside_rate_ratio"]))]
+        expected = next((row["expected_kappa"] for row in chunk if row["expected_kappa"] != ""), "")
+        out.append({
+            "rearrangement_fraction": fraction,
+            "region": region,
+            "replicates": len(chunk),
+            "mean_num_genealogy_blocks": float(np.mean([float(row["num_genealogy_blocks"]) for row in chunk])),
+            "mean_block_length_bp": mean_or_nan([float(row["mean_block_length_bp"]) for row in chunk]),
+            "median_block_length_bp": mean_or_nan([float(row["median_block_length_bp"]) for row in chunk]),
+            "breakpoint_density_per_bp": mean_or_nan([float(row["breakpoint_density_per_bp"]) for row in chunk]),
+            "observed_inside_outside_rate_ratio": float(np.mean(finite_ratio)) if finite_ratio else float("nan"),
+            "expected_kappa": expected,
+            "fraction_rearrangement_intervals_with_1_block": mean_or_nan([float(row["fraction_rearrangement_intervals_with_1_block"]) for row in chunk]),
+            "fraction_rearrangement_intervals_with_2_blocks": mean_or_nan([float(row["fraction_rearrangement_intervals_with_2_blocks"]) for row in chunk]),
+            "fraction_rearrangement_intervals_with_3plus_blocks": mean_or_nan([float(row["fraction_rearrangement_intervals_with_3plus_blocks"]) for row in chunk]),
         })
     return out
 
@@ -332,9 +540,13 @@ def run_benchmark(args: argparse.Namespace) -> Path:
             )
             all_genealogies.extend(rows)
             result_rows.extend(_summarize_replicate(rows, fraction=fraction, replicate_id=replicate_id, mode=args.mode, threshold=threshold))
-            diagnostic_rows.extend(_linkage_diagnostics(rows, fraction=fraction, replicate_id=replicate_id))
+            replicate_diagnostics = _linkage_diagnostics(rows, fraction=fraction, replicate_id=replicate_id)
+            for row in replicate_diagnostics:
+                row["expected_kappa"] = float(args.kappa)
+            diagnostic_rows.extend(replicate_diagnostics)
     recovery_rows = _aggregate_recovery(result_rows)
-    _write_outputs(out, all_genealogies, result_rows, recovery_rows, diagnostic_rows)
+    diagnostic_summary_rows = _aggregate_linkage_diagnostics(diagnostic_rows)
+    _write_outputs(out, all_genealogies, result_rows, recovery_rows, diagnostic_rows, diagnostic_summary_rows)
     _plot_support(result_rows, out / "quartet_support_vs_rearrangement_fraction.pdf", threshold)
     _plot_recovery(recovery_rows, out / "species_tree_recovery_vs_rearrangement_fraction.pdf", threshold)
     return out
@@ -346,6 +558,7 @@ def _write_outputs(
     result_rows: list[dict[str, Any]],
     recovery_rows: list[dict[str, Any]],
     diagnostic_rows: list[dict[str, Any]],
+    diagnostic_summary_rows: list[dict[str, Any]],
 ) -> None:
     with (out / "spatial_genealogies.csv").open("w", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=GENEALOGY_FIELDS)
@@ -363,6 +576,10 @@ def _write_outputs(
         writer = csv.DictWriter(handle, fieldnames=LINKAGE_DIAGNOSTIC_FIELDS)
         writer.writeheader()
         writer.writerows(diagnostic_rows)
+    with (out / "spatial_linkage_diagnostic_summary.csv").open("w", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=LINKAGE_SUMMARY_FIELDS)
+        writer.writeheader()
+        writer.writerows(diagnostic_summary_rows)
     with (out / "gene_trees.nwk").open("w") as handle:
         for row in genealogies:
             handle.write(_newick_for_topology(int(row["topology_index"])) + "\n")
@@ -433,7 +650,7 @@ def _plot_recovery(rows: list[dict[str, Any]], path: Path, threshold: float | No
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run the v0.8.1 linked-spatial species-tree robustness benchmark")
+    parser = argparse.ArgumentParser(description="Run the linked-spatial species-tree robustness benchmark")
     parser.add_argument("--output-dir", default="robustness_output")
     parser.add_argument("--seed", type=int, default=1)
     parser.add_argument("--mode", choices=["independent", "paired"], default="independent")

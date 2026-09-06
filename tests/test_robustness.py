@@ -4,7 +4,7 @@ import numpy as np
 
 from msrcsim.model_fitting import msc_probabilities
 from msrcsim.robustness import binomial_confidence_interval, contribution_weights, infer_with_strategy
-from msrcsim.robustness_cli import _assign_background, _inside_block_windows, _make_window_skeleton, _rows_for_fraction
+from msrcsim.robustness_cli import _assign_background, _linkage_diagnostics, _make_window_skeleton, _rows_for_fraction
 
 
 def _constructed_rows():
@@ -123,7 +123,53 @@ def test_rows_for_fraction_reproducible_by_seed():
     assert a == b
 
 
-def test_benchmark_kappa_extends_rearranged_block_persistence():
-    assert _inside_block_windows(20, 1, 1.0) == 20
-    assert _inside_block_windows(20, 1, 0.5) == 40
-    assert _inside_block_windows(20, 1, 0.25) == 80
+def test_replicate_block_coordinates_differ_across_seeds():
+    q_msc = msc_probabilities(0, 1.2)
+    q_msrc = np.asarray([0.025, 0.95, 0.025])
+    kwargs = dict(
+        fraction=0.5, replicate_id=0, chrom="chr1", length=1000.0, windows=50,
+        block_windows=5, msrc_block_windows=1, q_msc=q_msc, q_msrc=q_msrc,
+        soft_probability_mode="oracle", soft_sensitivity=1.0, soft_specificity=1.0,
+        soft_noise_sd=0.0, kappa=0.5,
+    )
+    a = _rows_for_fraction(rng=np.random.default_rng(1), **kwargs)
+    b = _rows_for_fraction(rng=np.random.default_rng(2), **kwargs)
+    coords_a = {(row["block_id"], round(row["block_start"], 6), round(row["block_end"], 6)) for row in a}
+    coords_b = {(row["block_id"], round(row["block_start"], 6), round(row["block_end"], 6)) for row in b}
+    assert coords_a != coords_b
+
+
+def test_benchmark_density_ratio_tracks_kappa_statistically():
+    q_msc = msc_probabilities(0, 1.2)
+    q_msrc = np.asarray([0.025, 0.95, 0.025])
+    ratios = []
+    for seed in range(160):
+        rows = _rows_for_fraction(
+            0.5, replicate_id=seed, chrom="chr1", length=10000.0, windows=200,
+            block_windows=4, msrc_block_windows=1, rng=np.random.default_rng(seed),
+            q_msc=q_msc, q_msrc=q_msrc, soft_probability_mode="oracle",
+            soft_sensitivity=1.0, soft_specificity=1.0, soft_noise_sd=0.0,
+            kappa=0.35,
+        )
+        diag = _linkage_diagnostics(rows, fraction=0.5, replicate_id=seed)
+        ratio = float(diag[0]["observed_inside_outside_rate_ratio"])
+        if np.isfinite(ratio):
+            ratios.append(ratio)
+    assert abs(float(np.mean(ratios)) - 0.35) < 0.15
+
+
+def test_benchmark_kappa_near_zero_usually_one_rearranged_block():
+    q_msc = msc_probabilities(0, 1.2)
+    q_msrc = np.asarray([0.025, 0.95, 0.025])
+    one_block = 0
+    for seed in range(80):
+        rows = _rows_for_fraction(
+            0.5, replicate_id=seed, chrom="chr1", length=10000.0, windows=200,
+            block_windows=5, msrc_block_windows=1, rng=np.random.default_rng(seed),
+            q_msc=q_msc, q_msrc=q_msrc, soft_probability_mode="oracle",
+            soft_sensitivity=1.0, soft_specificity=1.0, soft_noise_sd=0.0,
+            kappa=0.001,
+        )
+        inside_blocks = {row["block_id"] for row in rows if row["is_rearranged"]}
+        one_block += len(inside_blocks) == 1
+    assert one_block / 80 > 0.9

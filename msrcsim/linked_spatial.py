@@ -23,7 +23,8 @@ SPATIAL_GENEALOGY_FIELDS = [
 ]
 LINKAGE_DIAGNOSTIC_FIELDS = [
     "region", "num_windows", "num_genealogy_blocks", "mean_block_length_bp",
-    "breakpoint_density_per_bp",
+    "median_block_length_bp", "breakpoint_density_per_bp",
+    "observed_inside_outside_rate_ratio", "expected_kappa",
 ]
 
 
@@ -134,24 +135,44 @@ def generate_genealogy_breakpoints(
     return sorted(set(points + extra))
 
 
-def block_diagnostics(blocks: list[GenealogyBlock], rows: list[Mapping[str, Any]]) -> list[dict[str, Any]]:
+def block_diagnostics(blocks: list[GenealogyBlock], rows: list[Mapping[str, Any]], kappa: float | None = None) -> list[dict[str, Any]]:
     observed_ids = {int(row["block_id"]) for row in rows}
+    ordered_rows = sorted(rows, key=lambda row: int(row["window_id"]))
     row_counts = {
         "inside": sum(bool(row["is_rearranged"]) for row in rows),
         "outside": sum(not bool(row["is_rearranged"]) for row in rows),
     }
     out = []
+    by_region: dict[str, dict[str, Any]] = {}
     for region, rearranged in (("inside", True), ("outside", False)):
         chunk = [block for block in blocks if block.is_rearranged is rearranged and int(block.block_id) in observed_ids]
         total_length = sum(block.end - block.start for block in chunk)
-        breakpoints = max(0, len(chunk) - 1)
-        out.append({
+        breakpoints = 0
+        run_blocks: set[int] = set()
+        for row in ordered_rows:
+            if bool(row["is_rearranged"]) is rearranged:
+                run_blocks.add(int(row["block_id"]))
+            elif run_blocks:
+                breakpoints += max(0, len(run_blocks) - 1)
+                run_blocks = set()
+        if run_blocks:
+            breakpoints += max(0, len(run_blocks) - 1)
+        lengths = [block.end - block.start for block in chunk]
+        by_region[region] = {
             "region": region,
             "num_windows": int(row_counts[region]),
             "num_genealogy_blocks": int(len(chunk)),
             "mean_block_length_bp": float(total_length / len(chunk)) if chunk else float("nan"),
+            "median_block_length_bp": float(np.median(lengths)) if lengths else float("nan"),
             "breakpoint_density_per_bp": float(breakpoints / total_length) if total_length > 0.0 else float("nan"),
-        })
+        }
+    inside_density = float(by_region["inside"]["breakpoint_density_per_bp"])
+    outside_density = float(by_region["outside"]["breakpoint_density_per_bp"])
+    ratio = inside_density / outside_density if np.isfinite(inside_density) and np.isfinite(outside_density) and outside_density > 0.0 else float("nan")
+    for row in by_region.values():
+        row["observed_inside_outside_rate_ratio"] = ratio
+        row["expected_kappa"] = "" if kappa is None else float(kappa)
+        out.append(row)
     return out
 
 
@@ -228,7 +249,7 @@ def simulate_linked_spatial(config: Mapping[str, Any]) -> Path:
             "newick": block.newick,
         })
     validate_contiguous_block_ids(rows)
-    diagnostics = block_diagnostics(list(observed_blocks.values()), rows)
+    diagnostics = block_diagnostics(list(observed_blocks.values()), rows, _kappa(config))
 
     out = Path((config.get("output", {}) or {}).get("directory", "linked_spatial_output"))
     out.mkdir(parents=True, exist_ok=True)
@@ -254,7 +275,7 @@ def simulate_linked_spatial(config: Mapping[str, Any]) -> Path:
             writer.writeheader()
             writer.writerows(metadata)
     summary = {
-        "version": "0.8.2",
+        "version": "0.8.3",
         "mode": "spatial",
         "linked_loci_model": True,
         "spatial_model_note": (
