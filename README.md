@@ -81,6 +81,7 @@ that history figure automatically with `output.make_history_plot: true`.
 
 ```bash
 msrc-sim-spatial --config examples/spatial_inversion.yaml
+msrc-sim-species-tree-robustness --output-dir robustness_output
 msrc-sim-plot-spatial --input spatial_output --format png
 msrc-sim-spatial-summarize --input loci.csv --breakpoints 25000000,65000000 --window-loci 50 --step-loci 10 --output summary_dir
 msrc-sim-hybridization --config examples/pulse_hybridization.yaml
@@ -98,6 +99,47 @@ side-by-side MSRC versus hybridization spatial comparison figure. When the
 scientific question requires comparable bag-of-genes outcomes, use the matcher
 to select a precomputed hybridization run with a marginal quartet vector close
 to the MSRC run before plotting.
+
+## Linked spatial genealogies and MSRC-aware species-tree inference
+
+Version 0.8.0 adds an opt-in linked spatial layer. Existing spatial configs keep
+their v0.7 behavior unless `linked_spatial.enabled: true` is present. Linked
+mode uses real bp coordinates, ordered windows, one or more rearrangement
+intervals, and contiguous `block_id` values. Outside rearrangements it calls the
+ordinary MSC marginal genealogy generator; inside rearrangements it calls the
+current MSRC marginal genealogy generator. Genealogy breakpoints are sampled
+along the chromosome, with the breakpoint rate inside rearrangements multiplied
+by `kappa` (`0 <= kappa <= 1`).
+
+This is a piecewise-correlated genealogy process, not a full ARG. Dense windows
+within one `block_id` are correlated observations, not independent replicates.
+
+Minimal linked spatial additions to a spatial config:
+
+```yaml
+linked_spatial:
+  enabled: true
+  chrom: chr1
+  kappa: 0.1
+  breakpoint_rate_per_bp: 1.0e-7
+  rearrangements:
+    - id: inv_1
+      start: 25000000
+      end: 65000000
+  windows:
+    count: 500
+```
+
+Linked mode writes `spatial_genealogies.csv` with at least
+`chrom,start,end,midpoint,block_id,topology,is_rearranged,rearrangement_id`, plus
+`spatial_gene_trees.nwk` for external species-tree tools.
+
+The species-tree robustness benchmark compares all-window quartet support,
+oracle filtering of rearranged blocks, block collapse where each linked block
+has total weight 1, and soft weights such as `w_l = 1 - P_l(MSRC)`. For four
+taxa the package uses exact maximum quartet support internally as the minimal
+proxy for ASTRAL, and also exports Newick gene trees so ASTRAL can be run
+externally later.
 
 Equivalent script wrappers are provided in `scripts/`:
 

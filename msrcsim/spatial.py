@@ -91,6 +91,9 @@ def _write_frequency_history(out: Path, history: FrequencyHistory) -> None:
 
 
 def simulate_spatial(config: Mapping[str, Any]) -> Path:
+    from .linked_spatial import linked_spatial_enabled, simulate_linked_spatial
+    if linked_spatial_enabled(config):
+        return simulate_linked_spatial(config)
     validate_spatial_config(config)
     rng = np.random.default_rng(int(config.get("seed", 1)))
     tree = _tree_from_config(config)

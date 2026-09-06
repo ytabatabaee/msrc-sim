@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "msrc-sim"
-version = "0.7.0"
+version = "0.8.0"
 description = "Simulator for the Multi-Species Rearrangement Coalescent"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -31,6 +31,7 @@ msrc-sim-find-matched-hybridization = "msrcsim.spatial_match_cli:main"
 msrc-sim-match-hybridization = "msrcsim.hybridization_match_cli:main"
 msrc-sim-spatial-distinguishability = "msrcsim.spatial_distinguishability_cli:main"
 msrc-sim-spatial-identifiability = "msrcsim.spatial_identifiability_cli:main"
+msrc-sim-species-tree-robustness = "msrcsim.robustness_cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]

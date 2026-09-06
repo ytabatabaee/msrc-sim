@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.8.0
+- Add opt-in linked spatial genealogies with real bp coordinates, ordered windows,
+  contiguous block IDs, rearrangement intervals, and rearrangement-specific
+  genealogy-breakpoint suppression via `kappa`.
+- Preserve existing MSRC and MSC marginal genealogy simulators: linked mode
+  resamples only when entering a new piecewise-correlated block and is not a
+  full ARG.
+- Add MSRC-aware four-taxon species-tree robustness utilities and
+  `msrc-sim-species-tree-robustness` for all-window, oracle-filtered,
+  block-collapsed, and soft-weighted quartet support comparisons.
+- Export coordinate-level `spatial_genealogies.csv` and Newick gene-tree files
+  for later empirical/SBI features or external ASTRAL runs.
+
 ## 0.7.0
 - Add `msrc-sim-plot-history` for schematic Wright-Fisher frequency-history
   trees from existing `frequency_history.csv` output.
