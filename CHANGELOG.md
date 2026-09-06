@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.5
+- Add regression-based threshold validation with bootstrap intervals and an
+  independent-block statistical-consistency benchmark.
+
 ## 0.8.4
 - Add a backward-compatible parameter-grid validation layer for the v0.8.3
   linked-spatial robustness benchmark, including threshold, kappa calibration,

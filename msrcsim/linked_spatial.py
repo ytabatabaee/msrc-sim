@@ -275,7 +275,7 @@ def simulate_linked_spatial(config: Mapping[str, Any]) -> Path:
             writer.writeheader()
             writer.writerows(metadata)
     summary = {
-        "version": "0.8.4",
+        "version": "0.8.5",
         "mode": "spatial",
         "linked_loci_model": True,
         "spatial_model_note": (

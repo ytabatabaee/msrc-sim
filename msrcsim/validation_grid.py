@@ -31,6 +31,12 @@ THRESHOLD_SUMMARY_FIELDS = [
     "tau", "beta", "theory_threshold", "empirical_support_threshold",
     "empirical_recovery50_threshold", "abs_error", "n_replicates",
 ]
+THRESHOLD_REGRESSION_FIELDS = [
+    "tau", "beta", "theory_threshold",
+    "regression_threshold", "regression_ci_low", "regression_ci_high",
+    "interpolation_threshold",
+    "intercept", "slope", "r2", "abs_error", "n_replicates",
+]
 KAPPA_REPLICATE_FIELDS = [
     "seed", "replicate_id", "kappa", "rearrangement_fraction", "region",
     "num_windows", "num_genealogy_blocks", "mean_block_length_bp",
@@ -56,6 +62,10 @@ CORRECTION_SUMMARY_FIELDS = [
     "n_replicates", "recovery_probability", "ci_low", "ci_high",
     "regime",
 ]
+CONSISTENCY_SUMMARY_FIELDS = [
+    "tau", "beta", "theory_threshold", "regime", "epsilon", "n_blocks",
+    "strategy", "n_replicates", "recovery_probability", "ci_low", "ci_high",
+]
 
 
 def _parse_floats(text: str | None, default: Iterable[float]) -> list[float]:
@@ -77,6 +87,13 @@ def _write_csv(path: Path, fields: list[str], rows: list[dict[str, Any]]) -> Non
         writer = csv.DictWriter(handle, fieldnames=fields)
         writer.writeheader()
         writer.writerows({field: row.get(field, "") for field in fields} for row in rows)
+
+
+def _is_inside(value: float | None, xs: Iterable[float]) -> bool:
+    if value is None or not np.isfinite(value):
+        return False
+    vals = [float(x) for x in xs]
+    return min(vals) <= float(value) <= max(vals)
 
 
 def _cell_rows(
@@ -168,6 +185,104 @@ def summarize_threshold_grid(rows: list[dict[str, Any]]) -> list[dict[str, Any]]
             "empirical_support_threshold": "" if support_threshold is None else support_threshold,
             "empirical_recovery50_threshold": "" if recovery_threshold is None else recovery_threshold,
             "abs_error": "" if support_threshold is None else abs(support_threshold - theory),
+            "n_replicates": len({int(row["replicate_id"]) for row in chunk}),
+        })
+    return out
+
+
+def fit_margin_regression(xs: Iterable[float], ys: Iterable[float]) -> dict[str, float | None]:
+    x = np.asarray([float(value) for value in xs], dtype=float)
+    y = np.asarray([float(value) for value in ys], dtype=float)
+    if x.size != y.size or x.size < 2:
+        raise ValueError("regression threshold requires at least two paired points")
+    slope, intercept = np.polyfit(x, y, 1)
+    fitted = intercept + slope * x
+    ss_res = float(np.sum((y - fitted) ** 2))
+    ss_tot = float(np.sum((y - float(np.mean(y))) ** 2))
+    r2 = 1.0 if ss_tot == 0.0 and ss_res == 0.0 else 0.0 if ss_tot == 0.0 else 1.0 - ss_res / ss_tot
+    threshold = None if slope == 0.0 else float(-intercept / slope)
+    return {
+        "intercept": float(intercept),
+        "slope": float(slope),
+        "r2": float(r2),
+        "threshold": threshold,
+    }
+
+
+def _bootstrap_regression_threshold(
+    chunk: list[dict[str, Any]],
+    fractions: list[float],
+    *,
+    seed: int,
+    n_bootstrap: int,
+) -> tuple[float | None, float | None]:
+    if n_bootstrap <= 0:
+        return None, None
+    rng = np.random.default_rng(seed)
+    by_fraction = {
+        fraction: [float(row["support_margin_t1_minus_t2"]) for row in chunk if float(row["rearrangement_fraction"]) == fraction]
+        for fraction in fractions
+    }
+    draws = []
+    for _ in range(n_bootstrap):
+        means = []
+        for fraction in fractions:
+            values = np.asarray(by_fraction[fraction], dtype=float)
+            if values.size == 0:
+                means.append(float("nan"))
+            else:
+                means.append(float(np.mean(rng.choice(values, size=values.size, replace=True))))
+        if any(not np.isfinite(value) for value in means):
+            continue
+        fit = fit_margin_regression(fractions, means)
+        threshold = fit["threshold"]
+        if _is_inside(threshold, fractions):
+            draws.append(float(threshold))
+    if not draws:
+        return None, None
+    low, high = np.percentile(np.asarray(draws, dtype=float), [2.5, 97.5])
+    return float(low), float(high)
+
+
+def summarize_threshold_regression(
+    rows: list[dict[str, Any]],
+    *,
+    bootstrap_replicates: int = 500,
+    seed: int = 1,
+) -> list[dict[str, Any]]:
+    out = []
+    for cell_index, (tau, beta) in enumerate(sorted({(float(row["tau"]), float(row["beta"])) for row in rows})):
+        chunk = [row for row in rows if float(row["tau"]) == tau and float(row["beta"]) == beta]
+        fractions = sorted({float(row["rearrangement_fraction"]) for row in chunk})
+        margins = []
+        for fraction in fractions:
+            sub = [row for row in chunk if float(row["rearrangement_fraction"]) == fraction]
+            margins.append(float(np.mean([float(row["support_margin_t1_minus_t2"]) for row in sub])))
+        interpolation_threshold = interpolate_first_crossing(fractions, margins, 0.0)
+        fit = fit_margin_regression(fractions, margins)
+        raw_threshold = fit["threshold"]
+        regression_threshold = float(raw_threshold) if _is_inside(raw_threshold, fractions) else None
+        ci_low, ci_high = _bootstrap_regression_threshold(
+            chunk,
+            fractions,
+            seed=_seed(seed, 40, cell_index),
+            n_bootstrap=bootstrap_replicates,
+        )
+        theory = dominant_quartet_threshold(tau, beta)
+        if regression_threshold is None:
+            warnings.warn(f"regression threshold outside sampled grid for tau={tau}, beta={beta}", RuntimeWarning)
+        out.append({
+            "tau": tau,
+            "beta": beta,
+            "theory_threshold": theory,
+            "regression_threshold": "" if regression_threshold is None else regression_threshold,
+            "regression_ci_low": "" if ci_low is None else max(0.0, min(1.0, ci_low)),
+            "regression_ci_high": "" if ci_high is None else max(0.0, min(1.0, ci_high)),
+            "interpolation_threshold": "" if interpolation_threshold is None else interpolation_threshold,
+            "intercept": float(fit["intercept"]),
+            "slope": float(fit["slope"]),
+            "r2": float(fit["r2"]),
+            "abs_error": "" if regression_threshold is None else abs(regression_threshold - theory),
             "n_replicates": len({int(row["replicate_id"]) for row in chunk}),
         })
     return out
@@ -341,31 +456,132 @@ def run_correction_grid(args: argparse.Namespace) -> list[dict[str, Any]]:
     return out
 
 
+def _independent_block_rows(
+    *,
+    tau: float,
+    beta: float,
+    epsilon: float,
+    n_blocks: int,
+    rng: np.random.Generator,
+    soft_probability_mode: str,
+    soft_sensitivity: float,
+    soft_specificity: float,
+    soft_noise_sd: float,
+) -> list[dict[str, Any]]:
+    q_msc = msc_probabilities(0, tau)
+    q_msrc = msrc_probabilities_from_beta(beta)
+    n_rearranged = int(round(float(epsilon) * int(n_blocks)))
+    rows = []
+    for block_id in range(int(n_blocks)):
+        is_rearranged = block_id < n_rearranged
+        topology = int(rng.choice(3, p=q_msrc if is_rearranged else q_msc))
+        if soft_probability_mode == "oracle":
+            p_msrc = 1.0 if is_rearranged else 0.0
+        elif soft_probability_mode == "noisy":
+            mean = soft_sensitivity if is_rearranged else 1.0 - soft_specificity
+            p_msrc = float(np.clip(mean + rng.normal(0.0, soft_noise_sd), 0.0, 1.0))
+        else:
+            raise ValueError("soft probability mode must be oracle or noisy")
+        rows.append({
+            "block_id": block_id,
+            "topology_index": topology,
+            "topology": str(topology),
+            "is_rearranged": is_rearranged,
+            "rearrangement_id": "independent_msrc_interval" if is_rearranged else "",
+            "msrc_probability": p_msrc,
+            "weight": 1.0 - p_msrc,
+        })
+    rng.shuffle(rows)
+    return rows
+
+
+def run_consistency_benchmark(args: argparse.Namespace) -> list[dict[str, Any]]:
+    n_blocks_values = [int(x) for x in _parse_floats(args.consistency_n_blocks, [10, 25, 50, 100, 250, 500, 1000])]
+    tau = float(args.consistency_tau)
+    beta = float(args.consistency_beta)
+    threshold = dominant_quartet_threshold(tau, beta)
+    regimes = [
+        ("pure_msc", 0.0),
+        ("below_threshold", max(0.0, min(1.0, 0.75 * threshold))),
+        ("above_threshold", max(0.0, min(1.0, 1.25 * threshold))),
+    ]
+    out = []
+    for regime_index, (regime, epsilon) in enumerate(regimes):
+        for n_index, n_blocks in enumerate(n_blocks_values):
+            successes = {strategy: 0 for strategy in STRATEGIES}
+            for replicate_id in range(int(args.consistency_replicates)):
+                seed = _seed(int(args.seed), 50, regime_index, n_index, replicate_id)
+                rows = _independent_block_rows(
+                    tau=tau,
+                    beta=beta,
+                    epsilon=epsilon,
+                    n_blocks=n_blocks,
+                    rng=np.random.default_rng(seed),
+                    soft_probability_mode=args.consistency_soft_probability_mode,
+                    soft_sensitivity=float(args.consistency_soft_sensitivity),
+                    soft_specificity=float(args.consistency_soft_specificity),
+                    soft_noise_sd=float(args.consistency_soft_noise_sd),
+                )
+                for strategy in STRATEGIES:
+                    successes[strategy] += infer_with_strategy(rows, strategy).inferred_topology_index == 0
+            for strategy in STRATEGIES:
+                low, high = binomial_confidence_interval(successes[strategy], int(args.consistency_replicates))
+                out.append({
+                    "tau": tau,
+                    "beta": beta,
+                    "theory_threshold": threshold,
+                    "regime": regime,
+                    "epsilon": epsilon,
+                    "n_blocks": n_blocks,
+                    "strategy": strategy,
+                    "n_replicates": int(args.consistency_replicates),
+                    "recovery_probability": successes[strategy] / int(args.consistency_replicates),
+                    "ci_low": low,
+                    "ci_high": high,
+                })
+    return out
+
+
 def _plot_thresholds(summary: list[dict[str, Any]], path: Path) -> None:
-    xs = [float(row["theory_threshold"]) for row in summary if row["empirical_support_threshold"] != ""]
-    ys = [float(row["empirical_support_threshold"]) for row in summary if row["empirical_support_threshold"] != ""]
+    threshold_field = "regression_threshold" if summary and "regression_threshold" in summary[0] else "empirical_support_threshold"
+    xs = [float(row["theory_threshold"]) for row in summary if row[threshold_field] != ""]
+    ys = [float(row[threshold_field]) for row in summary if row[threshold_field] != ""]
     fig, ax = plt.subplots(figsize=(5.2, 5.0))
-    ax.scatter(xs, ys, s=24, color="#2c7fb8")
+    if threshold_field == "regression_threshold":
+        yerr_low = []
+        yerr_high = []
+        for row in summary:
+            if row[threshold_field] == "":
+                continue
+            y = float(row[threshold_field])
+            low = float(row["regression_ci_low"]) if row["regression_ci_low"] != "" else y
+            high = float(row["regression_ci_high"]) if row["regression_ci_high"] != "" else y
+            yerr_low.append(max(0.0, y - low))
+            yerr_high.append(max(0.0, high - y))
+        ax.errorbar(xs, ys, yerr=[yerr_low, yerr_high], fmt="o", markersize=4, color="#2c7fb8", ecolor="#7bccc4", elinewidth=1.0, capsize=2)
+    else:
+        ax.scatter(xs, ys, s=24, color="#2c7fb8")
     lim = [0.0, min(1.0, max(xs + ys + [0.7]) + 0.05)]
     ax.plot(lim, lim, color="black", linewidth=1.0)
     ax.set_xlim(lim)
     ax.set_ylim(lim)
     ax.set_xlabel("Analytic threshold")
-    ax.set_ylabel("Empirical support-crossing threshold")
+    ax.set_ylabel("Empirical regression threshold" if threshold_field == "regression_threshold" else "Empirical support-crossing threshold")
     fig.tight_layout()
     fig.savefig(path)
     plt.close(fig)
 
 
 def _plot_threshold_heatmap(summary: list[dict[str, Any]], path: Path) -> None:
+    threshold_field = "regression_threshold" if summary and "regression_threshold" in summary[0] else "empirical_support_threshold"
     taus = sorted({float(row["tau"]) for row in summary})
     betas = sorted({float(row["beta"]) for row in summary})
     data = np.full((len(taus), len(betas)), np.nan)
     for row in summary:
-        if row["empirical_support_threshold"] != "":
+        if row[threshold_field] != "":
             i = taus.index(float(row["tau"]))
             j = betas.index(float(row["beta"]))
-            data[i, j] = float(row["empirical_support_threshold"]) - float(row["theory_threshold"])
+            data[i, j] = float(row[threshold_field]) - float(row["theory_threshold"])
     fig, ax = plt.subplots(figsize=(7.0, 4.8))
     im = ax.imshow(data, origin="lower", aspect="auto", cmap="coolwarm")
     ax.set_xticks(range(len(betas)), [str(x) for x in betas])
@@ -373,6 +589,54 @@ def _plot_threshold_heatmap(summary: list[dict[str, Any]], path: Path) -> None:
     ax.set_xlabel("beta")
     ax.set_ylabel("tau")
     fig.colorbar(im, ax=ax, label="Empirical - theoretical threshold")
+    fig.tight_layout()
+    fig.savefig(path)
+    plt.close(fig)
+
+
+def _plot_consistency(summary: list[dict[str, Any]], path: Path) -> None:
+    fig, ax = plt.subplots(figsize=(7.0, 4.8))
+    colors = {"pure_msc": "#1b9e77", "below_threshold": "#7570b3", "above_threshold": "#d95f02"}
+    for regime in ("pure_msc", "below_threshold", "above_threshold"):
+        chunk = [row for row in summary if row["strategy"] == "all_windows" and row["regime"] == regime]
+        xs = [int(row["n_blocks"]) for row in chunk]
+        ys = np.asarray([float(row["recovery_probability"]) for row in chunk])
+        low = np.asarray([float(row["ci_low"]) for row in chunk])
+        high = np.asarray([float(row["ci_high"]) for row in chunk])
+        ax.plot(xs, ys, marker="o", linewidth=1.5, color=colors[regime], label=regime)
+        ax.fill_between(xs, low, high, color=colors[regime], alpha=0.12, linewidth=0)
+    ax.set_xscale("log")
+    ax.set_xlabel("n_blocks")
+    ax.set_ylabel("P(inferred quartet = T1)")
+    ax.set_ylim(0.0, 1.0)
+    ax.legend(fontsize=8)
+    fig.tight_layout()
+    fig.savefig(path)
+    plt.close(fig)
+
+
+def _plot_consistency_corrections(summary: list[dict[str, Any]], path: Path) -> None:
+    fig, ax = plt.subplots(figsize=(7.0, 4.8))
+    colors = {
+        "all_windows": "#d95f02",
+        "oracle_filter": "#1b9e77",
+        "genealogy_block_collapse": "#7570b3",
+        "rearrangement_interval_collapse": "#e7298a",
+        "soft_weight": "#66a61e",
+    }
+    for strategy in STRATEGIES:
+        chunk = [row for row in summary if row["regime"] == "above_threshold" and row["strategy"] == strategy]
+        xs = [int(row["n_blocks"]) for row in chunk]
+        ys = np.asarray([float(row["recovery_probability"]) for row in chunk])
+        low = np.asarray([float(row["ci_low"]) for row in chunk])
+        high = np.asarray([float(row["ci_high"]) for row in chunk])
+        ax.plot(xs, ys, marker="o", linewidth=1.5, color=colors[strategy], label=strategy)
+        ax.fill_between(xs, low, high, color=colors[strategy], alpha=0.12, linewidth=0)
+    ax.set_xscale("log")
+    ax.set_xlabel("n_blocks")
+    ax.set_ylabel("P(inferred quartet = T1)")
+    ax.set_ylim(0.0, 1.0)
+    ax.legend(fontsize=8)
     fig.tight_layout()
     fig.savefig(path)
     plt.close(fig)
@@ -453,16 +717,26 @@ def run_validation_grid(args: argparse.Namespace) -> Path:
     out = Path(args.output_dir)
     out.mkdir(parents=True, exist_ok=True)
     threshold_rows, threshold_summary = run_threshold_grid(args)
+    regression_summary = summarize_threshold_regression(
+        threshold_rows,
+        bootstrap_replicates=int(args.threshold_bootstrap_replicates),
+        seed=int(args.seed),
+    )
     kappa_rows, kappa_summary = run_kappa_grid(args)
     correction_summary = run_correction_grid(args)
+    consistency_summary = run_consistency_benchmark(args)
     _write_csv(out / "threshold_grid_replicates.csv", THRESHOLD_REPLICATE_FIELDS, threshold_rows)
     _write_csv(out / "threshold_grid_summary.csv", THRESHOLD_SUMMARY_FIELDS, threshold_summary)
+    _write_csv(out / "threshold_regression_summary.csv", THRESHOLD_REGRESSION_FIELDS, regression_summary)
     _write_csv(out / "kappa_calibration_replicates.csv", KAPPA_REPLICATE_FIELDS, kappa_rows)
     _write_csv(out / "kappa_calibration_summary.csv", KAPPA_SUMMARY_FIELDS, kappa_summary)
     _write_csv(out / "correction_grid_summary.csv", CORRECTION_SUMMARY_FIELDS, correction_summary)
-    _plot_thresholds(threshold_summary, out / "theory_vs_empirical_threshold.pdf")
-    _plot_threshold_heatmap(threshold_summary, out / "threshold_error_heatmap.pdf")
+    _write_csv(out / "consistency_summary.csv", CONSISTENCY_SUMMARY_FIELDS, consistency_summary)
+    _plot_thresholds(regression_summary, out / "theory_vs_empirical_threshold.pdf")
+    _plot_threshold_heatmap(regression_summary, out / "threshold_error_heatmap.pdf")
     _plot_recovery_phase(threshold_rows, out / "recovery_phase_diagram.pdf")
     _plot_kappa(kappa_summary, out / "kappa_calibration.pdf")
     _plot_corrections(correction_summary, out / "correction_methods_grid.pdf")
+    _plot_consistency(consistency_summary, out / "consistency_vs_nblocks.pdf")
+    _plot_consistency_corrections(consistency_summary, out / "consistency_corrections.pdf")
     return out

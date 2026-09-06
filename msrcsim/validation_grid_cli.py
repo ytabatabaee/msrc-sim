@@ -6,7 +6,7 @@ from .validation_grid import default_rearrangement_fractions, run_validation_gri
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run v0.8.4 parameter-grid validation for the linked-spatial robustness benchmark")
+    parser = argparse.ArgumentParser(description="Run v0.8.5 parameter-grid validation for the linked-spatial robustness benchmark")
     parser.add_argument("--output-dir", default="validation_grid_output")
     parser.add_argument("--seed", type=int, default=1)
     parser.add_argument("--chrom", default="chr1")
@@ -19,6 +19,7 @@ def main() -> None:
     parser.add_argument("--beta-values", default="0.1,0.25,0.5,0.75,1.0")
     parser.add_argument("--rearrangement-fractions", default=",".join(f"{x:.3f}" for x in default_rearrangement_fractions()))
     parser.add_argument("--threshold-replicates", type=int, default=200)
+    parser.add_argument("--threshold-bootstrap-replicates", type=int, default=500)
 
     parser.add_argument("--kappa-values", default="1.0,0.5,0.25,0.1,0.05")
     parser.add_argument("--kappa-rearrangement-fractions", default="0.1,0.25,0.5")
@@ -33,6 +34,15 @@ def main() -> None:
     parser.add_argument("--soft-sensitivity", type=float, default=0.85)
     parser.add_argument("--soft-specificity", type=float, default=0.90)
     parser.add_argument("--soft-noise-sd", type=float, default=0.05)
+
+    parser.add_argument("--consistency-tau", type=float, default=0.25)
+    parser.add_argument("--consistency-beta", type=float, default=0.5)
+    parser.add_argument("--consistency-n-blocks", default="10,25,50,100,250,500,1000")
+    parser.add_argument("--consistency-replicates", type=int, default=500)
+    parser.add_argument("--consistency-soft-probability-mode", choices=["oracle", "noisy"], default="oracle")
+    parser.add_argument("--consistency-soft-sensitivity", type=float, default=1.0)
+    parser.add_argument("--consistency-soft-specificity", type=float, default=1.0)
+    parser.add_argument("--consistency-soft-noise-sd", type=float, default=0.0)
 
     args = parser.parse_args()
     out = run_validation_grid(args)
