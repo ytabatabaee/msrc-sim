@@ -132,3 +132,42 @@ def theoretical_flip_threshold(t1_msc: float, t2_msc: float, t1_msrc: float, t2_
     if delta_msc <= 0.0 or beta <= 0.0 or denom <= 0.0:
         return None
     return delta_msc / denom
+
+
+def dominant_quartet_threshold(tau: float, beta: float) -> float:
+    """Analytic failure threshold for the dominant-quartet benchmark grid."""
+    tau = float(tau)
+    beta = float(beta)
+    if tau < 0.0:
+        raise ValueError("tau must be nonnegative")
+    if beta <= 0.0:
+        raise ValueError("beta must be positive")
+    delta_msc = 1.0 - float(np.exp(-tau))
+    return float(delta_msc / (delta_msc + beta))
+
+
+def msrc_probabilities_from_beta(beta: float) -> np.ndarray:
+    """MSRC marginal with T2 exceeding T1 by beta."""
+    beta = float(beta)
+    if not (0.0 <= beta <= 1.0):
+        raise ValueError("beta must be between 0 and 1")
+    minor = (1.0 - beta) / 3.0
+    return np.asarray([minor, minor + beta, minor], dtype=float)
+
+
+def interpolate_first_crossing(xs: Iterable[float], ys: Iterable[float], target: float = 0.0) -> float | None:
+    """Linearly interpolate the first in-grid crossing of y - target."""
+    points = sorted((float(x), float(y) - float(target)) for x, y in zip(xs, ys))
+    if not points:
+        return None
+    for x, y in points:
+        if y == 0.0:
+            return x
+    for (x0, y0), (x1, y1) in zip(points, points[1:]):
+        if y0 == 0.0:
+            return x0
+        if (y0 < 0.0 < y1) or (y0 > 0.0 > y1):
+            return float(x0 + (0.0 - y0) * (x1 - x0) / (y1 - y0))
+        if y1 == 0.0:
+            return x1
+    return None

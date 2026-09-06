@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.4
+- Add a backward-compatible parameter-grid validation layer for the v0.8.3
+  linked-spatial robustness benchmark, including threshold, kappa calibration,
+  correction-strategy CSV summaries and PDF diagnostics.
+
 ## 0.8.3
 - Replace deterministic benchmark genealogy-block lengths with stochastic
   Poisson/exponential breakpoint sampling while preserving
