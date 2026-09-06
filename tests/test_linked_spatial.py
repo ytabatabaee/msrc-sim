@@ -60,6 +60,21 @@ def _read_rows(path):
         return list(csv.DictReader(handle))
 
 
+def _mean_block_lengths(kappa, replicates=400):
+    intervals = [GenomicInterval("chr1", 250.0, 750.0, "inv")]
+    inside = []
+    outside = []
+    for seed in range(replicates):
+        bps = generate_genealogy_breakpoints(1000.0, intervals, 0.03, kappa, np.random.default_rng(seed))
+        for start, end in zip(bps, bps[1:]):
+            mid = (start + end) / 2.0
+            if 250.0 <= mid < 750.0:
+                inside.append(end - start)
+            else:
+                outside.append(end - start)
+    return float(np.mean(inside)), float(np.mean(outside))
+
+
 def test_legacy_spatial_unchanged_when_linked_mode_off(tmp_path):
     cfg1 = _legacy_config(tmp_path, "a")
     cfg2 = _legacy_config(tmp_path, "b")
@@ -74,9 +89,11 @@ def test_legacy_spatial_unchanged_when_linked_mode_off(tmp_path):
 def test_positions_and_block_ids_are_valid_and_contiguous(tmp_path):
     out = simulate_linked_spatial(_config(tmp_path))
     rows = _read_rows(out / "spatial_genealogies.csv")
+    diagnostics = _read_rows(out / "spatial_linkage_diagnostics.csv")
     ids = [int(row["block_id"]) for row in rows]
     assert ids == sorted(ids)
     assert sorted(set(ids)) == list(range(max(ids) + 1))
+    assert {row["region"] for row in diagnostics} == {"inside", "outside"}
     previous_midpoint = -1.0
     for row in rows:
         start = float(row["start"])
@@ -108,6 +125,23 @@ def test_decreasing_kappa_increases_expected_rearranged_block_persistence():
             vals.append(sum(250.0 < bp < 750.0 for bp in bps))
         return float(np.mean(vals))
     assert mean_inside_breakpoints(0.1) < mean_inside_breakpoints(0.8)
+
+
+def test_kappa_controls_expected_block_lengths_statistically():
+    inside_1, outside_1 = _mean_block_lengths(1.0)
+    inside_05, outside_05 = _mean_block_lengths(0.5)
+    inside_02, outside_02 = _mean_block_lengths(0.2)
+    assert abs(inside_1 - outside_1) / outside_1 < 0.15
+    assert inside_05 > outside_05
+    assert inside_02 > inside_05
+    assert outside_02 > 0.0
+
+
+def test_kappa_zero_has_no_internal_rearrangement_breakpoints():
+    intervals = [GenomicInterval("chr1", 250.0, 750.0, "inv")]
+    bps = generate_genealogy_breakpoints(1000.0, intervals, 0.05, 0.0, np.random.default_rng(2))
+    assert not any(250.0 < bp < 750.0 for bp in bps)
+    assert 250.0 in bps and 750.0 in bps
 
 
 def test_reproducible_by_seed(tmp_path):

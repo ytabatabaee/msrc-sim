@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.8.2
+- Fix the linked spatial benchmark block process so `kappa` is interpreted as a
+  multiplier on the rearranged genealogy-breakpoint rate. Expected rearranged
+  block length now scales as approximately background block length divided by
+  `kappa`.
+- Preserve structural boundaries at rearrangement interval entry and exit
+  without forcing every rearranged window into a separate genealogy block.
+- Keep quartet marginal generators and species-tree robustness strategies
+  unchanged.
+- Add linkage diagnostic output with mean block counts, mean block lengths, and
+  breakpoint densities inside and outside rearrangements.
+
 ## 0.8.1
 - Refine the species-tree robustness benchmark with proper replicated sweeps
   over rearrangement fractions from 0.00 to 0.60 in 0.05 increments.

@@ -21,6 +21,10 @@ SPATIAL_GENEALOGY_FIELDS = [
     "topology", "topology_index", "is_rearranged", "rearrangement_id",
     "local_model", "newick",
 ]
+LINKAGE_DIAGNOSTIC_FIELDS = [
+    "region", "num_windows", "num_genealogy_blocks", "mean_block_length_bp",
+    "breakpoint_density_per_bp",
+]
 
 
 @dataclass(frozen=True)
@@ -130,6 +134,27 @@ def generate_genealogy_breakpoints(
     return sorted(set(points + extra))
 
 
+def block_diagnostics(blocks: list[GenealogyBlock], rows: list[Mapping[str, Any]]) -> list[dict[str, Any]]:
+    observed_ids = {int(row["block_id"]) for row in rows}
+    row_counts = {
+        "inside": sum(bool(row["is_rearranged"]) for row in rows),
+        "outside": sum(not bool(row["is_rearranged"]) for row in rows),
+    }
+    out = []
+    for region, rearranged in (("inside", True), ("outside", False)):
+        chunk = [block for block in blocks if block.is_rearranged is rearranged and int(block.block_id) in observed_ids]
+        total_length = sum(block.end - block.start for block in chunk)
+        breakpoints = max(0, len(chunk) - 1)
+        out.append({
+            "region": region,
+            "num_windows": int(row_counts[region]),
+            "num_genealogy_blocks": int(len(chunk)),
+            "mean_block_length_bp": float(total_length / len(chunk)) if chunk else float("nan"),
+            "breakpoint_density_per_bp": float(breakpoints / total_length) if total_length > 0.0 else float("nan"),
+        })
+    return out
+
+
 def _windows_from_config(config: Mapping[str, Any], chrom: str, length: float):
     cfg = _linked_cfg(config)
     genome = config.get("genome", {}) or {}
@@ -178,6 +203,7 @@ def simulate_linked_spatial(config: Mapping[str, Any]) -> Path:
 
     block_starts = np.asarray([b.start for b in raw_blocks], dtype=float)
     used: dict[int, int] = {}
+    observed_blocks: dict[int, GenealogyBlock] = {}
     rows: list[dict[str, Any]] = []
     for window in windows:
         idx = int(np.searchsorted(block_starts, window.midpoint, side="right") - 1)
@@ -186,6 +212,7 @@ def simulate_linked_spatial(config: Mapping[str, Any]) -> Path:
         if idx not in used:
             used[idx] = len(used)
         block_id = used[idx]
+        observed_blocks[block_id] = GenealogyBlock(block_id, block.chrom, block.start, block.end, block.is_rearranged, block.rearrangement_id, block.topology_index, block.topology, block.newick, block.local_model)
         rows.append({
             "window_id": int(window.window_id),
             "chrom": window.chrom,
@@ -201,6 +228,7 @@ def simulate_linked_spatial(config: Mapping[str, Any]) -> Path:
             "newick": block.newick,
         })
     validate_contiguous_block_ids(rows)
+    diagnostics = block_diagnostics(list(observed_blocks.values()), rows)
 
     out = Path((config.get("output", {}) or {}).get("directory", "linked_spatial_output"))
     out.mkdir(parents=True, exist_ok=True)
@@ -214,6 +242,10 @@ def simulate_linked_spatial(config: Mapping[str, Any]) -> Path:
     with (out / "spatial_gene_trees.nwk").open("w") as handle:
         for row in rows:
             handle.write(str(row["newick"]) + "\n")
+    with (out / "spatial_linkage_diagnostics.csv").open("w", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=LINKAGE_DIAGNOSTIC_FIELDS)
+        writer.writeheader()
+        writer.writerows(diagnostics)
     metadata = sample_metadata_rows(config, tree.taxa, sampled)
     if metadata:
         fields = sorted({key for row in metadata for key in row})
@@ -222,7 +254,7 @@ def simulate_linked_spatial(config: Mapping[str, Any]) -> Path:
             writer.writeheader()
             writer.writerows(metadata)
     summary = {
-        "version": "0.8.0",
+        "version": "0.8.2",
         "mode": "spatial",
         "linked_loci_model": True,
         "spatial_model_note": (
@@ -238,6 +270,7 @@ def simulate_linked_spatial(config: Mapping[str, Any]) -> Path:
         "breakpoint_rate_per_bp": _breakpoint_rate(config),
         "rearrangements": [asdict(interval) for interval in intervals],
         "history_metadata": history_metadata,
+        "linkage_diagnostics": diagnostics,
     }
     with (out / "linked_spatial_summary.json").open("w") as handle:
         json.dump(summary, handle, indent=2)

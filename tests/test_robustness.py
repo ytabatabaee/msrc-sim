@@ -4,7 +4,7 @@ import numpy as np
 
 from msrcsim.model_fitting import msc_probabilities
 from msrcsim.robustness import binomial_confidence_interval, contribution_weights, infer_with_strategy
-from msrcsim.robustness_cli import _assign_background, _make_window_skeleton, _rows_for_fraction
+from msrcsim.robustness_cli import _assign_background, _inside_block_windows, _make_window_skeleton, _rows_for_fraction
 
 
 def _constructed_rows():
@@ -121,3 +121,9 @@ def test_rows_for_fraction_reproducible_by_seed():
     a = _rows_for_fraction(rng=np.random.default_rng(55), **kwargs)
     b = _rows_for_fraction(rng=np.random.default_rng(55), **kwargs)
     assert a == b
+
+
+def test_benchmark_kappa_extends_rearranged_block_persistence():
+    assert _inside_block_windows(20, 1, 1.0) == 20
+    assert _inside_block_windows(20, 1, 0.5) == 40
+    assert _inside_block_windows(20, 1, 0.25) == 80

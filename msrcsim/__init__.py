@@ -5,5 +5,5 @@ from .structured_coalescent import simulate_genealogy, simulate_msc_genealogy
 from .hybridization import simulate_hybridization
 from .linked_spatial import simulate_linked_spatial
 
-__version__ = "0.8.1"
+__version__ = "0.8.2"
 __all__ = ["asymmetry_1010", "compute_Hm", "SpeciesTree", "simulate_frequency_history", "simulate_genealogy", "simulate_msc_genealogy", "simulate_hybridization", "simulate_linked_spatial"]

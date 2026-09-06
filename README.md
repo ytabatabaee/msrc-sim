@@ -111,6 +111,12 @@ current MSRC marginal genealogy generator. Genealogy breakpoints are sampled
 along the chromosome, with the breakpoint rate inside rearrangements multiplied
 by `kappa` (`0 <= kappa <= 1`).
 
+In v0.8.2, `kappa` is explicitly a breakpoint-rate multiplier:
+`rho_R = kappa * rho_background`, so expected block length inside a
+rearrangement is approximately `E[L_bg] / kappa`. The interval start and end are
+structural boundaries, but internal rearranged windows are not forced to be
+separate blocks.
+
 This is a piecewise-correlated genealogy process, not a full ARG. Dense windows
 within one `block_id` are correlated observations, not independent replicates.
 
@@ -132,7 +138,9 @@ linked_spatial:
 
 Linked mode writes `spatial_genealogies.csv` with at least
 `chrom,start,end,midpoint,block_id,topology,is_rearranged,rearrangement_id`, plus
-`spatial_gene_trees.nwk` for external species-tree tools.
+`spatial_gene_trees.nwk` for external species-tree tools and
+`spatial_linkage_diagnostics.csv` with mean block lengths and breakpoint
+densities inside and outside rearrangements.
 
 The species-tree robustness benchmark compares all-window quartet support,
 oracle filtering of rearranged blocks, genealogy-block collapse where each

@@ -42,6 +42,10 @@ GENEALOGY_FIELDS = [
     "end", "midpoint", "block_id", "topology", "topology_index",
     "is_rearranged", "rearrangement_id", "msrc_probability", "weight",
 ]
+LINKAGE_DIAGNOSTIC_FIELDS = [
+    "rearrangement_fraction", "replicate_id", "region", "num_windows",
+    "num_genealogy_blocks", "mean_block_length_bp", "breakpoint_density_per_bp",
+]
 
 
 def _parse_floats(text: str) -> list[float]:
@@ -116,6 +120,17 @@ def _assign_background(
     return out
 
 
+def _inside_block_windows(block_windows: int, msrc_block_windows: int | None, kappa: float) -> int:
+    if not (0.0 <= kappa <= 1.0):
+        raise ValueError("kappa must be between 0 and 1")
+    if kappa == 0.0:
+        scaled = 10**12
+    else:
+        scaled = int(round(max(1, block_windows) / kappa))
+    legacy_floor = 1 if msrc_block_windows is None else int(msrc_block_windows)
+    return max(1, legacy_floor, scaled)
+
+
 def _rows_for_fraction(
     fraction: float,
     *,
@@ -125,6 +140,7 @@ def _rows_for_fraction(
     windows: int,
     block_windows: int,
     msrc_block_windows: int,
+    kappa: float = 0.25,
     rng: np.random.Generator,
     q_msc: np.ndarray,
     q_msrc: np.ndarray,
@@ -143,6 +159,7 @@ def _rows_for_fraction(
     rearranged_windows = int(round(windows * fraction))
     start_window = max(0, (windows - rearranged_windows) // 2)
     end_window = start_window + rearranged_windows
+    inside_block_windows = _inside_block_windows(block_windows, msrc_block_windows, kappa)
     rows: list[dict[str, Any]] = []
     current_key: tuple[str, int] | None = None
     block_id = -1
@@ -152,7 +169,7 @@ def _rows_for_fraction(
         is_rearranged = start_window <= window_id < end_window
         if is_rearranged:
             local_index = window_id - start_window
-            key = ("rearrangement", local_index // max(1, msrc_block_windows))
+            key = ("rearrangement", local_index // inside_block_windows)
             if key != current_key:
                 block_id += 1
                 current_key = key
@@ -228,6 +245,33 @@ def _summarize_replicate(
     return out
 
 
+def _linkage_diagnostics(rows: list[dict[str, Any]], *, fraction: float, replicate_id: int) -> list[dict[str, Any]]:
+    out = []
+    for region, rearranged in (("inside", True), ("outside", False)):
+        chunk = [row for row in rows if bool(row["is_rearranged"]) is rearranged]
+        block_ids = sorted({int(row["block_id"]) for row in chunk})
+        if chunk:
+            length = sum(float(row["end"]) - float(row["start"]) for row in chunk)
+            blocks = len(block_ids)
+            breakpoints = max(0, blocks - 1)
+            mean_length = length / blocks if blocks else float("nan")
+            density = breakpoints / length if length > 0.0 else float("nan")
+        else:
+            blocks = 0
+            mean_length = float("nan")
+            density = float("nan")
+        out.append({
+            "rearrangement_fraction": float(fraction),
+            "replicate_id": int(replicate_id),
+            "region": region,
+            "num_windows": int(len(chunk)),
+            "num_genealogy_blocks": int(blocks),
+            "mean_block_length_bp": float(mean_length),
+            "breakpoint_density_per_bp": float(density),
+        })
+    return out
+
+
 def _aggregate_recovery(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     out = []
     keys = sorted({(float(row["rearrangement_fraction"]), row["mode"], row["strategy"]) for row in rows})
@@ -257,6 +301,7 @@ def run_benchmark(args: argparse.Namespace) -> Path:
     threshold = theoretical_flip_threshold(q_msc[0], q_msc[1], q_msrc[0], q_msrc[1])
     all_genealogies: list[dict[str, Any]] = []
     result_rows: list[dict[str, Any]] = []
+    diagnostic_rows: list[dict[str, Any]] = []
     for replicate_id in range(int(args.replicates)):
         baseline_rows = None
         if args.mode == "paired":
@@ -275,6 +320,7 @@ def run_benchmark(args: argparse.Namespace) -> Path:
                 windows=int(args.windows),
                 block_windows=int(args.block_windows),
                 msrc_block_windows=int(args.msrc_block_windows),
+                kappa=float(args.kappa),
                 rng=rng,
                 q_msc=q_msc,
                 q_msrc=q_msrc,
@@ -286,8 +332,9 @@ def run_benchmark(args: argparse.Namespace) -> Path:
             )
             all_genealogies.extend(rows)
             result_rows.extend(_summarize_replicate(rows, fraction=fraction, replicate_id=replicate_id, mode=args.mode, threshold=threshold))
+            diagnostic_rows.extend(_linkage_diagnostics(rows, fraction=fraction, replicate_id=replicate_id))
     recovery_rows = _aggregate_recovery(result_rows)
-    _write_outputs(out, all_genealogies, result_rows, recovery_rows)
+    _write_outputs(out, all_genealogies, result_rows, recovery_rows, diagnostic_rows)
     _plot_support(result_rows, out / "quartet_support_vs_rearrangement_fraction.pdf", threshold)
     _plot_recovery(recovery_rows, out / "species_tree_recovery_vs_rearrangement_fraction.pdf", threshold)
     return out
@@ -298,6 +345,7 @@ def _write_outputs(
     genealogies: list[dict[str, Any]],
     result_rows: list[dict[str, Any]],
     recovery_rows: list[dict[str, Any]],
+    diagnostic_rows: list[dict[str, Any]],
 ) -> None:
     with (out / "spatial_genealogies.csv").open("w", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=GENEALOGY_FIELDS)
@@ -311,6 +359,10 @@ def _write_outputs(
         writer = csv.DictWriter(handle, fieldnames=RECOVERY_FIELDS)
         writer.writeheader()
         writer.writerows(recovery_rows)
+    with (out / "spatial_linkage_diagnostics.csv").open("w", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=LINKAGE_DIAGNOSTIC_FIELDS)
+        writer.writeheader()
+        writer.writerows(diagnostic_rows)
     with (out / "gene_trees.nwk").open("w") as handle:
         for row in genealogies:
             handle.write(_newick_for_topology(int(row["topology_index"])) + "\n")
@@ -390,6 +442,7 @@ def main() -> None:
     parser.add_argument("--windows", type=int, default=400)
     parser.add_argument("--block-windows", type=int, default=20, help="Background MSC genealogy block size in windows")
     parser.add_argument("--msrc-block-windows", type=int, default=5, help="MSRC genealogy block size in windows inside the rearrangement")
+    parser.add_argument("--kappa", type=float, default=0.25, help="Multiplier on the rearranged genealogy breakpoint rate")
     parser.add_argument("--rearrangement-fractions", default=",".join(f"{x:.2f}" for x in _default_fractions()))
     parser.add_argument("--replicates", type=int, default=200)
     parser.add_argument("--t1-branch", type=float, default=1.2)
