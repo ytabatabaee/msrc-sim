@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.8.6
+- Add exact finite-state Wright-Fisher DP utilities for rearrangement count
+  transitions, persistent-polymorphism probabilities, and four-tip arrangement
+  pattern probabilities.
+- Add `msrc-sim-pattern-probabilities` to compare theoretical pattern classes
+  and quartet-partition weights against Monte Carlo simulations.
+
 ## 0.8.5
 - Add regression-based threshold validation with bootstrap intervals and an
   independent-block statistical-consistency benchmark.
