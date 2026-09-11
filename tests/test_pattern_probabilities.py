@@ -84,6 +84,55 @@ def test_pattern_probabilities_sum_to_one_and_weights_match_2_2():
     summary = pattern_class_summary(result.pattern_probabilities)
     assert np.isclose(summary["w1"] + summary["w2"] + summary["w3"], summary["P_2_2"])
     assert result.summary["required_speciation_nodes"] == ["ROOT", "A", "B"]
+    assert result.summary["taxon_order"] == ["1", "2", "3", "4"]
+
+
+def test_joint_and_conditional_persistent_probabilities_are_consistent():
+    result = exact_pattern_probabilities(_small_tree(), _small_rearrangement())
+    persistent = result.summary["persistent_at_all_required_speciation_events"]
+    for pattern in PATTERNS:
+        assert (
+            result.joint_persistent_pattern_probabilities[pattern]
+            <= result.pattern_probabilities[pattern] + 1e-12
+        )
+    assert np.isclose(sum(result.joint_persistent_pattern_probabilities.values()), persistent)
+    assert persistent > 0.0
+    assert np.isclose(sum(result.conditional_persistent_pattern_probabilities.values()), 1.0)
+    assert np.isclose(
+        result.summary["P_2_2_given_persistent"]
+        + result.summary["P_3_1_given_persistent"]
+        + result.summary["P_4_0_given_persistent"],
+        1.0,
+    )
+    assert np.isclose(
+        result.summary["w1_given_persistent"]
+        + result.summary["w2_given_persistent"]
+        + result.summary["w3_given_persistent"],
+        result.summary["P_2_2_given_persistent"],
+    )
+    assert np.isclose(
+        result.summary["discordant_2_2_given_persistent"],
+        result.summary["w2_given_persistent"] + result.summary["w3_given_persistent"],
+    )
+
+
+def test_zero_persistent_probability_has_null_conditionals():
+    result = exact_pattern_probabilities(
+        _small_tree(),
+        Rearrangement("x", "inversion", "ROOT", 3, 8, 0.0),
+    )
+    assert result.summary["persistent_at_all_required_speciation_events"] == 0.0
+    assert all(value is None for value in result.conditional_persistent_pattern_probabilities.values())
+    assert result.summary["P_2_2_given_persistent"] is None
+    assert result.summary["conditional_persistent_diagnostic"]
+
+
+def test_invalid_initial_copy_count_raises_error():
+    with np.testing.assert_raises_regex(ValueError, "initial_copy_count"):
+        exact_pattern_probabilities(
+            _small_tree(),
+            Rearrangement("x", "inversion", "ROOT", 3, 9, 0.0),
+        )
 
 
 def test_equal_frequency_closed_form_pattern_classes():
@@ -128,3 +177,15 @@ def test_theory_and_simulation_agree_within_monte_carlo_tolerance(tmp_path):
     assert (tmp_path / "theory_vs_simulation.csv").exists()
     assert (tmp_path / "theory_vs_simulation_pattern_probabilities.pdf").exists()
     assert result["max_abs_error"] < 0.02
+    for key in [
+        "P_2_2_given_persistent",
+        "P_3_1_given_persistent",
+        "P_4_0_given_persistent",
+        "w1_given_persistent",
+        "w2_given_persistent",
+        "w3_given_persistent",
+        "discordant_2_2_given_persistent",
+    ]:
+        theory = result["theory"].summary[key]
+        simulation = result["simulation"]["summary"][key]
+        assert abs(theory - simulation) < 0.04

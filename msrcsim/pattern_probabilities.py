@@ -27,6 +27,8 @@ PATTERNS = tuple("".join(map(str, z)) for z in product((0, 1), repeat=4))
 @dataclass(frozen=True)
 class PatternProbabilityResult:
     pattern_probabilities: dict[str, float]
+    joint_persistent_pattern_probabilities: dict[str, float]
+    conditional_persistent_pattern_probabilities: dict[str, float | None]
     summary: dict[str, Any]
     runtime_seconds: float
     max_state_count: int
@@ -137,6 +139,59 @@ def pattern_class_summary(pattern_probabilities: Mapping[str, float]) -> dict[st
     }
 
 
+def conditional_pattern_probabilities(
+    joint_pattern_probabilities: Mapping[str, float],
+    persistent_probability: float,
+) -> dict[str, float | None]:
+    """Return P(pattern | persistent), or null values when persistence is impossible."""
+    if persistent_probability <= 0.0:
+        return {pattern: None for pattern in PATTERNS}
+    return {
+        pattern: float(joint_pattern_probabilities[pattern]) / float(persistent_probability)
+        for pattern in PATTERNS
+    }
+
+
+def conditional_pattern_class_summary(
+    conditional_probabilities: Mapping[str, float | None],
+) -> dict[str, float | None]:
+    if any(conditional_probabilities[pattern] is None for pattern in PATTERNS):
+        return {
+            "P_2_2_given_persistent": None,
+            "P_3_1_given_persistent": None,
+            "P_4_0_given_persistent": None,
+            "w1_given_persistent": None,
+            "w2_given_persistent": None,
+            "w3_given_persistent": None,
+            "discordant_2_2_given_persistent": None,
+        }
+    classes = pattern_class_summary({k: float(v) for k, v in conditional_probabilities.items()})
+    return {
+        "P_2_2_given_persistent": classes["P_2_2"],
+        "P_3_1_given_persistent": classes["P_3_1"],
+        "P_4_0_given_persistent": classes["P_4_0"],
+        "w1_given_persistent": classes["w1"],
+        "w2_given_persistent": classes["w2"],
+        "w3_given_persistent": classes["w3"],
+        "discordant_2_2_given_persistent": classes["w2"] + classes["w3"],
+    }
+
+
+def joint_persistent_pattern_class_summary(
+    joint_pattern_probabilities: Mapping[str, float],
+) -> dict[str, float]:
+    classes = pattern_class_summary(joint_pattern_probabilities)
+    return {
+        "P_2_2_and_persistent": classes["P_2_2"],
+        "P_3_1_and_persistent": classes["P_3_1"],
+        "P_4_0_and_persistent": classes["P_4_0"],
+        "w1_and_persistent": classes["w1"],
+        "w2_and_persistent": classes["w2"],
+        "w3_and_persistent": classes["w3"],
+        "discordant_2_2_and_persistent": classes["w2"] + classes["w3"],
+    }
+
+
 def quartet_weights_to_zero_switching_q(
     weights: tuple[float, float, float],
     t: float,
@@ -166,6 +221,10 @@ def exact_pattern_probabilities(
     max_states: int = DEFAULT_MAX_STATES,
 ) -> PatternProbabilityResult:
     """Compute exact sampled-tip pattern probabilities for the four-taxon tree.
+
+    Patterns are ordered by ``tree.taxa``. Quartet partition weights use that
+    order: w1 = 0011 + 1100 (12|34), w2 = 0101 + 1010 (13|24), and
+    w3 = 0110 + 1001 (14|23).
 
     ``persistent_at_all_required_speciation_events`` includes every internal
     species-tree node at or below the rearrangement origin age. For the standard
@@ -271,7 +330,12 @@ def exact_pattern_probabilities(
         branch = tree.branches[branch_id]
         total = 2 * branch.effective_population_size
         if branch_id == rearrangement.origin_branch:
-            start_count = min(int(rearrangement.initial_copy_count), total)
+            start_count = int(rearrangement.initial_copy_count)
+            if not 0 <= start_count <= total:
+                raise ValueError(
+                    "initial_copy_count must be between 0 and "
+                    f"{total} for origin branch {branch_id}"
+                )
             dist = np.zeros(total + 1)
             dist[start_count] = 1.0
             gens = branch_generations(branch_id, origin_age)
@@ -295,28 +359,57 @@ def exact_pattern_probabilities(
     root_start = {None: 1.0}
     joint = propagate_branch(tree.root.name, root_start)
     pattern_probs = {pattern: 0.0 for pattern in PATTERNS}
+    joint_persistent_probs = {pattern: 0.0 for pattern in PATTERNS}
     persistent = 0.0
     for (pattern, ok), prob in joint.items():
         pattern_probs[pattern] += prob
         if ok:
+            joint_persistent_probs[pattern] += prob
             persistent += prob
     pattern_probs = _normalize_pattern_probabilities(pattern_probs)
+    conditional_probs = conditional_pattern_probabilities(joint_persistent_probs, persistent)
     classes = pattern_class_summary(pattern_probs)
+    joint_classes = joint_persistent_pattern_class_summary(joint_persistent_probs)
+    conditional_classes = conditional_pattern_class_summary(conditional_probs)
     runtime = perf_counter() - start
     max_state_count = max(2 * b.effective_population_size + 1 for b in tree.branches.values())
     summary = {
-        "version": "0.8.6",
+        "version": "0.8.7",
         "statistic_definition": "persistent_at_all_required_speciation_events",
+        "taxon_order": list(tree.taxa),
+        "quartet_partition_weight_definitions": {
+            "w1": "0011 + 1100 -> 12|34 relative to taxon_order",
+            "w2": "0101 + 1010 -> 13|24 relative to taxon_order",
+            "w3": "0110 + 1001 -> 14|23 relative to taxon_order",
+        },
         "required_speciation_nodes": _required_speciation_nodes(tree, origin_age),
         "persistent_at_all_required_speciation_events": float(persistent),
         **classes,
+        "discordant_2_2": classes["w2"] + classes["w3"],
+        **joint_classes,
+        **conditional_classes,
+        "conditional_persistent_diagnostic": (
+            None
+            if persistent > 0.0
+            else "P(persistent_at_all_required_speciation_events)=0; conditional values are null"
+        ),
         "probability_sum": float(sum(pattern_probs.values())),
+        "joint_persistent_probability_sum": float(sum(joint_persistent_probs.values())),
         "max_state_count": int(max_state_count),
         "runtime_seconds": float(runtime),
     }
     if abs(summary["probability_sum"] - 1.0) > 1e-8:
         raise RuntimeError(f"Pattern probabilities sum to {summary['probability_sum']}")
-    return PatternProbabilityResult(pattern_probs, summary, runtime, max_state_count)
+    if abs(summary["joint_persistent_probability_sum"] - persistent) > 1e-8:
+        raise RuntimeError("Joint persistent pattern probabilities do not sum to P(persistent)")
+    return PatternProbabilityResult(
+        pattern_probs,
+        joint_persistent_probs,
+        conditional_probs,
+        summary,
+        runtime,
+        max_state_count,
+    )
 
 
 def monte_carlo_pattern_probabilities(
@@ -328,6 +421,7 @@ def monte_carlo_pattern_probabilities(
 ) -> dict[str, Any]:
     rng = np.random.default_rng(seed)
     counts = {pattern: 0 for pattern in PATTERNS}
+    joint_persistent_counts = {pattern: 0 for pattern in PATTERNS}
     persistent = 0
     required_nodes = _required_speciation_nodes(
         tree,
@@ -338,15 +432,38 @@ def monte_carlo_pattern_probabilities(
     for _ in range(int(replicates)):
         history = simulate_frequency_history(tree, rearrangement, rng)
         sampled = {taxon: int(rng.random() < history.terminal_frequency(taxon)) for taxon in tree.taxa}
-        counts[terminal_pattern(sampled, tree.taxa)] += 1
-        if all(_branch_end_is_polymorphic(history, branch_id) for branch_id in required_branches):
+        pattern = terminal_pattern(sampled, tree.taxa)
+        counts[pattern] += 1
+        is_persistent = all(_branch_end_is_polymorphic(history, branch_id) for branch_id in required_branches)
+        if is_persistent:
+            joint_persistent_counts[pattern] += 1
             persistent += 1
     pattern_probs = {pattern: counts[pattern] / float(replicates) for pattern in PATTERNS}
+    joint_persistent_probs = {
+        pattern: joint_persistent_counts[pattern] / float(replicates)
+        for pattern in PATTERNS
+    }
+    persistent_prob = persistent / float(replicates)
+    conditional_probs = conditional_pattern_probabilities(joint_persistent_probs, persistent_prob)
+    classes = pattern_class_summary(pattern_probs)
+    joint_classes = joint_persistent_pattern_class_summary(joint_persistent_probs)
+    conditional_classes = conditional_pattern_class_summary(conditional_probs)
     return {
         "pattern_probabilities": pattern_probs,
+        "joint_persistent_pattern_probabilities": joint_persistent_probs,
+        "conditional_persistent_pattern_probabilities": conditional_probs,
         "summary": {
-            "persistent_at_all_required_speciation_events": persistent / float(replicates),
-            **pattern_class_summary(pattern_probs),
+            "taxon_order": list(tree.taxa),
+            "persistent_at_all_required_speciation_events": persistent_prob,
+            **classes,
+            "discordant_2_2": classes["w2"] + classes["w3"],
+            **joint_classes,
+            **conditional_classes,
+            "conditional_persistent_diagnostic": (
+                None
+                if persistent_prob > 0.0
+                else "P(persistent_at_all_required_speciation_events)=0; conditional values are null"
+            ),
         },
         "replicates": int(replicates),
         "seed": int(seed),
@@ -374,7 +491,12 @@ def run_pattern_probability_analysis(
 
     out = Path(output)
     out.mkdir(parents=True, exist_ok=True)
-    _write_pattern_csv(out / "theoretical_pattern_probabilities.csv", theory.pattern_probabilities)
+    _write_pattern_csv(
+        out / "theoretical_pattern_probabilities.csv",
+        theory.pattern_probabilities,
+        theory.joint_persistent_pattern_probabilities,
+        theory.conditional_persistent_pattern_probabilities,
+    )
     with (out / "theoretical_summary.json").open("w") as handle:
         json.dump(theory.summary, handle, indent=2)
     comparison = _comparison_rows(theory, simulation)
@@ -387,7 +509,11 @@ def run_pattern_probability_analysis(
         "theory": theory,
         "simulation": simulation,
         "comparison": comparison,
-        "max_abs_error": max(float(row["abs_error"]) for row in comparison),
+        "max_abs_error": max(
+            float(row["abs_error"])
+            for row in comparison
+            if row["abs_error"] is not None
+        ),
     }
 
 
@@ -402,26 +528,67 @@ def _comparison_rows(theory: PatternProbabilityResult, simulation: Mapping[str, 
         "w1": "w1",
         "w2": "w2",
         "w3": "w3",
+        "P_2_2_and_persistent": "P_2_2_and_persistent",
+        "P_3_1_and_persistent": "P_3_1_and_persistent",
+        "P_4_0_and_persistent": "P_4_0_and_persistent",
+        "discordant_2_2_and_persistent": "discordant_2_2_and_persistent",
+        "P_2_2_given_persistent": "P_2_2_given_persistent",
+        "P_3_1_given_persistent": "P_3_1_given_persistent",
+        "P_4_0_given_persistent": "P_4_0_given_persistent",
+        "w1_given_persistent": "w1_given_persistent",
+        "w2_given_persistent": "w2_given_persistent",
+        "w3_given_persistent": "w3_given_persistent",
+        "discordant_2_2_given_persistent": "discordant_2_2_given_persistent",
     }
     for label, key in mapping.items():
-        t = float(theory.summary[key])
-        s = float(sim_summary[key])
-        rows.append({"statistic": label, "theory": t, "simulation": s, "abs_error": abs(t - s)})
+        t = theory.summary[key]
+        s = sim_summary[key]
+        if t is None or s is None:
+            rows.append({"statistic": label, "theory": t, "simulation": s, "abs_error": None})
+        else:
+            tf = float(t)
+            sf = float(s)
+            rows.append({"statistic": label, "theory": tf, "simulation": sf, "abs_error": abs(tf - sf)})
     return rows
 
 
-def _write_pattern_csv(path: Path, pattern_probabilities: Mapping[str, float]) -> None:
+def _write_pattern_csv(
+    path: Path,
+    pattern_probabilities: Mapping[str, float],
+    joint_persistent_pattern_probabilities: Mapping[str, float],
+    conditional_persistent_pattern_probabilities: Mapping[str, float | None],
+) -> None:
     with path.open("w", newline="") as handle:
         writer = csv.writer(handle)
-        writer.writerow(["pattern", "probability"])
+        writer.writerow(
+            [
+                "pattern",
+                "P_pattern",
+                "P_pattern_and_persistent",
+                "P_pattern_given_persistent",
+            ]
+        )
         for pattern in PATTERNS:
-            writer.writerow([pattern, float(pattern_probabilities[pattern])])
+            writer.writerow(
+                [
+                    pattern,
+                    float(pattern_probabilities[pattern]),
+                    float(joint_persistent_pattern_probabilities[pattern]),
+                    conditional_persistent_pattern_probabilities[pattern],
+                ]
+            )
 
 
 def _plot_theory_vs_simulation(path: Path, rows: list[Mapping[str, Any]]) -> None:
-    x = [float(row["theory"]) for row in rows]
-    y = [float(row["simulation"]) for row in rows]
-    labels = [str(row["statistic"]) for row in rows]
+    finite_rows = [
+        row for row in rows
+        if row["theory"] is not None and row["simulation"] is not None
+    ]
+    if not finite_rows:
+        return
+    x = [float(row["theory"]) for row in finite_rows]
+    y = [float(row["simulation"]) for row in finite_rows]
+    labels = [str(row["statistic"]) for row in finite_rows]
     fig, ax = plt.subplots(figsize=(5.5, 5.0))
     ax.scatter(x, y, color="#2364aa")
     lo = min(x + y + [0.0])

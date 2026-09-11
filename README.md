@@ -90,6 +90,7 @@ msrc-sim-find-matched-hybridization --msrc-dir spatial_output --hyb-grid-dir hyb
 msrc-sim-match-hybridization --msrc-dir spatial_output --major-topology '12|34' --introgressed-topology '13|24' --output matched_hybridization.yaml
 msrc-sim-spatial-distinguishability --msrc-dir spatial_output --matched-hybridization-yaml matched_hybridization.yaml --output-dir distinguishability
 msrc-sim-spatial-identifiability --msrc-dir spatial_output --output-dir identifiability --replicates 100
+msrc-sim-pattern-probabilities --config examples/quartet.yaml --output results/pattern_probabilities
 ```
 
 Run the v0.7.0 spatially ordered locus prototype, replot a spatial output
@@ -99,6 +100,25 @@ side-by-side MSRC versus hybridization spatial comparison figure. When the
 scientific question requires comparable bag-of-genes outcomes, use the matcher
 to select a precomputed hybridization run with a marginal quartet vector close
 to the MSRC run before plotting.
+
+`msrc-sim-pattern-probabilities` runs the exact finite-state Wright-Fisher DP
+for the four-taxon mechanistic validation tree and compares it with Monte Carlo
+histories from the same simulator. It writes:
+
+- `theoretical_pattern_probabilities.csv`: all 16 terminal patterns with
+  `P_pattern`, `P_pattern_and_persistent`, and
+  `P_pattern_given_persistent`;
+- `theoretical_summary.json`: marginal, joint, and conditional `2:2`, `3:1`,
+  `4:0`, quartet-partition, and discordant `2:2` probabilities;
+- `theory_vs_simulation.csv`: theoretical and simulated values with absolute
+  errors;
+- `theory_vs_simulation_pattern_probabilities.pdf`: theory-versus-simulation
+  diagnostic plot.
+
+Patterns use the reported `taxon_order`. Relative to that order, `w1` is
+`0011 + 1100` (`12|34`), `w2` is `0101 + 1010` (`13|24`), and `w3` is
+`0110 + 1001` (`14|23`). Conditional values are reported as null when
+`P(persistent_at_all_required_speciation_events)=0`.
 
 ## Linked spatial genealogies and MSRC-aware species-tree inference
 

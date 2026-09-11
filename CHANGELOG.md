@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.8.7
+- Preserve exact joint arrangement-pattern and persistent-polymorphism mass,
+  reporting `P(pattern, persistent)` and `P(pattern | persistent)` for all 16
+  terminal patterns.
+- Add conditional `2:2`, `3:1`, `4:0`, quartet-partition weights, and
+  discordant `2:2` probabilities given persistent ancestral polymorphism.
+- Report taxon ordering and quartet-partition definitions for `w1`, `w2`, and
+  `w3`; reject invalid exact-DP initial copy counts instead of clipping.
+
 ## 0.8.6
 - Add exact finite-state Wright-Fisher DP utilities for rearrangement count
   transitions, persistent-polymorphism probabilities, and four-tip arrangement
