@@ -1,16 +1,11 @@
 # MSRC Simulator
 
-`msrc-sim` simulates gene-tree distributions under the Multi-Species
+`msrc-sim` simulates gene tree distributions under the Multi-Species
 Rearrangement Coalescent (MSRC) model. It is designed for experiments where a
 chromosomal rearrangement, such as an inversion, arises in a population,
 evolves forward in time with a Wright-Fisher process, and then affects
 backward-time genealogies through arrangement-dependent coalescence and
 recombination.
-
-The original four-taxon simulator remains the frozen theory-validation
-baseline. The arbitrary-tree runner generalizes the same core Wright-Fisher and
-structured-coalescent machinery to rooted species trees with any number of
-sampled taxa, while quartet summaries live in a separate analysis layer.
 
 The simulator can be used to:
 
