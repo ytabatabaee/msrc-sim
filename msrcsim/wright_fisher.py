@@ -76,14 +76,15 @@ def simulate_frequency_history(tree:SpeciesTree,rearrangement:Rearrangement,rng:
         if ages[-1]!=b.younger_age: ages.append(b.younger_age)
         k=start_count; ever=k is not None and k>0
         for gi,age in enumerate(ages):
+            s = b.selection_coefficient if b.selection_coefficient != 0.0 else rearrangement.selection_coefficient
             is_origin=False
             if b.branch_id==rearrangement.origin_branch and age<=origin_age and k is None:
                 k=min(rearrangement.initial_copy_count,total); ever=True; is_origin=True
             if k is None: kk=0; status='not_present'
             else: kk=k; status='newly_originated' if is_origin else _status(kk,total,ever)
-            rec=FrequencyRecord(rearrangement.rearrangement_id,b.branch_id,b.parent_branch_id,gi,float(age),kk,total-kk,total,kk/total,1-kk/total,status,is_origin,gi==0,gi==len(ages)-1,rearrangement.selection_coefficient,b.effective_population_size)
+            rec=FrequencyRecord(rearrangement.rearrangement_id,b.branch_id,b.parent_branch_id,gi,float(age),kk,total-kk,total,kk/total,1-kk/total,status,is_origin,gi==0,gi==len(ages)-1,s,b.effective_population_size)
             records.append(rec); by[b.branch_id].append(rec)
             if gi<len(ages)-1 and k is not None and 0<k<total:
-                p=_selected_p(k/total,rearrangement.selection_coefficient); k=int(rng.binomial(total,p))
+                p=_selected_p(k/total,s); k=int(rng.binomial(total,p))
         end_counts[b.branch_id]=None if k is None else (k,total)
     return FrequencyHistory(records,by)

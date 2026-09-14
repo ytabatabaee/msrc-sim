@@ -1,0 +1,33 @@
+mode: arbitrary_tree
+seed: 20265050
+num_loci: 18
+species_tree:
+  path: examples/trees/example_50taxa.nwk
+  root_extension: 12
+  default_effective_population_size: 50
+rearrangement:
+  id: inv_50
+  type: inversion
+  origin_branch: ROOT
+  origin_time_from_branch_start: 4
+  initial_copy_count: 50
+  selection:
+    model: genic
+    coefficient: 0.0
+recombination:
+  baseline_rate: 0.015
+  effective_cross_arrangement_fraction: 0.08
+genome:
+  length_bp: 1200000
+  breakpoint_rate_per_bp: 0.00001
+  kappa: 0.2
+  rearrangement_interval:
+    id: inv_50
+    start: 300000
+    end: 850000
+quartets:
+  - taxa: [S01, S02, S26, S27]
+  - taxa: [S05, S10, S35, S40]
+  - taxa: [S12, S25, S38, S50]
+output:
+  directory: examples/output/50taxa

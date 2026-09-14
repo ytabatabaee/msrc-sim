@@ -13,6 +13,8 @@ def quartet_index(desc):
     return 0
 
 def _topology_from_coalescences(coals, taxa):
+    if len(taxa) != 4:
+        return -1
     first=coals[0]; pair=frozenset(first.descendant_set_1.split(',')+first.descendant_set_2.split(','))
     taxa=list(taxa); sets=[frozenset([taxa[0],taxa[1]]),frozenset([taxa[0],taxa[2]]),frozenset([taxa[0],taxa[3]])]
     return sets.index(pair) if pair in sets else (sets.index(frozenset(set(taxa)-set(pair))) if frozenset(set(taxa)-set(pair)) in sets else 0)

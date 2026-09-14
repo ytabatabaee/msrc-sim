@@ -1,13 +1,18 @@
 # MSRC Simulator
 
-`msrc-sim` simulates quartet gene-tree distributions under the Multi-Species
+`msrc-sim` simulates gene-tree distributions under the Multi-Species
 Rearrangement Coalescent (MSRC) model. It is designed for experiments where a
 chromosomal rearrangement, such as an inversion, arises in a population,
 evolves forward in time with a Wright-Fisher process, and then affects
 backward-time genealogies through arrangement-dependent coalescence and
 recombination.
 
-The simulator currently focuses on four sampled taxa. It can be used to:
+The original four-taxon simulator remains the frozen theory-validation
+baseline. The arbitrary-tree runner generalizes the same core Wright-Fisher and
+structured-coalescent machinery to rooted species trees with any number of
+sampled taxa, while quartet summaries live in a separate analysis layer.
+
+The simulator can be used to:
 
 - simulate a single mechanistic MSRC history and its gene trees;
 - compute empirical and exact quartet probabilities for a fixed structured
@@ -16,6 +21,8 @@ The simulator currently focuses on four sampled taxa. It can be used to:
 - condition replicates on persistence or terminal arrangement patterns;
 - run multidimensional parameter grids for prevalence analyses;
 - run spatially ordered MSRC and pulse-hybridization comparator simulations.
+- run arbitrary-tree implementation checks and extract quartet summaries from
+  larger n-tip gene trees.
 
 The independent unit in prevalence analyses is an evolutionary replicate, not a
 locus. Each accepted replicate draws one rearrangement frequency history, and
@@ -91,6 +98,7 @@ msrc-sim-match-hybridization --msrc-dir spatial_output --major-topology '12|34' 
 msrc-sim-spatial-distinguishability --msrc-dir spatial_output --matched-hybridization-yaml matched_hybridization.yaml --output-dir distinguishability
 msrc-sim-spatial-identifiability --msrc-dir spatial_output --output-dir identifiability --replicates 100
 msrc-sim-pattern-probabilities --config examples/quartet.yaml --output results/pattern_probabilities
+msrc-sim-arbitrary --config examples/arbitrary_10taxa.yaml
 ```
 
 Run the v0.7.0 spatially ordered locus prototype, replot a spatial output
@@ -119,6 +127,16 @@ Patterns use the reported `taxon_order`. Relative to that order, `w1` is
 `0011 + 1100` (`12|34`), `w2` is `0101 + 1010` (`13|24`), and `w3` is
 `0110 + 1001` (`14|23`). Conditional values are reported as null when
 `P(persistent_at_all_required_speciation_events)=0`.
+
+`msrc-sim-arbitrary` runs the generalized arbitrary-tree implementation and
+writes n-tip gene trees plus optional quartet summaries. It accepts either a
+YAML config or a direct Newick file:
+
+```bash
+msrc-sim-arbitrary --config examples/arbitrary_10taxa.yaml
+msrc-sim-arbitrary --config examples/arbitrary_50taxa.yaml
+msrc-sim-arbitrary --species-tree examples/trees/example_10taxa.nwk --output examples/output/direct_10taxa --seed 20260914 --num-loci 24 --origin-branch ROOT
+```
 
 ## Linked spatial genealogies and MSRC-aware species-tree inference
 
@@ -211,11 +229,61 @@ python scripts/simulate_parameter_grid.py --config examples/parameter_grid.yaml
 
 ## Simulation Modes
 
+### Legacy Quartet Mode
+
+Legacy quartet mode is the reproducible four-taxon theory-validation path. The
+existing commands and output schemas are preserved:
+
+```bash
+msrc-sim --config examples/mechanistic_balanced.yaml
+msrc-sim-replicates --config examples/replicates_unconditional.yaml
+msrc-sim-replicates --config examples/replicates_conditioned.yaml
+msrc-sim-spatial --config examples/linked_spatial_inversion.yaml
+msrc-sim-pattern-probabilities --config examples/quartet.yaml --output results/pattern_probabilities
+pytest
+```
+
+The regression manifest for this extension is
+`tests/regression/legacy_quartet_baseline.json`. Small rerunnable smoke configs
+are in `tests/regression/`.
+
+### Arbitrary-Tree Mode
+
+Arbitrary-tree mode accepts a rooted species tree from Newick and writes an
+explicit n-taxon output schema:
+
+```bash
+msrc-sim-arbitrary --config examples/arbitrary_10taxa.yaml
+msrc-sim-arbitrary --config examples/arbitrary_50taxa.yaml
+```
+
+Generalized outputs include `species_tree.nwk`, `simulation_config.json`,
+`branch_metadata.tsv`, `arrangement_history.tsv`, `terminal_states.tsv`,
+legacy-compatible `frequency_history.csv` and `sampled_arrangements.csv`,
+`genealogy_blocks.tsv`, `local_gene_trees.nwk`, optional
+`quartet_summaries.tsv`, `simulation_summary.json`, an SVG Wright-Fisher tree
+figure, and a quartet-style Wright-Fisher figure where plotting dependencies
+are available.
+
+You can also use the existing quartet history plotter on arbitrary-tree output:
+
+```bash
+msrc-sim-plot-history \
+  --frequency-history examples/output/10taxa/frequency_history.csv \
+  --sampled-arrangements examples/output/10taxa/sampled_arrangements.csv \
+  --output examples/output/10taxa/wright_fisher_history_cli.png \
+  --show-frequency-trace
+```
+
+The 10- and 50-taxon outputs are implementation-validation examples, not
+biological validation studies. The validation report is
+`results/arbitrary_tree_validation.md`.
+
 ### Mechanistic MSRC Simulation
 
 Mechanistic mode simulates a rearrangement history forward through a dated
-quartet species tree and then simulates locus genealogies backward through that
-realized history.
+species tree and then simulates locus genealogies backward through that
+realized history. Existing mechanistic configs are legacy quartet configs.
 
 ```bash
 msrc-sim --config examples/mechanistic_balanced.yaml
@@ -226,7 +294,7 @@ The main configuration sections are:
 - `mode`: set to `mechanistic`;
 - `seed`: random seed;
 - `num_loci`: number of loci to simulate;
-- `species_tree`: ultrametric four-taxon Newick tree, root extension, and
+- `species_tree`: ultrametric Newick tree, root extension, and
   effective population sizes;
 - `rearrangement`: rearrangement type, origin branch, origin time, initial copy
   count, and selection coefficient;
@@ -273,9 +341,10 @@ output:
     max_rows_per_branch: 30
 ```
 
-Species trees must be ultrametric and must have exactly four sampled taxa.
-Internal node names are used as branch identifiers, so named internal nodes such
-as `A`, `B`, and `ROOT` are recommended.
+Species trees must be ultrametric. Internal node names are used as branch
+identifiers, so named internal nodes such as `A`, `B`, and `ROOT` are
+recommended. The legacy `msrc-sim` analysis summaries remain quartet-focused;
+use `msrc-sim-arbitrary` for n-tip output schemas.
 
 ### Conditional Quartet Simulation
 

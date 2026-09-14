@@ -19,6 +19,7 @@ class PopulationBranch:
     older_age: float
     effective_population_size: int
     child_node: str
+    selection_coefficient: float = 0.0
 
 class _Parser:
     def __init__(self,s): self.s=s.strip().rstrip(';'); self.i=0; self.auto=0
@@ -55,7 +56,8 @@ class SpeciesTree:
         self.root=_Parser(newick).parse(); self.default_ne=int(default_ne); self.root_extension=float(root_extension)
         self.branch_parameters=branch_parameters or {}; self._assign_ages(); self._name_nodes(); self.branches=self._make_branches()
         self.taxa=tuple(sorted(n.name for n in self.nodes() if n.is_tip()))
-        if len(self.taxa)!=4: raise ValueError("This release supports exactly four sampled taxa")
+        if len(self.taxa) < 2:
+            raise ValueError("Species tree must contain at least two sampled taxa")
     def nodes(self):
         out=[]
         def rec(n): out.append(n); [rec(c) for c in n.children]
@@ -73,14 +75,15 @@ class SpeciesTree:
             if n.name in seen: raise ValueError(f"Duplicate node name {n.name}")
             seen.add(n.name)
     def _ne(self,bid): return int(self.branch_parameters.get(bid,{}).get('effective_population_size',self.default_ne))
+    def _selection(self,bid): return float(self.branch_parameters.get(bid,{}).get('selection_coefficient', self.branch_parameters.get(bid,{}).get('selection', 0.0)))
     def _make_branches(self):
         d={}
         for n in self.nodes():
             if n is self.root:
-                d[n.name]=PopulationBranch(n.name,None,n.age,n.age+self.root_extension,self._ne(n.name),n.name)
+                d[n.name]=PopulationBranch(n.name,None,n.age,n.age+self.root_extension,self._ne(n.name),n.name,self._selection(n.name))
             else:
                 parent_id=n.parent.name
-                d[n.name]=PopulationBranch(n.name,parent_id,n.age,n.parent.age,self._ne(n.name),n.name)
+                d[n.name]=PopulationBranch(n.name,parent_id,n.age,n.parent.age,self._ne(n.name),n.name,self._selection(n.name))
         return d
     def branch_for_tip(self,taxon): return taxon
     def parent_branch(self,bid): return self.branches[bid].parent_branch_id

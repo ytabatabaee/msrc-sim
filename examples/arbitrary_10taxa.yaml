@@ -1,0 +1,33 @@
+mode: arbitrary_tree
+seed: 20260914
+num_loci: 24
+species_tree:
+  path: examples/trees/example_10taxa.nwk
+  root_extension: 20
+  default_effective_population_size: 60
+rearrangement:
+  id: inv_10
+  type: inversion
+  origin_branch: ROOT
+  origin_time_from_branch_start: 8
+  initial_copy_count: 60
+  selection:
+    model: genic
+    coefficient: 0.0
+recombination:
+  baseline_rate: 0.02
+  effective_cross_arrangement_fraction: 0.08
+genome:
+  length_bp: 1000000
+  breakpoint_rate_per_bp: 0.00002
+  kappa: 0.15
+  rearrangement_interval:
+    id: inv_10
+    start: 250000
+    end: 650000
+quartets:
+  - taxa: [T01, T02, T03, T04]
+  - taxa: [T01, T05, T06, T10]
+  - taxa: [T03, T04, T08, T09]
+output:
+  directory: examples/output/10taxa

@@ -34,6 +34,7 @@ msrc-sim-spatial-identifiability = "msrcsim.spatial_identifiability_cli:main"
 msrc-sim-species-tree-robustness = "msrcsim.robustness_cli:main"
 msrc-sim-validation-grid = "msrcsim.validation_grid_cli:main"
 msrc-sim-pattern-probabilities = "msrcsim.pattern_probabilities_cli:main"
+msrc-sim-arbitrary = "msrcsim.arbitrary_cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
