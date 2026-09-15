@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.8.8
 - Add a config-dispatched forward population-process layer with Wright-Fisher
   as the backward-compatible default.
 - Add a continuous-time Moran state-changing birth-death CTMC for structural
