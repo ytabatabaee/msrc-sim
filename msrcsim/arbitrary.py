@@ -18,7 +18,7 @@ from .quartet import summarize_quartet, validate_newick_taxa
 from .rearrangement import Rearrangement
 from .species_tree import Node, SpeciesTree
 from .structured_coalescent import simulate_genealogy, simulate_msc_genealogy
-from .wright_fisher import simulate_frequency_history
+from .population_process import resolved_population_process, simulate_population_history
 
 
 def _git_commit() -> str | None:
@@ -148,6 +148,14 @@ def _node_x_positions(tree: SpeciesTree) -> dict[str, float]:
     return xpos
 
 
+def _process_prefix(history) -> str:
+    return "moran" if getattr(history, "population_process", "wright_fisher") == "moran" else "wright_fisher"
+
+
+def _process_label(history) -> str:
+    return "Moran" if _process_prefix(history) == "moran" else "Wright-Fisher"
+
+
 def _plot_structural_tree(out: Path, tree: SpeciesTree, history, sampled: Mapping[str, int], detailed: bool) -> str:
     xpos = _node_x_positions(tree)
     width = max(700, min(1600, len(tree.taxa) * 32))
@@ -173,7 +181,7 @@ def _plot_structural_tree(out: Path, tree: SpeciesTree, history, sampled: Mappin
     lines = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
         '<rect width="100%" height="100%" fill="white"/>',
-        '<text x="18" y="22" font-family="sans-serif" font-size="15">Structural-frequency propagation over species tree</text>',
+        f'<text x="18" y="22" font-family="sans-serif" font-size="15">{_process_label(history)} structural-frequency propagation over species tree</text>',
     ]
     for node in tree.nodes():
         if node is tree.root:
@@ -210,7 +218,8 @@ def _plot_structural_tree(out: Path, tree: SpeciesTree, history, sampled: Mappin
         lines.append(f'<text x="{x + 14}" y="40" text-anchor="middle" font-family="sans-serif" font-size="9">{freq:.1f}</text>')
     lines.append('<text x="18" y="44" font-family="sans-serif" font-size="10">Y axis: backward age; terminal labels show sampled A0/A1 state.</text>')
     lines.append("</svg>")
-    path = out / ("wright_fisher_tree_detailed.svg" if detailed else "wright_fisher_tree_compact.svg")
+    prefix = _process_prefix(history)
+    path = out / (f"{prefix}_tree_detailed.svg" if detailed else f"{prefix}_tree_compact.svg")
     path.write_text("\n".join(lines))
     return str(path)
 
@@ -238,25 +247,28 @@ def _plot_quartet_style_wf(out: Path, tree: SpeciesTree, history, sampled: Mappi
             width_mode="constant",
             show_internal_labels=len(tree.taxa) <= 12,
             show_frequency_trace=True,
-            title="Wright-Fisher structural-frequency history",
+            title=f"{_process_label(history)} structural-frequency history",
         )
-        path = out / ("wright_fisher_history_quartet_style.png" if len(tree.taxa) <= 12 else "wright_fisher_history_quartet_style.pdf")
+        prefix = _process_prefix(history)
+        path = out / (f"{prefix}_history_quartet_style.png" if len(tree.taxa) <= 12 else f"{prefix}_history_quartet_style.pdf")
         fig.savefig(path, dpi=220, bbox_inches="tight")
         plt.close(fig)
         return str(path)
     except Exception as exc:
-        (out / "wright_fisher_history_quartet_style.error.txt").write_text(str(exc))
+        (out / f"{_process_prefix(history)}_history_quartet_style.error.txt").write_text(str(exc))
         return None
 
 
 def run_arbitrary_simulation(config: Mapping[str, Any]) -> Path:
     start = perf_counter()
     cfg = dict(config)
+    cfg.setdefault("population_process", {"model": "wright_fisher"})
+    cfg["population_process"].setdefault("model", "wright_fisher")
     rng = np.random.default_rng(int(cfg.get("seed", 1)))
     tree = tree_from_config(cfg)
     rearrangement = rearrangement_from_config(cfg)
     base_rate, fraction = _recombination(cfg)
-    history = simulate_frequency_history(tree, rearrangement, rng)
+    history = simulate_population_history(tree, rearrangement, rng, cfg)
     sampled = {taxon: int(rng.random() < history.terminal_frequency(taxon)) for taxon in tree.taxa}
     out = Path(cfg.get("output", {}).get("directory", "arbitrary_tree_output"))
     out.mkdir(parents=True, exist_ok=True)
@@ -296,6 +308,7 @@ def run_arbitrary_simulation(config: Mapping[str, Any]) -> Path:
         provenance["simulator_version"] = "0.9.0-arbitrary-tree"
         provenance["git_commit"] = _git_commit()
         provenance["n_taxa"] = len(tree.taxa)
+        provenance["population_process"] = resolved_population_process(cfg)
         json.dump(provenance, handle, indent=2)
     _write_branch_metadata(out, tree)
     _write_arrangement_history(out, history)
@@ -335,7 +348,10 @@ def run_arbitrary_simulation(config: Mapping[str, Any]) -> Path:
         "num_genealogy_blocks": len(rows),
         "num_gene_trees": len(gene_trees),
         "num_coalescent_events": int(events_total),
-        "num_wright_fisher_branch_simulations": len(tree.branches),
+        "population_process": resolved_population_process(cfg),
+        "num_wright_fisher_branch_simulations": len(tree.branches) if _process_prefix(history) == "wright_fisher" else 0,
+        "num_population_branch_simulations": len(tree.branches),
+        "num_population_events": int(getattr(history, "num_population_events", 0)),
         "sampled_state_counts": {"A0": sum(1 for x in sampled.values() if x == 0), "A1": sum(1 for x in sampled.values() if x == 1)},
         "mean_block_length_inside": float(np.mean([r["length"] for r in rows if r["is_rearranged"]])) if any(r["is_rearranged"] for r in rows) else None,
         "mean_block_length_outside": float(np.mean([r["length"] for r in rows if not r["is_rearranged"]])) if any(not r["is_rearranged"] for r in rows) else None,
@@ -345,7 +361,8 @@ def run_arbitrary_simulation(config: Mapping[str, Any]) -> Path:
         "peak_rss_raw": int(rss),
         "peak_rss_bytes": rss_bytes,
         "figure": fig_path,
-        "quartet_style_wright_fisher_figure": quartet_style_fig,
+        "quartet_style_wright_fisher_figure": quartet_style_fig if _process_prefix(history) == "wright_fisher" else None,
+        "quartet_style_population_process_figure": quartet_style_fig,
     }
     with (out / "simulation_summary.json").open("w") as handle:
         json.dump(summary, handle, indent=2)

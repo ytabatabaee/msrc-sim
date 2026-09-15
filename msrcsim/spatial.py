@@ -21,7 +21,7 @@ from .spatial_statistics import (
     spatial_summary,
 )
 from .structured_coalescent import simulate_genealogy, simulate_msc_genealogy
-from .wright_fisher import FrequencyHistory, simulate_frequency_history
+from .population_process import PopulationFrequencyHistory, resolved_population_process, simulate_population_history
 
 
 LOCUS_FIELDS = [
@@ -68,19 +68,19 @@ def _terminal_pattern(sampled: Mapping[str, int], taxa: tuple[str, ...]) -> str:
     return "".join(str(int(sampled[t])) for t in taxa)
 
 
-def _load_or_simulate_history(config: Mapping[str, Any], rng: np.random.Generator) -> tuple[FrequencyHistory, dict[str, int], dict[str, Any], Rearrangement]:
+def _load_or_simulate_history(config: Mapping[str, Any], rng: np.random.Generator) -> tuple[PopulationFrequencyHistory, dict[str, int], dict[str, Any], Rearrangement]:
     history_path = config.get("history", {}).get("frozen_history")
     rearrangement = _rearrangement_from_config(config)
     if history_path:
         _, history, sampled, metadata = load_frozen_history(history_path)
         return history, sampled, {"frozen_history": str(history_path), **metadata}, rearrangement
     tree = _tree_from_config(config)
-    history = simulate_frequency_history(tree, rearrangement, rng)
+    history = simulate_population_history(tree, rearrangement, rng, dict(config))
     sampled = {t: int(rng.random() < history.terminal_frequency(t)) for t in tree.taxa}
-    return history, sampled, {"frozen_history": None}, rearrangement
+    return history, sampled, {"frozen_history": None, "population_process": resolved_population_process(dict(config))}, rearrangement
 
 
-def _write_frequency_history(out: Path, history: FrequencyHistory) -> None:
+def _write_frequency_history(out: Path, history: PopulationFrequencyHistory) -> None:
     rows = [asdict(r) for r in history.records]
     if not rows:
         return
@@ -170,6 +170,7 @@ def simulate_spatial(config: Mapping[str, Any]) -> Path:
         "terminal_pattern": terminal,
         "sampled_arrangements": sampled,
         "history_metadata": history_metadata,
+        "population_process": resolved_population_process(dict(config)),
         "topology_names": TOPOLOGY_NAMES,
     })
 

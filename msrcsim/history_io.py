@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Any, Mapping
 import yaml
 from .wright_fisher import FrequencyRecord, FrequencyHistory
+from .population_process import resolved_population_process
 
 
 def save_frozen_history(path: str | Path, config: Mapping[str, Any], history: FrequencyHistory,
@@ -16,6 +17,7 @@ def save_frozen_history(path: str | Path, config: Mapping[str, Any], history: Fr
         "metadata": dict(metadata or {}),
         "frequency_records": [asdict(r) for r in history.records],
     }
+    payload["metadata"].setdefault("population_process", resolved_population_process(dict(config)))
     with path.open("w") as handle:
         yaml.safe_dump(payload, handle, sort_keys=False)
     return path

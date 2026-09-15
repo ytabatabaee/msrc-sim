@@ -17,7 +17,7 @@ from .simplex import barycentric_to_cartesian
 from .species_tree import SpeciesTree
 from .statistics import summarize_replicates
 from .structured_coalescent import simulate_genealogy
-from .wright_fisher import simulate_frequency_history
+from .population_process import resolved_population_process, simulate_population_history
 from .model_fitting import compare_models
 
 
@@ -143,7 +143,7 @@ def simulate_replicates(config: Mapping[str, Any]) -> tuple[list[ReplicateRecord
 
     for attempt_id, ss in enumerate(attempt_sequences):
         rng = np.random.default_rng(ss)
-        history = simulate_frequency_history(tree, rearrangement, rng)
+        history = simulate_population_history(tree, rearrangement, rng, dict(config))
         sampled = {t: int(rng.random() < history.terminal_frequency(t)) for t in tree.taxa}
         cond = evaluate_conditioning(conditioning, history, sampled, tree.taxa)
 
@@ -275,6 +275,7 @@ def simulate_replicates(config: Mapping[str, Any]) -> tuple[list[ReplicateRecord
     summary = summarize_replicates([asdict(r) for r in records], threshold)
     summary["requested_replicates"] = requested
     summary["loci_per_replicate"] = loci_per_replicate
+    summary["population_process"] = resolved_population_process(dict(config))
     return records, summary
 
 

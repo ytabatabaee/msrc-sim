@@ -9,7 +9,7 @@ import yaml
 from .config import load_config
 from .species_tree import SpeciesTree
 from .rearrangement import Rearrangement
-from .wright_fisher import simulate_frequency_history
+from .population_process import simulate_population_history
 from .structured_coalescent import simulate_genealogy
 from .io import write_outputs
 from .conditional import simulate_conditional
@@ -53,7 +53,7 @@ def _run_mechanistic(c):
     rr = c['rearrangement']
     sel = rr.get('selection', {}).get('coefficient', rr.get('selection_coefficient', 0.0))
     rearr = Rearrangement(rr.get('id', 'inv_1'), rr['type'], rr['origin_branch'], int(rr['origin_time_from_branch_start']), int(rr.get('initial_copy_count', 1)), float(sel))
-    hist = simulate_frequency_history(tree, rearr, rng)
+    hist = simulate_population_history(tree, rearr, rng, c)
     sampled = {t: int(rng.random() < hist.terminal_frequency(t)) for t in tree.taxa}
     rec = c['recombination']
     base = rec.get('baseline_rate', rec.get('rate'))

@@ -3,7 +3,7 @@
 `msrc-sim` simulates gene tree distributions under the Multi-Species
 Rearrangement Coalescent (MSRC) model. It is designed for experiments where a
 chromosomal rearrangement, such as an inversion, arises in a population,
-evolves forward in time with a Wright-Fisher process, and then affects
+evolves forward in time with a Wright-Fisher or Moran process, and then affects
 backward-time genealogies through arrangement-dependent coalescence and
 recombination.
 
@@ -78,7 +78,7 @@ msrc-sim-plot-history --run-dir <run_output> --output <history.pdf>
 
 Compare quartet vectors, freeze and replay realized rearrangement histories,
 create automated replicate/model-comparison figures, and render a static
-Wright-Fisher frequency-history tree. Mechanistic simulations can also render
+structural-frequency history tree. Mechanistic simulations can also render
 that history figure automatically with `output.make_history_plot: true`.
 
 ```bash
@@ -123,6 +123,75 @@ Patterns use the reported `taxon_order`. Relative to that order, `w1` is
 `0110 + 1001` (`14|23`). Conditional values are reported as null when
 `P(persistent_at_all_required_speciation_events)=0`.
 
+## Forward population-process models
+
+MSRC currently provides two forward structural-frequency models. Existing
+configs without a `population_process` section default to Wright-Fisher:
+
+```yaml
+population_process:
+  model: wright_fisher
+```
+
+Use continuous-time Moran dynamics with:
+
+```yaml
+population_process:
+  model: moran
+```
+
+### Wright-Fisher
+
+The Wright-Fisher model is the original discrete-generation binomial
+reproduction process. The exact finite-state utilities in
+`msrc-sim-pattern-probabilities` remain Wright-Fisher-specific validation tools.
+
+### Moran
+
+The Moran model is a continuous-time birth-death allele-count process on
+`K(t) in {0, ..., M}`, where `M = 2Ne` chromosome copies and `p=K/M`. Boundary
+states `K=0` and `K=M` are absorbing because the rearrangement is introduced
+only once.
+
+The time scale is generation-equivalent. The total attempted Moran replacement
+event rate is `M/2` per generation-equivalent time unit. After integrating out
+events that do not change allele count, neutral state-changing rates are:
+
+```text
+q_plus(K)  = (M/2) p (1-p)
+q_minus(K) = (M/2) p (1-p)
+```
+
+This convention gives neutral short-time frequency variance
+`Var[dp]/dt = p(1-p)/M = p(1-p)/(2Ne)`, matching the Wright-Fisher diffusion
+variance per generation.
+
+For native Moran genic selection, A1 reproductive fitness is `1+s_M` and A0
+fitness is `1`. The simulator requires `1+s_M > 0` and uses:
+
+```text
+p_sel   = p(1+s_M) / (1+s_M p)
+q_plus  = (M/2) p_sel (1-p)
+q_minus = (M/2) (1-p_sel) p
+```
+
+These are native continuous-time Moran selection dynamics; the same numerical
+selection coefficient need not have identical finite-population meaning in
+discrete Wright-Fisher and continuous Moran simulations. For primary
+Wright-Fisher/Moran robustness checks, neutral `s=0` avoids that confounder.
+
+At species-tree splits, Moran uses the same daughter-population initialization
+rule as Wright-Fisher: a binomial draw from the parental terminal frequency.
+Thus WF/Moran comparisons change the within-branch forward process without
+simultaneously changing the split model.
+
+The conditional structured-coalescent component of MSRC operates on a supplied
+structural-frequency history; Wright-Fisher and Moran models provide
+alternative stochastic generators of such histories. The two implementations
+allow simulation-based assessment of robustness to the assumed forward
+population process. They do not by themselves establish a theorem that all MSRC
+mathematics is population-process-independent.
+
 `msrc-sim-arbitrary` runs the generalized arbitrary-tree implementation and
 writes n-tip gene trees plus optional quartet summaries. It accepts either a
 YAML config or a direct Newick file:
@@ -131,6 +200,7 @@ YAML config or a direct Newick file:
 msrc-sim-arbitrary --config examples/arbitrary_10taxa.yaml
 msrc-sim-arbitrary --config examples/arbitrary_50taxa.yaml
 msrc-sim-arbitrary --species-tree examples/trees/example_10taxa.nwk --output examples/output/direct_10taxa --seed 20260914 --num-loci 24 --origin-branch ROOT
+msrc-sim-arbitrary --config examples/arbitrary_10taxa.yaml --population-process moran
 ```
 
 ## Linked spatial genealogies and MSRC-aware species-tree inference
@@ -741,7 +811,7 @@ Mechanistic runs write files to `output.directory`. Depending on the output
 flags, the directory can contain:
 
 - `config.resolved.yaml`: YAML configuration after defaults are applied;
-- `frequency_history.csv`: forward Wright-Fisher frequency path on each branch;
+- `frequency_history.csv`: forward structural-frequency path on each branch;
 - `sampled_arrangements.csv`: sampled terminal arrangement state for each taxon;
 - `wright_fisher_history.png` or `.pdf`: optional static visualization created
   by `msrc-sim-plot-history`;
@@ -763,12 +833,12 @@ Conditional runs write:
 
 The three quartet topologies are reported as `12|34`, `13|24`, and `14|23`.
 
-### Wright-Fisher History Visualization
+### Structural-Frequency History Visualization
 
-The Wright-Fisher history plot uses `frequency_history.csv` to render the
+The structural-frequency history plot uses `frequency_history.csv` to render the
 realized rearrangement-frequency trajectory directly on the species tree.
 Colored arrows summarize the proportion of ancestral and rearranged chromosomes
-at selected generations. The visualization does not resimulate the process and
+at selected times or generations. The visualization does not resimulate the process and
 does not treat displayed arrows as individual chromosome copies.
 
 Set `output.make_history_plot: true` in a mechanistic configuration to write

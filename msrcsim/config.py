@@ -30,6 +30,8 @@ def load_config(path):
 
     d.setdefault('seed', 1)
     d.setdefault('num_loci', 1000)
+    d.setdefault('population_process', {'model': 'wright_fisher'})
+    d['population_process'].setdefault('model', 'wright_fisher')
     _set_output_defaults(d)
 
     if mode == 'spatial':

@@ -20,6 +20,7 @@ def main() -> None:
     parser.add_argument("--origin-branch", default="ROOT")
     parser.add_argument("--origin-time-from-branch-start", type=int, default=10)
     parser.add_argument("--initial-copy-count", type=int, default=20)
+    parser.add_argument("--population-process", choices=["wright_fisher", "moran"], default=None)
     args = parser.parse_args()
 
     if args.config:
@@ -49,7 +50,11 @@ def main() -> None:
                 "effective_cross_arrangement_fraction": 0.05,
             },
             "output": {"directory": args.output},
+            "population_process": {"model": args.population_process or "wright_fisher"},
         }
+    if args.population_process:
+        config.setdefault("population_process", {})
+        config["population_process"]["model"] = args.population_process
     config.setdefault("output", {})
     config["output"].setdefault("directory", args.output)
     out = run_arbitrary_simulation(config)

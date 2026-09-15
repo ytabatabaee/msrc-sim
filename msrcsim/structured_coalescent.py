@@ -1,7 +1,7 @@
 from __future__ import annotations
 import numpy as np
 from .species_tree import SpeciesTree
-from .wright_fisher import FrequencyHistory
+from .population_process import PopulationFrequencyHistory
 from .lineages import Lineage,GenealogyEvent,CoalescenceRecord,GenealogyResult
 
 def quartet_index(desc):
@@ -19,7 +19,7 @@ def _topology_from_coalescences(coals, taxa):
     taxa=list(taxa); sets=[frozenset([taxa[0],taxa[1]]),frozenset([taxa[0],taxa[2]]),frozenset([taxa[0],taxa[3]])]
     return sets.index(pair) if pair in sets else (sets.index(frozenset(set(taxa)-set(pair))) if frozenset(set(taxa)-set(pair)) in sets else 0)
 
-def simulate_genealogy(locus_id,tree:SpeciesTree,history:FrequencyHistory,sampled_arrangements,recombination_rate,effective_fraction,rng,record_events=True):
+def simulate_genealogy(locus_id,tree:SpeciesTree,history:PopulationFrequencyHistory,sampled_arrangements,recombination_rate,effective_fraction,rng,record_events=True):
     rho=recombination_rate*effective_fraction
     lineages=[]; next_id=0
     for taxon in tree.taxa:

@@ -1,5 +1,19 @@
 # Changelog
 
+## Unreleased
+- Add a config-dispatched forward population-process layer with Wright-Fisher
+  as the backward-compatible default.
+- Add a continuous-time Moran state-changing birth-death CTMC for structural
+  polymorphism frequency histories, using `M=2Ne` and an `M/2`
+  generation-equivalent attempted replacement rate.
+- Support Moran histories in arbitrary-tree, mechanistic, spatial, frozen
+  history, replay, and plotting workflows while keeping old Wright-Fisher
+  imports and frozen histories readable.
+- Add exact small-population Moran CTMC validation utilities using
+  `scipy.linalg.expm`.
+- Add WF/Moran validation artifacts, arbitrary-tree Moran examples, and a
+  comparison figure under `results/`.
+
 ## 0.8.7
 - Preserve exact joint arrangement-pattern and persistent-polymorphism mass,
   reporting `P(pattern, persistent)` and `P(pattern | persistent)` for all 16
