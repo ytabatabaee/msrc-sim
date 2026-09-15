@@ -2,11 +2,16 @@ import numpy as np
 
 from msrcsim.robustness import dominant_quartet_threshold
 from msrcsim.wf_moran_robustness import (
+    block_normalized_epsilon,
+    correction_epsilon_fields,
     correction_recovered,
+    dense_window_epsilon,
     four_taxon_tree,
     matched_discordant_history,
+    oracle_filter_effective_epsilon,
     simulate_forward_attempt,
     simulate_quartet_summary,
+    soft_weight_effective_epsilon,
     threshold_from_beta,
 )
 
@@ -43,6 +48,37 @@ def test_threshold_calculation_uses_process_specific_beta():
     tau = 0.6
     assert threshold_from_beta(tau, wf_beta) == dominant_quartet_threshold(tau, wf_beta)
     assert threshold_from_beta(tau, wf_beta) != threshold_from_beta(tau, moran_beta)
+
+
+def test_oracle_filter_effective_epsilon_is_zero_after_filtering():
+    assert oracle_filter_effective_epsilon(0.55) == 0.0
+
+
+def test_soft_weight_effective_epsilon_formula():
+    assert np.isclose(soft_weight_effective_epsilon(0.55, w0=1.0, w1=0.5), 0.3793103448275862)
+    assert np.isclose(soft_weight_effective_epsilon(0.55, w0=1.0, w1=0.1), 0.10891089108910891)
+
+
+def test_block_normalized_epsilon_is_block_fraction():
+    pi = 0.25
+    assert block_normalized_epsilon(pi) == pi
+    assert dense_window_epsilon(pi, mu0=1.0, mu1=3.0) == 0.5
+
+
+def test_correction_reporting_keeps_epsilon_fields_distinct():
+    naive = correction_epsilon_fields("all_windows", 0.55, 0.312)
+    oracle = correction_epsilon_fields("oracle_filter", 0.55, 0.312)
+    block = correction_epsilon_fields("genealogy_block_collapse", 0.55, 0.312, block_epsilon=0.25)
+    soft = correction_epsilon_fields("soft_weight", 0.55, 0.312, soft_ratio=0.5)
+    assert naive["raw_epsilon"] == 0.55
+    assert naive["effective_epsilon"] == 0.55
+    assert oracle["raw_epsilon"] == 0.55
+    assert oracle["effective_epsilon"] == 0.0
+    assert block["raw_epsilon"] == 0.55
+    assert block["block_epsilon"] == 0.25
+    assert block["effective_epsilon"] == 0.25
+    assert np.isclose(soft["weighted_epsilon"], 0.3793103448275862)
+    assert np.isclose(soft["effective_epsilon"], 0.3793103448275862)
 
 
 def test_correction_utilities_accept_process_agnostic_rows():

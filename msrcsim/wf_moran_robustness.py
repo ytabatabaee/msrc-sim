@@ -240,6 +240,71 @@ def threshold_from_beta(tau: float, beta: float) -> float:
     return dominant_quartet_threshold(float(tau), float(beta))
 
 
+def soft_weight_effective_epsilon(raw_epsilon: float, w0: float = 1.0, w1: float = 1.0) -> float:
+    """Effective contamination after topology-neutral mean weights."""
+    raw_epsilon = float(raw_epsilon)
+    w0 = float(w0)
+    w1 = float(w1)
+    denom = (1.0 - raw_epsilon) * w0 + raw_epsilon * w1
+    if denom <= 0.0:
+        return float("nan")
+    return float(raw_epsilon * w1 / denom)
+
+
+def oracle_filter_effective_epsilon(raw_epsilon: float) -> float:
+    """Oracle filtering removes affected observations from the retained sample."""
+    float(raw_epsilon)
+    return 0.0
+
+
+def block_normalized_epsilon(pi: float) -> float:
+    """One-unit-per-block weighting makes contamination equal the block fraction."""
+    return float(pi)
+
+
+def dense_window_epsilon(pi: float, mu0: float, mu1: float) -> float:
+    """Window-level contamination when affected blocks contribute more windows."""
+    pi = float(pi)
+    mu0 = float(mu0)
+    mu1 = float(mu1)
+    denom = (1.0 - pi) * mu0 + pi * mu1
+    if denom <= 0.0:
+        return float("nan")
+    return float(pi * mu1 / denom)
+
+
+def correction_epsilon_fields(strategy: str, raw_epsilon: float, epsilon_star: float, *, soft_ratio: float | None = None, block_epsilon: float | None = None) -> dict[str, Any]:
+    """Return unambiguous contamination fields for correction-method reporting."""
+    raw_epsilon = float(raw_epsilon)
+    if strategy == "all_windows":
+        effective = raw_epsilon
+        block_value: float | str = ""
+        weighted_value: float | str = ""
+    elif strategy == "oracle_filter":
+        effective = oracle_filter_effective_epsilon(raw_epsilon)
+        block_value = ""
+        weighted_value = ""
+    elif strategy in {"block_collapse", "genealogy_block_collapse"}:
+        effective = raw_epsilon if block_epsilon is None else float(block_epsilon)
+        block_value = effective
+        weighted_value = ""
+    elif strategy == "soft_weight":
+        if soft_ratio is None:
+            raise ValueError("soft_ratio is required for soft_weight reporting")
+        effective = soft_weight_effective_epsilon(raw_epsilon, 1.0, float(soft_ratio))
+        block_value = ""
+        weighted_value = effective
+    else:
+        raise ValueError(f"Unknown correction strategy: {strategy}")
+    return {
+        "raw_epsilon": raw_epsilon,
+        "effective_epsilon": effective,
+        "block_epsilon": block_value,
+        "weighted_epsilon": weighted_value,
+        "predicted_relation_to_epsilon_star": "below" if effective < float(epsilon_star) else "above",
+    }
+
+
 def mixture_probabilities(tau: float, msrc_q: tuple[float, float, float], epsilon: float) -> np.ndarray:
     return (1.0 - float(epsilon)) * msc_probabilities(0, float(tau)) + float(epsilon) * np.asarray(msrc_q, dtype=float)
 
