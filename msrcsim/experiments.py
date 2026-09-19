@@ -17,7 +17,7 @@ from .simplex import barycentric_to_cartesian
 from .species_tree import SpeciesTree
 from .statistics import summarize_replicates
 from .structured_coalescent import simulate_genealogy
-from .population_process import resolved_population_process, simulate_population_history
+from .population_process import resolved_population_process, resolved_speciation_split, simulate_population_history
 from .model_fitting import compare_models
 
 
@@ -276,6 +276,9 @@ def simulate_replicates(config: Mapping[str, Any]) -> tuple[list[ReplicateRecord
     summary["requested_replicates"] = requested
     summary["loci_per_replicate"] = loci_per_replicate
     summary["population_process"] = resolved_population_process(dict(config))
+    split_provenance = resolved_speciation_split(dict(config))
+    if split_provenance is not None:
+        summary["speciation_split"] = split_provenance
     return records, summary
 
 

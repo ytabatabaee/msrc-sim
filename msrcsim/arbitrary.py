@@ -18,7 +18,8 @@ from .quartet import summarize_quartet, validate_newick_taxa
 from .rearrangement import Rearrangement
 from .species_tree import Node, SpeciesTree
 from .structured_coalescent import simulate_genealogy, simulate_msc_genealogy
-from .population_process import resolved_population_process, simulate_population_history
+from .population_process import resolved_population_process, resolved_speciation_split, simulate_population_history
+from .speciation_split import split_events_as_dicts
 
 
 def _git_commit() -> str | None:
@@ -120,6 +121,12 @@ def _write_arrangement_history(out: Path, history) -> None:
         writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
         writer.writeheader()
         writer.writerows(rows)
+    events = split_events_as_dicts(getattr(history, "split_events", []))
+    if events:
+        with (out / "speciation_split_events.tsv").open("w", newline="") as handle:
+            writer = csv.DictWriter(handle, fieldnames=list(events[0]), delimiter="\t")
+            writer.writeheader()
+            writer.writerows(events)
 
 
 def _write_terminal_states(out: Path, tree: SpeciesTree, history, sampled: Mapping[str, int]) -> None:
@@ -309,6 +316,9 @@ def run_arbitrary_simulation(config: Mapping[str, Any]) -> Path:
         provenance["git_commit"] = _git_commit()
         provenance["n_taxa"] = len(tree.taxa)
         provenance["population_process"] = resolved_population_process(cfg)
+        split_provenance = resolved_speciation_split(cfg)
+        if split_provenance is not None:
+            provenance["speciation_split"] = split_provenance
         json.dump(provenance, handle, indent=2)
     _write_branch_metadata(out, tree)
     _write_arrangement_history(out, history)
@@ -364,6 +374,9 @@ def run_arbitrary_simulation(config: Mapping[str, Any]) -> Path:
         "quartet_style_wright_fisher_figure": quartet_style_fig if _process_prefix(history) == "wright_fisher" else None,
         "quartet_style_population_process_figure": quartet_style_fig,
     }
+    split_provenance = resolved_speciation_split(cfg)
+    if split_provenance is not None:
+        summary["speciation_split"] = split_provenance
     with (out / "simulation_summary.json").open("w") as handle:
         json.dump(summary, handle, indent=2)
     return out

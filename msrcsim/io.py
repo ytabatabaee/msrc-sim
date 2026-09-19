@@ -4,7 +4,18 @@ import csv,json,yaml
 from dataclasses import asdict
 
 from .frequency_history_plot import A0_COLOR, A1_COLOR, plot_frequency_history_tree
-from .population_process import resolved_population_process
+from .population_process import resolved_population_process, resolved_speciation_split
+from .speciation_split import split_events_as_dicts
+
+
+def _write_split_events(out: Path, history) -> None:
+    events = split_events_as_dicts(getattr(history, "split_events", []))
+    if not events:
+        return
+    with (out / "speciation_split_events.tsv").open("w", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=list(events[0]), delimiter="\t")
+        writer.writeheader()
+        writer.writerows(events)
 
 def write_outputs(config,tree,rearrangement,history,sampled,results):
     out=Path(config['output']['directory']); out.mkdir(parents=True,exist_ok=True)
@@ -16,6 +27,7 @@ def write_outputs(config,tree,rearrangement,history,sampled,results):
         rows=[asdict(r) for r in history.records]
         with open(frequency_history_path,'w',newline='') as f:
             w=csv.DictWriter(f,fieldnames=rows[0].keys()); w.writeheader(); w.writerows(rows)
+    _write_split_events(out, history)
     if config['output']['record_sampled_arrangements']:
         with open(sampled_arrangements_path,'w',newline='') as f:
             w=csv.writer(f); w.writerow(['taxon','arrangement','terminal_frequency_A1']);
@@ -82,5 +94,9 @@ def write_outputs(config,tree,rearrangement,history,sampled,results):
         if rows:
             with open(out/'genealogy_events.csv','w',newline='') as f: w=csv.DictWriter(f,fieldnames=rows[0].keys()); w.writeheader(); w.writerows(rows)
     counts=[sum(r.topology_index==i for r in results) for i in range(3)]
-    with open(out/'summary.json','w') as f: json.dump({'version':'0.3.0','population_process':resolved_population_process(dict(config)),'taxa':tree.taxa,'sampled_arrangements':sampled,'topology_counts':counts,'topology_frequencies':[c/len(results) for c in counts]},f,indent=2)
+    summary={'version':'0.3.0','population_process':resolved_population_process(dict(config)),'taxa':tree.taxa,'sampled_arrangements':sampled,'topology_counts':counts,'topology_frequencies':[c/len(results) for c in counts]}
+    split_provenance = resolved_speciation_split(dict(config))
+    if split_provenance is not None:
+        summary['speciation_split'] = split_provenance
+    with open(out/'summary.json','w') as f: json.dump(summary,f,indent=2)
     return out

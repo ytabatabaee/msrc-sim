@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+- Add an opt-in reciprocal-log-odds speciation daughter-initialization kernel
+  with WF/Moran shared math, split-event provenance, tests, docs, and a new
+  example config. Existing configs continue to use the legacy unbiased split
+  rule.
+
 ## 0.8.8
 - Add a config-dispatched forward population-process layer with Wright-Fisher
   as the backward-compatible default.

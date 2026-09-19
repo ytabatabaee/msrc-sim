@@ -180,6 +180,46 @@ selection coefficient need not have identical finite-population meaning in
 discrete Wright-Fisher and continuous Moran simulations. For primary
 Wright-Fisher/Moran robustness checks, neutral `s=0` avoids that confounder.
 
+### Speciation-associated daughter initialization
+
+By default, daughter branches are initialized with the legacy unbiased rule:
+if the parental A1 frequency immediately before a split is `p_A`, each daughter
+draws `K_d(0) ~ Binomial(2 N_d, p_A)`. Existing configs that omit
+`speciation_split` keep this behavior and all previously reported MSRC
+numerical analyses used this legacy/`eta=0` split rule.
+
+An optional reduced-form daughter-sorting kernel can be enabled with:
+
+```yaml
+speciation_split:
+  model: reciprocal_log_odds
+  eta: 0.0
+  by_split:
+    ROOT:
+      eta: 1.5
+      positive_child: A
+```
+
+For a daughter with odds multiplier `omega_d`, the target frequency is:
+
+```text
+p_d* = omega_d p_A / [(1 - p_A) + omega_d p_A]
+```
+
+The reciprocal one-parameter form uses `omega_positive = exp(eta)` and
+`omega_negative = exp(-eta)`, equivalently adding `+eta` or `-eta` to the
+parental log odds. Positive `eta` enriches the configured positive child for
+A1 and depletes the other child; negative `eta` reverses the direction. If
+`positive_child` is omitted for a binary split, the first child in the original
+Newick ordering receives `+eta` and the second receives `-eta`. Per-split
+entries under `by_split` override the global `eta`.
+
+The kernel is state preserving: parental absence stays absent, `p_A=0` stays
+0, and `p_A=1` stays 1. It sorts an existing polymorphism at a split; it is not
+within-branch selection, recurrent rearrangement creation, hybridization, or a
+model of speciation itself. Nonzero reciprocal `eta` requires a binary split;
+multifurcations are allowed only when the applicable `eta` is zero.
+
 At species-tree splits, Moran uses the same daughter-population initialization
 rule as Wright-Fisher: a binomial draw from the parental terminal frequency.
 Thus WF/Moran comparisons change the within-branch forward process without
@@ -1018,6 +1058,19 @@ Rearrangement fields:
 - `rearrangement.initial_copy_count`: initial number of rearranged chromosomes;
 - `rearrangement.selection.coefficient`: genic selection coefficient.
 
+Speciation split fields:
+
+- `speciation_split.model`: optional daughter-initialization model. The
+  supported value is `reciprocal_log_odds`;
+- `speciation_split.eta`: global reciprocal log-odds offset. Omit the whole
+  `speciation_split` section for legacy unbiased initialization; `eta: 0.0`
+  is the same scientific split rule;
+- `speciation_split.by_split.<split>.eta`: per-split override, where `<split>`
+  is the parent/internal node or parental branch id;
+- `speciation_split.by_split.<split>.positive_child`: direct child receiving
+  `+eta`. If omitted for a binary split, the first child in Newick order
+  receives `+eta`.
+
 Recombination fields:
 
 - `recombination.baseline_rate`: baseline switching/recombination rate;
@@ -1078,6 +1131,8 @@ Pulse-hybridization fields:
 The `examples/` directory contains ready-to-run configurations:
 
 - `mechanistic_balanced.yaml`: mechanistic simulation on a balanced quartet tree;
+- `mechanistic_daughter_split.yaml`: opt-in reciprocal-log-odds daughter split
+  example with nonzero `eta`;
 - `mechanistic_balanced_mixed_fates.yaml`: short balanced-tree example with a
   mix of terminal loss, polymorphism, and A1 fixation;
 - `mechanistic_balanced_polymorphic_tips.yaml`: short neutral balanced-tree

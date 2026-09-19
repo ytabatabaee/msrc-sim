@@ -1,8 +1,9 @@
 from __future__ import annotations
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import numpy as np
 from .species_tree import SpeciesTree
 from .rearrangement import Rearrangement
+from .speciation_split import SpeciationSplitPolicy, sample_daughter_initialization
 
 @dataclass(frozen=True)
 class FrequencyRecord:
@@ -14,6 +15,7 @@ class FrequencyRecord:
 class FrequencyHistory:
     records:list[FrequencyRecord]
     by_branch:dict[str,list[FrequencyRecord]]
+    split_events:list = field(default_factory=list)
 
     def _ascending(self, branch_id):
         return sorted(self.by_branch[branch_id], key=lambda r: r.absolute_age)
@@ -53,7 +55,7 @@ def _selected_p(p,s):
     if s==0: return p
     return p*(1+s)/(1+s*p)
 
-def simulate_frequency_history(tree:SpeciesTree,rearrangement:Rearrangement,rng:np.random.Generator):
+def simulate_frequency_history(tree:SpeciesTree,rearrangement:Rearrangement,rng:np.random.Generator, split_policy:SpeciationSplitPolicy|None=None):
     if rearrangement.origin_branch not in tree.branches: raise ValueError("Unknown origin branch")
     records=[]; by={k:[] for k in tree.branches}
     # branch state at its older end; None means inversion absent
@@ -64,14 +66,21 @@ def simulate_frequency_history(tree:SpeciesTree,rearrangement:Rearrangement,rng:
     # process branches from older to younger
     order=sorted(tree.branches.values(), key=lambda b:b.older_age, reverse=True)
     end_counts={}
+    split_events=[]
     for b in order:
         total=2*b.effective_population_size
         if b.branch_id==rearrangement.origin_branch:
             start_count=None
         else:
             parent=end_counts.get(b.parent_branch_id,None)
-            if parent is None: start_count=None
-            else: start_count=int(rng.binomial(total,parent[0]/parent[1]))
+            if split_policy is None:
+                if parent is None: start_count=None
+                else: start_count=int(rng.binomial(total,parent[0]/parent[1]))
+            else:
+                parent_count = None if parent is None else parent[0]
+                parent_total = None if parent is None else parent[1]
+                start_count,event=sample_daughter_initialization(tree=tree,parent_branch_id=b.parent_branch_id,child_branch_id=b.branch_id,parent_count=parent_count,parent_total=parent_total,child_total=total,rng=rng,policy=split_policy)
+                split_events.append(event)
         ages=list(np.arange(b.older_age,b.younger_age-1e-9,-1.0))
         if ages[-1]!=b.younger_age: ages.append(b.younger_age)
         k=start_count; ever=k is not None and k>0
@@ -87,4 +96,4 @@ def simulate_frequency_history(tree:SpeciesTree,rearrangement:Rearrangement,rng:
             if gi<len(ages)-1 and k is not None and 0<k<total:
                 p=_selected_p(k/total,s); k=int(rng.binomial(total,p))
         end_counts[b.branch_id]=None if k is None else (k,total)
-    return FrequencyHistory(records,by)
+    return FrequencyHistory(records,by,split_events)

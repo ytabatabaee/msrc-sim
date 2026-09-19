@@ -14,6 +14,8 @@ from .experiments import _tree_from_config
 from .genomic import GenomicInterval, interval_at, ordered_windows, sample_metadata_rows, validate_contiguous_block_ids
 from .spatial import _load_or_simulate_history
 from .structured_coalescent import simulate_genealogy, simulate_msc_genealogy
+from .population_process import resolved_speciation_split
+from .speciation_split import split_events_as_dicts
 
 
 SPATIAL_GENEALOGY_FIELDS = [
@@ -274,6 +276,12 @@ def simulate_linked_spatial(config: Mapping[str, Any]) -> Path:
             writer = csv.DictWriter(handle, fieldnames=fields)
             writer.writeheader()
             writer.writerows(metadata)
+    events = split_events_as_dicts(getattr(history, "split_events", []))
+    if events:
+        with (out / "speciation_split_events.tsv").open("w", newline="") as handle:
+            writer = csv.DictWriter(handle, fieldnames=list(events[0]), delimiter="\t")
+            writer.writeheader()
+            writer.writerows(events)
     summary = {
         "version": "0.8.5",
         "mode": "spatial",
@@ -293,6 +301,9 @@ def simulate_linked_spatial(config: Mapping[str, Any]) -> Path:
         "history_metadata": history_metadata,
         "linkage_diagnostics": diagnostics,
     }
+    split_provenance = resolved_speciation_split(dict(config))
+    if split_provenance is not None:
+        summary["speciation_split"] = split_provenance
     with (out / "linked_spatial_summary.json").open("w") as handle:
         json.dump(summary, handle, indent=2)
     return out

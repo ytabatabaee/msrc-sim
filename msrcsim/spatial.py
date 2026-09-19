@@ -21,7 +21,8 @@ from .spatial_statistics import (
     spatial_summary,
 )
 from .structured_coalescent import simulate_genealogy, simulate_msc_genealogy
-from .population_process import PopulationFrequencyHistory, resolved_population_process, simulate_population_history
+from .population_process import PopulationFrequencyHistory, resolved_population_process, resolved_speciation_split, simulate_population_history
+from .speciation_split import split_events_as_dicts
 
 
 LOCUS_FIELDS = [
@@ -88,6 +89,16 @@ def _write_frequency_history(out: Path, history: PopulationFrequencyHistory) -> 
         writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
         writer.writeheader()
         writer.writerows(rows)
+
+
+def _write_split_events(out: Path, history: PopulationFrequencyHistory) -> None:
+    events = split_events_as_dicts(getattr(history, "split_events", []))
+    if not events:
+        return
+    with (out / "speciation_split_events.tsv").open("w", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=list(events[0]), delimiter="\t")
+        writer.writeheader()
+        writer.writerows(events)
 
 
 def simulate_spatial(config: Mapping[str, Any]) -> Path:
@@ -173,6 +184,9 @@ def simulate_spatial(config: Mapping[str, Any]) -> Path:
         "population_process": resolved_population_process(dict(config)),
         "topology_names": TOPOLOGY_NAMES,
     })
+    split_provenance = resolved_speciation_split(dict(config))
+    if split_provenance is not None:
+        summary["speciation_split"] = split_provenance
 
     out = Path(config.get("output", {}).get("directory", "spatial_output"))
     out.mkdir(parents=True, exist_ok=True)
@@ -181,6 +195,7 @@ def simulate_spatial(config: Mapping[str, Any]) -> Path:
             yaml.safe_dump(dict(config), handle, sort_keys=False)
     if config.get("output", {}).get("record_frequency_history", True):
         _write_frequency_history(out, history)
+    _write_split_events(out, history)
     with (out / "sampled_arrangements.csv").open("w", newline="") as handle:
         writer = csv.writer(handle)
         writer.writerow(["taxon", "arrangement", "terminal_frequency_A1"])

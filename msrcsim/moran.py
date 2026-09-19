@@ -6,6 +6,7 @@ import numpy as np
 
 from .rearrangement import Rearrangement
 from .species_tree import PopulationBranch, SpeciesTree
+from .speciation_split import SpeciationSplitPolicy, sample_daughter_initialization
 from .wright_fisher import FrequencyHistory, FrequencyRecord
 
 
@@ -153,7 +154,12 @@ def _simulate_branch_events(
     return sorted(records, key=lambda r: r.absolute_age, reverse=True), k, max(0, event_index - 1)
 
 
-def simulate_frequency_history(tree: SpeciesTree, rearrangement: Rearrangement, rng: np.random.Generator):
+def simulate_frequency_history(
+    tree: SpeciesTree,
+    rearrangement: Rearrangement,
+    rng: np.random.Generator,
+    split_policy: SpeciationSplitPolicy | None = None,
+):
     """Simulate a continuous-time Moran structural-frequency history.
 
     The rearrangement is introduced once using the same origin-branch,
@@ -171,6 +177,7 @@ def simulate_frequency_history(tree: SpeciesTree, rearrangement: Rearrangement, 
     records: list[FrequencyRecord] = []
     by: dict[str, list[FrequencyRecord]] = {branch_id: [] for branch_id in tree.branches}
     end_counts: dict[str, tuple[int, int] | None] = {}
+    split_events = []
     event_count = 0
 
     order = sorted(tree.branches.values(), key=lambda b: b.older_age, reverse=True)
@@ -181,7 +188,22 @@ def simulate_frequency_history(tree: SpeciesTree, rearrangement: Rearrangement, 
             branch_origin_age = origin_age
         else:
             parent = end_counts.get(branch.parent_branch_id)
-            start_count = None if parent is None else int(rng.binomial(total, parent[0] / parent[1]))
+            if split_policy is None:
+                start_count = None if parent is None else int(rng.binomial(total, parent[0] / parent[1]))
+            else:
+                parent_count = None if parent is None else parent[0]
+                parent_total = None if parent is None else parent[1]
+                start_count, event = sample_daughter_initialization(
+                    tree=tree,
+                    parent_branch_id=branch.parent_branch_id,
+                    child_branch_id=branch.branch_id,
+                    parent_count=parent_count,
+                    parent_total=parent_total,
+                    child_total=total,
+                    rng=rng,
+                    policy=split_policy,
+                )
+                split_events.append(event)
             branch_origin_age = None
         branch_records, end_count, n_events = _simulate_branch_events(
             branch, rearrangement, rng, start_count, branch_origin_age
@@ -191,7 +213,7 @@ def simulate_frequency_history(tree: SpeciesTree, rearrangement: Rearrangement, 
         end_counts[branch.branch_id] = None if end_count is None else (int(end_count), total)
         event_count += n_events
 
-    history = FrequencyHistory(records, by)
+    history = FrequencyHistory(records, by, split_events)
     history.population_process = "moran"
     history.moran_time_convention = TIME_CONVENTION
     history.num_population_events = event_count

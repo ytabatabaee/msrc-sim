@@ -6,6 +6,7 @@ import numpy as np
 
 from .rearrangement import Rearrangement
 from .species_tree import SpeciesTree
+from .speciation_split import ORIENTATION_RULE, resolve_speciation_split
 
 
 class PopulationFrequencyHistory(Protocol):
@@ -40,6 +41,19 @@ def resolved_population_process(config: dict | None) -> dict:
     return {"model": "wright_fisher"}
 
 
+def resolved_speciation_split(config: dict | None) -> dict | None:
+    section = (config or {}).get("speciation_split")
+    if section is None:
+        return None
+    return {
+        "enabled": True,
+        "model": str(section.get("model", "reciprocal_log_odds")),
+        "eta": float(section.get("eta", 0.0)),
+        "orientation_rule": ORIENTATION_RULE,
+        "by_split": dict(section.get("by_split", {}) or {}),
+    }
+
+
 def simulate_population_history(
     tree: SpeciesTree,
     rearrangement: Rearrangement,
@@ -47,10 +61,11 @@ def simulate_population_history(
     config: dict | None = None,
 ):
     model = population_process_model(config)
+    split_policy = resolve_speciation_split(config, tree)
     if model == "wright_fisher":
         from .wright_fisher import simulate_frequency_history
 
-        return simulate_frequency_history(tree, rearrangement, rng)
+        return simulate_frequency_history(tree, rearrangement, rng, split_policy)
     from .moran import simulate_frequency_history
 
-    return simulate_frequency_history(tree, rearrangement, rng)
+    return simulate_frequency_history(tree, rearrangement, rng, split_policy)
