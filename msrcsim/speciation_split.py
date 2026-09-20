@@ -10,6 +10,7 @@ from .species_tree import SpeciesTree
 
 
 MODEL_RECIPROCAL_LOG_ODDS = "reciprocal_log_odds"
+MODEL_MASS_CONSERVING = "mass_conserving"
 ORIENTATION_RULE = "positive_child_override_else_newick_order"
 
 
@@ -78,8 +79,8 @@ def resolve_speciation_split(config: Mapping[str, Any] | None, tree: SpeciesTree
         raise ValueError("speciation_split must be a mapping")
 
     model = str(section.get("model", MODEL_RECIPROCAL_LOG_ODDS))
-    if model != MODEL_RECIPROCAL_LOG_ODDS:
-        raise ValueError("speciation_split.model must be 'reciprocal_log_odds'")
+    if model not in {MODEL_RECIPROCAL_LOG_ODDS, MODEL_MASS_CONSERVING}:
+        raise ValueError("speciation_split.model must be 'reciprocal_log_odds' or 'mass_conserving'")
     eta = _finite_eta(section.get("eta", 0.0), path="speciation_split.eta")
     by_split = section.get("by_split", {})
     if by_split is None:
@@ -105,7 +106,7 @@ def resolve_speciation_split(config: Mapping[str, Any] | None, tree: SpeciesTree
             split_eta = _finite_eta(override.get("eta", eta), path=f"speciation_split.by_split.{split_id}.eta")
             if len(child_ids) != 2 and split_eta != 0.0:
                 raise ValueError(
-                    "speciation_split reciprocal_log_odds with nonzero eta requires a binary split; "
+                    f"speciation_split {model} with nonzero eta requires a binary split; "
                     f"split {split_id!r} has {len(child_ids)} children"
                 )
             if "positive_child" in override:
@@ -139,6 +140,21 @@ def daughter_target_frequency(parent_frequency: float, log_odds_offset: float) -
         return 1.0 / (1.0 + z)
     z = math.exp(logit)
     return z / (1.0 + z)
+
+
+def mass_conserving_daughter_frequencies(parent_frequency: float, eta: float) -> tuple[float, float]:
+    p = float(parent_frequency)
+    eta = float(eta)
+    if not math.isfinite(eta):
+        raise ValueError("eta must be finite")
+    if p <= 0.0:
+        return 0.0, 0.0
+    if p >= 1.0:
+        return 1.0, 1.0
+    if eta == 0.0:
+        return p, p
+    delta = math.tanh(eta) * min(p, 1.0 - p)
+    return p + delta, p - delta
 
 
 def _omega(offset: float) -> float | None:
@@ -176,7 +192,7 @@ def _event(
         parent_frequency_A1=parent_frequency,
         eta=eta,
         log_odds_offset=offset,
-        omega=_omega(offset),
+        omega=_omega(offset) if policy.model == MODEL_RECIPROCAL_LOG_ODDS else None,
         target_frequency_A1=target_frequency,
         child_total=child_total,
         realized_child_A1_count=realized_child_count,
@@ -203,7 +219,7 @@ def sample_daughter_initialization(
         raise ValueError(f"{child_branch_id!r} is not a direct child of split {parent_branch_id!r}")
     if len(child_ids) != 2 and rule.eta != 0.0:
         raise ValueError(
-            "speciation_split reciprocal_log_odds with nonzero eta requires a binary split; "
+            f"speciation_split {policy.model} with nonzero eta requires a binary split; "
             f"split {parent_branch_id!r} has {len(child_ids)} children"
         )
 
@@ -233,7 +249,11 @@ def sample_daughter_initialization(
         )
 
     parent_frequency = parent_count / parent_total
-    target = daughter_target_frequency(parent_frequency, offset)
+    if policy.model == MODEL_MASS_CONSERVING and len(child_ids) == 2:
+        positive_target, negative_target = mass_conserving_daughter_frequencies(parent_frequency, rule.eta)
+        target = positive_target if side == "positive" else negative_target
+    else:
+        target = daughter_target_frequency(parent_frequency, offset)
     realized = int(rng.binomial(child_total, target))
     if parent_count == 0:
         state = "lost"

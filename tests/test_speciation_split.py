@@ -15,6 +15,7 @@ from msrcsim.population_process import simulate_population_history
 from msrcsim.rearrangement import Rearrangement
 from msrcsim.speciation_split import (
     daughter_target_frequency,
+    mass_conserving_daughter_frequencies,
     resolve_speciation_split,
     sample_daughter_initialization,
 )
@@ -75,6 +76,27 @@ def test_reciprocal_log_odds_state_preserving_and_stable():
             daughter_target_frequency(0.25, bad)
 
 
+def test_mass_conserving_transform_properties():
+    for p in (0.0, 0.01, 0.25, 0.5, 0.75, 0.99, 1.0):
+        for eta in (-4.0, -2.0, 0.0, 2.0, 4.0):
+            positive, negative = mass_conserving_daughter_frequencies(p, eta)
+            assert 0.0 <= positive <= 1.0
+            assert 0.0 <= negative <= 1.0
+            assert (positive + negative) / 2.0 == pytest.approx(p)
+
+    assert mass_conserving_daughter_frequencies(0.0, 4.0) == (0.0, 0.0)
+    assert mass_conserving_daughter_frequencies(1.0, -4.0) == (1.0, 1.0)
+    assert mass_conserving_daughter_frequencies(0.25, 0.0) == (0.25, 0.25)
+
+    positive_eta = mass_conserving_daughter_frequencies(0.25, 2.0)
+    negative_eta = mass_conserving_daughter_frequencies(0.25, -2.0)
+    assert positive_eta[0] > 0.25
+    assert positive_eta[1] < 0.25
+    assert negative_eta[0] < 0.25
+    assert negative_eta[1] > 0.25
+    assert positive_eta == pytest.approx((negative_eta[1], negative_eta[0]))
+
+
 def test_resolve_speciation_split_validation_and_orientation():
     tree = SpeciesTree("(B:1,A:1)ROOT;", 10, 0)
     policy = resolve_speciation_split({"speciation_split": {"model": "reciprocal_log_odds", "eta": 1.5}}, tree)
@@ -91,6 +113,9 @@ def test_resolve_speciation_split_validation_and_orientation():
     policy = resolve_speciation_split(cfg, tree)
     assert policy.rule_for("ROOT").eta == 2.0
     assert policy.rule_for("ROOT").positive_child == "A"
+
+    mass_policy = resolve_speciation_split({"speciation_split": {"model": "mass_conserving", "eta": 1.5}}, tree)
+    assert mass_policy.model == "mass_conserving"
 
     with pytest.raises(ValueError, match="unknown split"):
         resolve_speciation_split({"speciation_split": {"by_split": {"NOPE": {"eta": 1.0}}}}, tree)
