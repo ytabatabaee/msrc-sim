@@ -1,0 +1,27 @@
+mode: arbitrary_tree
+seed: 20261011
+num_loci: 2
+species_tree:
+  newick: "(((A1:5,A2:5)A12:5,(A3:5,A4:5)A34:5,(A5:5,A6:5)A56:5)G1:5,((B1:5,B2:5)B12:5,(B3:5,B4:5)B34:5,(B5:5,B6:5)B56:5)G2:5,((C1:5,C2:5)C12:5,(C3:5,C4:5)C34:5,(C5:5,C6:5)C56:5)G3:5,((D1:5,D2:5)D12:5,(D3:5,D4:5)D34:5,(D5:5,D6:5)D56:5)G4:5,((E1:5,E2:5)E12:5,(E3:5,E4:5)E34:5,(E5:5,E6:5)E56:5)G5:5)ROOT;"
+  root_extension: 100
+  default_effective_population_size: 10000
+rearrangement:
+  id: inv_1
+  type: inversion
+  origin_branch: ROOT
+  origin_time_from_branch_start: 2
+  initial_copy_count: 1
+  selection:
+    model: genic
+    coefficient: 0.0
+recombination:
+  baseline_rate: 0.01
+  effective_cross_arrangement_fraction: 0.05
+population_process:
+  model: wf_diffusion
+  diffusion:
+    tolerance: 0.001
+    max_step_cu: 0.01
+output:
+  directory: arbitrary_30taxa_diffusion_output
+  plots: false

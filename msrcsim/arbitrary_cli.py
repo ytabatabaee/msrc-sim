@@ -20,7 +20,7 @@ def main() -> None:
     parser.add_argument("--origin-branch", default="ROOT")
     parser.add_argument("--origin-time-from-branch-start", type=int, default=10)
     parser.add_argument("--initial-copy-count", type=int, default=20)
-    parser.add_argument("--population-process", choices=["wright_fisher", "moran"], default=None)
+    parser.add_argument("--population-process", choices=["wright_fisher", "moran", "wf_diffusion"], default=None)
     args = parser.parse_args()
 
     if args.config:

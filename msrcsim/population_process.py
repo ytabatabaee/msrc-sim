@@ -22,8 +22,8 @@ class PopulationFrequencyHistory(Protocol):
 def population_process_model(config: dict | None) -> str:
     section = (config or {}).get("population_process", {}) or {}
     model = str(section.get("model", "wright_fisher")).lower().replace("-", "_")
-    if model not in {"wright_fisher", "moran"}:
-        raise ValueError("population_process.model must be 'wright_fisher' or 'moran'")
+    if model not in {"wright_fisher", "moran", "wf_diffusion"}:
+        raise ValueError("population_process.model must be 'wright_fisher', 'moran', or 'wf_diffusion'")
     return model
 
 
@@ -37,6 +37,19 @@ def resolved_population_process(config: dict | None) -> dict:
             "attempted_replacement_rate_per_generation": "M/2",
             "selection": "native_continuous_time_moran",
             "split_initialization": "binomial_from_parent_terminal_frequency",
+        }
+    if model == "wf_diffusion":
+        section = (config or {}).get("population_process", {}) or {}
+        diffusion = section.get("diffusion", {}) or {}
+        return {
+            "model": "wf_diffusion",
+            "time_scale": "generations; branch-local coalescent units t/(2Ne)",
+            "chromosome_copies": "continuous diffusion (reference scale M=2Ne)",
+            "selection": "unsupported; neutral only",
+            "split_initialization": str(diffusion.get("split_initialization", "deterministic_parent_frequency")),
+            "tolerance": float(diffusion.get("tolerance", 0.001)),
+            "max_step_cu": float(diffusion.get("max_step_cu", 0.01)),
+            "boundary_treatment": "absorbing boundary-layer snapping",
         }
     return {"model": "wright_fisher"}
 
@@ -66,6 +79,10 @@ def simulate_population_history(
         from .wright_fisher import simulate_frequency_history
 
         return simulate_frequency_history(tree, rearrangement, rng, split_policy)
+    if model == "wf_diffusion":
+        from .wf_diffusion import simulate_frequency_history
+
+        return simulate_frequency_history(tree, rearrangement, rng, config, split_policy)
     from .moran import simulate_frequency_history
 
     return simulate_frequency_history(tree, rearrangement, rng, split_policy)

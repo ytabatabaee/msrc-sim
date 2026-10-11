@@ -52,8 +52,9 @@ class _Parser:
         return 0.0
 
 class SpeciesTree:
-    def __init__(self,newick,default_ne,root_extension,branch_parameters=None):
+    def __init__(self,newick,default_ne,root_extension,branch_parameters=None,ultrametric_tolerance=1e-8):
         self.root=_Parser(newick).parse(); self.default_ne=int(default_ne); self.root_extension=float(root_extension)
+        self.ultrametric_tolerance=float(ultrametric_tolerance)
         self.branch_parameters=branch_parameters or {}; self._assign_ages(); self._name_nodes(); self.branches=self._make_branches()
         self.taxa=tuple(sorted(n.name for n in self.nodes() if n.is_tip()))
         if len(self.taxa) < 2:
@@ -66,7 +67,7 @@ class SpeciesTree:
         def height(n):
             if n.is_tip(): n.age=0; return 0.0
             vals=[height(c)+c.length for c in n.children]
-            if max(vals)-min(vals)>1e-8: raise ValueError("Species tree must be ultrametric")
+            if max(vals)-min(vals)>self.ultrametric_tolerance: raise ValueError("Species tree must be ultrametric")
             n.age=vals[0]; return n.age
         height(self.root)
     def _name_nodes(self):

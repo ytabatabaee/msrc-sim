@@ -1,5 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
+from bisect import bisect_right
 import numpy as np
 from .species_tree import SpeciesTree
 from .rearrangement import Rearrangement
@@ -8,7 +9,7 @@ from .speciation_split import SpeciationSplitPolicy, sample_daughter_initializat
 @dataclass(frozen=True)
 class FrequencyRecord:
     rearrangement_id:str; branch_id:str; parent_branch_id:str|None; forward_generation:int; absolute_age:float
-    copy_count_A1:int; copy_count_A0:int; population_chromosomes:int; frequency_A1:float; frequency_A0:float
+    copy_count_A1:float; copy_count_A0:float; population_chromosomes:int; frequency_A1:float; frequency_A0:float
     status:str; is_origin:bool; is_branch_start:bool; is_branch_end:bool; selection_coefficient:float; effective_population_size:int
 
 @dataclass
@@ -16,9 +17,14 @@ class FrequencyHistory:
     records:list[FrequencyRecord]
     by_branch:dict[str,list[FrequencyRecord]]
     split_events:list = field(default_factory=list)
+    _sorted_by_branch:dict[str,list[FrequencyRecord]] = field(default_factory=dict, init=False, repr=False)
+    _ages_by_branch:dict[str,list[float]] = field(default_factory=dict, init=False, repr=False)
 
     def _ascending(self, branch_id):
-        return sorted(self.by_branch[branch_id], key=lambda r: r.absolute_age)
+        if branch_id not in self._sorted_by_branch:
+            self._sorted_by_branch[branch_id] = sorted(self.by_branch[branch_id], key=lambda r: r.absolute_age)
+            self._ages_by_branch[branch_id] = [r.absolute_age for r in self._sorted_by_branch[branch_id]]
+        return self._sorted_by_branch[branch_id]
 
     def frequency_at(self, branch_id, age):
         """Return the piecewise-constant frequency at backward age ``age``.
@@ -28,20 +34,15 @@ class FrequencyHistory:
         generation, the oldest state is held constant.
         """
         recs = self._ascending(branch_id)
-        chosen = recs[0]
-        for rec in recs:
-            if rec.absolute_age <= age + 1e-12:
-                chosen = rec
-            else:
-                break
-        return chosen.frequency_A1
+        ages = self._ages_by_branch[branch_id]
+        return recs[max(0, bisect_right(ages, age + 1e-12) - 1)].frequency_A1
 
     def next_frequency_boundary(self, branch_id, age):
         """Smallest recorded age strictly greater than ``age``."""
-        for rec in self._ascending(branch_id):
-            if rec.absolute_age > age + 1e-10:
-                return rec.absolute_age
-        return float('inf')
+        self._ascending(branch_id)
+        ages = self._ages_by_branch[branch_id]
+        index = bisect_right(ages, age + 1e-10)
+        return ages[index] if index < len(ages) else float('inf')
 
     def terminal_frequency(self,taxon): return self.frequency_at(taxon,0.0)
 

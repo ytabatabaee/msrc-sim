@@ -44,6 +44,7 @@ def tree_from_config(config: Mapping[str, Any]) -> SpeciesTree:
         st["default_effective_population_size"],
         st.get("root_extension", 0),
         st.get("branch_parameters"),
+        st.get("ultrametric_tolerance", 1e-8),
     )
 
 
@@ -94,12 +95,34 @@ def _breakpoints(config: Mapping[str, Any], rng: np.random.Generator) -> list[tu
     if len(points) <= 1:
         width = length / max(1, n_loci)
         points = [i * width for i in range(n_loci + 1)]
+    elif len(points) - 1 < n_loci:
+        # Preserve all forced rearrangement boundaries while subdividing the
+        # existing segments until the requested locus count is reached.
+        spans = [b - a for a, b in zip(points, points[1:])]
+        extra = n_loci - len(spans)
+        allocations = [1] * len(spans)
+        while extra > 0:
+            # Add each new cut to the currently widest per-subdivision span.
+            # Cycling through the spans is necessary when one forced interval
+            # leaves fewer segments than the requested number of loci.
+            index = max(
+                range(len(spans)),
+                key=lambda i: spans[i] / allocations[i],
+            )
+            allocations[index] += 1
+            extra -= 1
+        refined = [points[0]]
+        for (start, end), count in zip(zip(points, points[1:]), allocations):
+            refined.extend(start + (end - start) * i / count for i in range(1, count + 1))
+        points = refined
+    if len(points) - 1 != max(1, n_loci):
+        raise ValueError(f"Breakpoint construction produced {len(points)-1} blocks; expected {max(1, n_loci)}")
     blocks = []
     for start, end in zip(points, points[1:]):
         mid = (start + end) / 2.0
         hit = next(((a, b, iid) for a, b, iid in intervals if a <= mid <= b), None)
         blocks.append((start, end, hit is not None, "" if hit is None else hit[2]))
-    return blocks[: max(1, n_loci)]
+    return blocks
 
 
 def _write_branch_metadata(out: Path, tree: SpeciesTree) -> None:
@@ -156,11 +179,14 @@ def _node_x_positions(tree: SpeciesTree) -> dict[str, float]:
 
 
 def _process_prefix(history) -> str:
-    return "moran" if getattr(history, "population_process", "wright_fisher") == "moran" else "wright_fisher"
+    process = getattr(history, "population_process", "wright_fisher")
+    return {"moran": "moran", "wf_diffusion": "wf_diffusion"}.get(process, "wright_fisher")
 
 
 def _process_label(history) -> str:
-    return "Moran" if _process_prefix(history) == "moran" else "Wright-Fisher"
+    return {"moran": "Moran", "wf_diffusion": "Wright-Fisher diffusion"}.get(
+        _process_prefix(history), "Wright-Fisher"
+    )
 
 
 def _plot_structural_tree(out: Path, tree: SpeciesTree, history, sampled: Mapping[str, int], detailed: bool) -> str:
@@ -344,9 +370,13 @@ def run_arbitrary_simulation(config: Mapping[str, Any]) -> Path:
             writer.writeheader()
             writer.writerows(quartet_rows)
 
-    detailed = len(tree.taxa) <= 12
-    fig_path = _plot_structural_tree(out, tree, history, sampled, detailed)
-    quartet_style_fig = _plot_quartet_style_wf(out, tree, history, sampled, detailed)
+    if cfg.get("output", {}).get("plots", True):
+        detailed = len(tree.taxa) <= 12
+        fig_path = _plot_structural_tree(out, tree, history, sampled, detailed)
+        quartet_style_fig = _plot_quartet_style_wf(out, tree, history, sampled, detailed)
+    else:
+        fig_path = None
+        quartet_style_fig = None
     runtime = perf_counter() - start
     rss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
     rss_bytes = int(rss if sys.platform == "darwin" else rss * 1024)
