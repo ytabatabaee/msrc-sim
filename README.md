@@ -140,6 +140,24 @@ population_process:
   model: moran
 ```
 
+An experimental neutral Wright–Fisher diffusion is available for long branches
+and large effective population sizes:
+
+```yaml
+population_process:
+  model: wf_diffusion
+  diffusion:
+    tolerance: 0.001
+    max_step_cu: 0.01
+```
+
+The diffusion uses branch-local coalescent scaling, bounded beta transitions,
+and an absorbing boundary-layer projection. It has passed analytical unit
+checks, origin-timing checks, and compact WF/Moran genealogy comparisons, but
+remains experimental because finite-time absorption and downstream genealogy
+distributions require study-specific convergence checks. See
+`docs/wf_diffusion.md` and `docs/wf_diffusion_validation.md`.
+
 ### Wright-Fisher
 
 The Wright-Fisher model is the original discrete-generation binomial

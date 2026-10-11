@@ -3,9 +3,10 @@
 The numerical transition is a bounded beta transition.  For a branch-local
 coalescent-time increment ``du``, it has mean ``p`` and variance
 ``p*(1-p)*du``.  A boundary layer of width ``tolerance`` is snapped to an
-absorbing endpoint with a mean-preserving Bernoulli split.  This avoids the
-systematic boundary and fixation errors caused by clipping Gaussian Euler
-steps.  The method is intended as a practical, experimental approximation;
+absorbing boundary layer with a mean-preserving projection onto the nearest
+boundary-layer endpoint.  This avoids the systematic boundary and fixation
+errors caused by clipping Gaussian Euler steps.  The method is intended as a
+practical, experimental approximation;
 the recorded trajectory is piecewise constant for the genealogy engine.
 """
 
@@ -84,17 +85,22 @@ def _validate_options(config: Mapping[str, Any] | None) -> tuple[float, float, s
 def _step(p: float, du: float, rng: np.random.Generator, tolerance: float) -> float:
     """One bounded, mean/variance matched neutral diffusion transition."""
     p = min(1.0, max(0.0, float(p)))
-    if p <= tolerance:
-        return 1.0 if rng.random() < p / tolerance else 0.0
-    if p >= 1.0 - tolerance:
-        return 0.0 if rng.random() < (1.0 - p) / tolerance else 1.0
+    # Project the unresolved boundary layer onto {0, tolerance}.  The
+    # probability of retaining tolerance is p/tolerance, so this projection
+    # has conditional mean p and cannot turn a rare variant into immediate
+    # fixation.  The upper boundary is symmetric.  At tolerance itself the
+    # beta transition is used, avoiding a zero-length artificial holding step.
+    if p < tolerance:
+        return tolerance if rng.random() < p / tolerance else 0.0
+    if p > 1.0 - tolerance:
+        return 1.0 - tolerance if rng.random() < (1.0 - p) / tolerance else 1.0
     # Beta(a,b) has mean p and variance p(1-p)/(a+b+1).
-    concentration = max(1.0, 1.0 / max(float(du), 1e-15) - 1.0)
+    concentration = max(1e-9, 1.0 / max(float(du), 1e-15) - 1.0)
     draw = float(rng.beta(p * concentration, (1.0 - p) * concentration))
-    if draw <= tolerance:
-        return 1.0 if rng.random() < draw / tolerance else 0.0
-    if draw >= 1.0 - tolerance:
-        return 0.0 if rng.random() < (1.0 - draw) / tolerance else 1.0
+    if draw < tolerance:
+        return tolerance if rng.random() < draw / tolerance else 0.0
+    if draw > 1.0 - tolerance:
+        return 1.0 - tolerance if rng.random() < (1.0 - draw) / tolerance else 1.0
     return draw
 
 
@@ -161,21 +167,48 @@ def simulate_frequency_history(tree: SpeciesTree, rearrangement: Rearrangement,
         age = float(branch.older_age)
         idx = 0
         rows: list[FrequencyRecord] = []
-        rows.append(_record(rearrangement, branch, idx, age, 0.0 if p is None else p, start=True))
-        if branch.branch_id == rearrangement.origin_branch:
+        is_origin_branch = branch.branch_id == rearrangement.origin_branch
+        if is_origin_branch:
             p = None
+        if is_origin_branch and origin_age >= age - 1e-12:
+            p = min(1.0, rearrangement.initial_copy_count / (2 * branch.effective_population_size))
+            rows.append(_record(rearrangement, branch, idx, age, p, origin=True, start=True))
+        else:
+            rows.append(_record(rearrangement, branch, idx, age, 0.0 if p is None else p, start=True))
         while age > branch.younger_age + 1e-12:
-            if p is None and age <= origin_age + 1e-12:
+            if is_origin_branch and p is None and age <= origin_age + 1e-12:
+                if origin_age < branch.older_age - 1e-12:
+                    rows.append(_record(rearrangement, branch, idx, origin_age + 1e-10, 0.0))
                 p = min(1.0, rearrangement.initial_copy_count / (2 * branch.effective_population_size))
-                rows.append(_record(rearrangement, branch, idx + 1, age, p, origin=True))
                 idx += 1
+                rows.append(_record(rearrangement, branch, idx, origin_age, p, origin=True,
+                                    end=origin_age <= branch.younger_age + 1e-12))
+                age = origin_age
+                continue
             next_age = max(branch.younger_age, age - max_step_cu * 2.0 * branch.effective_population_size)
+            # The origin is a hard event boundary.  A pending origin may not
+            # be crossed by an integration step.
+            if is_origin_branch and p is None and next_age < origin_age:
+                next_age = origin_age
             if p is not None and next_age < age:
                 du = (age - next_age) / (2.0 * branch.effective_population_size)
                 p = _step(p, du, rng, tolerance)
             age = next_age
-            idx += 1
-            rows.append(_record(rearrangement, branch, idx, age, 0.0 if p is None else p, end=age <= branch.younger_age + 1e-12))
+            if is_origin_branch and p is None and abs(age - origin_age) <= 1e-12:
+                if origin_age < branch.older_age - 1e-12:
+                    rows.append(_record(rearrangement, branch, idx, origin_age + 1e-10, 0.0))
+                p = min(1.0, rearrangement.initial_copy_count / (2 * branch.effective_population_size))
+                idx += 1
+                rows.append(_record(rearrangement, branch, idx, age, p, origin=True,
+                                    end=age <= branch.younger_age + 1e-12))
+            else:
+                idx += 1
+                rows.append(_record(rearrangement, branch, idx, age, 0.0 if p is None else p, end=age <= branch.younger_age + 1e-12))
+        if rows:
+            last = rows[-1]
+            if abs(last.absolute_age - branch.younger_age) <= 1e-12 and not last.is_branch_end:
+                rows[-1] = _record(rearrangement, branch, last.forward_generation, last.absolute_age,
+                                   last.frequency_A1, origin=last.is_origin, end=True)
         records.extend(rows)
         by[branch.branch_id].extend(rows)
         terminal[branch.branch_id] = 0.0 if p is None else float(p)
