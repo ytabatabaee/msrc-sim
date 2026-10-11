@@ -1,0 +1,8 @@
+{
+  "seed": 20261011,
+  "analytical_replicates": {"common": 1000, "p0_0.01_or_0.99": 5000, "p0_0.001_or_0.999": 20000},
+  "convergence_replicates": 1000,
+  "process_and_genealogy_replicates": 100,
+  "stages_completed": ["analytical", "convergence", "process", "runtime", "figures"],
+  "commit": "507aea5c097ea2c2f26ae07173a0985e200d07d8"
+}
