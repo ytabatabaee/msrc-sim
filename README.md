@@ -1,32 +1,13 @@
-# MSRC Simulator
+# msrc-sim
 
-`msrc-sim` simulates gene tree distributions under the Multi-Species
-Rearrangement Coalescent (MSRC) model. It is designed for experiments where a
-chromosomal rearrangement, such as an inversion, arises in a population,
-evolves forward in time with a Wright-Fisher or Moran process, and then affects
-backward-time genealogies through arrangement-dependent coalescence and
-recombination.
+`msrc-sim` is a simulator for the **Multi-Species Recombination-partitioned Coalescent (MSRC)** model. MSRC models the effect of **recombination suppression** on gene tree distributions across a species tree. When a genomic region carries partially isolated ancestry backgrounds — due to chromosomal inversions, supergenes, or any other mechanism that suppresses recombination — lineages within that region remain associated with their background rather than freely recombining. This produces spatially coherent, biased genealogical signal that can mislead standard species tree methods. `msrc-sim` simulates this process by running a forward-time model of background-frequency evolution (Wright-Fisher or Moran) and then generating gene trees through a backward-time structured coalescent conditional on that history.
 
-The simulator can be used to:
+## Requirements
 
-- simulate a single mechanistic MSRC history and its gene trees;
-- compute empirical and exact quartet probabilities for a fixed structured
-  interval;
-- run independent evolutionary replicates and estimate prevalence statistics;
-- condition replicates on persistence or terminal arrangement patterns;
-- run multidimensional parameter grids for prevalence analyses;
-- run spatially ordered MSRC and pulse-hybridization comparator simulations.
-- run arbitrary-tree implementation checks and extract quartet summaries from
-  larger n-tip gene trees.
-
-The independent unit in prevalence analyses is an evolutionary replicate, not a
-locus. Each accepted replicate draws one rearrangement frequency history, and
-the loci within that replicate estimate the quartet distribution conditional on
-that history.
+- Python ≥ 3.9
+- NumPy, SciPy, PyYAML
 
 ## Installation
-
-Clone the repository and install it in editable mode:
 
 ```bash
 git clone https://github.com/ytabatabaee/msrc-sim.git
@@ -34,409 +15,52 @@ cd msrc-sim
 pip install -e .
 ```
 
-For development and tests, install the test dependencies:
+To run tests:
 
 ```bash
 pip install -e ".[test]"
 pytest
 ```
 
-The package requires Python 3.9 or later, NumPy, SciPy, and PyYAML.
-
 ## Commands
 
-The package installs these command-line programs. Simulation commands read YAML
-configuration files.
+`msrc-sim` installs several command-line programs. All simulation commands read YAML configuration files; the `examples/` directory contains ready-to-run configurations for each mode.
 
-```bash
-msrc-sim --config <config.yaml>
-```
-
-Runs one simulation. The config `mode` can be `mechanistic` or `conditional`.
-
-```bash
-msrc-sim-replicates --config <config.yaml>
-```
-
-Runs independent evolutionary replicates from a `replicate_experiment`
-configuration.
-
-```bash
-msrc-sim-grid --config <config.yaml>
-```
-
-Runs a parameter grid from a `parameter_grid` configuration. Each grid cell is
-run as a replicate experiment.
-
-```bash
-msrc-sim-compare --input <replicate_summary.csv> --output <comparison.csv>
-msrc-sim-freeze-history --config <config.yaml> --output <history.yaml>
-msrc-sim-replay-history --history <history.yaml> --num-loci <n> --output <dir>
-msrc-sim-plot --input <replicate_summary.csv> --output <figures>
-msrc-sim-plot-history --run-dir <run_output> --output <history.pdf>
-```
-
-Compare quartet vectors, freeze and replay realized rearrangement histories,
-create automated replicate/model-comparison figures, and render a static
-structural-frequency history tree. Mechanistic simulations can also render
-that history figure automatically with `output.make_history_plot: true`.
-
-```bash
-msrc-sim-spatial --config examples/spatial_inversion.yaml
-msrc-sim-species-tree-robustness --output-dir robustness_output
-msrc-sim-plot-spatial --input spatial_output --format png
-msrc-sim-spatial-summarize --input loci.csv --breakpoints 25000000,65000000 --window-loci 50 --step-loci 10 --output summary_dir
-msrc-sim-hybridization --config examples/pulse_hybridization.yaml
-msrc-sim-plot-spatial-compare --msrc-dir spatial_output --hyb-dir hybridization_output --output comparison/spatial_compare.png
-msrc-sim-find-matched-hybridization --msrc-dir spatial_output --hyb-grid-dir hybridization_grid --output matched_hybridization.json
-msrc-sim-match-hybridization --msrc-dir spatial_output --major-topology '12|34' --introgressed-topology '13|24' --output matched_hybridization.yaml
-msrc-sim-spatial-distinguishability --msrc-dir spatial_output --matched-hybridization-yaml matched_hybridization.yaml --output-dir distinguishability
-msrc-sim-spatial-identifiability --msrc-dir spatial_output --output-dir identifiability --replicates 100
-msrc-sim-pattern-probabilities --config examples/quartet.yaml --output results/pattern_probabilities
-msrc-sim-arbitrary --config examples/arbitrary_10taxa.yaml
-```
-
-Run the v0.7.0 spatially ordered locus prototype, replot a spatial output
-directory, summarize an external ordered table with `position` and `topology`
-columns, run the pulse-hybridization spatial comparator, or make a matched
-side-by-side MSRC versus hybridization spatial comparison figure. When the
-scientific question requires comparable bag-of-genes outcomes, use the matcher
-to select a precomputed hybridization run with a marginal quartet vector close
-to the MSRC run before plotting.
-
-`msrc-sim-pattern-probabilities` runs the exact finite-state Wright-Fisher DP
-for the four-taxon mechanistic validation tree and compares it with Monte Carlo
-histories from the same simulator. It writes:
-
-- `theoretical_pattern_probabilities.csv`: all 16 terminal patterns with
-  `P_pattern`, `P_pattern_and_persistent`, and
-  `P_pattern_given_persistent`;
-- `theoretical_summary.json`: marginal, joint, and conditional `2:2`, `3:1`,
-  `4:0`, quartet-partition, and discordant `2:2` probabilities;
-- `theory_vs_simulation.csv`: theoretical and simulated values with absolute
-  errors;
-- `theory_vs_simulation_pattern_probabilities.pdf`: theory-versus-simulation
-  diagnostic plot.
-
-Patterns use the reported `taxon_order`. Relative to that order, `w1` is
-`0011 + 1100` (`12|34`), `w2` is `0101 + 1010` (`13|24`), and `w3` is
-`0110 + 1001` (`14|23`). Conditional values are reported as null when
-`P(persistent_at_all_required_speciation_events)=0`.
-
-## Forward population-process models
-
-MSRC currently provides two forward structural-frequency models. Existing
-configs without a `population_process` section default to Wright-Fisher:
-
-```yaml
-population_process:
-  model: wright_fisher
-```
-
-Use continuous-time Moran dynamics with:
-
-```yaml
-population_process:
-  model: moran
-```
-
-An experimental neutral Wright–Fisher diffusion is available for long branches
-and large effective population sizes:
-
-```yaml
-population_process:
-  model: wf_diffusion
-  diffusion:
-    tolerance: 0.001
-    max_step_cu: 0.01
-```
-
-The diffusion uses branch-local coalescent scaling, bounded beta transitions,
-and an absorbing boundary-layer projection. It has passed analytical unit
-checks, origin-timing checks, and compact WF/Moran genealogy comparisons, but
-remains experimental because finite-time absorption and downstream genealogy
-distributions require study-specific convergence checks. See
-`docs/wf_diffusion.md` and `docs/wf_diffusion_validation.md`.
-
-### Wright-Fisher
-
-The Wright-Fisher model is the original discrete-generation binomial
-reproduction process. The exact finite-state utilities in
-`msrc-sim-pattern-probabilities` remain Wright-Fisher-specific validation tools.
-
-### Moran
-
-The Moran model is a continuous-time birth-death allele-count process on
-`K(t) in {0, ..., M}`, where `M = 2Ne` chromosome copies and `p=K/M`. Boundary
-states `K=0` and `K=M` are absorbing because the rearrangement is introduced
-only once.
-
-The time scale is generation-equivalent. The total attempted Moran replacement
-event rate is `M/2` per generation-equivalent time unit. After integrating out
-events that do not change allele count, neutral state-changing rates are:
-
-```text
-q_plus(K)  = (M/2) p (1-p)
-q_minus(K) = (M/2) p (1-p)
-```
-
-This convention gives neutral short-time frequency variance
-`Var[dp]/dt = p(1-p)/M = p(1-p)/(2Ne)`, matching the Wright-Fisher diffusion
-variance per generation.
-
-For native Moran genic selection, A1 reproductive fitness is `1+s_M` and A0
-fitness is `1`. The simulator requires `1+s_M > 0` and uses:
-
-```text
-p_sel   = p(1+s_M) / (1+s_M p)
-q_plus  = (M/2) p_sel (1-p)
-q_minus = (M/2) (1-p_sel) p
-```
-
-These are native continuous-time Moran selection dynamics; the same numerical
-selection coefficient need not have identical finite-population meaning in
-discrete Wright-Fisher and continuous Moran simulations. For primary
-Wright-Fisher/Moran robustness checks, neutral `s=0` avoids that confounder.
-
-### Speciation-associated daughter initialization
-
-By default, daughter branches are initialized with the legacy unbiased rule:
-if the parental A1 frequency immediately before a split is `p_A`, each daughter
-draws `K_d(0) ~ Binomial(2 N_d, p_A)`. Existing configs that omit
-`speciation_split` keep this behavior and all previously reported MSRC
-numerical analyses used this legacy/`eta=0` split rule.
-
-An optional reduced-form daughter-sorting kernel can be enabled with:
-
-```yaml
-speciation_split:
-  model: reciprocal_log_odds
-  eta: 0.0
-  by_split:
-    ROOT:
-      eta: 1.5
-      positive_child: A
-```
-
-For a daughter with odds multiplier `omega_d`, the target frequency is:
-
-```text
-p_d* = omega_d p_A / [(1 - p_A) + omega_d p_A]
-```
-
-The reciprocal one-parameter form uses `omega_positive = exp(eta)` and
-`omega_negative = exp(-eta)`, equivalently adding `+eta` or `-eta` to the
-parental log odds. Positive `eta` enriches the configured positive child for
-A1 and depletes the other child; negative `eta` reverses the direction. If
-`positive_child` is omitted for a binary split, the first child in the original
-Newick ordering receives `+eta` and the second receives `-eta`. Per-split
-entries under `by_split` override the global `eta`.
-
-The kernel is state preserving: parental absence stays absent, `p_A=0` stays
-0, and `p_A=1` stays 1. It sorts an existing polymorphism at a split; it is not
-within-branch selection, recurrent rearrangement creation, hybridization, or a
-model of speciation itself. Nonzero reciprocal `eta` requires a binary split;
-multifurcations are allowed only when the applicable `eta` is zero.
-
-At species-tree splits, Moran uses the same daughter-population initialization
-rule as Wright-Fisher: a binomial draw from the parental terminal frequency.
-Thus WF/Moran comparisons change the within-branch forward process without
-simultaneously changing the split model.
-
-The conditional structured-coalescent component of MSRC operates on a supplied
-structural-frequency history; Wright-Fisher and Moran models provide
-alternative stochastic generators of such histories. The two implementations
-allow simulation-based assessment of robustness to the assumed forward
-population process. They do not by themselves establish a theorem that all MSRC
-mathematics is population-process-independent.
-
-`msrc-sim-arbitrary` runs the generalized arbitrary-tree implementation and
-writes n-tip gene trees plus optional quartet summaries. It accepts either a
-YAML config or a direct Newick file:
-
-```bash
-msrc-sim-arbitrary --config examples/arbitrary_10taxa.yaml
-msrc-sim-arbitrary --config examples/arbitrary_50taxa.yaml
-msrc-sim-arbitrary --species-tree examples/trees/example_10taxa.nwk --output examples/output/direct_10taxa --seed 20260914 --num-loci 24 --origin-branch ROOT
-msrc-sim-arbitrary --config examples/arbitrary_10taxa.yaml --population-process moran
-```
-
-## Linked spatial genealogies and MSRC-aware species-tree inference
-
-Version 0.8.0 adds an opt-in linked spatial layer. Existing spatial configs keep
-their v0.7 behavior unless `linked_spatial.enabled: true` is present. Linked
-mode uses real bp coordinates, ordered windows, one or more rearrangement
-intervals, and contiguous `block_id` values. Outside rearrangements it calls the
-ordinary MSC marginal genealogy generator; inside rearrangements it calls the
-current MSRC marginal genealogy generator. Genealogy breakpoints are sampled
-along the chromosome, with the breakpoint rate inside rearrangements multiplied
-by `kappa` (`0 <= kappa <= 1`).
-
-In v0.8.2, `kappa` is explicitly a breakpoint-rate multiplier:
-`rho_R = kappa * rho_background`, so expected block length inside a
-rearrangement is approximately `E[L_bg] / kappa`. The interval start and end are
-structural boundaries, but internal rearranged windows are not forced to be
-separate blocks.
-
-In v0.8.3, benchmark genealogy blocks are stochastic: breakpoint distances are
-sampled from the equivalent Poisson/exponential process, so block coordinates
-vary across independent replicates while preserving the same `kappa` rate
-multiplier.
-
-This is a piecewise-correlated genealogy process, not a full ARG. Dense windows
-within one `block_id` are correlated observations, not independent replicates.
-
-Minimal linked spatial additions to a spatial config:
-
-```yaml
-linked_spatial:
-  enabled: true
-  chrom: chr1
-  kappa: 0.1
-  breakpoint_rate_per_bp: 1.0e-7
-  rearrangements:
-    - id: inv_1
-      start: 25000000
-      end: 65000000
-  windows:
-    count: 500
-```
-
-Linked mode writes `spatial_genealogies.csv` with at least
-`chrom,start,end,midpoint,block_id,topology,is_rearranged,rearrangement_id`, plus
-`spatial_gene_trees.nwk` for external species-tree tools and
-`spatial_linkage_diagnostics.csv` with mean block lengths and breakpoint
-densities inside and outside rearrangements.
-
-The species-tree robustness benchmark compares all-window quartet support,
-oracle filtering of rearranged blocks, genealogy-block collapse where each
-`block_id` has total weight 1, rearrangement-interval collapse where each
-rearrangement interval has bounded total weight 1 even if it contains many
-genealogy blocks, and soft weights such as `w_l = 1 - P_l(MSRC)`. Soft MSRC
-probabilities can be oracle 0/1 labels for debugging or simulated noisy
-probabilities controlled by sensitivity, specificity, and noise. For four taxa
-the package uses exact maximum quartet support internally as the minimal proxy
-for ASTRAL, and also exports Newick gene trees so ASTRAL can be run externally
-later.
-
-The benchmark defaults to an independent replicated sweep with fractions
-`0.00, 0.05, ..., 0.60` and 200 replicates per fraction:
-
-```bash
-msrc-sim-species-tree-robustness --output-dir robustness_output
-```
-
-Use paired mode to fix a baseline MSC chromosome realization within each
-replicate and replace increasing central fractions with MSRC signal:
-
-```bash
-msrc-sim-species-tree-robustness --mode paired --output-dir robustness_paired
-```
-
-Outputs include `species_tree_robustness.csv`,
-`species_tree_recovery.csv`, `spatial_genealogies.csv`, `gene_trees.nwk`,
-`quartet_support_vs_rearrangement_fraction.pdf`, and
-`species_tree_recovery_vs_rearrangement_fraction.pdf`. The benchmark also writes
-`spatial_linkage_diagnostics.csv` and
-`spatial_linkage_diagnostic_summary.csv` with inside/outside block counts,
-mean/median block lengths, breakpoint densities, observed density ratios, and
-rearrangement interval block-count categories.
-
-Equivalent script wrappers are provided in `scripts/`:
-
-```bash
-python scripts/simulate_msrc.py --config examples/mechanistic_balanced.yaml
-python scripts/simulate_replicates.py --config examples/replicates_unconditional.yaml
-python scripts/simulate_parameter_grid.py --config examples/parameter_grid.yaml
-```
+| Command | Description |
+|---|---|
+| `msrc-sim --config <config.yaml>` | Run a single mechanistic or conditional simulation |
+| `msrc-sim-replicates --config <config.yaml>` | Run independent evolutionary replicates |
+| `msrc-sim-grid --config <config.yaml>` | Run a multidimensional parameter grid |
+| `msrc-sim-arbitrary --config <config.yaml>` | Simulate gene trees on an arbitrary n-taxon species tree |
+| `msrc-sim-spatial --config <config.yaml>` | Simulate spatially ordered loci along a chromosome |
+| `msrc-sim-hybridization --config <config.yaml>` | Run a pulse-hybridization spatial comparator |
+| `msrc-sim-pattern-probabilities --config <config.yaml>` | Compare exact quartet probabilities (theory vs. simulation) |
+| `msrc-sim-plot-history --run-dir <dir>` | Plot the realized structural-frequency history |
+| `msrc-sim-compare --input <csv> --output <csv>` | Compare quartet vectors across runs |
 
 ## Simulation Modes
 
-### Legacy Quartet Mode
+### Mechanistic simulation
 
-Legacy quartet mode is the reproducible four-taxon theory-validation path. The
-existing commands and output schemas are preserved:
-
-```bash
-msrc-sim --config examples/mechanistic_balanced.yaml
-msrc-sim-replicates --config examples/replicates_unconditional.yaml
-msrc-sim-replicates --config examples/replicates_conditioned.yaml
-msrc-sim-spatial --config examples/linked_spatial_inversion.yaml
-msrc-sim-pattern-probabilities --config examples/quartet.yaml --output results/pattern_probabilities
-pytest
-```
-
-The regression manifest for this extension is
-`tests/regression/legacy_quartet_baseline.json`. Small rerunnable smoke configs
-are in `tests/regression/`.
-
-### Arbitrary-Tree Mode
-
-Arbitrary-tree mode accepts a rooted species tree from Newick and writes an
-explicit n-taxon output schema:
-
-```bash
-msrc-sim-arbitrary --config examples/arbitrary_10taxa.yaml
-msrc-sim-arbitrary --config examples/arbitrary_50taxa.yaml
-```
-
-Generalized outputs include `species_tree.nwk`, `simulation_config.json`,
-`branch_metadata.tsv`, `arrangement_history.tsv`, `terminal_states.tsv`,
-legacy-compatible `frequency_history.csv` and `sampled_arrangements.csv`,
-`genealogy_blocks.tsv`, `local_gene_trees.nwk`, optional
-`quartet_summaries.tsv`, `simulation_summary.json`, an SVG Wright-Fisher tree
-figure, and a quartet-style Wright-Fisher figure where plotting dependencies
-are available.
-
-You can also use the existing quartet history plotter on arbitrary-tree output:
-
-```bash
-msrc-sim-plot-history \
-  --frequency-history examples/output/10taxa/frequency_history.csv \
-  --sampled-arrangements examples/output/10taxa/sampled_arrangements.csv \
-  --output examples/output/10taxa/wright_fisher_history_cli.png \
-  --show-frequency-trace
-```
-
-The 10- and 50-taxon outputs are implementation-validation examples, not
-biological validation studies. The validation report is
-`results/arbitrary_tree_validation.md`.
-
-### Mechanistic MSRC Simulation
-
-Mechanistic mode simulates a rearrangement history forward through a dated
-species tree and then simulates locus genealogies backward through that
-realized history. Existing mechanistic configs are legacy quartet configs.
+Simulates a single rearrangement/recombination-suppression history forward through a dated species tree, then simulates gene trees backward through that realized history.
 
 ```bash
 msrc-sim --config examples/mechanistic_balanced.yaml
 ```
 
-The main configuration sections are:
-
-- `mode`: set to `mechanistic`;
-- `seed`: random seed;
-- `num_loci`: number of loci to simulate;
-- `species_tree`: ultrametric Newick tree, root extension, and
-  effective population sizes;
-- `rearrangement`: rearrangement type, origin branch, origin time, initial copy
-  count, and selection coefficient;
-- `recombination`: baseline recombination rate and effective cross-arrangement
-  fraction;
-- `sampling`: currently one sample per species;
-- `output`: output directory and which intermediate files to record.
-
-Example:
+Key configuration sections:
 
 ```yaml
 mode: mechanistic
 seed: 12345
 num_loci: 200
+
 species_tree:
   newick: "((1:100,2:100)A:50,(3:100,4:100)B:50)ROOT;"
   time_units: generations
   root_extension: 500
   default_effective_population_size: 1000
+
 rearrangement:
   id: inv_1
   type: inversion
@@ -446,40 +70,87 @@ rearrangement:
   selection:
     model: genic
     coefficient: 0.0
+
 recombination:
   baseline_rate: 0.01
   effective_cross_arrangement_fraction: 0.05
-sampling:
-  samples_per_species: 1
+
 output:
-  directory: balanced_output
-  record_frequency_history: true
-  record_sampled_arrangements: true
+  directory: my_output
   record_gene_trees: true
-  record_backward_events: true
+  record_frequency_history: true
   make_history_plot: true
-  history_plot:
-    filename: wright_fisher_history.pdf
-    glyphs_per_row: 12
-    max_rows_per_branch: 30
 ```
 
-Species trees must be ultrametric. Internal node names are used as branch
-identifiers, so named internal nodes such as `A`, `B`, and `ROOT` are
-recommended. The legacy `msrc-sim` analysis summaries remain quartet-focused;
-use `msrc-sim-arbitrary` for n-tip output schemas.
+The species tree must be ultrametric. Internal node names (e.g., `A`, `B`, `ROOT`) are used as branch identifiers and are recommended. The `effective_cross_arrangement_fraction` (κ) controls how much recombination suppression is applied: κ = 1 means no suppression; κ ≪ 1 means strong suppression and long correlated blocks.
 
-### Conditional Quartet Simulation
+**Outputs** (depending on flags): `frequency_history.csv`, `sampled_arrangements.csv`, `true_gene_trees.nwk`, `coalescence_times.csv`, `summary.json`, `wright_fisher_history.png`.
 
-Conditional mode simulates quartet outcomes for a fixed four-lineage
-arrangement configuration over one structured interval. It also computes the
-exact conditional quartet matrix `H_m(t)` for the same model parameters.
+### Replicate experiments
+
+Runs many independent evolutionary replicates, each drawing its own rearrangement-frequency history and simulating loci conditional on it. Useful for estimating prevalence of persistence, asymmetric quartet distributions, and discordant-topology dominance.
+
+```bash
+msrc-sim-replicates --config examples/replicates_unconditional.yaml
+```
+
+Replicates can be unconditioned, or conditioned on features of the forward history:
+
+```yaml
+# Unconditioned
+conditioning:
+  mode: none
+
+# Require the rearrangement to remain polymorphic at the root
+conditioning:
+  mode: persistent_polymorphism
+  require_segregating_at: [ROOT]
+  max_attempts: 10000
+
+# Require a specific terminal arrangement pattern
+conditioning:
+  mode: terminal_pattern
+  accepted_patterns: ["1010", "0101"]
+  max_attempts: 100000
+```
+
+**Outputs**: `replicate_summary.csv`, `simplex_points.csv`, `prevalence_summary.json`.
+
+### Parameter grids
+
+Sweeps a replicate experiment over all combinations of specified parameters.
+
+```bash
+msrc-sim-grid --config examples/parameter_grid.yaml
+```
+
+```yaml
+parameter_grid:
+  species_tree.default_effective_population_size: [25, 50, 100]
+  rearrangement.initial_copy_count: [10, 20]
+  recombination.effective_cross_arrangement_fraction: [0.01, 0.05, 0.1]
+```
+
+Each grid cell is written to its own `cell_####/` directory. Grid-level results are in `parameter_grid_summary.csv`.
+
+### Arbitrary-tree mode
+
+Simulates gene trees on a rooted species tree with any number of taxa. Accepts either a YAML config or a direct Newick file.
+
+```bash
+msrc-sim-arbitrary --config examples/arbitrary_10taxa.yaml
+msrc-sim-arbitrary --species-tree my_tree.nwk --output my_output --num-loci 100 --origin-branch ROOT
+```
+
+**Outputs**: `species_tree.nwk`, `local_gene_trees.nwk`, `arrangement_history.tsv`, `terminal_states.tsv`, `quartet_summaries.tsv`, `simulation_summary.json`.
+
+### Conditional quartet simulation
+
+Simulates quartet outcomes for a fixed four-lineage arrangement configuration over a single structured interval, and computes the exact conditional quartet matrix for comparison.
 
 ```bash
 msrc-sim --config examples/conditional_quartet.yaml
 ```
-
-Example:
 
 ```yaml
 mode: conditional
@@ -487,7 +158,7 @@ seed: 12345
 num_loci: 100000
 structured_interval:
   duration: 1.0
-  configuration: "1010"
+  configuration: "1010"   # lineages 1 and 3 carry state 1, lineages 2 and 4 carry state 0
   migration:
     m01: 0.05
     m10: 0.05
@@ -498,680 +169,65 @@ output:
   directory: conditional_output
 ```
 
-The `configuration` string gives the arrangement state of the four lineages.
-For example, `1010` means lineages 1 and 3 carry state `1`, while lineages 2
-and 4 carry state `0`.
+**Outputs**: `quartet_probabilities.csv` (empirical and exact probabilities with errors), `summary.json`.
 
-### Replicate Experiments
+### Spatially ordered loci
 
-Replicate experiments simulate many independent rearrangement histories. For
-each accepted history, the simulator samples terminal arrangements and then
-simulates a fixed number of loci to estimate the replicate's quartet
-distribution.
-
-```bash
-msrc-sim-replicates --config examples/replicates_unconditional.yaml
-```
-
-The `experiment` section controls the number of accepted replicates, loci per
-replicate, and prevalence statistics:
-
-```yaml
-experiment:
-  replicates: 20
-  loci_per_replicate: 200
-  asymmetry_threshold: 0.10
-  persistence_target_branches: [ROOT]
-```
-
-The simulator records both attempted and accepted histories. This is important
-for conditioned experiments because rare conditioning events should remain
-visible in the reported acceptance rate.
-
-### Conditioning
-
-Replicate experiments can be unconditioned or conditioned on features of the
-forward rearrangement history.
-
-Unconditional simulation:
-
-```yaml
-conditioning:
-  mode: none
-```
-
-Require the rearrangement to remain segregating at specified branch ends:
-
-```yaml
-conditioning:
-  mode: persistent_polymorphism
-  require_segregating_at: [ROOT]
-  max_attempts: 10000
-```
-
-Require one of a set of sampled terminal arrangement patterns:
-
-```yaml
-conditioning:
-  mode: terminal_pattern
-  accepted_patterns: ["1010", "0101"]
-  max_attempts: 100000
-```
-
-Require both persistence and terminal pattern conditions:
-
-```yaml
-conditioning:
-  mode: persistent_and_pattern
-  require_segregating_at: [ROOT]
-  accepted_patterns: ["1010", "0101"]
-  max_attempts: 100000
-```
-
-### Parameter Grids
-
-Parameter-grid mode runs a replicate experiment for every combination of values
-in `parameter_grid`. Grid keys are dotted paths into the base YAML
-configuration.
-
-```bash
-msrc-sim-grid --config examples/parameter_grid.yaml
-```
-
-Example:
-
-```yaml
-parameter_grid:
-  species_tree.default_effective_population_size: [25, 50]
-  rearrangement.initial_copy_count: [10, 20]
-  recombination.effective_cross_arrangement_fraction: [0.01, 0.1]
-```
-
-Each grid cell is written to its own `cell_####` directory, and the grid-level
-summary is written to `parameter_grid_summary.csv`.
-
-### Spatially Ordered Loci
-
-Spatial mode simulates one realized forward rearrangement history, samples one
-terminal arrangement pattern, places loci along a chromosome, and uses a local
-model at each ordered locus. Loci inside the configured rearrangement interval
-use the mechanistic MSRC genealogy simulator with the shared realized
-Wright-Fisher history and sampled terminal arrangements. Loci outside the
-interval use an ordinary unstructured MSC genealogy on the same species tree.
+Simulates ordered loci along a chromosome. Loci inside the recombination-suppressed interval use the MSRC genealogy generator; loci outside use the standard MSC. Useful for studying whether quartet support shifts are spatially localized around the suppressed region.
 
 ```bash
 msrc-sim-spatial --config examples/spatial_inversion.yaml
 ```
 
-Spatial mode is designed for comparing a bag-of-genes quartet vector with a
-chromosome-wide quartet-support track. If genomic positions are discarded, the
-analysis retains only the total counts of `12|34`, `13|24`, and `14|23`.
-With ordered positions retained, the output can show whether quartet support is
-localized around a physical rearrangement interval and its known structural
-breakpoints.
+**Outputs**: `spatial_loci.csv`, `spatial_windows.csv`, `spatial_summary.json`, `spatial_gene_trees.tsv`, `spatial_quartet_profile.png`.
 
-This is not a linked-locus ARG simulator. In v0.7.0, loci are conditionally
-independent given the realized rearrangement history and local region
-parameters. The simulator does not generate topology autocorrelation or
-tract-length information from a multi-locus genealogy.
+### Pulse-hybridization comparator
 
-Spatial mode supports frozen-history replay:
+Simulates a spatial pulse-hybridization model for comparison with MSRC. Since MSRC suppression and introgression can produce similar genome-wide quartet frequencies, the spatial comparison helps study whether the two models are distinguishable from their chromosomal profiles.
 
 ```bash
-msrc-sim-spatial --config spatial.yaml --history frozen_history.yaml
-```
-
-This allows different genomic or recombination configurations to be compared
-while holding the same forward rearrangement history and sampled terminal
-arrangements fixed.
-
-### Pulse-Hybridization Spatial Comparator
-
-`msrc-sim-hybridization` implements a spatial pulse-hybridization comparator.
-A hybridization event introduces a fraction `gamma` of ancestry from an
-alternative parental history. Recombination during the subsequent `h`
-generations breaks that ancestry into tracts along the chromosome. Local
-quartet topologies are sampled from the MSC distribution associated with the
-local ancestry state. The model therefore captures spatially correlated
-introgressed ancestry but is not a full ARG or full multispecies-network-
-coalescent simulator.
-
-The causal interpretation is explicit:
-
-- hybridization = origin of introgressed ancestry;
-- recombination = fragmentation of that ancestry into tracts.
-
-For each genomic position, the latent ancestry state is `0` for the major/native
-parental history and `1` for the introgressed parental history. Conditional on
-that state, the local quartet topology is sampled independently from
-`msc_probabilities(topology, internal_branch_length)`. The ancestry mosaic is
-linked along the chromosome, but this release does not simulate a full ARG or
-full linked multispecies-network coalescent. Conditional on the ancestry state
-at a locus, the local quartet topology is sampled independently from the
-corresponding MSC distribution.
-
-The genome-wide bag-of-genes vector is written as `expected_marginal_q`:
-
-```text
-(1 - gamma) * q_major + gamma * q_introgressed
-```
-
-This is the same two-tree mixture formula used by `msrcsim.model_fitting`.
-The ordered output keeps the spatial information needed to ask whether MSRC and
-hybridization can produce similar genome-wide quartet-frequency vectors while
-producing different chromosome-wide profiles.
-
-### MSRC vs Hybridization Spatial Comparison
-
-`msrc-sim-plot-spatial-compare` creates matched spatial comparison plots for an
-MSRC spatial run and a pulse-hybridization run. The figure is designed to show
-how two models may have similar genome-wide averaged quartet frequencies while
-differing in the spatial organization of local quartet support along a
-chromosome. In the MSRC model, local signal can be associated with rearranged
-structural intervals; in the hybridization model, local signal can follow
-recombined ancestry tracts.
-
-This is a visualization and reporting tool for studying identifiability. A
-bag-of-genes comparison alone may be non-identifiable because it discards
-genomic order, while spatially ordered loci may provide additional
-identifiability through the organization of `q1(x)`, `q2(x)`, and `q3(x)`.
-The command does not claim that MSRC and hybridization are always spatially
-distinguishable.
-
-Example:
-
-```bash
-msrc-sim-spatial --config examples/spatial_inversion.yaml
 msrc-sim-hybridization --config examples/pulse_hybridization.yaml
+```
 
+To compare MSRC and hybridization runs side by side:
+
+```bash
 msrc-sim-plot-spatial-compare \
   --msrc-dir spatial_output \
   --hyb-dir hybridization_output \
   --output comparison/spatial_compare.png
 ```
 
-If window files are absent, windows can be recomputed from locus-level outputs:
+## Forward Population Process
 
-```bash
-msrc-sim-plot-spatial-compare \
-  --msrc-dir spatial_output \
-  --hyb-dir hybridization_output \
-  --window-size-loci 50 \
-  --step-loci 10 \
-  --output comparison/spatial_compare.pdf
-```
-
-Use `--formats png,pdf,svg` to write multiple figure formats from the same
-comparison. The command also writes `spatial_compare_summary.json`, recording
-the compared marginal quartet vectors and their L1 difference. By default it
-also writes a compact `spatial_compare_overlay.<format>` figure that overlays
-the model-specific local fraction and one topology-support track.
-
-For calibrated comparisons, first run a grid or collection of hybridization
-simulations, then select the run whose marginal quartet vector is closest to
-the MSRC run:
-
-```bash
-msrc-sim-find-matched-hybridization \
-  --msrc-dir spatial_output \
-  --hyb-grid-dir hybridization_grid_results \
-  --metric l1 \
-  --output matched_hybridization.json
-
-msrc-sim-plot-spatial-compare \
-  --msrc-dir spatial_output \
-  --matched-hybridization-json matched_hybridization.json \
-  --output comparison/spatial_compare.png
-```
-
-The matcher scans precomputed hybridization run directories, ranks candidates
-by distance between marginal quartet vectors, and records the selected
-`best_hyb_dir`. It does not simulate new hybridization parameters; it selects
-from the runs already present under `--hyb-grid-dir`.
-
-For exact expected bag-of-genes calibration, use
-`msrc-sim-match-hybridization`. This fits `gamma`, the major-parent MSC branch
-length, and the introgressed-parent MSC branch length so the expected two-tree
-mixture vector
-
-```text
-(1 - gamma) q_MSC(T_major, t_major) + gamma q_MSC(T_intro, t_intro)
-```
-
-matches the MSRC marginal quartet vector as closely as possible:
-
-```bash
-msrc-sim-match-hybridization \
-  --msrc-dir spatial_output \
-  --major-topology '12|34' \
-  --introgressed-topology '13|24' \
-  --output matched_hybridization.yaml
-```
-
-The YAML records the target vector, fitted vector, fitted `gamma`, `t_major`,
-`t_introgressed`, and L1/Euclidean errors. When the target vector lies on the
-chosen two-tree mixture surface, the expected-vector fit should be essentially
-exact; finite simulated chromosomes can still have sampling error in their
-observed quartet frequencies.
-
-The fitted expected mixture can be used in an age/recombination experiment that
-holds bag-of-genes quartet frequencies fixed while changing ancestry-tract
-structure:
-
-```bash
-msrc-sim-spatial-distinguishability \
-  --msrc-dir spatial_output \
-  --matched-hybridization-yaml matched_hybridization.yaml \
-  --output-dir distinguishability \
-  --h-values 10,25,50,100,250,500,1000 \
-  --r-multipliers 0.25,0.5,1,2 \
-  --baseline-r 1e-8 \
-  --replicates 100
-```
-
-This writes one feature row per model/parameter/replicate to
-`spatial_distinguishability.csv`, including marginal quartet frequencies,
-tract summaries, topology change-point counts, same-topology probabilities at
-configured lags, longest focal-topology interval, focal support concentrated in
-the model-specific interval or tract, and MSRC breakpoint-distance summaries.
-It also trains a simple reproducible logistic classifier from spatial features
-only and writes accuracy/ROC-AUC summaries plus a four-panel figure. The
-analysis is intended to reveal regimes where spatial organization separates
-the models and regimes where long hybridization tracts can make them difficult
-to distinguish; it is not a universal identifiability claim.
-
-`msrc-sim-spatial-identifiability` runs the paper-oriented matched experiment
-using the closed-form T1/T2 mixture. For a target MSRC quartet vector
-`q = (q1, q2, q3)` and selected major/introgressed topologies, it computes the
-mathematically feasible `gamma` interval, samples interior gamma values across
-that interval, and sets:
-
-```text
-d_major = q_major - q_shared
-d_intro = q_intro - q_shared
-t_major = -log(1 - d_major / (1 - gamma))
-t_intro = -log(1 - d_intro / gamma)
-```
-
-The main spatial grid is `eta = E[L_intro] / L_R`, where `L_R` is the
-rearranged interval length. For each `(gamma, eta)`, the command solves
-`h*r = 1 / (eta * L_R * (1 - gamma))`, simulates matched hybridization
-chromosomes, generates independent MSRC resampled chromosomes on the same locus
-positions, and trains two reproducible classifiers:
-
-- a bag-of-genes baseline using only matched `q1`, `q2`, and `q3`;
-- a spatial classifier using topology-run, autocorrelation, off-arm, focal-run,
-  and breakpoint-distance features.
-
-Hybridization-specific latent quantities such as ancestry-tract counts and
-realized introgressed fraction are written as diagnostics but excluded from the
-main spatial classifier.
-
-Example:
-
-```bash
-msrc-sim-spatial-identifiability \
-  --msrc-dir spatial_output_q2_dominant \
-  --major-topology '12|34' \
-  --introgressed-topology '13|24' \
-  --num-gamma 10 \
-  --eta-values 0.02,0.05,0.1,0.25,0.5,1,2,5,10 \
-  --replicates 100 \
-  --output-dir identifiability_q2_dominant
-```
-
-The result is designed to show that identical expected bag-of-genes quartet
-frequencies can be non-identifying, while spatial organization can restore
-information about the mechanism in some parameter regimes.
-The command rejects very small replicate counts by default because ROC-AUC and
-accuracy estimates are not interpretable with only a few chromosomes per
-class. Use at least the default `--replicates 100` for analysis. The
-`--allow-small-sample` flag exists only for debugging and automated smoke
-tests.
-
-Example:
+The default forward process is Wright-Fisher. Moran dynamics are also available:
 
 ```yaml
-mode: pulse_hybridization
-seed: 12345
-chromosome:
-  length_bp: 100000000
-  num_loci: 5000
-  locus_positions:
-    mode: evenly_spaced
-hybridization:
-  gamma: 0.25
-  generations_since_pulse: 200
-  major:
-    topology: "12|34"
-    internal_branch_length: 0.5
-  introgressed:
-    topology: "13|24"
-    internal_branch_length: 1.5
-  donor: "3"
-  recipient: "2"
-recombination:
-  rate_per_bp_per_generation: 1.0e-8
-windows:
-  loci_per_window: 50
-  step_loci: 10
+population_process:
+  model: wright_fisher  # default
+
+population_process:
+  model: moran
 ```
 
-The `donor` and `recipient` fields are recorded as biological metadata. In this
-release, the explicitly supplied parental topology and internal branch length
-fields are authoritative.
-
-## Outputs
-
-### Mechanistic Outputs
-
-Mechanistic runs write files to `output.directory`. Depending on the output
-flags, the directory can contain:
-
-- `config.resolved.yaml`: YAML configuration after defaults are applied;
-- `frequency_history.csv`: forward structural-frequency path on each branch;
-- `sampled_arrangements.csv`: sampled terminal arrangement state for each taxon;
-- `wright_fisher_history.png` or `.pdf`: optional static visualization created
-  by `msrc-sim-plot-history`;
-- `true_gene_trees.nwk`: simulated true gene trees in Newick format;
-- `coalescence_times.csv`: coalescence times for each locus;
-- `coalescence_events.csv`: coalescence-event records;
-- `genealogy_events.csv`: optional full backward-event log for selected loci;
-- `summary.json`: topology counts, topology frequencies, taxa, and sampled
-  arrangements.
-
-### Conditional Outputs
-
-Conditional runs write:
-
-- `config.resolved.yaml`: YAML configuration after defaults are applied;
-- `quartet_probabilities.csv`: topology counts, empirical probabilities, exact
-  probabilities, and absolute errors;
-- `summary.json`: the same conditional summary in JSON format.
-
-The three quartet topologies are reported as `12|34`, `13|24`, and `14|23`.
-
-### Structural-Frequency History Visualization
-
-The structural-frequency history plot uses `frequency_history.csv` to render the
-realized rearrangement-frequency trajectory directly on the species tree.
-Colored arrows summarize the proportion of ancestral and rearranged chromosomes
-at selected times or generations. The visualization does not resimulate the process and
-does not treat displayed arrows as individual chromosome copies.
-
-Set `output.make_history_plot: true` in a mechanistic configuration to write
-`wright_fisher_history.png` automatically, or set
-`output.history_plot.filename` to choose a different output file such as
-`wright_fisher_history.pdf`.
-
-Existing runs can be replotted with explicit display controls:
-
-```bash
-msrc-sim-plot-history \
-  --run-dir balanced_output \
-  --output balanced_output/wright_fisher_history.png \
-  --glyphs-per-row 14 \
-  --max-rows-per-branch 35 \
-  --tip-order 1,2,3,4
-```
-
-`frequency_history.csv` is the only required data file. When present,
-`sampled_arrangements.csv` is used for terminal taxon labels; otherwise the
-plot labels terminal population frequencies without implying sampled
-chromosome states.
-
-For a compact example where all four present-day populations remain
-polymorphic:
-
-```bash
-msrc-sim --config examples/mechanistic_balanced_polymorphic_tips.yaml
-```
-
-That example enables `output.make_history_plot: true`, so the run writes
-`polymorphic_tips_output/wright_fisher_history.png` alongside
-`frequency_history.csv`.
-
-For a higher-variance example with mixed terminal fates:
-
-```bash
-msrc-sim --config examples/mechanistic_balanced_mixed_fates.yaml
-```
-
-This run writes `mixed_fates_output/wright_fisher_history_mixed_fates.png` and
-shows a combination of loss, low-frequency polymorphism, and A1 fixation at
-the present-day tips.
-
-### Replicate Outputs
-
-Replicate experiments write:
-
-- `replicate_summary.csv`: one row per attempted history, including rejected
-  attempts;
-- `simplex_points.csv`: accepted replicate quartet probabilities and simplex
-  coordinates;
-- `prevalence_summary.json`: acceptance rate, terminal pattern counts,
-  prevalence estimates, and 95% Wilson intervals;
-- `config.resolved.yaml`: the experiment configuration.
-
-The prevalence summary includes estimates for:
-
-- persistent polymorphism on target branches;
-- 2:2 terminal arrangement patterns;
-- asymmetric quartet distributions;
-- discordant-topology dominance.
-
-### Grid Outputs
-
-Parameter grids write:
-
-- `parameter_grid_summary.csv`: one row per parameter combination;
-- `cell_####/replicate_summary.csv`: replicate-level records for each cell;
-- `cell_####/simplex_points.csv`: accepted quartet-simplex points for each cell;
-- `cell_####/prevalence_summary.json`: prevalence summary for each cell;
-- `cell_####/config.resolved.yaml`: resolved cell configuration.
-
-### Spatial Outputs
-
-Spatial runs write:
-
-- `spatial_loci.csv`: one row per ordered locus with `locus_id`, `position`,
-  region, local model, topology, terminal pattern, switch count, and
-  coalescence-time summary;
-- `spatial_gene_trees.tsv`: optional position-aware gene trees with
-  `locus_id`, `position`, and `newick`;
-- `spatial_windows.csv`: sliding-window topology counts, local quartet
-  concordance factors, nearest-MSC-arm distance, off-arm statistic, and
-  fraction of loci inside the rearrangement interval;
-- `spatial_summary.json`: whole-chromosome bag-of-genes vector, inside/outside
-  vectors, spatial contrasts, breakpoint-aligned jump summaries, strongest
-  adjacent-window jumps, and metadata stating that linked loci are not modeled;
-- `spatial_quartet_profile.png`: chromosome-wide quartet-support track when
-  plotting dependencies are available;
-- `spatial_bag_inside_outside.png`: comparison of overall, inside, and outside
-  quartet vectors when plotting dependencies are available.
-
-### Hybridization Outputs
-
-Pulse-hybridization runs write:
-
-- `hybridization_tracts.csv`: ancestry tracts with start, end, length, state,
-  and `major`/`introgressed` labels;
-- `hybridization_loci.csv`: ordered loci with `position_bp`, `model`,
-  ancestry state, tract ID, sampled topology, topology label, and conditional
-  MSC probabilities;
-- `hybridization_windows.csv`: moving-window `q1`, `q2`, `q3`,
-  introgressed fraction, dominant topology, nearest-MSC-arm distance, and
-  off-arm difference;
-- `hybridization_spatial_autocorrelation.csv`: same-topology and same-ancestry
-  probabilities at configured genomic lags;
-- `hybridization_summary.json`: expected and observed marginal quartet
-  vectors, realized ancestry fractions, tract-length summaries, topology
-  counts/frequencies, parental parameters, and model-limitation metadata;
-- `hybridization_spatial_profile.png`: ancestry mosaic, moving quartet support,
-  and moving introgressed fraction when plotting is enabled.
-
-Spatial comparison runs write:
-
-- `spatial_compare.png`, `.pdf`, or `.svg`: a two-column MSRC versus
-  hybridization figure with latent interval structure, local quartet support,
-  local model-specific fraction, and bag-of-genes summaries;
-- `spatial_compare_summary.json`: compared marginal quartet vectors, their L1
-  difference, run sizes, chromosome length, figure paths, and a warning when
-  the marginal vectors are not closely matched;
-- `spatial_compare_overlay.<format>`: optional direct overlay of local feature
-  fraction and a focal quartet-support track.
-- `matched_hybridization.json`: when written by
-  `msrc-sim-find-matched-hybridization`, the selected `best_hyb_dir`, MSRC and
-  hybridization marginal quartet vectors, the matching distance, ranked
-  candidate runs, and a warning flag when no close match was found.
-- `matched_hybridization.yaml`: when written by
-  `msrc-sim-match-hybridization`, exact expected-mixture fit parameters
-  `gamma`, `t_major`, `t_introgressed`, target and fitted quartet vectors, and
-  L1/Euclidean fit errors;
-- `spatial_distinguishability.csv`: one row per MSRC bootstrap or
-  hybridization chromosome replicate with matched marginal-q fields and spatial
-  features;
-- `spatial_distinguishability_metrics.csv`: train/test classification accuracy
-  and ROC-AUC by hybridization age and recombination rate;
-- `spatial_distinguishability.png`: example matched profiles, latent tracks,
-  accuracy versus age, and accuracy heatmap over `h x r`.
-- `spatial_identifiability_replicates.csv`: one row per matched MSRC or
-  hybridization chromosome replicate across the closed-form `gamma x eta`
-  grid;
-- `spatial_identifiability_summary.csv`: bag-of-genes and spatial classifier
-  accuracy/ROC-AUC with cross-validation confidence intervals for each
-  `(gamma, eta)` cell;
-- `identifiability_heatmap.pdf`: spatial ROC-AUC heatmap over `gamma x eta`;
-- `auc_vs_eta.pdf`: spatial ROC-AUC versus `eta` for the gamma grid;
-- `bag_vs_spatial_auc.pdf`: bag-of-genes baseline versus spatial classifier;
-- `example_profiles.pdf`: matched MSRC/HYB example profiles for small,
-  intermediate, and large `eta`.
-
-## Configuration Reference
-
-Common fields:
-
-- `mode`: one of `mechanistic`, `conditional`, `replicate_experiment`,
-  `parameter_grid`, `spatial`, or `pulse_hybridization`;
-- `seed`: random seed, defaulting to `1` for single-run modes;
-- `num_loci`: number of loci for single-run modes;
-- `output.directory`: output directory.
-
-Species-tree fields:
-
-- `species_tree.newick`: ultrametric four-taxon Newick tree;
-- `species_tree.root_extension`: length of the population above the root;
-- `species_tree.default_effective_population_size`: default diploid effective
-  population size used by branches;
-- `species_tree.branch_parameters.<branch>.effective_population_size`: optional
-  branch-specific effective population size.
-
-Rearrangement fields:
-
-- `rearrangement.id`: identifier written to outputs;
-- `rearrangement.type`: rearrangement type, such as `inversion`;
-- `rearrangement.origin_branch`: branch where the rearrangement originates;
-- `rearrangement.origin_time_from_branch_start`: forward-time origin location on
-  the origin branch;
-- `rearrangement.initial_copy_count`: initial number of rearranged chromosomes;
-- `rearrangement.selection.coefficient`: genic selection coefficient.
-
-Speciation split fields:
-
-- `speciation_split.model`: optional daughter-initialization model. The
-  supported value is `reciprocal_log_odds`;
-- `speciation_split.eta`: global reciprocal log-odds offset. Omit the whole
-  `speciation_split` section for legacy unbiased initialization; `eta: 0.0`
-  is the same scientific split rule;
-- `speciation_split.by_split.<split>.eta`: per-split override, where `<split>`
-  is the parent/internal node or parental branch id;
-- `speciation_split.by_split.<split>.positive_child`: direct child receiving
-  `+eta`. If omitted for a binary split, the first child in Newick order
-  receives `+eta`.
-
-Recombination fields:
-
-- `recombination.baseline_rate`: baseline switching/recombination rate;
-- `recombination.effective_cross_arrangement_fraction`: fraction of the
-  baseline rate retained across arrangements.
-
-Output flags for mechanistic runs:
-
-- `record_resolved_config`;
-- `record_frequency_history`;
-- `record_sampled_arrangements`;
-- `record_gene_trees`;
-- `record_coalescence_times`;
-- `record_backward_events`;
-- `event_log_loci.first_n`.
-- `make_history_plot`: render `frequency_history.csv` as a static species-tree
-  history figure after a mechanistic run, default `false`;
-- `history_plot.filename`, `.format`, `.dpi`, `.glyphs_per_row`,
-  `.max_rows_per_branch`, `.tip_order`, `.width_mode`,
-  `.show_frequency_trace`, and `.title`: optional display controls for the
-  automatic history figure.
-
-Spatial fields:
-
-- `genome.length`: chromosome length in integer coordinate units;
-- `genome.loci.count`: number of ordered loci;
-- `genome.loci.placement`: `evenly_spaced` or `uniform_random`;
-- `genome.rearrangement_interval.start` and `.end`: one physical interval,
-  requiring `0 <= start < end <= genome.length`;
-- `genome.inside_model.type`: `msrc`;
-- `genome.inside_model.effective_cross_arrangement_fraction`: local
-  cross-arrangement fraction inside the interval;
-- `genome.outside_model.type`: `msc`;
-- `spatial_summary.window_loci`, `.step_loci`, and
-  `.breakpoint_bandwidth_loci`: sliding-window and breakpoint summary sizes.
-
-Pulse-hybridization fields:
-
-- `chromosome.length_bp`: chromosome length in base pairs;
-- `chromosome.num_loci`: number of ordered loci;
-- `chromosome.locus_positions.mode`: `evenly_spaced`, `random_uniform`, or
-  `file`;
-- `hybridization.gamma`: initial introgressed ancestry fraction created by the
-  pulse;
-- `hybridization.generations_since_pulse`: generations of recombination after
-  the pulse;
-- `hybridization.major` and `.introgressed`: authoritative parental topology
-  labels (`12|34`, `13|24`, `14|23`) and internal branch lengths;
-- `hybridization.donor` and `.recipient`: metadata only in this release;
-- `recombination.rate_per_bp_per_generation`: recombination rate per bp per
-  generation for ancestry-tract breakpoints;
-- `windows.loci_per_window` and `.step_loci`: moving-window sizes;
-- `spatial_statistics.lags_bp`: genomic lags for same-topology and
-  same-ancestry probabilities.
+Both models converge to the same diffusion limit under weak selection and are useful for robustness checks. The `effective_cross_arrangement_fraction` (κ) is the key parameter governing recombination suppression: it multiplies the baseline recombination rate inside the suppressed interval, reducing the rate at which lineages switch between ancestry backgrounds.
 
 ## Examples
 
-The `examples/` directory contains ready-to-run configurations:
+The `examples/` directory contains ready-to-run configs:
 
-- `mechanistic_balanced.yaml`: mechanistic simulation on a balanced quartet tree;
-- `mechanistic_daughter_split.yaml`: opt-in reciprocal-log-odds daughter split
-  example with nonzero `eta`;
-- `mechanistic_balanced_mixed_fates.yaml`: short balanced-tree example with a
-  mix of terminal loss, polymorphism, and A1 fixation;
-- `mechanistic_balanced_polymorphic_tips.yaml`: short neutral balanced-tree
-  example designed to keep the terminal populations segregating;
-- `mechanistic_unbalanced.yaml`: mechanistic simulation on an unbalanced quartet
-  tree;
-- `conditional_quartet.yaml`: fixed-configuration conditional quartet
-  simulation;
-- `replicates_unconditional.yaml`: unconditioned prevalence experiment;
-- `replicates_conditioned.yaml`: terminal-pattern-conditioned prevalence
-  experiment;
-- `parameter_grid.yaml`: multidimensional parameter grid;
-- `spatial_inversion.yaml`: ordered-locus spatial inversion prototype;
-- `pulse_hybridization.yaml`: spatial pulse-hybridization comparator.
+- `mechanistic_balanced.yaml` — balanced quartet tree, mechanistic simulation
+- `mechanistic_unbalanced.yaml` — unbalanced quartet tree
+- `replicates_unconditional.yaml` — unconditioned prevalence experiment
+- `replicates_conditioned.yaml` — terminal-pattern-conditioned experiment
+- `parameter_grid.yaml` — multidimensional parameter sweep
+- `conditional_quartet.yaml` — fixed-configuration conditional simulation
+- `spatial_inversion.yaml` — ordered-locus spatial prototype
+- `pulse_hybridization.yaml` — spatial hybridization comparator
+- `arbitrary_10taxa.yaml`, `arbitrary_50taxa.yaml` — arbitrary-tree examples
 
-## Development
+## Citation
 
-Run the test suite with:
+If you use `msrc-sim`, please cite:
 
-```bash
-pytest
-```
-
-Release notes are maintained in [CHANGELOG.md](CHANGELOG.md).
+> Yasamin Tabatabaee, Siavash Mirarab, and Jian Ma. *Suppressed recombination generates introgression-like signals and biases phylogenomic inference.* 2026.
