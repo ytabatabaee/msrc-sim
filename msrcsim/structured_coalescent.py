@@ -20,14 +20,26 @@ def _topology_from_coalescences(coals, taxa):
     return sets.index(pair) if pair in sets else (sets.index(frozenset(set(taxa)-set(pair))) if frozenset(set(taxa)-set(pair)) in sets else 0)
 
 def simulate_genealogy(locus_id,tree:SpeciesTree,history:PopulationFrequencyHistory,sampled_arrangements,recombination_rate,effective_fraction,rng,record_events=True):
+    """Simulate backward genealogy with an explicit structured-origin boundary.
+
+    A generated frequency history carries ``structured_origin_age``. Before
+    that age, the process is the finite-frequency structured coalescent. At
+    and beyond it, arrangement labels cease to have biological meaning and
+    the process becomes an ordinary unstructured MSC within each population
+    branch. Older histories without this provenance use the historical
+    ``tree.root.age + tree.root_extension`` boundary as a compatibility
+    fallback.
+    """
     rho=recombination_rate*effective_fraction
     lineages=[]; next_id=0
     for taxon in tree.taxa:
         lineages.append(Lineage(next_id,frozenset([taxon]),tree.branch_for_tip(taxon),int(sampled_arrangements[taxon]),taxon,0.0)); next_id+=1
     t=0.0; events=[]; coals=[]; coal_times=[]; eidx=0
     max_time=tree.root.age+tree.root_extension
+    origin_age=getattr(history,"structured_origin_age",None)
+    structured_origin_age=max_time if origin_age is None else float(origin_age)
     while len(lineages)>1:
-        # move lineages at boundaries
+        # Move lineages at species-tree boundaries before drawing events.
         moved=False
         for L in lineages:
             b=tree.branches[L.population_id]
@@ -36,45 +48,62 @@ def simulate_genealogy(locus_id,tree:SpeciesTree,history:PopulationFrequencyHist
                 if record_events:
                     events.append(GenealogyEvent(locus_id,eidx,t,'species_boundary',old,L.population_id,str(L.lineage_id),'',','.join(sorted(L.descendants)),str(L.arrangement),str(L.arrangement),None,None,None,None,None,None,None)); eidx+=1
         if moved: continue
+
+        structured = t < structured_origin_age-1e-10
         possible=[]
-        # calculate per-lineage switching
-        for L in lineages:
-            p=history.frequency_at(L.population_id,min(t,tree.branches[L.population_id].older_age))
-            m01=rho*p; m10=rho*(1-p); rate=m01 if L.arrangement==0 else m10
-            if rate>0: possible.append(('switch',(L,),rate,p,m01,m10,None,None))
-        # coalescence pairs
-        for i in range(len(lineages)):
-            for j in range(i+1,len(lineages)):
-                a,b=lineages[i],lineages[j]
-                if a.population_id!=b.population_id or a.arrangement!=b.arrangement: continue
-                p=history.frequency_at(a.population_id,min(t,tree.branches[a.population_id].older_age)); N=tree.branches[a.population_id].effective_population_size
-                l0=1/(2*N*max(1-p,1/(2*N))); l1=1/(2*N*max(p,1/(2*N))); rate=l0 if a.arrangement==0 else l1
-                possible.append(('coal',(a,b),rate,p,rho*p,rho*(1-p),l0,l1))
+        if structured:
+            # Structured MSRC: switching and same-background coalescence use
+            # the frequency history exactly as recorded on each branch.
+            for L in lineages:
+                p=history.frequency_at(L.population_id,min(t,tree.branches[L.population_id].older_age))
+                m01=rho*p; m10=rho*(1-p); rate=m01 if L.arrangement==0 else m10
+                if rate>0: possible.append(('switch',(L,),rate,p,m01,m10,None,None))
+            for i in range(len(lineages)):
+                for j in range(i+1,len(lineages)):
+                    a,b=lineages[i],lineages[j]
+                    if a.population_id!=b.population_id or a.arrangement!=b.arrangement: continue
+                    p=history.frequency_at(a.population_id,min(t,tree.branches[a.population_id].older_age)); N=tree.branches[a.population_id].effective_population_size
+                    l0=1/(2*N*max(1-p,1/(2*N))); l1=1/(2*N*max(p,1/(2*N))); rate=l0 if a.arrangement==0 else l1
+                    possible.append(('coal',(a,b),rate,p,rho*p,rho*(1-p),l0,l1))
+        else:
+            # Pre-rearrangement ordinary ancestor: labels are ignored,
+            # switching stops, and every same-population pair coalesces at
+            # the ordinary MSC rate 1/(2 Ne).
+            for i in range(len(lineages)):
+                for j in range(i+1,len(lineages)):
+                    a,b=lineages[i],lineages[j]
+                    if a.population_id!=b.population_id: continue
+                    rate=1/(2*tree.branches[a.population_id].effective_population_size)
+                    possible.append(('coal',(a,b),rate,None,0.0,0.0,rate,rate))
+
         total=sum(x[2] for x in possible)
         next_species_boundary=min([tree.branches[L.population_id].older_age for L in lineages if tree.branches[L.population_id].parent_branch_id is not None]+[float('inf')])
-        next_frequency_boundary=min([history.next_frequency_boundary(L.population_id, t) for L in lineages]+[float('inf')])
-        next_boundary=min(next_species_boundary,next_frequency_boundary)
-        if total<=0:
-            if next_boundary<float('inf'): t=next_boundary; continue
-            # root fallback: ordinary panmictic coalescence
-            a,b=lineages[0],lineages[1]; wait=rng.exponential(2*tree.branches[a.population_id].effective_population_size); t+=wait; chosen=('coal',(a,b),1/wait,0.5,0,0,1,1)
+        if structured:
+            next_frequency_boundary=min([history.next_frequency_boundary(L.population_id, t) for L in lineages]+[float('inf')])
+            next_boundary=min(next_species_boundary,next_frequency_boundary,structured_origin_age)
         else:
-            wait=rng.exponential(1/total)
-            if t+wait>=next_boundary: t=next_boundary; continue
-            t+=wait; u=rng.random()*total; c=0; chosen=possible[-1]
-            for x in possible:
-                c+=x[2]
-                if u<=c: chosen=x; break
+            next_boundary=next_species_boundary
+        if total<=0:
+            if next_boundary<float('inf') and next_boundary>t+1e-12:
+                t=next_boundary; continue
+            raise RuntimeError("genealogy has no event and no finite species boundary")
+        wait=rng.exponential(1/total)
+        if t+wait>=next_boundary:
+            t=next_boundary; continue
+        t+=wait; u=rng.random()*total; c=0; chosen=possible[-1]
+        for x in possible:
+            c+=x[2]
+            if u<=c: chosen=x; break
         kind,objs,rate,p,m01,m10,l0,l1=chosen
         if kind=='switch':
             L=objs[0]; old=L.arrangement; L.arrangement=1-old
             if record_events:
                 events.append(GenealogyEvent(locus_id,eidx,t,'switch',L.population_id,L.population_id,str(L.lineage_id),'',','.join(sorted(L.descendants)),str(old),str(L.arrangement),rate,total,p,m01,m10,l0,l1)); eidx+=1
         else:
-            a,b=objs; parent=Lineage(next_id,a.descendants|b.descendants,a.population_id,a.arrangement,'',t)
+            a,b=objs; parent=Lineage(next_id,a.descendants|b.descendants,a.population_id,0 if not structured else a.arrangement,'',t)
             bl1=t-a.birth_time; bl2=t-b.birth_time; parent.node_newick=f"({a.node_newick}:{bl1:.8f},{b.node_newick}:{bl2:.8f})"; next_id+=1
             lineages=[L for L in lineages if L not in (a,b)]+[parent]; coal_times.append(t)
-            coals.append(CoalescenceRecord(locus_id,len(coals),t,a.population_id,a.lineage_id,b.lineage_id,parent.lineage_id,a.arrangement,','.join(sorted(a.descendants)),','.join(sorted(b.descendants))))
+            coals.append(CoalescenceRecord(locus_id,len(coals),t,a.population_id,a.lineage_id,b.lineage_id,parent.lineage_id,parent.arrangement,','.join(sorted(a.descendants)),','.join(sorted(b.descendants))))
             if record_events:
                 events.append(GenealogyEvent(locus_id,eidx,t,'coalescence',a.population_id,a.population_id,f"{a.lineage_id};{b.lineage_id}",str(parent.lineage_id),f"{','.join(sorted(a.descendants))}|{','.join(sorted(b.descendants))}",f"{a.arrangement};{b.arrangement}",str(parent.arrangement),rate,total,p,m01,m10,l0,l1)); eidx+=1
     nw=lineages[0].node_newick+';'

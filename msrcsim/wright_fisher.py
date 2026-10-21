@@ -17,6 +17,8 @@ class FrequencyHistory:
     records:list[FrequencyRecord]
     by_branch:dict[str,list[FrequencyRecord]]
     split_events:list = field(default_factory=list)
+    structured_origin_age: float | None = None
+    structured_origin_branch: str | None = None
     _sorted_by_branch:dict[str,list[FrequencyRecord]] = field(default_factory=dict, init=False, repr=False)
     _ages_by_branch:dict[str,list[float]] = field(default_factory=dict, init=False, repr=False)
 
@@ -97,4 +99,4 @@ def simulate_frequency_history(tree:SpeciesTree,rearrangement:Rearrangement,rng:
             if gi<len(ages)-1 and k is not None and 0<k<total:
                 p=_selected_p(k/total,s); k=int(rng.binomial(total,p))
         end_counts[b.branch_id]=None if k is None else (k,total)
-    return FrequencyHistory(records,by,split_events)
+    return FrequencyHistory(records, by, split_events, origin_age, rearrangement.origin_branch)

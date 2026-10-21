@@ -2,6 +2,13 @@
 
 `msrc-sim` is a simulator for the **Multi-Species Recombination-partitioned Coalescent (MSRC)** model. MSRC models the effect of **recombination suppression** on gene tree distributions across a species tree. When a genomic region carries partially isolated ancestry backgrounds — due to chromosomal inversions, supergenes, or any other mechanism that suppresses recombination — lineages within that region remain associated with their background rather than freely recombining. This produces spatially coherent, biased genealogical signal that can mislead standard species tree methods. `msrc-sim` simulates this process by running a forward-time model of background-frequency evolution (Wright-Fisher or Moran) and then generating gene trees through a backward-time structured coalescent conditional on that history.
 
+The backward genealogy uses the explicit rearrangement-origin boundary recorded
+by each generated frequency history. Structured background switching and
+frequency-dependent coalescence stop when the genealogy crosses backward past
+that origin; remaining lineages continue in an ordinary unstructured MSC
+ancestor at rate `1/(2 Ne)` per same-population pair. See
+[`docs/structured_origin_boundary.md`](docs/structured_origin_boundary.md).
+
 ## Requirements
 
 - Python ≥ 3.9

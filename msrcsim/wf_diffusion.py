@@ -34,6 +34,8 @@ class DiffusionFrequencyHistory:
     records: list[FrequencyRecord]
     by_branch: dict[str, list[FrequencyRecord]]
     split_events: list[Any] = field(default_factory=list)
+    structured_origin_age: float | None = None
+    structured_origin_branch: str | None = None
     population_process: str = "wf_diffusion"
     numerical_method: str = "bounded beta transition with absorbing boundary layer"
     _sorted_by_branch: dict[str, list[FrequencyRecord]] = field(default_factory=dict, init=False, repr=False)
@@ -212,7 +214,7 @@ def simulate_frequency_history(tree: SpeciesTree, rearrangement: Rearrangement,
         records.extend(rows)
         by[branch.branch_id].extend(rows)
         terminal[branch.branch_id] = 0.0 if p is None else float(p)
-    history = DiffusionFrequencyHistory(records, by, split_events)
+    history = DiffusionFrequencyHistory(records, by, split_events, origin_age, rearrangement.origin_branch)
     history.diffusion_tolerance = tolerance
     history.diffusion_max_step_cu = max_step_cu
     history.split_initialization = split_mode

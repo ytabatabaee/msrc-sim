@@ -25,6 +25,9 @@ def save_frozen_history(path: str | Path, config: Mapping[str, Any], history: Fr
     split_provenance = resolved_speciation_split(dict(config))
     if split_provenance is not None:
         payload["metadata"].setdefault("speciation_split", split_provenance)
+    if getattr(history, "structured_origin_age", None) is not None:
+        payload["metadata"].setdefault("structured_origin_age", float(history.structured_origin_age))
+        payload["metadata"].setdefault("structured_origin_branch", getattr(history, "structured_origin_branch", None))
     with path.open("w") as handle:
         yaml.safe_dump(payload, handle, sort_keys=False)
     return path
@@ -37,6 +40,13 @@ def load_frozen_history(path: str | Path) -> tuple[dict[str, Any], FrequencyHist
     by: dict[str, list[FrequencyRecord]] = {}
     for rec in records:
         by.setdefault(rec.branch_id, []).append(rec)
-    return payload["config"], FrequencyHistory(records, by, list(payload.get("split_events", []))), {
+    metadata = dict(payload.get("metadata", {}))
+    return payload["config"], FrequencyHistory(
+        records,
+        by,
+        list(payload.get("split_events", [])),
+        metadata.get("structured_origin_age"),
+        metadata.get("structured_origin_branch"),
+    ), {
         str(k): int(v) for k, v in payload["sampled_arrangements"].items()
-    }, dict(payload.get("metadata", {}))
+    }, metadata

@@ -213,7 +213,7 @@ def simulate_frequency_history(
         end_counts[branch.branch_id] = None if end_count is None else (int(end_count), total)
         event_count += n_events
 
-    history = FrequencyHistory(records, by, split_events)
+    history = FrequencyHistory(records, by, split_events, origin_age, rearrangement.origin_branch)
     history.population_process = "moran"
     history.moran_time_convention = TIME_CONVENTION
     history.num_population_events = event_count
