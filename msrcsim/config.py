@@ -5,7 +5,7 @@ import yaml
 
 def _set_output_defaults(d):
     d.setdefault('output', {})
-    default_dir = 'spatial_output' if d.get('mode') == 'spatial' else ('mechanistic_output' if d.get('mode') == 'mechanistic' else 'conditional_output')
+    default_dir = 'arg_output' if d.get('mode') == 'arg' else ('spatial_output' if d.get('mode') == 'spatial' else ('mechanistic_output' if d.get('mode') == 'mechanistic' else 'conditional_output'))
     d['output'].setdefault('directory', default_dir)
     d['output'].setdefault('record_resolved_config', True)
     d['output'].setdefault('record_frequency_history', True)
@@ -25,8 +25,8 @@ def load_config(path):
         raise ValueError('Configuration must be a YAML mapping')
 
     mode = d.get('mode')
-    if mode not in {'mechanistic', 'conditional', 'spatial'}:
-        raise ValueError("Supported modes are 'mechanistic', 'conditional', and 'spatial'")
+    if mode not in {'mechanistic', 'conditional', 'spatial', 'arg'}:
+        raise ValueError("Supported modes are 'mechanistic', 'conditional', 'spatial', and 'arg'")
 
     d.setdefault('seed', 1)
     d.setdefault('num_loci', 1000)
@@ -34,7 +34,13 @@ def load_config(path):
     d['population_process'].setdefault('model', 'wright_fisher')
     _set_output_defaults(d)
 
-    if mode == 'spatial':
+    if mode == 'arg':
+        for key in ['species_tree', 'arg']:
+            if key not in d:
+                raise ValueError(f"Missing ARG configuration section: {key!r}")
+        if float(d['arg'].get('sequence_length_bp', 0)) <= 0:
+            raise ValueError("arg.sequence_length_bp must be positive")
+    elif mode == 'spatial':
         required = ['species_tree', 'rearrangement', 'recombination', 'genome']
         missing = [k for k in required if k not in d]
         if missing:

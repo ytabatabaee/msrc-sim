@@ -70,7 +70,11 @@ def main():
     ap.add_argument('--config', required=True)
     a = ap.parse_args()
     c = load_config(a.config)
-    if c['mode'] == 'conditional':
+    if c['mode'] == 'arg':
+        from .arg.engine import run_arg_config
+        out = run_arg_config(c)
+        print(f"Wrote {out}")
+    elif c['mode'] == 'conditional':
         _run_conditional(c)
     else:
         _run_mechanistic(c)

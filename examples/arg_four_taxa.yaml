@@ -1,0 +1,20 @@
+mode: arg
+seed: 20261108
+
+species_tree:
+  newick: "((1:100,2:100)A:50,(3:100,4:100)B:50)ROOT;"
+  time_units: generations
+  root_extension: 1000
+  default_effective_population_size: 100
+
+arg:
+  model: hudson
+  sequence_length_bp: 100000
+  recombination_rate_per_bp: 1.0e-8
+  background_model: neutral
+
+output:
+  directory: arg_output
+  record_tree_sequence: true
+  record_gene_trees: true
+  record_events: true
