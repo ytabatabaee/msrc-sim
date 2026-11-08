@@ -15,7 +15,7 @@ from .events import ARGEvent
 from .lineages import ARGLineage
 from .recombination import recombine
 from .recombination_map import PiecewiseConstantRecombinationMap
-from .segments import Segment, split, total_length
+from .segments import Segment, interval_union, split, total_length
 
 
 @dataclass(frozen=True)
@@ -86,6 +86,23 @@ def simulate_arg(tree: SpeciesTree, config: ARGConfig, rng: np.random.Generator)
         nodes.append({"flags": 0, "time": float(t), "metadata": {"type": event_type, **metadata}})
         return node_id
 
+    def refresh_completed_material():
+        """Retire intervals with one remaining active carrier."""
+        boundaries = {x for lineage in lineages for interval in lineage.active for x in interval}
+        if len(boundaries) < 2:
+            return
+        replacements = []
+        for lineage in lineages:
+            keep = []
+            for left, right in zip(sorted(boundaries), sorted(boundaries)[1:]):
+                if not any(a <= left and right <= b for a, b in lineage.active):
+                    continue
+                carriers = sum(any(a <= left and right <= b for a, b in other.active) for other in lineages)
+                if carriers > 1:
+                    keep.append((left, right))
+            replacements.append(lineage.with_active(keep))
+        lineages[:] = [lineage for lineage in replacements if lineage.active]
+
     while len(lineages) > 1:
         # Boundary transitions are deterministic and must happen before events.
         moved = False
@@ -103,7 +120,7 @@ def simulate_arg(tree: SpeciesTree, config: ARGConfig, rng: np.random.Generator)
 
         options = []
         for i, a in enumerate(lineages):
-            hazard = config.recombination_map.integrated_rate([(s.left, s.right) for s in a.segments])
+            hazard = config.recombination_map.breakpoint_hazard(a.active)
             if hazard > 0:
                 options.append(("recombination", (i,), hazard))
             for j in range(i):
@@ -142,13 +159,13 @@ def simulate_arg(tree: SpeciesTree, config: ARGConfig, rng: np.random.Generator)
             i = indexes[0]
             old = lineages.pop(i)
             x = config.recombination_map.sample_position([(s.left, s.right) for s in old.segments], rng)
-            left_id, right_id = add_node("recombination_parent", t), add_node("recombination_parent", t)
+            left_node, right_node = add_node("recombination_parent", t), add_node("recombination_parent", t)
             old_left, old_right = split(old.segments, x)
-            left, right = recombine(old, x, next_lineage, next_lineage + 1, t, config.recombination_map, background)
-            for s in old_left:
-                _add_edge(edges, s.node, left_id, s.left, s.right)
-            for s in old_right:
-                _add_edge(edges, s.node, right_id, s.left, s.right)
+            left, right = recombine(old, x, left_node, right_node, t, config.recombination_map, background)
+            for s in old_left + old_right:
+                for active_left, active_right in old.active:
+                    _add_edge(edges, s.node, left_node if s.right <= x else right_node,
+                              max(s.left, active_left), min(s.right, active_right))
             lineages.extend((left, right))
             next_lineage += 2
             if config.record_events:
@@ -158,10 +175,19 @@ def simulate_arg(tree: SpeciesTree, config: ARGConfig, rng: np.random.Generator)
         else:
             ia, ib = indexes
             a, b = lineages[ia], lineages[ib]
-            parent_node = add_node("coalescence", t, children=[a.lineage_id, b.lineage_id])
-            for child in (a, b):
-                for s in child.segments:
-                    _add_edge(edges, s.node, parent_node, s.left, s.right)
+            overlap = []
+            for sa in a.segments:
+                for sb in b.segments:
+                    left, right = max(sa.left, sb.left), min(sa.right, sb.right)
+                    if right > left:
+                        overlap.append((left, right))
+            overlap = interval_union(overlap)
+            parent_node = add_node("coalescence", t, children=[a.lineage_id, b.lineage_id]) if overlap else None
+            if parent_node is not None:
+                for child in (a, b):
+                    for s in child.segments:
+                        for left, right in overlap:
+                            _add_edge(edges, s.node, parent_node, max(s.left, left), min(s.right, right))
             parent = union_lineage(a, b, parent_node, t, next_lineage)
             next_lineage += 1
             for index in sorted((ia, ib), reverse=True):
@@ -172,6 +198,7 @@ def simulate_arg(tree: SpeciesTree, config: ARGConfig, rng: np.random.Generator)
                                        (a.population, b.population), (parent.population,), None, rate,
                                        a.material_length + b.material_length))
                 event_index += 1
+            refresh_completed_material()
         peak = max(peak, len(lineages))
     return ARGResult(config.sequence_length_bp, nodes, edges, events, time.perf_counter() - start, peak)
 
@@ -213,7 +240,8 @@ def run_arg_config(config: dict) -> Path:
         yaml.safe_dump(config, handle, sort_keys=False)
     ts = build_tree_sequence(result)
     ts.dump(out / "simulated_arg.trees")
-    export_genealogies(ts, out / "local_gene_trees.nwk", out / "local_gene_trees.csv")
+    export_genealogies(ts, out / "local_gene_trees.nwk", out / "local_gene_trees.csv",
+                       chrom=str(arg_cfg.get("chrom", "chr1")))
     write_event_log(result.events, out / "arg_events.csv")
     summary = {
         "mode": "arg", "model": "hudson", "background_model": "neutral",

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import numpy as np
+from .segments import interval_union
 
 
 @dataclass(frozen=True)
@@ -35,7 +36,24 @@ class PiecewiseConstantRecombinationMap:
                 total += max(0.0, min(right, b) - max(left, a)) * rate
         return total
 
+    def breakpoint_hazard(self, segments) -> float:
+        """Hazard for ancestry-changing cuts.
+
+        A cut is possible anywhere between the leftmost and rightmost active
+        ancestral bases of a lineage. Thus gaps between disjoint segments are
+        included, while bases outside the material span are excluded.
+        """
+        intervals = interval_union(segments)
+        if not intervals:
+            return 0.0
+        left, right = intervals[0][0], intervals[-1][1]
+        return self.integrated_rate(((left, right),))
+
     def sample_position(self, segments, rng: np.random.Generator) -> float:
+        intervals = interval_union(segments)
+        if not intervals:
+            raise ValueError("cannot sample from empty ancestral material")
+        segments = ((intervals[0][0], intervals[-1][1]),)
         pieces = []
         total = 0.0
         for left, right in segments:

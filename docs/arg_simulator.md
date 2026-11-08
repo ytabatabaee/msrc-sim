@@ -7,17 +7,33 @@ the current node ancestral to each segment, its species-tree population, and a
 background state. The neutral state is deliberately a one-state implementation
 of the background interface.
 
-For a population branch with effective size `N`, every pair in that population
-has coalescence rate `1/(2N)`, including pairs whose material is disjoint. A
-coalescence creates a parent node and edges for all material in both lineages.
-Each lineage's recombination hazard is
+For a population branch with effective size `N`, every eligible pair in that
+population has coalescence rate `1/(2N)`, including pairs with disjoint active
+material. At a coalescence, only intervals carried by both lineages acquire a
+new local parent node. Disjoint intervals retain their existing local roots
+while the carrier lineages are merged. This is important: a common ancestor of
+different genomic regions must not create a fictitious unary branch above a
+completed marginal genealogy.
 
-`integral over ancestral material r(x) dx`.
+For a lineage with active material spanning `[L, R]`, the ancestry-changing
+recombination hazard is
 
-A sampled crossover splits the material at its physical position into two
-parental lineages. Species-tree boundaries move lineages to their parent
-population; coalescence is never allowed across populations. The root branch
-extension ensures that all material resolves.
+`integral_L^R r(x) dx`.
+
+This includes gaps between disjoint ancestral segments when material exists on
+both sides of the gap, and excludes sequence outside the leftmost/rightmost
+ancestral bases. A sampled cut is drawn from this map-weighted span and is
+accepted only when both parental material sets are non-empty. Physical
+crossovers that do not change the active ancestry are not inserted into the
+event process; the event log distinguishes the ancestry-changing events that
+are simulated from marginal-tree changes that happen to be observable.
+
+After each coalescence, the engine counts active carriers over all segment
+boundaries. An interval with one remaining carrier is marked resolved and is
+removed from future hazards, but its nodes and edges remain in the output.
+Lineages with no active material are retired. The process terminates when all
+genomic intervals are resolved. Species-tree boundaries move active lineages
+to their parent population; coalescence is never allowed across populations.
 
 `tskit` is used only after the ancestral process: node and edge tables are
 constructed from the event history, sorted, and loaded as a tree sequence.
@@ -34,17 +50,20 @@ recombination maps, reproducible NumPy seeds, event logging, tskit export, and
 local-tree iteration. The included unit tests check segment boundaries,
 nonnegative rates, termination, recombination, and tskit loading.
 
-This first version has not yet included a completed msprime statistical
-benchmark suite; `msprime` is intentionally not a runtime dependency. The
-diagnostic script reports adjacent topology agreement and shared pairwise MRCA
-times while treating intervals from one chromosome as linked observations, not
-independent replicates. A future benchmark should compare replicate summaries
-and confidence intervals against msprime under matching species-tree and
-recombination settings.
+`msprime` is intentionally not a production dependency. The optional
+`validation/arg/validate_neutral.py` program compares independent replicate
+summaries against msprime for two samples, a four-population species tree,
+heterogeneous recombination, and 4/8/16-taxon total branch lengths. The
+diagnostic script samples fixed genomic positions and reports binned quartet
+agreement, Pearson correlation of pairwise MRCA times, and Pearson correlation
+of internal branch lengths. Positions from one chromosome are not treated as
+independent replicate confidence intervals.
 
-The implementation records the full ARG through unary recombination-parent
-nodes and event metadata. A tskit tree sequence represents marginal ancestry,
-not every event annotation, which is why the separate event log is retained.
+The implementation retains unary recombination-parent nodes in the full
+tree-sequence representation when they are needed to preserve event ancestry;
+the gene-tree exporter calls `simplify()` so ASTRAL receives ordinary marginal
+trees. A tskit tree sequence represents marginal ancestry, not every event
+annotation, which is why the separate event log is retained.
 
 ## MSRC extension plan
 

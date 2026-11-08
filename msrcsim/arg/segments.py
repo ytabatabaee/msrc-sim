@@ -47,3 +47,15 @@ def split(segments: tuple[Segment, ...], x: float) -> tuple[tuple[Segment, ...],
 
 def total_length(segments: tuple[Segment, ...]) -> float:
     return sum(s.right - s.left for s in segments)
+
+
+def interval_union(intervals):
+    """Return sorted, merged half-open intervals."""
+    ordered = sorted((float(a), float(b)) for a, b in intervals if b > a)
+    out = []
+    for left, right in ordered:
+        if out and left <= out[-1][1] + 1e-12:
+            out[-1] = (out[-1][0], max(out[-1][1], right))
+        else:
+            out.append((left, right))
+    return tuple(out)
