@@ -23,6 +23,10 @@ class ARGLineage:
             self.active = interval_union((s.left, s.right) for s in self.segments)
         else:
             self.active = interval_union(self.active)
+        stored = interval_union((s.left, s.right) for s in self.segments)
+        for left, right in self.active:
+            if not any(a <= left and right <= b for a, b in stored):
+                raise ValueError("active ancestral material must be stored in segments")
 
     @property
     def material_length(self) -> float:
@@ -31,6 +35,10 @@ class ARGLineage:
     @property
     def active_length(self) -> float:
         return sum(right - left for left, right in self.active)
+
+    @property
+    def is_active(self) -> bool:
+        return bool(self.active)
 
     def with_active(self, intervals):
         return ARGLineage(self.lineage_id, self.population, self.segments, self.birth_time,

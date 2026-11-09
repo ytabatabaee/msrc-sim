@@ -9,6 +9,7 @@ from msrcsim.arg.lineages import ARGLineage
 from msrcsim.arg.recombination_map import PiecewiseConstantRecombinationMap
 from msrcsim.species_tree import SpeciesTree
 from msrcsim.arg.segments import Segment
+from msrcsim.arg.recombination import recombine
 
 
 def _tree():
@@ -40,6 +41,13 @@ def test_tskit_output_is_valid_when_installed(tmp_path):
     ts = build_tree_sequence(result)
     assert ts.num_samples == 4
     assert ts.num_trees >= 1
+    for tree in ts.trees():
+        assert len(tree.roots) == 1
+        assert tree.mrca(0, 1) != tskit.NULL
+        for child in tree.nodes():
+            parent = tree.parent(child)
+            if parent != tskit.NULL:
+                assert tree.time(parent) > tree.time(child)
 
 
 def test_gap_between_segments_is_a_valid_crossover_cut():
@@ -48,6 +56,39 @@ def test_gap_between_segments_is_a_valid_crossover_cut():
     assert rec_map.breakpoint_hazard(segments) == pytest.approx(4.0)
     positions = [rec_map.sample_position(segments, np.random.default_rng(i)) for i in range(100)]
     assert any(1.0 < x < 3.0 for x in positions)
+
+
+def test_hazard_and_sampling_use_the_same_active_span():
+    rec_map = PiecewiseConstantRecombinationMap(10, (2.0, 4.0), (0.0, 1.0, 3.0))
+    active = ((2.0, 3.0), (5.0, 6.0))
+    assert rec_map.breakpoint_hazard(active) == pytest.approx(8.0)
+    draws = [rec_map.sample_position(active, np.random.default_rng(i)) for i in range(1000)]
+    assert all(2.0 <= x <= 6.0 for x in draws)
+    assert any(3.0 < x < 5.0 for x in draws)
+    assert not any(x < 2.0 for x in draws)
+
+
+def test_recombination_in_gap_keeps_both_active_parents_and_resolved_material():
+    lineage = ARGLineage(
+        1, "ROOT", (Segment(0, 1, 10), Segment(2, 3, 11), Segment(5, 6, 12)),
+        0.0, active=((2, 3), (5, 6)),
+    )
+    rec_map = PiecewiseConstantRecombinationMap.constant(10, 1.0)
+    background = type("B", (), {"recombination_states": lambda *args: (None, None)})()
+    left, right = recombine(lineage, 4.0, 20, 21, 2.0, rec_map, background, 2, 3)
+    assert left.active and right.active
+    assert left.active == ((2.0, 3.0),)
+    assert right.active == ((5.0, 6.0),)
+    assert any(s.node == 10 for s in left.segments)
+    assert all(s.node != 10 for s in right.segments)
+
+
+def test_recombination_rejects_resolved_only_cuts():
+    lineage = ARGLineage(1, "ROOT", (Segment(0, 1, 10), Segment(2, 3, 11)), 0.0, active=((2, 3),))
+    rec_map = PiecewiseConstantRecombinationMap.constant(10, 1.0)
+    background = type("B", (), {"recombination_states": lambda *args: (None, None)})()
+    with pytest.raises(ValueError):
+        recombine(lineage, 1.5, 20, 21, 2.0, rec_map, background, 2, 3)
 
 
 def test_disjoint_coalescence_does_not_change_local_roots():

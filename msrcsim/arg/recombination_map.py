@@ -36,38 +36,48 @@ class PiecewiseConstantRecombinationMap:
                 total += max(0.0, min(right, b) - max(left, a)) * rate
         return total
 
-    def breakpoint_hazard(self, segments) -> float:
-        """Hazard for ancestry-changing cuts.
+    @staticmethod
+    def eligible_crossover_region(active):
+        """Return the shared ancestry-changing crossover region.
 
-        A cut is possible anywhere between the leftmost and rightmost active
-        ancestral bases of a lineage. Thus gaps between disjoint segments are
-        included, while bases outside the material span are excluded.
+        Hudson's continuous-genome construction permits a cut anywhere in
+        the span between the leftmost and rightmost *unresolved* ancestral
+        material carried by a lineage.  Thus gaps between active segments are
+        eligible, while stored material outside that span (including material
+        whose local genealogy is already complete) is not.  The endpoints are
+        half-open and have zero probability under the continuous map.
         """
-        intervals = interval_union(segments)
+        intervals = interval_union(active)
         if not intervals:
-            return 0.0
-        left, right = intervals[0][0], intervals[-1][1]
-        return self.integrated_rate(((left, right),))
+            return ()
+        return ((intervals[0][0], intervals[-1][1]),)
+
+    def crossover_hazard_and_region(self, active):
+        region = self.eligible_crossover_region(active)
+        return self.integrated_rate(region), region
+
+    def breakpoint_hazard(self, segments) -> float:
+        """Hazard for ancestry-changing cuts over ``segments`` as active material."""
+        hazard, _ = self.crossover_hazard_and_region(segments)
+        return hazard
 
     def sample_position(self, segments, rng: np.random.Generator) -> float:
-        intervals = interval_union(segments)
-        if not intervals:
+        """Sample from exactly the map-weighted region used by the hazard."""
+        total, eligible = self.crossover_hazard_and_region(segments)
+        if not eligible:
             raise ValueError("cannot sample from empty ancestral material")
-        segments = ((intervals[0][0], intervals[-1][1]),)
         pieces = []
-        total = 0.0
-        for left, right in segments:
+        for left, right in eligible:
             for a, b, rate in self._pieces():
                 lo, hi = max(left, a), min(right, b)
                 weight = max(0.0, hi - lo) * rate
                 if weight:
                     pieces.append((lo, hi, weight))
-                    total += weight
         if total <= 0:
             raise ValueError("cannot sample from a zero-hazard recombination map")
         draw = rng.random() * total
         for lo, hi, weight in pieces:
-            if draw <= weight:
+            if draw < weight:
                 return float(lo + (draw / weight) * (hi - lo))
             draw -= weight
         return float(pieces[-1][1])

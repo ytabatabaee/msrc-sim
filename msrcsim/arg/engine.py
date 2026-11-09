@@ -122,7 +122,7 @@ def simulate_arg(tree: SpeciesTree, config: ARGConfig, rng: np.random.Generator)
 
         options = []
         for i, a in enumerate(lineages):
-            hazard = config.recombination_map.breakpoint_hazard(a.active)
+            hazard, _ = config.recombination_map.crossover_hazard_and_region(a.active)
             if hazard > 0:
                 options.append(("recombination", (i,), hazard))
             for j in range(i):
@@ -160,14 +160,18 @@ def simulate_arg(tree: SpeciesTree, config: ARGConfig, rng: np.random.Generator)
         if kind == "recombination":
             i = indexes[0]
             old = lineages.pop(i)
-            x = config.recombination_map.sample_position([(s.left, s.right) for s in old.segments], rng)
+            x = config.recombination_map.sample_position(old.active, rng)
             left_node, right_node = add_node("recombination_parent", t), add_node("recombination_parent", t)
             old_left, old_right = split(old.segments, x)
             left, right = recombine(old, x, left_node, right_node, t, config.recombination_map,
                                     background, next_lineage, next_lineage + 1)
-            for s in old_left + old_right:
+            for s in old_left:
                 for active_left, active_right in old.active:
-                    _add_edge(edges, s.node, left_node if s.right <= x else right_node,
+                    _add_edge(edges, s.node, left_node,
+                              max(s.left, active_left), min(s.right, active_right))
+            for s in old_right:
+                for active_left, active_right in old.active:
+                    _add_edge(edges, s.node, right_node,
                               max(s.left, active_left), min(s.right, active_right))
             lineages.extend((left, right))
             next_lineage += 2

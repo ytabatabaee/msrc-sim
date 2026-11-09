@@ -20,10 +20,12 @@ recombination hazard is
 
 `integral_L^R r(x) dx`.
 
-This includes gaps between disjoint ancestral segments when material exists on
-both sides of the gap, and excludes sequence outside the leftmost/rightmost
-ancestral bases. A sampled cut is drawn from this map-weighted span and is
-accepted only when both parental material sets are non-empty. Physical
+This includes gaps between disjoint active ancestral segments when material
+exists on both sides of the gap, and excludes stored sequence outside the
+leftmost/rightmost unresolved active bases. The exact same span is used for
+the hazard and for map-weighted breakpoint sampling. A sampled cut is drawn
+only from positive-rate pieces of this span and is accepted only when both
+parental material sets are non-empty. Physical
 crossovers that do not change the active ancestry are not inserted into the
 event process; the event log distinguishes the ancestry-changing events that
 are simulated from marginal-tree changes that happen to be observable.

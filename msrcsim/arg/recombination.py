@@ -8,6 +8,11 @@ from .segments import Segment, interval_union, split
 def recombine(lineage: ARGLineage, position: float, left_node: int, right_node: int,
               time: float, rec_map: PiecewiseConstantRecombinationMap,
               background_model, left_lineage_id: int, right_lineage_id: int):
+    if not lineage.active:
+        raise ValueError("cannot recombine a lineage with no unresolved material")
+    eligible = rec_map.eligible_crossover_region(lineage.active)
+    if not eligible or not any(a < position < b for a, b in eligible):
+        raise ValueError("recombination position is outside the eligible active span")
     left, right = split(lineage.segments, position)
     if not left or not right:
         raise ValueError("recombination position must split ancestral material")
@@ -31,5 +36,9 @@ def recombine(lineage: ARGLineage, position: float, left_node: int, right_node: 
             active_left.append((a, min(b, position)))
         if b > position:
             active_right.append((max(a, position), b))
-    return (ARGLineage(left_lineage_id, lineage.population, left, time, state_left, interval_union(active_left)),
-            ARGLineage(right_lineage_id, lineage.population, right, time, state_right, interval_union(active_right)))
+    active_left = interval_union(active_left)
+    active_right = interval_union(active_right)
+    if not active_left or not active_right:
+        raise ValueError("recombination must create two nonempty active parents")
+    return (ARGLineage(left_lineage_id, lineage.population, left, time, state_left, active_left),
+            ARGLineage(right_lineage_id, lineage.population, right, time, state_right, active_right))
