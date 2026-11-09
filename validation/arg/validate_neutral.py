@@ -87,6 +87,18 @@ def _total_branch_replicate(seed, n, reference=False):
     return ts.first().total_branch_length
 
 
+def _mean_ci(values):
+    values = np.asarray(values, dtype=float)
+    se = np.std(values, ddof=1) / np.sqrt(len(values)) if len(values) > 1 else 0.0
+    return {"mean": float(np.mean(values)), "ci95": [float(np.mean(values) - 1.96 * se), float(np.mean(values) + 1.96 * se)]}
+
+
+def _proportion_ci(values):
+    values = np.asarray(values, dtype=float)
+    p = float(np.mean(values)); se = np.sqrt(p * (1 - p) / len(values))
+    return {"mean": p, "ci95": [max(0.0, p - 1.96 * se), min(1.0, p + 1.96 * se)]}
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--replicates", type=int, default=200)
@@ -120,16 +132,16 @@ def main():
     expected = 1 - 2 / 3 * np.exp(-100 / 200)
     summary = {
         "replicates": args.replicates,
-        "two_sample": {"own_mean_mrca": float(np.mean(own_times)), "msprime_mean_mrca": float(np.mean(ref_times)),
-                        "theoretical_mean": 200.0, "own_mean_trees": float(np.mean(own_trees)), "msprime_mean_trees": float(np.mean(ref_trees))},
+        "two_sample": {"own_mrca": _mean_ci(own_times), "msprime_mrca": _mean_ci(ref_times),
+                        "theoretical_mean": 200.0, "own_trees": _mean_ci(own_trees), "msprime_trees": _mean_ci(ref_trees)},
         "two_locus": {"own_corr_25k_75k": float(np.corrcoef(np.asarray(own_series).T)[0, 2]),
                        "msprime_corr_25k_75k": float(np.corrcoef(np.asarray(ref_series).T)[0, 2]),
-                       "own_map_mean_trees": float(np.mean(own_map_trees)), "msprime_map_mean_trees": float(np.mean(ref_map_trees))},
+                       "own_map_trees": _mean_ci(own_map_trees), "msprime_map_trees": _mean_ci(ref_map_trees)},
         "species_tree": {"expected_concordant": float(expected),
-                          "own_concordant": float(np.mean([x == (0, 1) for x in own_top])),
-                          "msprime_concordant": float(np.mean([x == (0, 1) for x in ref_top])),
-                          "own_total_branch_means": {str(n): float(np.mean(own_branch[n])) for n in own_branch},
-                          "msprime_total_branch_means": {str(n): float(np.mean(ref_branch[n])) for n in ref_branch}},
+                          "own_concordant": _proportion_ci([x == (0, 1) for x in own_top]),
+                          "msprime_concordant": _proportion_ci([x == (0, 1) for x in ref_top]),
+                          "own_total_branch": {str(n): _mean_ci(own_branch[n]) for n in own_branch},
+                          "msprime_total_branch": {str(n): _mean_ci(ref_branch[n]) for n in ref_branch}},
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(summary, indent=2))

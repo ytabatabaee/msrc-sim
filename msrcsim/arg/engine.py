@@ -34,6 +34,7 @@ class ARGResult:
     events: list[ARGEvent]
     runtime_seconds: float = 0.0
     peak_lineages: int = 0
+    peak_segments: int = 0
 
     @property
     def marginal_intervals(self):
@@ -77,6 +78,7 @@ def simulate_arg(tree: SpeciesTree, config: ARGConfig, rng: np.random.Generator)
     events: list[ARGEvent] = []
     event_index = 0
     peak = len(lineages)
+    peak_segments = sum(len(l.segments) for l in lineages)
     t = 0.0
 
     def add_node(event_type, t, **metadata):
@@ -161,7 +163,8 @@ def simulate_arg(tree: SpeciesTree, config: ARGConfig, rng: np.random.Generator)
             x = config.recombination_map.sample_position([(s.left, s.right) for s in old.segments], rng)
             left_node, right_node = add_node("recombination_parent", t), add_node("recombination_parent", t)
             old_left, old_right = split(old.segments, x)
-            left, right = recombine(old, x, left_node, right_node, t, config.recombination_map, background)
+            left, right = recombine(old, x, left_node, right_node, t, config.recombination_map,
+                                    background, next_lineage, next_lineage + 1)
             for s in old_left + old_right:
                 for active_left, active_right in old.active:
                     _add_edge(edges, s.node, left_node if s.right <= x else right_node,
@@ -200,7 +203,8 @@ def simulate_arg(tree: SpeciesTree, config: ARGConfig, rng: np.random.Generator)
                 event_index += 1
             refresh_completed_material()
         peak = max(peak, len(lineages))
-    return ARGResult(config.sequence_length_bp, nodes, edges, events, time.perf_counter() - start, peak)
+        peak_segments = max(peak_segments, sum(len(l.segments) for l in lineages))
+    return ARGResult(config.sequence_length_bp, nodes, edges, events, time.perf_counter() - start, peak, peak_segments)
 
 
 def write_event_log(events: list[ARGEvent], path: Path):
@@ -248,6 +252,7 @@ def run_arg_config(config: dict) -> Path:
         "sequence_length_bp": length, "num_nodes": len(result.nodes), "num_edges": len(result.edges),
         "num_events": len(result.events), "num_marginal_trees": ts.num_trees,
         "runtime_seconds": result.runtime_seconds, "peak_active_lineages": result.peak_lineages,
+        "peak_segments": result.peak_segments,
         "recombination_events": sum(e.event_type == "recombination" for e in result.events),
         "coalescence_events": sum(e.event_type == "coalescence" for e in result.events),
     }

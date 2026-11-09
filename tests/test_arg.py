@@ -29,6 +29,8 @@ def test_recombination_creates_correlated_segment_ancestry():
     assert all(e.rate >= 0 for e in result.events if e.rate is not None)
     # The process tracks the full chromosome, rather than independent blocks.
     assert max(right for _, right, *_ in result.edges) == 1000
+    recombination_ids = [e.lineage_ids[0] for e in result.events if e.event_type == "recombination"]
+    assert len(recombination_ids) == len(set(recombination_ids))
 
 
 def test_tskit_output_is_valid_when_installed(tmp_path):
@@ -53,6 +55,24 @@ def test_disjoint_coalescence_does_not_change_local_roots():
     b = ARGLineage(2, "ROOT", (Segment(2, 3, 11),), 0.0)
     parent = union_lineage(a, b, None, 5.0, 3)
     assert [(s.left, s.right, s.node) for s in parent.segments] == [(0, 1, 10), (2, 3, 11)]
+
+
+def test_partial_overlap_coalescence_changes_only_overlap():
+    a = ARGLineage(1, "ROOT", (Segment(0, 2, 10),), 0.0)
+    b = ARGLineage(2, "ROOT", (Segment(1, 3, 11),), 0.0)
+    parent = union_lineage(a, b, 12, 5.0, 3)
+    assert [(s.left, s.right, s.node) for s in parent.segments] == [(0, 1, 10), (1, 2, 12), (2, 3, 11)]
+
+
+def test_fixed_seed_and_zero_map_boundary_are_reproducible():
+    rec_map = PiecewiseConstantRecombinationMap(1000, (500,), (0.0, 0.0))
+    kwargs = dict(tree=_tree(), config=ARGConfig(1000, rec_map))
+    one = simulate_arg(rng=np.random.default_rng(123), **kwargs)
+    two = simulate_arg(rng=np.random.default_rng(123), **kwargs)
+    assert one.edges == two.edges
+    assert one.events == two.events
+    from msrcsim.arg.output.tree_sequence import build_tree_sequence
+    assert build_tree_sequence(one).num_trees == 1
 
 
 def test_exported_gene_trees_have_original_taxa(tmp_path):

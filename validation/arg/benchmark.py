@@ -31,13 +31,14 @@ def main():
             tracemalloc.stop()
             rows.append({"engine": "msrcsim", "taxa": n, "length_bp": length, "rate": rate,
                          "runtime_seconds": runtime, "peak_memory_bytes": peak,
-                         "events": len(result.events), "peak_lineages": result.peak_lineages})
+                         "events": len(result.events), "peak_lineages": result.peak_lineages,
+                         "peak_segments": result.peak_segments})
             start = time.perf_counter()
             ts = msprime.sim_ancestry(n, sequence_length=length, recombination_rate=rate,
                                       population_size=100, random_seed=42)
             rows.append({"engine": "msprime", "taxa": n, "length_bp": length, "rate": rate,
                          "runtime_seconds": time.perf_counter() - start, "peak_memory_bytes": "",
-                         "events": ts.num_trees, "peak_lineages": ""})
+                         "events": ts.num_trees, "peak_lineages": "", "peak_segments": ""})
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("w", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=rows[0])

@@ -5,7 +5,9 @@ from .recombination_map import PiecewiseConstantRecombinationMap
 from .segments import Segment, interval_union, split
 
 
-def recombine(lineage: ARGLineage, position: float, left_id: int, right_id: int, time: float, rec_map: PiecewiseConstantRecombinationMap, background_model):
+def recombine(lineage: ARGLineage, position: float, left_node: int, right_node: int,
+              time: float, rec_map: PiecewiseConstantRecombinationMap,
+              background_model, left_lineage_id: int, right_lineage_id: int):
     left, right = split(lineage.segments, position)
     if not left or not right:
         raise ValueError("recombination position must split ancestral material")
@@ -20,8 +22,8 @@ def recombine(lineage: ARGLineage, position: float, left_id: int, right_id: int,
                 active = any(x <= a and b <= y for x, y in lineage.active)
                 out.append(Segment(a, b, parent_id if active else s.node))
         return tuple(out)
-    left = remap(left, left_id)
-    right = remap(right, right_id)
+    left = remap(left, left_node)
+    right = remap(right, right_node)
     active_left = []
     active_right = []
     for a, b in lineage.active:
@@ -29,5 +31,5 @@ def recombine(lineage: ARGLineage, position: float, left_id: int, right_id: int,
             active_left.append((a, min(b, position)))
         if b > position:
             active_right.append((max(a, position), b))
-    return (ARGLineage(left_id, lineage.population, left, time, state_left, interval_union(active_left)),
-            ARGLineage(right_id, lineage.population, right, time, state_right, interval_union(active_right)))
+    return (ARGLineage(left_lineage_id, lineage.population, left, time, state_left, interval_union(active_left)),
+            ARGLineage(right_lineage_id, lineage.population, right, time, state_right, interval_union(active_right)))
