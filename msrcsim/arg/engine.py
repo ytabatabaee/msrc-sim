@@ -10,6 +10,7 @@ import numpy as np
 
 from ..species_tree import SpeciesTree
 from .backgrounds.neutral import NeutralBackground
+from .backgrounds.msrc_two_state import MSRCTwoBackground
 from .coalescence import union_lineage
 from .events import ARGEvent
 from .lineages import ARGLineage
@@ -22,8 +23,10 @@ from .segments import Segment, interval_union, split, total_length
 class ARGConfig:
     sequence_length_bp: float
     recombination_map: PiecewiseConstantRecombinationMap
-    background_model: str = "neutral"
+    background_model: str | object = "neutral"
     record_events: bool = True
+    background_history: object | None = None
+    sampled_backgrounds: dict[str, int] | None = None
 
 
 @dataclass
@@ -56,12 +59,15 @@ def simulate_arg(tree: SpeciesTree, config: ARGConfig, rng: np.random.Generator)
     ancestral material. Pairwise coalescence has rate 1/(2N) for every pair in
     the same species population, including pairs with disjoint material.
     """
-    if config.background_model != "neutral":
-        raise ValueError("only background_model: neutral is implemented")
+    if isinstance(config.background_model, str):
+        if config.background_model != "neutral":
+            raise ValueError("unknown background model; pass an MSRC background object")
+        background = NeutralBackground()
+    else:
+        background = config.background_model
     if abs(config.recombination_map.length - config.sequence_length_bp) > 1e-9:
         raise ValueError("recombination map length must equal sequence_length_bp")
     start = time.perf_counter()
-    background = NeutralBackground()
     nodes: list[dict] = []
     edges: list[tuple[float, float, int, int]] = []
     lineages: list[ARGLineage] = []
@@ -71,7 +77,9 @@ def simulate_arg(tree: SpeciesTree, config: ARGConfig, rng: np.random.Generator)
         node = next_node
         next_node += 1
         nodes.append({"flags": 1, "time": 0.0, "metadata": {"type": "sample", "taxon": taxon}})
-        state = background.initial_state(tree.branch_for_tip(taxon), (0.0, config.sequence_length_bp))
+        state = background.initial_state(tree.branch_for_tip(taxon), (0.0, config.sequence_length_bp), taxon=taxon)
+        if config.sampled_backgrounds is not None and taxon in config.sampled_backgrounds:
+            state = int(config.sampled_backgrounds[taxon])
         lineages.append(ARGLineage(next_lineage, tree.branch_for_tip(taxon),
                                    (Segment(0.0, config.sequence_length_bp, node),), 0.0, state))
         next_lineage += 1
@@ -122,7 +130,11 @@ def simulate_arg(tree: SpeciesTree, config: ARGConfig, rng: np.random.Generator)
 
         options = []
         for i, a in enumerate(lineages):
-            hazard, _ = config.recombination_map.crossover_hazard_and_region(a.active)
+            if hasattr(background, "recombination_hazard"):
+                hazard = background.recombination_hazard(a.population, a.background, a.active,
+                                                         a.segments, t, config.recombination_map)
+            else:
+                hazard, _ = config.recombination_map.crossover_hazard_and_region(a.active)
             if hazard > 0:
                 options.append(("recombination", (i,), hazard))
             for j in range(i):
@@ -138,6 +150,8 @@ def simulate_arg(tree: SpeciesTree, config: ARGConfig, rng: np.random.Generator)
         total = sum(x[2] for x in options)
         boundaries = [tree.branches[l.population].older_age for l in lineages
                       if tree.branches[l.population].parent_branch_id is not None]
+        if hasattr(background, "next_boundary"):
+            boundaries.extend(background.next_boundary(l.population, t) for l in lineages)
         next_boundary = min(boundaries + [float("inf")])
         if total <= 0:
             if next_boundary == float("inf"):
@@ -159,12 +173,32 @@ def simulate_arg(tree: SpeciesTree, config: ARGConfig, rng: np.random.Generator)
         kind, indexes, rate = chosen
         if kind == "recombination":
             i = indexes[0]
-            old = lineages.pop(i)
-            x = config.recombination_map.sample_position(old.active, rng)
+            old = lineages[i]
+            if hasattr(background, "sample_recombination"):
+                sampled = background.sample_recombination(old.population, old.background, old.active,
+                                                           old.segments, t, config.recombination_map, rng)
+                x = sampled["position"]
+                parent_background = sampled.get("parent_background")
+                if sampled.get("kind") == "background_transfer":
+                    old_background = old.background
+                    old.background = background.transfer_state(old.background, parent_background)
+                    if config.record_events:
+                        events.append(ARGEvent(event_index, t, "background_transfer", (old.lineage_id,),
+                                               (old.population,), (old.population,), x, rate, old.material_length,
+                                               "marker-mediated transfer", str(old_background), str(old.background),
+                                               str(parent_background), False, old_background != old.background))
+                        event_index += 1
+                    continue
+            else:
+                old = lineages.pop(i)
+                x = config.recombination_map.sample_position(old.active, rng)
+                parent_background = None
+            if hasattr(background, "sample_recombination"):
+                lineages.pop(i)
             left_node, right_node = add_node("recombination_parent", t), add_node("recombination_parent", t)
             old_left, old_right = split(old.segments, x)
             left, right = recombine(old, x, left_node, right_node, t, config.recombination_map,
-                                    background, next_lineage, next_lineage + 1)
+                                    background, next_lineage, next_lineage + 1, parent_background)
             for s in old_left:
                 for active_left, active_right in old.active:
                     _add_edge(edges, s.node, left_node,
@@ -177,7 +211,10 @@ def simulate_arg(tree: SpeciesTree, config: ARGConfig, rng: np.random.Generator)
             next_lineage += 2
             if config.record_events:
                 events.append(ARGEvent(event_index, t, "recombination", (old.lineage_id, left.lineage_id, right.lineage_id),
-                                       (old.population,), (old.population,), x, rate, old.material_length))
+                                       (old.population,), (old.population,), x, rate, old.material_length,
+                                       "physical crossover", str(old.background),
+                                       f"{left.background},{right.background}", str(parent_background),
+                                       True, parent_background is not None and parent_background != old.background))
                 event_index += 1
         else:
             ia, ib = indexes
@@ -214,9 +251,23 @@ def simulate_arg(tree: SpeciesTree, config: ARGConfig, rng: np.random.Generator)
 def write_event_log(events: list[ARGEvent], path: Path):
     with path.open("w", newline="") as handle:
         writer = csv.writer(handle)
-        writer.writerow(["index", "time", "event_type", "lineage_ids", "population_before", "population_after", "position", "rate", "material_length", "details"])
+        writer.writerow(["index", "time", "event_type", "lineage_ids", "population_before", "population_after", "position", "rate", "material_length", "details",
+                         "background_before", "background_after", "parental_backgrounds", "ancestry_changed", "background_changed"])
         for e in events:
-            writer.writerow([e.index, e.time, e.event_type, ";".join(map(str, e.lineage_ids)), ";".join(e.population_before), ";".join(e.population_after), e.position, e.rate, e.material_length, e.details])
+            writer.writerow([e.index, e.time, e.event_type, ";".join(map(str, e.lineage_ids)), ";".join(e.population_before), ";".join(e.population_after), e.position, e.rate, e.material_length, e.details,
+                             e.background_before, e.background_after, e.parental_backgrounds, e.ancestry_changed, e.background_changed])
+
+
+def _write_frequency_history(history, path: Path):
+    records = getattr(history, "records", [])
+    if not records:
+        return
+    fields = list(records[0].__dataclass_fields__)
+    with path.open("w", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer.writeheader()
+        for record in records:
+            writer.writerow({field: getattr(record, field) for field in fields})
 
 
 def run_arg_config(config: dict) -> Path:
@@ -239,9 +290,36 @@ def run_arg_config(config: dict) -> Path:
         rec_map = PiecewiseConstantRecombinationMap(length, points, rates)
     else:
         rec_map = PiecewiseConstantRecombinationMap.constant(length, float(rec))
-    result = simulate_arg(tree, ARGConfig(length, rec_map, str(arg_cfg.get("background_model", "neutral")),
-                                          bool((config.get("output", {}) or {}).get("record_events", True))),
-                          np.random.default_rng(int(config.get("seed", 1))))
+    rng = np.random.default_rng(int(config.get("seed", 1)))
+    model_name = str(arg_cfg.get("background_model", "neutral"))
+    history = None
+    sampled_backgrounds = arg_cfg.get("sampled_backgrounds")
+    if sampled_backgrounds is not None:
+        sampled_backgrounds = {str(key): int(value) for key, value in sampled_backgrounds.items()}
+    if model_name == "msrc_two_state":
+        from ..population_process import simulate_population_history
+        from ..rearrangement import Rearrangement
+        rr = config.get("rearrangement", {}) or {}
+        selection = (rr.get("selection", {}) or {}).get("coefficient", rr.get("selection_coefficient", 0.0))
+        rearrangement = Rearrangement(rr.get("id", "inv_1"), rr.get("type", "inversion"), rr["origin_branch"],
+                                     int(rr["origin_time_from_branch_start"]), int(rr.get("initial_copy_count", 1)), float(selection))
+        history_path = arg_cfg.get("frequency_history_path")
+        if history_path:
+            from .history import load_frequency_history
+            history = load_frequency_history(history_path, arg_cfg.get("structured_origin_age"))
+        else:
+            history = simulate_population_history(tree, rearrangement, rng, config)
+        if sampled_backgrounds is None:
+            sampled_backgrounds = {taxon: int(rng.random() < history.terminal_frequency(taxon)) for taxon in tree.taxa}
+        interval = arg_cfg.get("rearrangement_interval", {}) or {}
+        model = MSRCTwoBackground(history, float(arg_cfg["background_anchor_bp"]),
+                                  (float(interval["start"]), float(interval["end"])),
+                                  float(arg_cfg.get("cross_background_suppression", 1.0)), sampled_backgrounds)
+    else:
+        model = "neutral"
+    result = simulate_arg(tree, ARGConfig(length, rec_map, model,
+                                          bool((config.get("output", {}) or {}).get("record_events", True)),
+                                          history, sampled_backgrounds), rng)
     out = Path((config.get("output", {}) or {}).get("directory", "arg_output"))
     out.mkdir(parents=True, exist_ok=True)
     with (out / "config.resolved.yaml").open("w") as handle:
@@ -251,14 +329,26 @@ def run_arg_config(config: dict) -> Path:
     export_genealogies(ts, out / "local_gene_trees.nwk", out / "local_gene_trees.csv",
                        chrom=str(arg_cfg.get("chrom", "chr1")))
     write_event_log(result.events, out / "arg_events.csv")
+    if history is not None:
+        _write_frequency_history(history, out / "frequency_history.csv")
+        (out / "sample_backgrounds.csv").write_text("taxon,background\n" + "\n".join(
+            f"{taxon},{sampled_backgrounds[taxon]}" for taxon in tree.taxa) + "\n")
+        diagnostic_rows = [e for e in result.events if e.event_type in {"recombination", "background_transfer"}]
+        with (out / "msrc_arg_diagnostics.csv").open("w", newline="") as handle:
+            writer = csv.writer(handle)
+            writer.writerow(["time", "population", "position", "event_type", "rate", "background_before", "background_after", "parental_backgrounds", "ancestry_changed", "background_changed"])
+            for e in diagnostic_rows:
+                writer.writerow([e.time, e.population_before[0], e.position, e.event_type, e.rate, e.background_before, e.background_after,
+                                 e.parental_backgrounds, e.ancestry_changed, e.background_changed])
     summary = {
-        "mode": "arg", "model": "hudson", "background_model": "neutral",
+        "mode": "arg", "model": "hudson", "background_model": model_name,
         "sequence_length_bp": length, "num_nodes": len(result.nodes), "num_edges": len(result.edges),
         "num_events": len(result.events), "num_marginal_trees": ts.num_trees,
         "runtime_seconds": result.runtime_seconds, "peak_active_lineages": result.peak_lineages,
         "peak_segments": result.peak_segments,
         "recombination_events": sum(e.event_type == "recombination" for e in result.events),
         "coalescence_events": sum(e.event_type == "coalescence" for e in result.events),
+        "background_transfer_events": sum(e.event_type == "background_transfer" for e in result.events),
     }
     (out / "arg_summary.json").write_text(json.dumps(summary, indent=2))
     return out

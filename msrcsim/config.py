@@ -40,6 +40,14 @@ def load_config(path):
                 raise ValueError(f"Missing ARG configuration section: {key!r}")
         if float(d['arg'].get('sequence_length_bp', 0)) <= 0:
             raise ValueError("arg.sequence_length_bp must be positive")
+        if d['arg'].get('background_model', 'neutral') == 'msrc_two_state':
+            for key in ('rearrangement_interval', 'background_anchor_bp', 'cross_background_suppression'):
+                if key not in d['arg']:
+                    raise ValueError(f"MSRC ARG requires arg.{key!r}")
+            if 'rearrangement' not in d and not d['arg'].get('frequency_history_path'):
+                raise ValueError("MSRC ARG requires a rearrangement section or frozen frequency history")
+            if not 0 <= float(d['arg']['cross_background_suppression']) <= 1:
+                raise ValueError("arg.cross_background_suppression must be in [0, 1]")
     elif mode == 'spatial':
         required = ['species_tree', 'rearrangement', 'recombination', 'genome']
         missing = [k for k in required if k not in d]

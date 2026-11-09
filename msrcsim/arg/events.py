@@ -15,3 +15,8 @@ class ARGEvent:
     rate: float | None = None
     material_length: float | None = None
     details: str = ""
+    background_before: str = ""
+    background_after: str = ""
+    parental_backgrounds: str = ""
+    ancestry_changed: bool | None = None
+    background_changed: bool | None = None

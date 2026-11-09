@@ -7,7 +7,8 @@ from .segments import Segment, interval_union, split
 
 def recombine(lineage: ARGLineage, position: float, left_node: int, right_node: int,
               time: float, rec_map: PiecewiseConstantRecombinationMap,
-              background_model, left_lineage_id: int, right_lineage_id: int):
+              background_model, left_lineage_id: int, right_lineage_id: int,
+              parent_background=None):
     if not lineage.active:
         raise ValueError("cannot recombine a lineage with no unresolved material")
     eligible = rec_map.eligible_crossover_region(lineage.active)
@@ -16,7 +17,13 @@ def recombine(lineage: ARGLineage, position: float, left_node: int, right_node: 
     left, right = split(lineage.segments, position)
     if not left or not right:
         raise ValueError("recombination position must split ancestral material")
-    state_left, state_right = background_model.recombination_states(lineage.population, lineage.background, left, right, time)
+    if parent_background is None:
+        state_left, state_right = background_model.recombination_states(
+            lineage.population, lineage.background, left, right, time)
+    else:
+        state_left, state_right = background_model.recombination_states(
+            lineage.population, lineage.background, left, right, time,
+            position=position, parent_background=parent_background)
     # The parental nodes become the current ancestry after the crossover; the
     # old node is connected to them by edges in the caller.
     def remap(parts, parent_id):
