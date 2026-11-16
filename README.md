@@ -39,6 +39,7 @@ pytest
 | `msrc-sim-replicates --config <config.yaml>` | Run independent evolutionary replicates |
 | `msrc-sim-grid --config <config.yaml>` | Run a multidimensional parameter grid |
 | `msrc-sim-arbitrary --config <config.yaml>` | Simulate gene trees on an arbitrary n-taxon species tree |
+| `msrc-sim-smc --config <config.yaml>` | Simulate linked neutral MSC genealogies with the multispecies SMC′ |
 | `msrc-sim-spatial --config <config.yaml>` | Simulate spatially ordered loci along a chromosome |
 | `msrc-sim-hybridization --config <config.yaml>` | Run a pulse-hybridization spatial comparator |
 | `msrc-sim-pattern-probabilities --config <config.yaml>` | Compare exact quartet probabilities (theory vs. simulation) |

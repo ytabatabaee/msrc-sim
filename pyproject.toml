@@ -36,6 +36,7 @@ msrc-sim-species-tree-robustness = "msrcsim.robustness_cli:main"
 msrc-sim-validation-grid = "msrcsim.validation_grid_cli:main"
 msrc-sim-pattern-probabilities = "msrcsim.pattern_probabilities_cli:main"
 msrc-sim-arbitrary = "msrcsim.arbitrary_cli:main"
+msrc-sim-smc = "msrcsim.smc.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]

@@ -1,0 +1,16 @@
+species_tree:
+  newick: "((A:10000,B:10000)AB:5000,(C:10000,D:10000)CD:5000)ROOT;"
+  default_ne: 10000
+  root_extension: 100000
+sampling:
+  samples_per_species: 1
+  time_generations: 0
+smc:
+  chromosome_length: 200000
+  seed: 20261116
+  recombination_map:
+    # [0, 50000): background; [50000, 150000): suppressed; remainder: background
+    breakpoints: [50000, 150000]
+    rates: [1.0e-8, 1.0e-9, 1.0e-8]
+output:
+  directory: smc_demo_single
