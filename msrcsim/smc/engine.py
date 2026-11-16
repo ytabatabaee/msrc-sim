@@ -27,6 +27,8 @@ class Event:
     detached_descendants: str
     recoal_time: float
     target_descendants: str
+    target_edge_kind: str
+    recoal_population: str
 
 @dataclass
 class LocalTree:
@@ -55,7 +57,12 @@ def _newick(n, parent_age=None):
     if n.is_tip(): body=n.name
     else: body="("+",".join(_newick(c,n.age) for c in n.children)+")"+n.name
     if parent_age is None: return body+";"
-    return body+":"+format(max(0.0,parent_age-n.age),".10g")
+    length=parent_age-n.age
+    if length < -1e-8:
+        raise ValueError(f"negative gene-tree branch length on edge ending at {n.name}: {length}")
+    # Preserve dated-tree ultrametricity at large generation scales. Ten-digit
+    # formatting accumulated visibly across branches for large Ne simulations.
+    return body+":"+format(max(0.0,length),".17g")
 
 def _topology(n):
     if n.is_tip(): return n.name
@@ -85,8 +92,6 @@ def _edge_rows(root):
     rec(root)
     return rows
 
-def _find_parent(n): return n.parent
-
 def _detach(root, child, parent):
     parent.children.remove(child); child.parent=None
     if parent.parent is None:
@@ -110,8 +115,6 @@ def _insert(root, target_child, target_parent, detached, t):
         idx=target_parent.children.index(target_child); target_parent.children[idx]=join; join.parent=target_parent
     return root
 
-def _same_tree(a,b): return _newick(a)==_newick(b)
-
 def _transition(root, tree, rng):
     edges=_edge_rows(root)
     lengths=np.array([hi-lo for _,_,lo,hi,_ in edges],float)
@@ -119,7 +122,7 @@ def _transition(root, tree, rng):
     if total <= 0: raise RuntimeError("genealogy has no eligible branches")
     q=float(rng.random()*total); ei=int(np.searchsorted(np.cumsum(lengths),q,side="right")); ei=min(ei,len(edges)-1)
     child,parent,lo,hi,desc=edges[ei]; tr=lo+float(rng.random())*(hi-lo)
-    old=copy.deepcopy(root); original_nw=_newick(root)
+    old=copy.deepcopy(root)
     root=_detach(root,child,parent)
     detached_edge=(child,parent,desc,hi)
     # Track detached lineage and extant guide edges through demographic epochs.
@@ -133,24 +136,24 @@ def _transition(root, tree, rng):
         eligible=[]
         for ch,pa,l,h,d in guide_edges:
             if l-1e-10 <= t < h-1e-10 and _pop_at(tree,d,t)==pop:
-                eligible.append((ch,pa,d))
+                eligible.append((ch,pa,d,"guide"))
         # SMC' retains the detached branch as a possible re-coalescence target.
         # This is the invisible-event/no-change outcome absent from SMC.
         dch,dpa,ddesc,dend=detached_edge
         if t < dend-1e-10 and _pop_at(tree,ddesc,t)==pop:
-            eligible.append((dch,dpa,ddesc))
+            eligible.append((dch,dpa,ddesc,"original_edge"))
         # The single lineage ancestral to the guide-tree root persists in the
         # ancestral species population. It is a recoalescence target, but is
         # not part of finite L_G used to place recombinations.
         if t >= max(species_root_age,root.age)-1e-10 and pop==tree.root.name:
-            eligible.append((root,None,_desc(root)))
+            eligible.append((root,None,_desc(root),"ancestral_stem"))
         rate=len(eligible)/(2*tree.branches[pop].effective_population_size)
         if rate>0:
             wait=float(rng.exponential(1/rate))
             if t+wait<end:
-                t+=wait; ch,pa,target_desc=eligible[int(rng.integers(len(eligible)))]
-                if target_desc==desc:
-                    return old,tr,t,desc,target_desc,True
+                t+=wait; ch,pa,target_desc,target_kind=eligible[int(rng.integers(len(eligible)))]
+                if target_kind=="original_edge":
+                    return old,tr,t,desc,target_desc,True,target_kind,pop
                 # The cut is on the ancestral edge above this subtree; its
                 # root age remains the original child coalescence time.
                 root=_insert(root,ch,pa,child,t); recoal=t; break
@@ -159,12 +162,13 @@ def _transition(root, tree, rng):
     def lengths_rec(n):
         for c in n.children: c.length=n.age-c.age; lengths_rec(c)
     lengths_rec(root)
-    unchanged=_newick(root)==original_nw
-    return root,tr,recoal,desc,target_desc,unchanged
+    return root,tr,recoal,desc,target_desc,False,target_kind,pop
 
 def simulate_msc_smc(species_tree: SpeciesTree, config: SMCConfig, rng=None):
     """Sample the first MSC tree, then advance under spatially inhomogeneous SMC'."""
     if abs(config.chromosome_length-config.recombination_map.length)>1e-9: raise ValueError("map length must equal chromosome length")
+    if any(branch.effective_population_size <= 0 for branch in species_tree.branches.values()):
+        raise ValueError("all effective population sizes must be positive")
     if config.sampling.get("samples_per_species",1)!=1 or config.sampling.get("time_generations",0.0)!=0.0:
         raise NotImplementedError("the initial SMC module supports one contemporaneous sample per species")
     rng=np.random.default_rng(config.seed) if rng is None else rng
@@ -186,10 +190,10 @@ def simulate_msc_smc(species_tree: SpeciesTree, config: SMCConfig, rng=None):
             result.trees.append(LocalTree(start,config.chromosome_length,_newick(root),_topology(root))); break
         result.trees.append(LocalTree(start,pos,_newick(root),_topology(root)))
         oldtop=_topology(root)
-        root,tr,tcoal,desc,target,unchanged=_transition(root,species_tree,rng)
+        root,tr,tcoal,desc,target,unchanged,target_kind,recoal_population=_transition(root,species_tree,rng)
         newtop=_topology(root)
         kind="no_genealogy_change" if unchanged else ("topology_change" if oldtop!=newtop else "branch_time_change")
-        ev=Event(pos,tr,kind,",".join(sorted(desc)),tcoal,",".join(sorted(target)))
+        ev=Event(pos,tr,kind,",".join(sorted(desc)),tcoal,",".join(sorted(target)),target_kind,recoal_population)
         result.events.append(ev)
         result.changes.append({"position":pos,"event_type":kind,"before_topology":oldtop,"after_topology":newtop})
         x=pos; start=pos

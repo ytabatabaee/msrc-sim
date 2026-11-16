@@ -32,6 +32,26 @@ def test_map_crosses_boundaries_and_suppression_is_less_dense():
     assert m.advance_hazard(0,0.03)==pytest.approx(9000)
     assert len(run(2e-5,11).events)>len(run(1e-6,11).events)
 
+def test_map_inverse_has_exact_boundary_convention():
+    m=PiecewiseConstantMap(10,(2.,4.,6.),(1.,0.,2.,0.))
+    assert m.advance_hazard(0,2.0)==pytest.approx(2.0)
+    assert m.advance_hazard(0,2.5)==pytest.approx(4.25)
+    assert m.advance_hazard(0,6.0)==pytest.approx(6.0)
+    assert m.advance_hazard(2,0.0)==pytest.approx(2.0)
+
+def test_large_generation_times_preserve_ultrametricity():
+    tr=SpeciesTree("((T1:40000,T2:40000)I:40000,T3:80000)ROOT;",10000,1e7)
+    r=simulate_msc_smc(tr,SMCConfig(1000,PiecewiseConstantMap.constant(1000,1.25e-7),520000),np.random.default_rng(520000))
+    from msrcsim.species_tree import _Parser
+    for local in r.trees:
+        root=_Parser(local.newick).parse()
+        def height(n):
+            if n.is_tip(): return 0.0
+            hs=[height(c)+c.length for c in n.children]
+            assert max(hs)-min(hs)<1e-8
+            return hs[0]
+        height(root)
+
 def test_zero_rate_suppressed_interval_has_no_recombination_breakpoints():
     m=PiecewiseConstantMap(10000,(2000.,8000.),(2e-5,0.,2e-5))
     r=run(2e-5,8,m)
@@ -79,37 +99,48 @@ def test_recombination_outcomes_preserve_no_change_intervals():
         if event.event_type=="no_genealogy_change":
             assert left.newick==right.newick
 
-def test_smc_topology_marginal_is_checked_against_independent_msc():
-    # Deliberately statistical rather than assuming a Markov transition
-    # preserves the MSC marginal. One test seed keeps this fast and repeatable.
-    from msrcsim.structured_coalescent import simulate_msc_genealogy
-    tr=tree(); rng=np.random.default_rng(9142)
-    independent_draws=[simulate_msc_genealogy(i,tr,rng,False) for i in range(600)]
-    independent=[g.topology_index for g in independent_draws]
-    linked=simulate_msc_smc(tr,SMCConfig(30000,PiecewiseConstantMap.constant(30000,2e-6),9143),np.random.default_rng(9143))
-    # Compare quartet split frequencies on a tolerant Monte Carlo scale.
-    def freq(values, weights=None):
-        weights=np.ones(len(values)) if weights is None else np.asarray(weights)
-        return np.array([weights[np.asarray(values)==k].sum()/weights.sum() for k in range(3)])
-    from msrcsim.species_tree import _Parser
-    pairs=[frozenset(("A","B")),frozenset(("A","C")),frozenset(("A","D"))]
-    def linked_code(nw):
-        root=_Parser(nw).parse(); clades=[]
-        def visit(n):
-            if n.is_tip(): return frozenset((n.name,))
-            d=frozenset().union(*(visit(c) for c in n.children))
-            if len(d)==2: clades.append(d)
-            return d
-        visit(root)
-        pair=clades[0]
-        return pairs.index(pair if pair in pairs else frozenset(set(("A","B","C","D"))-set(pair)))
-    widths=[t.end-t.start for t in linked.trees]
-    a,b=freq(independent),freq([linked_code(t.newick) for t in linked.trees],widths)
-    assert np.max(np.abs(a-b)) < 0.25, (a,b,len(linked.trees))
-    independent_root=np.mean([max(g.coalescence_times) for g in independent_draws])
-    from msrcsim.species_tree import _Parser
-    linked_root=np.average([SpeciesTree(t.newick,100,1000,ultrametric_tolerance=1e-5).root.age for t in linked.trees],weights=widths)
-    assert abs(linked_root-independent_root) < 0.25*independent_root, (linked_root,independent_root)
+class _ForcedRng:
+    def __init__(self, edge_draw=0.0, cut_fraction=0.5, wait=0.1, target_index=0):
+        self.draws=iter((edge_draw,cut_fraction)); self.wait=wait; self.target_index=target_index
+    def random(self): return next(self.draws)
+    def exponential(self, scale): return self.wait
+    def integers(self, high):
+        assert self.target_index < high
+        return self.target_index
+
+def test_invisible_recoalescence_uses_original_edge_identity():
+    from msrcsim.smc.engine import _transition, _newick
+    species=SpeciesTree("(A:0,B:0)ROOT;",100,1000)
+    guide=SpeciesTree("(A:2,B:2)G;",100,1000).root
+    original=_newick(guide)
+    result,tr,tcoal,detached,target,unchanged,target_kind,pop=_transition(guide,species,_ForcedRng(target_index=0))
+    assert unchanged
+    assert target_kind=="original_edge"
+    assert detached==frozenset({"A"}) and target==detached
+    assert tcoal>tr and _newick(result)==original
+    assert pop=="ROOT"
+
+def test_recoalescence_on_ancestral_stem_changes_time_not_topology():
+    from msrcsim.smc.engine import _transition, _newick, _topology
+    species=SpeciesTree("(A:0,B:0)ROOT;",100,1000)
+    guide=SpeciesTree("(A:2,B:2)G;",100,1000).root
+    original_topology=_topology(guide); original_newick=_newick(guide)
+    result,tr,tcoal,detached,target,unchanged,target_kind,pop=_transition(guide,species,_ForcedRng(target_index=1))
+    assert not unchanged and target==frozenset({"B"})
+    assert target_kind=="ancestral_stem"
+    assert pop=="ROOT" and tcoal>tr
+    assert _topology(result)==original_topology
+    assert _newick(result)!=original_newick
+    assert all(c.age<=result.age for c in result.children)
+
+def test_recoalescence_population_matches_both_lineages():
+    from msrcsim.smc.engine import _pop_at
+    tr=tree(); r=run(1e-5,31)
+    for e in r.events:
+        detached=frozenset(e.detached_descendants.split(","))
+        target=frozenset(e.target_descendants.split(","))
+        assert _pop_at(tr,detached,e.recoal_time)==e.recoal_population
+        assert _pop_at(tr,target,e.recoal_time)==e.recoal_population
 
 def _walk(n):
     yield n

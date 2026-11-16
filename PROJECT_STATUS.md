@@ -1,0 +1,397 @@
+# Project Status
+
+The simulator now has two supported modes:
+
+- Legacy quartet mode: the frozen four-taxon MSRC validation path and existing
+  command-line tools remain available for reproducible manuscript experiments.
+- Arbitrary-tree mode: `msrc-sim-arbitrary` runs Wright-Fisher or Moran
+  structured-coalescent core over an arbitrary rooted species tree and writes
+  n-tip gene trees plus optional quartet summaries.
+
+Current local extension:
+
+- Completed an optional speciation-associated daughter-split kernel with
+  reciprocal log-odds parameter `eta`, shared by Wright-Fisher and Moran.
+- Added arbitrary-tree, spatial, frozen-history, provenance, tests, docs, and
+  one example config for the opt-in daughter-split feature.
+- Scientific default remains legacy unbiased initialization; configs without
+  `speciation_split` and explicit `eta=0` retain the historical simulator.
+- New future scientific axis: eta != 0 daughter assortment at species splits.
+
+Current validation:
+
+- Full test suite: `163 passed, 6 warnings` on 2026-09-16 after the corrected
+  Moran selection-scaling rerun.
+- Legacy regression manifest:
+  `tests/regression/legacy_quartet_baseline.json`.
+- Arbitrary examples:
+  `examples/output/10taxa` and `examples/output/50taxa`.
+- Validation report:
+  `results/arbitrary_tree_validation.md`.
+- Moran validation report:
+  `results/moran_validation.md`.
+
+Known limitations before empirical use:
+
+- The 10- and 50-taxon examples are implementation checks, not biological
+  validation studies.
+- Wright-Fisher and Moran are alternative stochastic generators of frequency
+  histories; process-dependent quantities such as persistence and terminal
+  pattern probabilities are not claimed to be invariant.
+- Quartet-specific analysis, exact pattern probabilities, and model-comparison
+  utilities remain quartet layers by design.
+- Large stochastic validation and performance tuning should be run separately
+  for empirical-scale analyses.
+
+## Prevalence Parameter-Sensitivity Grid
+
+New forward-process prevalence study added under
+`results/prevalence_grid/` and `figures/prevalence_grid_*`. This is a
+parameter-sensitivity experiment only; it does not modify empirical analyses,
+quartet-distortion experiments, threshold experiments, pseudo-replication
+experiments, or correction experiments.
+
+Rationale:
+
+- The biological/theoretical question is whether a structural polymorphism can
+  persist long enough to generate phylogenetically relevant discordant 2:2
+  sorting outside one tuned parameter setting.
+- The study separates root-branch population-genetic persistence from terminal
+  2:2 sorting and emphasizes unconditional discordant 2:2 probability as the
+  more relevant compound outcome.
+
+Parameter grid:
+
+- Primary Wright-Fisher grid: Ne = 20, 50, 100; p0 = 0.05, 0.10, 0.25, 0.50;
+  scaled branch duration tau = T/(2Ne) = 0.10, 0.30, 0.60, 1.00; scaled
+  genic directional selection gamma = 2Ne s = -5, -2, 0, +2, +5; 5,000
+  trajectories per cell.
+- Corrected matched Moran robustness grid: Ne = 20, 100; p0 = 0.10, 0.50;
+  tau = 0.30, 0.60, 1.00; shared diffusion-scale `gamma_target` = -5, -2,
+  0, +2, +5; 5,000 trajectories per cell.
+- The old Moran robustness grid is preserved as
+  `moran_matched_grid_old_unscaled_selection.tsv`. It used the same nominal
+  `gamma = 2Ne s` as Wright-Fisher. Those raw Moran simulations are valid for
+  their stated raw `s`, but they under-matched the WF diffusion-scale
+  directional-selection strength by approximately a factor of two.
+- Supplementary raw-s grid: raw s = -0.01, 0, +0.01 across Ne, labeled
+  `supplement_raw_s`, because fixed raw s changes gamma with Ne.
+
+Simulator conventions:
+
+- Both processes use M = 2Ne chromosome copies.
+- Wright-Fisher uses Binomial(M, p_sel) updates with
+  p_sel = p(1+s)/(1+s p).
+- Moran uses the same genic reproductive probability with CTMC rates
+  q+ = (M/2) p_sel(1-p), q- = (M/2)(1-p_sel)p.
+- The implemented Moran drift is
+  dE[p]/dt = (q+ - q-)/M = s p(1-p)/[2(1+s p)], which is approximately
+  (s/2)p(1-p) under weak selection. Therefore corrected WF/Moran comparisons
+  use `s_WF = gamma_target/(2Ne)` and `s_Moran = gamma_target/Ne`.
+- This is a diffusion-scale matching rule, not an exact finite-s equality of
+  the WF and Moran generators.
+- Daughter branches are initialized by binomial sampling from parental
+  terminal frequency, matching the existing prevalence machinery.
+
+Current focal setting:
+
+- Legacy manuscript-facing WF/Moran prevalence setting: Ne = 20, p0 = 0.5,
+  internal tau = 0.6, root extension = 0.5, s = 0, 2,500 attempts.
+- Legacy prevalence counted persistence as both daughter branches A and B
+  segregating. The new grid's primary P_persist is root-branch terminal
+  0 < p(T) < 1, so `focal_reproduction.tsv` reports the legacy comparison
+  separately.
+
+Results:
+
+- New focal primary Wright-Fisher cell, Ne = 20, p0 = 0.5, tau = 0.6,
+  gamma = 0: P_persist = 0.769 and unconditional P_discordant_2to2 = 0.032.
+- Largest primary-grid unconditional P_discordant_2to2: 0.171 at Ne = 50,
+  p0 = 0.5, tau = 0.1, gamma = 0.
+- Weakest primary-grid discordant outcome: 0.000 in several low-frequency,
+  long/selected cells, including Ne = 20, p0 = 0.05, tau = 0.6, gamma = -5.
+- At Ne = 50 and neutrality, P_discordant_2to2 declines from 0.171 to 0.009
+  as tau increases from 0.1 to 1.0 for p0 = 0.5; lower p0 values are much
+  less productive.
+- Neutral P_persist curves approximately collapse across Ne after scaling by
+  2Ne; the largest p0 = 0.5 within-tau spread across Ne is 0.033.
+- Moran and Wright-Fisher are close under neutrality for matched cells, but
+  strong directional selection required process-specific raw-s matching.
+  After correction, selected-cell mean absolute WF/Moran differences dropped
+  from 0.151 to 0.023 for P_persist and from 0.011 to 0.001 for unconditional
+  P_discordant_2to2 in the cells available for old-vs-corrected comparison.
+  Remaining differences are process dependence, not a known parameterization
+  bug.
+- Exact small-population validation of loss/persistence/fixation agrees with
+  Monte Carlo within ordinary sampling error; corrected selected/neutral Moran
+  checks have maximum absolute error 0.0049 and all exact P_loss/P_persist/P_fix
+  values inside Wilson intervals.
+
+Interpretation and manuscript implications:
+
+- The mechanism is not confined to the single legacy focal setting, but
+  phylogenetically relevant discordant 2:2 sorting is much narrower than mere
+  polymorphism persistence.
+- Intermediate/high initial frequencies and short scaled branch durations
+  produce the strongest discordant 2:2 prevalence.
+- Moderate positive selection can rescue low-frequency A1 from immediate loss
+  at short times, but long/strong directional selection increases absorption
+  into loss or fixation.
+- Do not interpret Ne = 20, 50, 100 as biologically realistic population
+  sizes. They are computational scaling experiments. Organism-specific
+  prevalence requires calibrated Ne, selection, and divergence-time estimates.
+- The LaTeX manuscript has not been modified for this correction yet.
+- Empirical analyses are unchanged.
+- The completed full Wright-Fisher grid is unchanged and was not rerun.
+
+Outputs:
+
+- `results/prevalence_grid/prevalence_grid.tsv`
+- `results/prevalence_grid/prevalence_summary.md`
+- `results/prevalence_grid/selection_scaling_derivation.md`
+- `results/prevalence_grid/moran_matched_grid_old_unscaled_selection.tsv`
+- `results/prevalence_grid/corrected_moran_matched_grid.tsv`
+- `results/prevalence_grid/wf_moran_corrected_comparison.tsv`
+- `results/prevalence_grid/corrected_moran_exact_validation.tsv`
+- `results/prevalence_grid/exact_validation.tsv`
+- `results/prevalence_grid/focal_reproduction.tsv`
+- `results/prevalence_grid/calibration_template.tsv`
+- `figures/prevalence_grid_main.pdf`
+- `figures/prevalence_grid_supplement.pdf`
+- `figures/prevalence_selection_main.pdf`
+- `figures/prevalence_selection_supplement.pdf`
+
+Next step:
+
+- Inspect the selection-focused figures, then update the manuscript text to
+  quote root-terminal persistence and legacy daughter-persistence with clearly
+  separated definitions.
+
+## Daughter-Sorting Eta Sensitivity
+
+Completed:
+
+- The optional speciation daughter-sorting kernel was already implemented and
+  validated before this experiment.
+- Added the first focused eta sensitivity experiment under
+  `experiments/daughter_sorting_eta/` and `results/daughter_sorting_eta/`.
+- Froze the baseline prospectively: symmetric `((1,2)A,(3,4)B)ROOT`
+  Wright-Fisher setting with Ne = 20, p0 = 0.5, internal tau = 0.6,
+  root extension = 0.5, neutral selection, and descendant-split sorting only.
+- Main run used 5,000 forward histories per eta for eta = 0, 0.5, 1, 2, 4.
+- Sign-symmetry check used eta = +2 and eta = -2.
+- Secondary genealogy check used up to 50 persistent discordant histories per
+  main eta and 300 gene genealogies per retained history.
+- Optional controls completed: root-only sorting with 2,000 histories per eta
+  for eta = 0, 1, 2, 4; matched neutral Moran robustness with 2,000 histories
+  per eta for eta = 0, 2, 4.
+
+Main results:
+
+- P(persistence) stayed near 0.30 across descendant eta values:
+  0.2980, 0.2946, 0.3010, 0.3008, 0.2950.
+- P(discordant strict 2:2) increased with eta:
+  0.0352, 0.0400, 0.0602, 0.1238, 0.2442.
+- P(discordant strict 2:2 | persistence) increased strongly:
+  0.1181, 0.1358, 0.2000, 0.4116, 0.8278.
+- D without P count was zero in all main and sign-symmetry cells.
+- Mean realized daughter-frequency divergence increased from 0.0710 at eta 0
+  to 0.9041 at eta 4.
+- P(opposite enrichment) increased from 0.1752 at eta 0 to 0.9991 at eta 4.
+- Sign symmetry behaved as expected: eta +2 favored pattern 1010
+  (`P=0.1192`) while eta -2 favored 0101 (`P=0.1130`); aggregate discordant
+  strict 2:2 was 0.1238 versus 0.1178.
+- In the genealogy check, the arrangement-associated topology was dominant in
+  all retained persistent discordant histories. Mean arrangement-minus-species
+  quartet margin increased from 0.7385 at eta 0 to 0.8345 at eta 4.
+- A later review found that this first daughter-sorting genealogy check used
+  the forward-experiment cross-arrangement fraction 0.1, not the historical
+  WF/Moran robustness genealogy setting 0.002. Those first margins therefore
+  are useful as an internal check but are not directly comparable to the
+  historical approximately 0.994 robustness margins.
+- Revised matched-genealogy outputs under `results/daughter_sorting_eta/revised/`
+  use the exact historical backward settings recovered from
+  `experiments/wf_moran_robustness/config.yaml` and
+  `results/wf_moran_msrc_robustness/run_metadata.json`:
+  recombination rate 0.02, effective cross-arrangement fraction 0.002,
+  50 histories, and 300 genealogies per history. The eta=0 reproduction gave
+  mean margin 0.993533, matching the historical Wright-Fisher target.
+- The revised matched-genealogy margins for eta 0, 0.5, 1, 2, and 4 were
+  0.9930, 0.9940, 0.9953, 0.9945, and 0.9962, with the arrangement-associated
+  topology dominant in 50/50 histories for every eta.
+- Root-only sorting mainly reduced descendant persistence in this baseline
+  rather than producing the same descendant-discordant response: P(persistence)
+  fell from 0.3055 at eta 0 to 0.0025 at eta 4.
+- Matched neutral Moran robustness was qualitatively similar for eta:
+  P(discordant | persistence) was 0.1190, 0.3632, and 0.8127 for eta 0, 2,
+  and 4.
+
+Decisions:
+
+- The baseline was frozen before viewing eta results.
+- Descendant-split sorting is the primary analysis; root-only sorting is a
+  location-control result.
+- Large crossed eta x Ne/selection/kappa/branch-duration grids are deferred.
+- Previous eta=0 manuscript results remain unchanged.
+- The structural-theorem check still held exactly in the preserved and revised
+  outputs: no discordant strict 2:2 replicate occurred without persistence.
+
+Next steps:
+
+- Decide whether the descendant-split eta result belongs in the main MSRC
+  manuscript figure/table or in a focused supplement.
+- If included, use the revised matched-genealogy figures/tables rather than the
+  original genealogy check for comparison to historical robustness margins.
+- If included, run a later crossed eta x persistence-parameter grid to show
+  robustness across Ne, p0, branch duration, selection, and kappa.
+# Phase: neutral multispecies SMC′ prototype (2026-11-16)
+
+Completed:
+
+- Added isolated `msrcsim.smc` implementation, `msrc-sim-smc` CLI, piecewise
+  recombination maps, local-tree/event/metadata exports, four-taxon config,
+  demo generator, and `docs/msrc_smc.md`.
+- Initial genealogy uses the existing MSC simulator. Recombination positions
+  invert the integrated `r(x) * L_G` hazard, including rate-map boundaries.
+- Transitions cut a length-weighted genealogy edge, sample a uniform time on
+  the edge, and re-coalesce against guide lineages only in a shared species
+  population. The detached edge and ancestral guide-tree stem remain
+  re-coalescence targets, retaining SMC′ no-change outcomes.
+- Classified recombinations as no genealogy change, branch-time change, or
+  topology change. Consecutive equal trees are preserved as separate spans.
+- Added explicit future-state documentation for p(t), two backgrounds,
+  background-specific coalescence, background switching, selection, and shared
+  demographic histories. No MSRC background switching is implemented.
+- `msrc-arg` and production simulation paths were not modified.
+
+Validation run:
+
+- Full repository suite `.venv/bin/python -m pytest -q -p no:cacheprovider`:
+  passed. One existing warning reports a regression threshold outside the
+  sampled validation grid.
+- `.venv/bin/python -m pytest -q -p no:cacheprovider tests/test_msrc_smc.py`:
+  11 passed. Coverage includes zero rate, seed reproducibility, constant-map
+  equivalence, map boundary integration, suppressed intervals, turnover and
+  topology autocorrelation under increased recombination, and tree validity.
+- The marginal-distribution check compares genomic-span-weighted SMC′ local
+  trees to 600 independent MSC draws on a four-taxon tree. Topology frequencies
+  and mean root age pass the stated Monte Carlo tolerance. The weighting is by
+  interval width, corresponding to sampling a random chromosome position.
+- Demo command `MPLCONFIGDIR=/private/tmp/msrc-mpl .venv/bin/python
+  scripts/demo_msrc_smc.py` completed for constant rates 5e-9, 1e-8, 2e-8
+  and a map suppressed to 1e-9 over [50,000, 150,000). Recombination counts
+  were 90, 206, 444, and 148; tree-change counts were 52, 132, 264, and 80.
+  Outputs are in `smc_demo/`; figure: `smc_demo/smc_map_comparison.png` and PDF.
+- Attempts to retrieve the associated GitHub source with `git ls-remote`
+  failed because shell network DNS was unavailable. The paper and code release
+  metadata were reviewed through the paper's linked GitHub/Zenodo references;
+  source code itself was not locally audited.
+
+Mathematical decisions and limitations:
+
+- The selected process is the multispecies SMC′ approximation described and
+  analyzed by McKenzie & Eaton (2026), not exact ARG. He et al. (2026) use a
+  fixed-separation conditional guide-tree process which permits the detached
+  locus lineages to coalesce with each other; that is not the transition
+  implemented here.
+- Times are generations and all compatible pair rates are `1/(2Ne)`.
+  Recombination map rates are per base per generation; the spatial hazard is
+  `r(x) * total_genealogy_branch_length`.
+- The SMC′ marginal test is a finite seeded check, not a proof. The transition
+  is experimental pending broader parameterized and ARG comparisons.
+- McKenzie & Eaton's code was reviewed through the public ipcoal and
+  waiting-distance-code repository pages: these contain analytical event
+  probability/waiting-distance functions and reproducible notebooks, rather
+  than a direct chromosome transition simulator. He et al.'s code release was
+  identified as ASTI-GTD v1.0.0 and its Zenodo archive, but could not be cloned
+  for local source inspection because shell DNS could not resolve GitHub.
+- Current sampling supports one contemporaneous lineage per species, with an
+  ultrametric rooted species tree. Migration, serial samples, full ARG, and
+  all MSRC background behavior are out of scope.
+- No claim is made that lowering recombination changes marginal quartet
+  frequencies; it changes spatial dependence and tract lengths.
+
+Phase 2:
+
+1. Audit and formalize the SMC′ transition against the McKenzie–Eaton
+   supplementary derivations and an independent implementation (msprime/full
+   ARG in ultrametric neutral cases).
+2. Expand the MSC marginal checks over topology, internal coalescence times,
+   species-tree shapes, and branch-specific Ne.
+3. Design the augmented lineage state and joint backward process for genetic
+   backgrounds, p(t), selection, switching, and genomic recombination before
+   implementing any switching clock.
+4. Only then add an MSRC-SMC mode and compare it with `msrc-arg`; retain
+   `msrc-arg` as the validation benchmark.
+
+## Neutral SMC′ Validation Follow-up (2026-11-16)
+
+Completed:
+
+- Added `scripts/validate_msrc_smc.py` to compare linked-chromosome summaries
+  against 1,000 independent MSC trees per case, msprime SMC′, exact Hudson ARG,
+  and `msrc-arg` over seven 2-, 3-, 4-, and 8-taxon cases.
+- Added chromosome-clustered confidence intervals for marginal and spatial
+  summaries, integrated-hazard checks, a κ sweep for a region of suppressed
+  recombination, and a 4–32-taxon runtime/memory benchmark.
+- Corrected the msprime reference population-size scaling for the project's
+  `1/(2Ne)` pairwise rate and simplified full-ARG marginal trees before
+  measuring branches, to exclude unary recombination nodes.
+- Changed invisible-event classification to use the explicit identity of the
+  original edge, not descendant-set equality. Event records now report the
+  target edge kind and re-coalescence population.
+- Preserved the full map-integration and tree-validity tests. Updated the demo
+  to accept an output directory and reran it with three constant-rate maps and
+  one map containing a region of suppressed recombination.
+
+Validation outcomes:
+
+- Full repository suite after the final code changes: **228 passed, 1
+  existing warning** (the validation-grid regression threshold is outside its
+  sampled grid). Focused SMC suite: **15 passed**.
+- Integrated genomic hazards: 11,087 events, mean Exp(1) variate 0.982,
+  exponential KS p = 0.112.
+- **MSC marginal validation failed for the prototype transition.** Nine of
+  395 prototype marginal comparisons remain significant after Holm correction.
+  In the 8-taxon long-branch case, mean root age is 132,245 generations versus
+  142,516 from independent MSC trees; in the 4-taxon long-branch case, 924
+  versus 1,008 generations. msprime SMC′ had zero Holm-significant results
+  among 417 comparisons; msprime Hudson ARG had zero among 426; `msrc-arg` had
+  one among 422. See `docs/msrc_smc_validation.md`.
+- The map audit shows recombination density in the suppressed region increases
+  with κ from 0 at κ=0 to 0.00063 events/bp at κ=1 under its tested settings.
+  Region-specific quartet checks had no significant deviations in this finite
+  sample, which is not evidence of exact marginal equality.
+- The diagnostic 4–32-taxon benchmark's median seeded runtime ranged from
+  0.004 to 2.464 seconds per chromosome; maximum traced Python memory was
+  about 0.5 MiB. Treat as prototype-only timings.
+- The updated four-taxon demo produced 90, 206, 444, and 148 recombinations
+  across the three constant-rate settings and the suppressed-region setting;
+  corresponding genealogy changes were 52, 132, 264, and 80.
+
+Decision and limitations:
+
+- Map hazard generation and its interval-boundary handling pass the stated
+  tests. The transition kernel is **not validated** as an MSC-marginal-
+  preserving multispecies SMC′ process. Do not use it for scientific
+  linked-locus inference or begin Phase 2 on this transition until the
+  discrepancy is resolved.
+- `ipcoal` was unavailable locally; the published waiting-distance package
+  was not executed. msprime and `msrc-arg` supplied independent checks.
+- `msrc-arg` and production simulations remain unchanged. No two-background
+  MSRC behavior was added.
+- The audit run's generated CSVs and figures were written under `/private/tmp`
+  because creating a new validation output folder inside the project was
+  denied by filesystem permissions. The reproduction commands in the report
+  write them to a chosen output path.
+
+Next steps:
+
+1. Derive and implement the conditional multispecies SMC′ transition from the
+   published event probabilities, including original, parent, and sibling
+   branch outcomes under species-population barriers.
+2. Add a transition-level test suite against those conditional probabilities,
+   then rerun the MSC marginal, exact ARG, waiting-distance, and suppression
+   checks. Do not relax thresholds to make the current implementation pass.
+3. Keep the background-augmented MSRC-SMC design deferred until the neutral
+   kernel passes those checks.

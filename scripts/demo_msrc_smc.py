@@ -1,12 +1,15 @@
 """Reproducible four-taxon SMC' map comparison and diagnostic figure."""
 from pathlib import Path
+import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 from msrcsim.species_tree import SpeciesTree
 from msrcsim.smc import PiecewiseConstantMap, SMCConfig, simulate_msc_smc
 from msrcsim.smc.engine import write_result
 
-OUT=Path("smc_demo")
+parser=argparse.ArgumentParser(description=__doc__)
+parser.add_argument("--output",default="smc_demo",help="directory for reproducible trees and figure")
+OUT=Path(parser.parse_args().output)
 OUT.mkdir(exist_ok=True)
 tree=SpeciesTree("((A:10000,B:10000)AB:5000,(C:10000,D:10000)CD:5000)ROOT;",10000,100000)
 L=200000

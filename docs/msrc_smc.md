@@ -66,10 +66,13 @@ Known limitations: one sample per species, ultrametric species trees, no
 migration or serial sampling, no recombination on terminal sequence outside
 the sampled marginal genealogy, and no full-MSRC integration. The initial MSC
 tree is produced by the project's existing implementation and serialized to
-rounded Newick before transitions. The transition kernel is a direct
-edge-based SMC′ implementation and should be treated as experimental. The
-current finite marginal-distribution check against independent MSC draws passes;
-broader parameterized and full-ARG comparisons remain outstanding.
+Newick before transitions. The edge-based transition is experimental and its
+broader validation **fails**: several higher-recombination cases differ from
+independent MSC marginal root-age and other genealogy summaries, including
+after multiple-test correction. Do not treat the transition as a validated
+MSC-SMC′ simulator or extend it to MSRC-SMC until this is resolved. See
+[`msrc_smc_validation.md`](msrc_smc_validation.md) for the full audit, tests,
+and reproduction commands.
 
 ## CLI and output
 
