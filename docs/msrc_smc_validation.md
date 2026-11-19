@@ -1,106 +1,130 @@
-# Neutral MSC-SMC validation audit
+# Corrected multispecies SMC′ validation
 
-## Scope and environment
+## Decision
 
-This audit validates the neutral SMC′ prototype against independent MSC
-genealogies, msprime's SMC′ and Hudson ARG models, and the retained
-`msrc-arg` implementation. It also checks integrated recombination hazard,
-spatial dependence, a region of suppressed recombination, tree validity,
-reproducibility, and runtime. It does not validate an MSRC background model.
+The root-age defect in the first transition implementation was corrected and
+the neutral kernel now passes the recorded transition tests and the finite
+parameterized marginal checks. This is a **conditional validation**, not a
+proof that every implementation detail matches the complete McKenzie–Eaton
+kernel. Waiting-distance comparisons against the published `ipcoal`
+implementation were not run because that package was unavailable. Do not infer
+that this validation applies to backgrounds or the planned MSRC-SMC extension.
 
-The full run used 20 independent chromosomes and 1,000 independent MSC trees
-per parameter case, with seven cases spanning 2, 3, 4, and 8 taxa, short and
-long internal branches, small and large population sizes, and branch-specific
-population sizes. Linked-tree uncertainty is summarized across chromosomes,
-not across adjacent trees. msprime 1.4.5, tskit 1.0.4, NumPy 2.5.3, and SciPy
-1.18.1 were used. For the msprime reference, population sizes are doubled when
-using one haploid sample per species, so its pairwise rate `1/N` matches this
-project's `1/(2Ne)` convention. Full-ARG recombination flags count the two
-ancestral products; that count is divided by two. Marginal trees are simplified
-before branch summaries so unary recombination nodes are not counted as
-genealogy branches.
+## Kernel correction and derivation
 
-## Results
+At a recombination, the cut lineage can re-coalesce with guide lineages only
+while the lineages occupy a compatible species-tree population. The original
+edge target is eligible only until its parent coalescence time. Previously,
+the event-time partition included guide-edge and species-population
+boundaries, but omitted that parent time. If an exponential wait crossed it,
+the target set stayed stale and allowed an impossible original-edge event,
+which appeared as an invisible recombination and biased root ages downward.
 
-- **Spatial recombination hazard:** 11,087 integrated event hazards had mean
-  0.982 (expected 1.0); the exponential goodness-of-fit test gave p = 0.112.
-  The piecewise map's exact boundary-integration tests also pass.
-- **Independent MSC marginal comparison: FAIL for this implementation.** The
-  harness performs 395 metric comparisons for the prototype over the seven
-  cases. Nine remain significant after Holm correction across the prototype's
-  metrics. Deviations are concentrated in higher-recombination cases. In the
-  8-taxon long-branch case, the chromosome-weighted root-age mean was 132,245
-  generations versus 142,516 in 1,000 independent MSC trees (difference about
-  -9.3 standard errors). In the 4-taxon long-branch case, it was 924 versus
-  1,008 generations (about -6.4 standard errors).
-- **Reference calibration:** msprime SMC′ and Hudson ARG had zero Holm-significant
-  metric comparisons in this run (417 and 426 comparisons respectively).
-  `msrc-arg` had one of 422 comparisons remain significant. This supports the
-  reference scaling and analysis pipeline, while showing the prototype's
-  marginal discrepancy is not explained by finite independent-tree noise
-  alone.
-- **Recombination map:** across κ = 0, 0.01, 0.1, 0.5, and 1, recombination
-  density inside the region increased from zero at κ = 0 to approximately
-  0.00001, 0.000095, 0.00041, and 0.00063 events per bp, respectively. The
-  region's rate therefore controls spatial persistence. The κ = 1 case uses
-  the same constant rate inside and outside the region. The region-specific
-  quartet comparisons did not flag a significant difference in this finite
-  sample, but have only 20 chromosome replicates and do not establish equality
-  of marginal distributions.
-- **Spatial dependence:** the diagnostic suite compares exact-genealogy,
-  topology, rooted RF, pair-time, and total-length similarity at five genomic
-  distances and three constant rates, against both msprime SMC′ and Hudson ARG.
-  Machine-readable chromosome-level outputs and confidence intervals are
-  emitted by the validation script. These descriptive dependence results do
-  not override the failed marginal test above.
-- **Tree validity and event semantics:** focused automated tests verify valid
-  tip labels, nonnegative branches, ultrametricity at large generation scales,
-  compatible-population re-coalescence, explicit original-edge identity for
-  invisible recombination, ancestral-stem re-coalescence, and preservation of
-  consecutive identical local trees.
-- **Benchmark:** over 4–32 taxa, chromosome lengths 5,000 and 20,000 bp, and
-  two recombination settings, median runtimes per seeded chromosome ranged
-  from about 0.004 seconds (4 taxa) to 2.464 seconds (32 taxa). Peak traced
-  Python memory was at most about 0.5 MiB in this small benchmark. These are
-  prototype timings, not production performance guarantees.
+The transition now adds the original edge's upper time to the next event
+boundary. The process advances to that boundary, expires the original target,
+and continues with the updated compatible target set and pair hazards
+`1/(2Ne)`. This is a renewal of the event simulation at a real change in the
+hazard set; no rate adjustment or post-hoc tree correction is used.
 
-## Interpretation and status
+For a two-tip guide tree with root time `T`, a cut at `tr`, and equal pair
+hazard `c=1/(2Ne)`, two targets are available up to `T` (the original edge and
+the guide stem). The probability of re-coalescing to the original edge before
+`T` is `0.5 * (1 - exp(-2c(T-tr)))`. Its expiration at `T` leaves only the
+guide-stem target. Thus for `tr <= t <= T`,
+`P(t_recoal <= t)=1-exp(-2c(t-tr))`; for `t >= T`, the CDF is
+`1-exp(-2c(T-tr))*exp(-c(t-T))`. The unit tests check target expiry and the
+resulting conditional time distribution against these analytic probabilities.
 
-The map inversion and spatial event process are verified against their stated
-hazard convention. The transition kernel is **not validated as an
-MSC-marginal-preserving SMC′ kernel**. The failures are recorded rather than
-hidden by loosening statistical thresholds. Do not use this implementation for
-scientific linked-locus inference or as the basis of Phase 2 until the
-conditional transition is derived against the multispecies SMC′ event
-probabilities and the marginal comparisons pass over the stated parameter
-grid. The two-background MSRC extension remains out of scope.
+This is the multispecies SMC′ approximation: recombination cuts a current
+genealogy edge and its detached lineage re-coalesces to an eligible lineage in
+the guide genealogy, retaining the same-edge invisible outcome. The exact ARG
+tracks ancestral material and can re-coalesce with lineages outside the
+current marginal genealogy; the SMC′ state omits that full ancestral graph.
+This distinction is substantive. The implementation does not treat arbitrary
+subtree-prune-and-regraft operations as a valid multispecies SMC transition.
 
-The code in `scripts/validate_msrc_smc.py` writes CSV diagnostics, a JSON
-summary, and spatial/suppression figures. Reproduce the full suite with:
+## Validation performed
+
+The saved run uses 40 independently seeded linked chromosomes and 1,000
+independent MSC reference trees in each of seven settings (2, 3, 4, and 8
+taxa; short and long internal branches; constant and branch-specific sizes).
+Marginal local-tree metrics are weighted by genomic span. For each method, 439
+root-age, pair-coalescence-time, total-tree-length, and quartet-frequency
+comparisons were assessed against their independent-MSC references.
+
+| Method | Holm significant (0.05) | Nominal 95% intervals excluding zero |
+|---|---:|---:|
+| This SMC′ | 0 / 439 | 16 / 439 |
+| msprime SMC′ | 0 / 439 | 18 / 439 |
+| msprime Hudson ARG | 0 / 439 | 2 / 439 |
+| msrc-arg | 0 / 439 | 26 / 439 |
+
+The nominal counts are consistent with multiple-comparison noise; none remains
+significant under Holm correction. Root-age spot checks include a four-taxon
+long-branch case (reference 1008.0 generations, SMC′ 1026.1; chromosome-level
+95% CI for the difference [-2.4, 38.6]) and an eight-taxon long-branch case
+(142516.4 versus 142619.9; CI [-2228.1, 2435.1]). These are finite simulation
+checks, not exact equality claims.
+
+Across 23,821 integrated genomic-hazard samples, the mean was 0.9974 (expected
+1) and the exponential goodness-of-fit test had p=0.731. At 1,000 bp
+separation, topology agreement and pair-time correlation declined as rate
+increased, in the same direction and similar range as msprime SMC′ and Hudson
+ARG references. In the suppressed-region experiment, inside-region
+recombination density rose monotonically with multiplier κ: 0 at κ=0,
+0.000003 at κ=0.01, 0.000073 at κ=0.1, 0.000362 at κ=0.5, and 0.000827 at
+κ=1 events/bp in the tested run. The finite inside/outside marginal checks
+showed no Holm-significant quartet or tree-metric differences; lowering the
+map rate was evaluated as a spatial-dependence change, not assumed to alter
+marginal quartet frequencies.
+
+The deterministic demo figure with tree tracks, map, change positions, and
+topology autocorrelation is `validation/msrc_smc_corrected/demo_smc_map_comparison.png`.
+Other compact result tables and plots are in the same directory. Raw
+chromosome-level genealogies and event-level waiting samples were retained in
+the temporary run directory for this audit and are intentionally not part of
+the repository artifact set.
+
+## Performance and scope
+
+The diagnostic benchmark covers 4, 8, 16, and 32 taxa, two chromosome lengths,
+and two rate levels. Median SMC′ chromosome runtime rose from about 0.004 s at
+4 taxa to 0.86 s at 32 taxa; `msrc-arg` was about 0.006 s and 0.09 s at those
+sizes. The current Python SMC′ implementation is slower at larger taxon counts
+in this small benchmark, so no performance advantage is claimed. Maximum
+traced Python allocation for SMC′ was about 0.66 MiB at 32 taxa. Timings are
+seeded microbenchmarks, not production estimates.
+
+The corrected full repository test suite and exact command are recorded in
+`PROJECT_STATUS.md`. The transition-specific analytic tests include original
+target expiration and a 12,000-replicate fixed-guide conditional-time check.
+The marginal suite adds four- and eight-taxon high-recombination comparisons.
+
+## Reproduction
+
+From the repository root (with the project virtual environment and msprime
+installed):
 
 ```bash
-MPLCONFIGDIR=/tmp/msrc-mpl .venv/bin/python scripts/validate_msrc_smc.py \
-  --output validation/msrc_smc --replicates 20 --reference-trees 1000 \
-  --length 10000 --spatial-replicates 20 --spatial-length 20000
+MPLCONFIGDIR=/private/tmp/mpl .venv/bin/python scripts/validate_msrc_smc.py \
+  --output /private/tmp/msrc-smc-validation \
+  --replicates 40 --reference-trees 1000 --length 10000 \
+  --spatial-replicates 40 --spatial-length 20000
+MPLCONFIGDIR=/private/tmp/mpl .venv/bin/python scripts/demo_msrc_smc.py \
+  --output /private/tmp/msrc-smc-demo
 ```
 
-Run only the suppressed-region suite with:
+`--benchmark-only`, `--suppression-only`, and `--resummarize-only` run the
+corresponding audit sections independently. Validation results are compacted
+under `validation/msrc_smc_corrected/`; regenerate raw results in a writable
+output directory when needed.
 
-```bash
-MPLCONFIGDIR=/tmp/msrc-mpl .venv/bin/python scripts/validate_msrc_smc.py \
-  --output validation/msrc_smc_suppression --suppression-only \
-  --replicates 20 --reference-trees 1000 --spatial-replicates 20 \
-  --spatial-length 20000
-```
+## Remaining limits and next work
 
-Run the reproducible four-taxon demonstration with:
-
-```bash
-MPLCONFIGDIR=/tmp/msrc-mpl .venv/bin/python scripts/demo_msrc_smc.py \
-  --output smc_demo
-```
-
-The associated papers and code repositories are listed in
-[`msrc_smc.md`](msrc_smc.md). The `ipcoal` package was not installed in this
-environment; its published waiting-distance code was not called. The
-independent implementation checks here use msprime and `msrc-arg` instead.
+- Run the paper-associated conditional waiting-distance checks directly using
+  `ipcoal` or the authors' released calculations and expand the tree/Ne grid.
+- Profile and optimize transition tree reconstruction at higher taxon counts.
+- Keep background histories out of state until a joint backward model has been
+  derived for genomic recombination, background switching, selection, and
+  shared demographic trajectories.
+- Retain `msrc-arg` unchanged as an independent benchmark.

@@ -130,7 +130,15 @@ def _transition(root, tree, rng):
     species_root_age=tree.root.age
     while True:
         guide_edges=_edge_rows(root)
-        boundaries=sorted({v for _,_,lo2,hi2,_ in guide_edges for v in (lo2,hi2) if v>t+1e-10} | {tree.branches[b].older_age for b in tree.branches if tree.branches[b].older_age>t+1e-10})
+        boundaries={v for _,_,lo2,hi2,_ in guide_edges for v in (lo2,hi2) if v>t+1e-10}
+        # The original-edge target expires when it reaches its old parent
+        # coalescence. If this endpoint is omitted, the current target set is
+        # incorrectly held constant beyond that genealogy event, producing
+        # excess invisible events and a downward root-age bias.
+        if detached_edge[3]>t+1e-10:
+            boundaries.add(detached_edge[3])
+        boundaries.update(tree.branches[b].older_age for b in tree.branches if tree.branches[b].older_age>t+1e-10)
+        boundaries=sorted(boundaries)
         end=boundaries[0] if boundaries else float("inf")
         pop=_pop_at(tree,desc,t)
         eligible=[]

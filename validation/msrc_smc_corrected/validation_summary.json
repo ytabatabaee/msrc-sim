@@ -1,0 +1,322 @@
+{
+  "versions": {
+    "msprime": "1.4.5",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1"
+  },
+  "parameters": {
+    "chromosome_replicates": 40,
+    "independent_MSC_gene_trees_per_case": 1000,
+    "marginal_length_bp": 10000,
+    "spatial_replicates_per_rate_and_method": 40,
+    "spatial_length_bp": 20000
+  },
+  "marginal_cases": [
+    {
+      "case": "2taxa_short_small_low",
+      "n_taxa": 2,
+      "internal_branch_tau_over_2Ne": 0.05,
+      "default_Ne": 100,
+      "variable_branch_Ne": false,
+      "rate_proxy_q": 1,
+      "rate_per_bp_per_generation": 2.5e-07,
+      "chromosome_length": 10000,
+      "reference_independent_trees": 1000,
+      "chromosome_replicates": 40,
+      "method_event_means": {
+        "msrc_smc": {
+          "recombinations": 1.025,
+          "tree_changes": 0.625,
+          "topology_changes": 0.0,
+          "local_trees": 2.025
+        },
+        "msprime_smc_prime": {
+          "recombinations": 1.0,
+          "tree_changes": 0.675,
+          "topology_changes": 0.0,
+          "local_trees": 1.675
+        },
+        "msprime_hudson": {
+          "recombinations": 1.0,
+          "tree_changes": 0.65,
+          "topology_changes": 0.0,
+          "local_trees": 1.65
+        },
+        "msrc_arg": {
+          "recombinations": 1.15,
+          "tree_changes": 0.725,
+          "topology_changes": 0.0,
+          "local_trees": 1.725
+        }
+      },
+      "n_mean_tests_ci_excludes_zero": 0
+    },
+    {
+      "case": "3taxa_short_small_low",
+      "n_taxa": 3,
+      "internal_branch_tau_over_2Ne": 0.05,
+      "default_Ne": 100,
+      "variable_branch_Ne": false,
+      "rate_proxy_q": 1,
+      "rate_per_bp_per_generation": 2.5e-07,
+      "chromosome_length": 10000,
+      "reference_independent_trees": 1000,
+      "chromosome_replicates": 40,
+      "method_event_means": {
+        "msrc_smc": {
+          "recombinations": 1.4,
+          "tree_changes": 0.8,
+          "topology_changes": 0.25,
+          "local_trees": 2.4
+        },
+        "msprime_smc_prime": {
+          "recombinations": 1.6,
+          "tree_changes": 1.3,
+          "topology_changes": 0.4,
+          "local_trees": 2.3
+        },
+        "msprime_hudson": {
+          "recombinations": 1.6,
+          "tree_changes": 1.325,
+          "topology_changes": 0.425,
+          "local_trees": 2.325
+        },
+        "msrc_arg": {
+          "recombinations": 2.0,
+          "tree_changes": 1.325,
+          "topology_changes": 0.25,
+          "local_trees": 2.325
+        }
+      },
+      "n_mean_tests_ci_excludes_zero": 0
+    },
+    {
+      "case": "3taxa_long_large_moderate",
+      "n_taxa": 3,
+      "internal_branch_tau_over_2Ne": 2.0,
+      "default_Ne": 10000,
+      "variable_branch_Ne": false,
+      "rate_proxy_q": 5,
+      "rate_per_bp_per_generation": 1.25e-08,
+      "chromosome_length": 10000,
+      "reference_independent_trees": 1000,
+      "chromosome_replicates": 40,
+      "method_event_means": {
+        "msrc_smc": {
+          "recombinations": 32.175,
+          "tree_changes": 11.475,
+          "topology_changes": 1.325,
+          "local_trees": 33.175
+        },
+        "msprime_smc_prime": {
+          "recombinations": 30.725,
+          "tree_changes": 10.725,
+          "topology_changes": 1.225,
+          "local_trees": 11.725
+        },
+        "msprime_hudson": {
+          "recombinations": 36.85,
+          "tree_changes": 12.3,
+          "topology_changes": 1.65,
+          "local_trees": 13.3
+        },
+        "msrc_arg": {
+          "recombinations": 35.15,
+          "tree_changes": 11.65,
+          "topology_changes": 0.85,
+          "local_trees": 12.65
+        }
+      },
+      "n_mean_tests_ci_excludes_zero": 4
+    },
+    {
+      "case": "4taxa_short_large_variable_moderate",
+      "n_taxa": 4,
+      "internal_branch_tau_over_2Ne": 0.05,
+      "default_Ne": 10000,
+      "variable_branch_Ne": true,
+      "rate_proxy_q": 5,
+      "rate_per_bp_per_generation": 1.25e-08,
+      "chromosome_length": 10000,
+      "reference_independent_trees": 1000,
+      "chromosome_replicates": 40,
+      "method_event_means": {
+        "msrc_smc": {
+          "recombinations": 19.425,
+          "tree_changes": 14.225,
+          "topology_changes": 4.125,
+          "local_trees": 20.425
+        },
+        "msprime_smc_prime": {
+          "recombinations": 18.325,
+          "tree_changes": 13.25,
+          "topology_changes": 4.425,
+          "local_trees": 14.25
+        },
+        "msprime_hudson": {
+          "recombinations": 21.6,
+          "tree_changes": 12.65,
+          "topology_changes": 3.45,
+          "local_trees": 13.65
+        },
+        "msrc_arg": {
+          "recombinations": 23.0,
+          "tree_changes": 14.025,
+          "topology_changes": 5.05,
+          "local_trees": 15.025
+        }
+      },
+      "n_mean_tests_ci_excludes_zero": 0
+    },
+    {
+      "case": "4taxa_long_small_high",
+      "n_taxa": 4,
+      "internal_branch_tau_over_2Ne": 2.0,
+      "default_Ne": 100,
+      "variable_branch_Ne": false,
+      "rate_proxy_q": 20,
+      "rate_per_bp_per_generation": 5e-06,
+      "chromosome_length": 10000,
+      "reference_independent_trees": 1000,
+      "chromosome_replicates": 40,
+      "method_event_means": {
+        "msrc_smc": {
+          "recombinations": 160.325,
+          "tree_changes": 71.15,
+          "topology_changes": 12.225,
+          "local_trees": 161.325
+        },
+        "msprime_smc_prime": {
+          "recombinations": 161.15,
+          "tree_changes": 69.175,
+          "topology_changes": 12.95,
+          "local_trees": 70.175
+        },
+        "msprime_hudson": {
+          "recombinations": 241.875,
+          "tree_changes": 68.725,
+          "topology_changes": 11.875,
+          "local_trees": 69.725
+        },
+        "msrc_arg": {
+          "recombinations": 245.25,
+          "tree_changes": 69.825,
+          "topology_changes": 12.3,
+          "local_trees": 70.825
+        }
+      },
+      "n_mean_tests_ci_excludes_zero": 0
+    },
+    {
+      "case": "8taxa_short_small_variable_moderate",
+      "n_taxa": 8,
+      "internal_branch_tau_over_2Ne": 0.05,
+      "default_Ne": 100,
+      "variable_branch_Ne": true,
+      "rate_proxy_q": 5,
+      "rate_per_bp_per_generation": 1.25e-06,
+      "chromosome_length": 10000,
+      "reference_independent_trees": 1000,
+      "chromosome_replicates": 40,
+      "method_event_means": {
+        "msrc_smc": {
+          "recombinations": 27.0,
+          "tree_changes": 21.4,
+          "topology_changes": 11.175,
+          "local_trees": 28.0
+        },
+        "msprime_smc_prime": {
+          "recombinations": 28.05,
+          "tree_changes": 21.125,
+          "topology_changes": 11.25,
+          "local_trees": 22.125
+        },
+        "msprime_hudson": {
+          "recombinations": 31.325,
+          "tree_changes": 19.775,
+          "topology_changes": 9.975,
+          "local_trees": 20.775
+        },
+        "msrc_arg": {
+          "recombinations": 29.8,
+          "tree_changes": 20.025,
+          "topology_changes": 10.475,
+          "local_trees": 21.025
+        }
+      },
+      "n_mean_tests_ci_excludes_zero": 0
+    },
+    {
+      "case": "8taxa_long_large_high",
+      "n_taxa": 8,
+      "internal_branch_tau_over_2Ne": 2.0,
+      "default_Ne": 10000,
+      "variable_branch_Ne": false,
+      "rate_proxy_q": 20,
+      "rate_per_bp_per_generation": 5e-08,
+      "chromosome_length": 10000,
+      "reference_independent_trees": 1000,
+      "chromosome_replicates": 40,
+      "method_event_means": {
+        "msrc_smc": {
+          "recombinations": 354.175,
+          "tree_changes": 155.55,
+          "topology_changes": 34.925,
+          "local_trees": 355.175
+        },
+        "msprime_smc_prime": {
+          "recombinations": 361.475,
+          "tree_changes": 158.2,
+          "topology_changes": 38.075,
+          "local_trees": 159.2
+        },
+        "msprime_hudson": {
+          "recombinations": 535.075,
+          "tree_changes": 161.375,
+          "topology_changes": 38.25,
+          "local_trees": 162.375
+        },
+        "msrc_arg": {
+          "recombinations": 533.8,
+          "tree_changes": 153.75,
+          "topology_changes": 36.825,
+          "local_trees": 154.75
+        }
+      },
+      "n_mean_tests_ci_excludes_zero": 0
+    }
+  ],
+  "integrated_hazard_exponential_audit": {
+    "n": 23821,
+    "mean": 0.9973708176053171,
+    "expected_mean": 1.0,
+    "ks_exponential_pvalue": 0.7312562298497363
+  },
+  "limitations": [
+    "ipcoal unavailable in this environment; published conditional waiting-distance calculator not called",
+    "msprime was the independent SMC-prime and exact Hudson ARG reference",
+    "Monte Carlo confidence intervals use independent chromosome replicates for linked results"
+  ],
+  "marginal_test_results": {
+    "msrc_smc": {
+      "comparisons": 439,
+      "holm_significant_at_0.05": 0,
+      "95pct_CI_excludes_zero": 16
+    },
+    "msprime_smc_prime": {
+      "comparisons": 439,
+      "holm_significant_at_0.05": 0,
+      "95pct_CI_excludes_zero": 18
+    },
+    "msprime_hudson": {
+      "comparisons": 439,
+      "holm_significant_at_0.05": 0,
+      "95pct_CI_excludes_zero": 2
+    },
+    "msrc_arg": {
+      "comparisons": 439,
+      "holm_significant_at_0.05": 0,
+      "95pct_CI_excludes_zero": 26
+    }
+  }
+}

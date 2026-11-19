@@ -212,6 +212,14 @@ def _waiting_summary(events,L):
         out[name+"_median_wait_bp"]=float(np.median(gaps)) if len(gaps) else np.nan
     return out
 
+def _waiting_samples(events):
+    rows=[]
+    for name,positions in events.items():
+        xs=sorted(float(x) for x in positions)
+        gaps=np.diff([0.0,*xs])
+        rows.extend({"event_type":name,"wait_bp":float(x)} for x in gaps)
+    return rows
+
 
 def _transition_positions(metrics,widths):
     pos=[]; topo=[]
@@ -239,9 +247,15 @@ def _smc_hazard_audit(result,metrics,widths,recmap):
 
 def _summarize_method(summaries,ref_values,case_name,method):
     rows=[]
-    keys=sorted(set().union(*(s.keys() for s in summaries)))
+    keys=set().union(*(s.keys() for s in summaries))
+    keys.update("qfreq:"+q for m in ref_values for q in m["quartets"])
+    keys=sorted(keys)
     for key in keys:
-        vals=np.asarray([s.get(key,np.nan) for s in summaries],float)
+        # A quartet topology absent from an entire chromosome contributes a
+        # true zero. Omitting that chromosome conditions on seeing the topology
+        # and inflates linked-tree frequencies, especially for rare splits.
+        default=0.0 if key.startswith("qfreq:") else np.nan
+        vals=np.asarray([s.get(key,default) for s in summaries],float)
         vals=vals[np.isfinite(vals)]
         if key.startswith("qfreq:"):
             # Independent MSC trees are the sampling unit for the reference.
@@ -287,7 +301,7 @@ def _case_rows():
 
 
 def run_marginal(args,out):
-    rows=[]; testrows=[]; summary=[]; waiting_rows=[]; hazard_rows=[]
+    rows=[]; testrows=[]; summary=[]; waiting_rows=[]; hazard_rows=[]; waiting_samples=[]
     for idx,(n,tau,ne,var,qrate,name) in enumerate(_case_rows()):
         tree=make_species_tree(n,tau*2*ne,ne,var); L=args.length; rate=qrate/(4*ne*L)
         dem=msprime_demography(tree)
@@ -299,7 +313,10 @@ def run_marginal(args,out):
                 num_replicates=args.reference_trees)
         for ts in ref_iterator:
             labels={int(u):str(tree.taxa[i]) for i,u in enumerate(ts.samples())}
-            ref.append(_metric_tskit(ts.first(),labels))
+            metric=_metric_tskit(ts.first(),labels); ref.append(metric)
+            rows.append({"case":name,"method":"independent_MSC","replicate":len(ref)-1,"start":0.0,"end":1.0,
+                         "span":1.0,"topology":metric["topology"],"root_age":metric["root_age"],"pair_mean":metric["pair_mean"],
+                         "internal_mean":metric["internal_mean"],"total_length":metric["total_length"],**{"qfreq:"+k:v for k,v in metric["quartets"].items()}})
         method_summaries={"msrc_smc":[],"msprime_smc_prime":[],"msprime_hudson":[],"msrc_arg":[]}
         recomb_counts={k:[] for k in method_summaries}; change_counts={k:[] for k in method_summaries}; topo_counts={k:[] for k in method_summaries}
         tree_counts={k:[] for k in method_summaries}
@@ -313,6 +330,8 @@ def run_marginal(args,out):
             smc_toppos=[e.position for e in res.events if e.event_type=="topology_change"]
             waiting_rows.append({"case":name,"method":"msrc_smc","replicate":j,"recombination_events":nrec,
                 **_waiting_summary({"recombination": [e.position for e in res.events],"tree_change":smc_treepos,"topology_change":smc_toppos},L)})
+            waiting_samples.extend({"case":name,"method":"msrc_smc","replicate":j,**x} for x in _waiting_samples(
+                {"recombination":[e.position for e in res.events],"tree_change":smc_treepos,"topology_change":smc_toppos}))
             hvals=_smc_hazard_audit(res,mm,ww,PiecewiseConstantMap.constant(L,rate))
             for hidx,hval in enumerate(hvals): hazard_rows.append({"case":name,"replicate":j,"event_index":hidx,"integrated_hazard":hval})
             for method,key in (("msprime_smc_prime","smc_prime"),("msprime_hudson","hudson")):
@@ -323,6 +342,14 @@ def run_marginal(args,out):
                 waiting_rows.append({"case":name,"method":method,"replicate":j,"recombination_events":nr,
                     "recombination_count_only":nr,"tree_change_count":ng,"topology_change_count":nt,
                     **_waiting_summary({"tree_change":bp,"topology_change":tp},L)})
+                waiting_samples.extend({"case":name,"method":method,"replicate":j,**x} for x in _waiting_samples({"tree_change":bp,"topology_change":tp}))
+                local_start=0.0
+                for mm,span in zip(m,w):
+                    rows.append({"case":name,"method":method,"replicate":j,"start":local_start,"end":local_start+span,"span":span,
+                                 "topology":mm["topology"],"root_age":mm["root_age"],"pair_mean":mm["pair_mean"],
+                                 "internal_mean":mm["internal_mean"],"total_length":mm["total_length"],
+                                 **{"qfreq:"+k:v for k,v in mm["quartets"].items()}})
+                    local_start+=span
             from msrcsim.arg.engine import ARGConfig, simulate_arg
             from msrcsim.arg.recombination_map import PiecewiseConstantRecombinationMap as ARGMap
             from msrcsim.arg.output.tree_sequence import build_tree_sequence
@@ -347,8 +374,20 @@ def run_marginal(args,out):
             arg_treepos,arg_toppos=_transition_positions(arg_metrics,arg_widths)
             waiting_rows.append({"case":name,"method":"msrc_arg","replicate":j,"recombination_events":len(arg_recs),
                 **_waiting_summary({"recombination":arg_recs,"tree_change":arg_treepos,"topology_change":arg_toppos},L)})
+            waiting_samples.extend({"case":name,"method":"msrc_arg","replicate":j,**x} for x in _waiting_samples(
+                {"recombination":arg_recs,"tree_change":arg_treepos,"topology_change":arg_toppos}))
+            local_start=0.0
+            for mm,span in zip(arg_metrics,arg_widths):
+                rows.append({"case":name,"method":"msrc_arg","replicate":j,"start":local_start,"end":local_start+span,"span":span,
+                             "topology":mm["topology"],"root_age":mm["root_age"],"pair_mean":mm["pair_mean"],
+                             "internal_mean":mm["internal_mean"],"total_length":mm["total_length"],
+                             **{"qfreq:"+k:v for k,v in mm["quartets"].items()}})
+                local_start+=span
             for t in res.trees:
-                rows.append({"case":name,"method":"msrc_smc","replicate":j,"start":t.start,"end":t.end,"topology":t.topology})
+                metric=_metric_newick(t.newick); span=t.end-t.start
+                rows.append({"case":name,"method":"msrc_smc","replicate":j,"start":t.start,"end":t.end,"span":span,"topology":t.topology,
+                             "root_age":metric["root_age"],"pair_mean":metric["pair_mean"],"internal_mean":metric["internal_mean"],
+                             "total_length":metric["total_length"],**{"qfreq:"+k:v for k,v in metric["quartets"].items()}})
         all_tests=[]
         for method,sums in method_summaries.items():
             trows=_summarize_method(sums,ref,name,method); testrows.extend(trows); all_tests.extend(trows)
@@ -362,7 +401,7 @@ def run_marginal(args,out):
                         "n_mean_tests_ci_excludes_zero":sum(x["difference_ci95_low"]*x["difference_ci95_high"]>0 for x in all_tests if not x["metric"].startswith("qfreq:"))})
         print(name,"done",{m:round(float(np.mean(recomb_counts[m])),1) for m in method_summaries})
     _holm(testrows)
-    return rows,testrows,summary,waiting_rows,hazard_rows
+    return rows,testrows,summary,waiting_rows,hazard_rows,waiting_samples
 
 
 def _tree_at(metrics,widths,x):
@@ -569,9 +608,27 @@ def run_benchmarks(out):
                 res=simulate_msc_smc(tree,SMCConfig(L,PiecewiseConstantMap.constant(L,rate),800000+n+L),np.random.default_rng(800000+n+L))
                 runtime=time.perf_counter()-start; _,peak=tracemalloc.get_traced_memory(); tracemalloc.stop()
                 data.append({"taxa":n,"chromosome_length_bp":L,"rate_per_bp_per_generation":rate,"q_proxy":q,"recombination_events":len(res.events),
-                             "local_genealogies":len(res.trees),"runtime_seconds":runtime,"peak_python_bytes":peak,
-                             "seconds_per_event":runtime/max(1,len(res.events)),"seconds_per_local_tree":runtime/max(1,len(res.trees))})
-                print("benchmark",n,L,q,len(res.events),round(runtime,3))
+                             "local_genealogies":len(res.trees),"genealogy_changes":sum(e.event_type!="no_genealogy_change" for e in res.events),
+                             "topology_changes":sum(e.event_type=="topology_change" for e in res.events),"runtime_seconds":runtime,"peak_python_bytes":peak,
+                             "seconds_per_event":runtime/max(1,len(res.events)),"seconds_per_transition":runtime/max(1,len(res.events)),"seconds_per_local_tree":runtime/max(1,len(res.trees)),"method":"msrc_smc_corrected"})
+                from msrcsim.arg.engine import ARGConfig, simulate_arg
+                from msrcsim.arg.recombination_map import PiecewiseConstantRecombinationMap as ARGMap
+                from msrcsim.arg.output.tree_sequence import build_tree_sequence
+                tracemalloc.start(); start=time.perf_counter()
+                arg=simulate_arg(tree,ARGConfig(L,ARGMap.constant(L,rate)),np.random.default_rng(900000+n+L))
+                ts=build_tree_sequence(arg).simplify()
+                arg_runtime=time.perf_counter()-start; _,arg_peak=tracemalloc.get_traced_memory(); tracemalloc.stop()
+                from msrcsim.arg.output.genealogy_export import _labels as arg_labels
+                labels=arg_labels(ts)
+                metrics=[]; widths=[]
+                for t in ts.trees(): metrics.append(_metric_tskit(t,labels)); widths.append(t.interval.right-t.interval.left)
+                bp,tp=_transition_positions(metrics,widths)
+                arg_recombinations=sum(e.event_type=="recombination" for e in arg.events)
+                data.append({"taxa":n,"chromosome_length_bp":L,"rate_per_bp_per_generation":rate,"q_proxy":q,
+                             "recombination_events":arg_recombinations,"local_genealogies":len(metrics),"genealogy_changes":len(bp),"topology_changes":len(tp),
+                             "runtime_seconds":arg_runtime,"peak_python_bytes":arg_peak,"seconds_per_event":arg_runtime/max(1,arg_recombinations),
+                             "seconds_per_transition":arg_runtime/max(1,arg_recombinations),"seconds_per_local_tree":arg_runtime/max(1,len(metrics)),"method":"msrc_arg"})
+                print("benchmark",n,L,q,"smc",len(res.events),round(runtime,3),"arg",arg_recombinations,round(arg_runtime,3))
     return data
 
 
@@ -580,6 +637,126 @@ def write_csv(path,rows):
     keys=sorted(set().union(*(x.keys() for x in rows))) if rows else []
     with path.open("w",newline="") as f:
         w=csv.DictWriter(f,fieldnames=keys);w.writeheader();w.writerows(rows)
+
+def resummarize_marginals(out):
+    """Recompute marginal tests from raw span rows, including absent quartets as zero."""
+    import csv
+    with (out/"marginal_genealogies.csv").open() as f:
+        data=list(csv.DictReader(f))
+    cases=list(dict.fromkeys(x["case"] for x in data))
+    rows=[]; continuous=("root_age","pair_mean","internal_mean","total_length")
+    for case in cases:
+        ref=[x for x in data if x["case"]==case and x["method"]=="independent_MSC"]
+        qkeys=sorted({key[6:] for x in ref for key,value in x.items() if key.startswith("qfreq:") and value not in ("",None)})
+        for method in ("msrc_smc","msprime_smc_prime","msprime_hudson","msrc_arg"):
+            linked=[x for x in data if x["case"]==case and x["method"]==method and x.get("span")]
+            reps=sorted({x["replicate"] for x in linked})
+            values={metric:[] for metric in (*continuous,*("qfreq:"+q for q in qkeys))}
+            for rep in reps:
+                trees=[x for x in linked if x["replicate"]==rep]
+                weights=np.asarray([float(x["span"]) for x in trees]); weights=weights/weights.sum()
+                for metric in continuous:
+                    values[metric].append(float(np.average([float(x[metric]) for x in trees],weights=weights)))
+                for qkey in qkeys:
+                    col="qfreq:"+qkey
+                    values[col].append(float(np.average([float(x[col]) if x.get(col) else 0.0 for x in trees],weights=weights)))
+            for metric,linked_values in values.items():
+                refs=np.asarray([float(x[metric[6:]]) if metric.startswith("qfreq:") and x.get(metric[6:]) else
+                                 (float(x["qfreq:"+metric[6:]]) if metric.startswith("qfreq:") and x.get("qfreq:"+metric[6:]) else 0.0)
+                                 if metric.startswith("qfreq:") else float(x[metric]) for x in ref])
+                vals=np.asarray(linked_values,float)
+                if len(vals)<2 or len(refs)<2: continue
+                diff=float(vals.mean()-refs.mean()); va=float(vals.var(ddof=1)/len(vals)); vb=float(refs.var(ddof=1)/len(refs)); se=float(np.sqrt(va+vb))
+                den=va**2/(len(vals)-1)+vb**2/(len(refs)-1); df=(va+vb)**2/den if den>0 else float("inf")
+                stat=0.0 if se==0 and diff==0 else (np.inf if se==0 else diff/se)
+                pvalue=1.0 if se==0 and diff==0 else (0.0 if se==0 else float(2*st.t.sf(abs(stat),df)))
+                crit=float(st.t.ppf(.975,df)) if np.isfinite(df) else 1.959963984540054
+                rows.append({"case":case,"method":method,"metric":metric,"reference_mean":float(refs.mean()),"method_mean":float(vals.mean()),
+                             "difference":diff,"difference_ci95_low":diff-crit*se,"difference_ci95_high":diff+crit*se,
+                             "standard_error":se,"welch_t":stat,"welch_df":float(df),"p_value":pvalue,
+                             "n_chromosomes":len(vals),"n_independent_trees":len(refs)})
+    _holm(rows)
+    write_csv(out/"marginal_metric_tests.csv",rows)
+    summary_path=out/"validation_summary.json"
+    if summary_path.exists():
+        report=json.loads(summary_path.read_text())
+        report["marginal_test_results"]={m:{"comparisons":sum(x["method"]==m for x in rows),
+            "holm_significant_at_0.05":sum(x["method"]==m and x["p_holm_all_metrics"]<.05 for x in rows),
+            "95pct_CI_excludes_zero":sum(x["method"]==m and x["difference_ci95_low"]*x["difference_ci95_high"]>0 for x in rows)}
+            for m in ("msrc_smc","msprime_smc_prime","msprime_hudson","msrc_arg")}
+        summary_path.write_text(json.dumps(report,indent=2)+"\n")
+    return rows
+
+def plot_diagnostics(out):
+    import csv
+    def read(name):
+        path=out/name
+        return list(csv.DictReader(path.open())) if path.exists() else []
+    tests=read("marginal_metric_tests.csv")
+    if tests:
+        cases=list(dict.fromkeys(x["case"] for x in tests if x["method"]=="msrc_smc" and x["metric"]=="root_age"))
+        fig,ax=plt.subplots(figsize=(11,5))
+        ax.axhline(1,color="black",lw=1)
+        for method,marker in (("msrc_smc","o"),("msprime_smc_prime","s"),("msprime_hudson","^"),("msrc_arg","D")):
+            chosen=[x for x in tests if x["method"]==method and x["metric"]=="root_age"]
+            chosen.sort(key=lambda x:cases.index(x["case"]))
+            if not chosen: continue
+            x=[cases.index(z["case"]) for z in chosen]
+            ref=np.asarray([float(z["reference_mean"]) for z in chosen]); ratio=np.asarray([float(z["method_mean"]) for z in chosen])/ref
+            low=np.asarray([float(z["difference_ci95_low"]) for z in chosen])/ref
+            high=np.asarray([float(z["difference_ci95_high"]) for z in chosen])/ref
+            ax.errorbar(x,ratio,yerr=np.vstack([ratio-(1+low),1+high-ratio]),marker=marker,capsize=2,label=method)
+        ax.set_xticks(range(len(cases)),cases,rotation=35,ha="right");ax.set_ylabel("Root-age mean / independent MSC mean")
+        ax.legend(frameon=False);fig.tight_layout();fig.savefig(out/"root_age_comparison.png",dpi=180);plt.close(fig)
+        quartet=[x for x in tests if x["metric"].startswith("qfreq:")]
+        if quartet:
+            fig,ax=plt.subplots(figsize=(6,6));ax.plot([0,1],[0,1],color="black",lw=1)
+            for method,marker in (("msrc_smc","o"),("msprime_smc_prime","s"),("msprime_hudson","^"),("msrc_arg","D")):
+                z=[x for x in quartet if x["method"]==method]
+                if z: ax.scatter([float(a["reference_mean"]) for a in z],[float(a["method_mean"]) for a in z],s=15,alpha=.55,label=method,marker=marker)
+            ax.set(xlim=(-.03,1.03),ylim=(-.03,1.03),xlabel="Independent MSC quartet frequency",ylabel="Linked chromosome span-weighted frequency")
+            ax.legend(frameon=False);fig.tight_layout();fig.savefig(out/"quartet_frequency_comparison.png",dpi=180);plt.close(fig)
+    tree_rows=read("marginal_genealogies.csv")
+    if tree_rows:
+        cases=["4taxa_long_small_high","8taxa_long_large_high"]
+        fig,axs=plt.subplots(1,2,figsize=(11,4))
+        methods=("independent_MSC","msrc_smc","msprime_smc_prime","msprime_hudson","msrc_arg")
+        colors=dict(zip(methods,("black","#d36b3f","#315a9a","#65a765","#8064a2")))
+        for ax,case in zip(axs,cases):
+            all_values=[float(r["root_age"]) for r in tree_rows if r["case"]==case and r.get("root_age")]
+            bins=np.linspace(min(all_values),max(all_values),36) if all_values else 35
+            for method in methods:
+                z=[r for r in tree_rows if r["case"]==case and r["method"]==method and r.get("root_age")]
+                if not z: continue
+                vals=np.asarray([float(r["root_age"]) for r in z]); weights=np.asarray([float(r.get("span") or 1) for r in z])
+                ax.hist(vals,bins=bins,weights=weights/weights.sum(),density=False,histtype="step",lw=1.5,color=colors[method],label=method)
+            ax.set_title(case);ax.set_xlabel("Root age (generations)");ax.set_ylabel("Span-weighted frequency")
+        axs[0].legend(fontsize=7,frameon=False);fig.tight_layout();fig.savefig(out/"root_age_distributions.png",dpi=180);plt.close(fig)
+    waits=read("waiting_distances.csv")
+    if waits:
+        fig,axs=plt.subplots(1,3,figsize=(13,4),sharey=True)
+        methods=("msrc_smc","msprime_smc_prime","msprime_hudson","msrc_arg")
+        for ax,event in zip(axs,("recombination","tree_change","topology_change")):
+            for method in methods:
+                vals=[float(r["wait_bp"]) for r in waits if r["method"]==method and r["event_type"]==event]
+                if vals: ax.hist(vals,bins=35,density=True,histtype="step",lw=1.3,label=method)
+            ax.set_title(event.replace("_"," "));ax.set_xlabel("Waiting distance (bp)")
+        axs[0].set_ylabel("Density");axs[0].legend(fontsize=7,frameon=False);fig.tight_layout();fig.savefig(out/"waiting_distance_distributions.png",dpi=180);plt.close(fig)
+    bench=read("benchmark.csv")
+    if bench:
+        fig,axs=plt.subplots(1,2,figsize=(11,4))
+        for method in sorted(set(x["method"] for x in bench)):
+            for L in sorted(set(int(x["chromosome_length_bp"]) for x in bench)):
+                z=[x for x in bench if x["method"]==method and int(x["chromosome_length_bp"])==L]
+                z.sort(key=lambda a:int(a["taxa"]))
+                axs[0].plot([int(x["taxa"]) for x in z],[float(x["runtime_seconds"]) for x in z],marker="o",label=f"{method}, L={L}")
+        axs[0].set(xlabel="Taxa",ylabel="Runtime (s)",yscale="log");axs[0].legend(fontsize=7,frameon=False)
+        taxa=sorted(set(int(x["taxa"]) for x in bench))
+        for method in sorted(set(x["method"] for x in bench)):
+            vals=[np.mean([float(x["seconds_per_transition"]) for x in bench if x["method"]==method and int(x["taxa"])==n]) for n in taxa]
+            axs[1].plot(taxa,vals,marker="o",label=method)
+        axs[1].set(xlabel="Taxa",ylabel="Seconds per recombination event");axs[1].legend(fontsize=7,frameon=False)
+        fig.tight_layout();fig.savefig(out/"runtime_scaling.png",dpi=180);plt.close(fig)
 
 
 def main():
@@ -592,7 +769,13 @@ def main():
     p.add_argument("--spatial-length",type=int,default=20000)
     p.add_argument("--skip-benchmark",action="store_true")
     p.add_argument("--suppression-only",action="store_true",help="run only the region-of-suppressed-recombination suite")
+    p.add_argument("--benchmark-only",action="store_true",help="run only the corrected SMC and neutral ARG performance comparison")
+    p.add_argument("--resummarize-only",action="store_true",help="recompute marginal tests from existing span-level CSV output")
     args=p.parse_args(); out=Path(args.output); out.mkdir(parents=True,exist_ok=True)
+    if args.resummarize_only:
+        resummarize_marginals(out); plot_diagnostics(out); return
+    if args.benchmark_only:
+        write_csv(out/"benchmark.csv",run_benchmarks(out)); plot_diagnostics(out); return
     if args.suppression_only:
         suppressed,suppressed_summary,suppressed_ac,suppressed_ac_summary,suppressed_tests=run_suppression(args,out)
         write_csv(out/"suppressed_region_chromosomes.csv",suppressed)
@@ -601,9 +784,9 @@ def main():
         write_csv(out/"suppressed_region_autocorrelation_summary.csv",suppressed_ac_summary)
         write_csv(out/"suppressed_region_marginal_tests.csv",suppressed_tests)
         return
-    marginal,tests,summaries,waiting,hazards=run_marginal(args,out)
+    marginal,tests,summaries,waiting,hazards,waiting_samples=run_marginal(args,out)
     write_csv(out/"marginal_genealogies.csv",marginal); write_csv(out/"marginal_metric_tests.csv",tests)
-    write_csv(out/"waiting_distances.csv",waiting); write_csv(out/"integrated_hazards.csv",hazards)
+    write_csv(out/"waiting_distance_summary.csv",waiting); write_csv(out/"waiting_distances.csv",waiting_samples); write_csv(out/"integrated_hazards.csv",hazards)
     hazard_values=np.asarray([x["integrated_hazard"] for x in hazards],float)
     hazard_values=hazard_values[np.isfinite(hazard_values)]
     hazard_summary={"n":int(len(hazard_values)),"mean":float(hazard_values.mean()) if len(hazard_values) else None,
@@ -618,6 +801,7 @@ def main():
     write_csv(out/"suppressed_region_marginal_tests.csv",suppressed_tests)
     if not args.skip_benchmark:
         bench=run_benchmarks(out); write_csv(out/"benchmark.csv",bench)
+    plot_diagnostics(out)
     report={"versions":{"msprime":msprime.__version__,"numpy":np.__version__,"scipy":__import__('scipy').__version__},
             "parameters":{"chromosome_replicates":args.replicates,"independent_MSC_gene_trees_per_case":args.reference_trees,
                           "marginal_length_bp":args.length,"spatial_replicates_per_rate_and_method":args.spatial_replicates,

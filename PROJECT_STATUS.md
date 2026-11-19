@@ -324,74 +324,82 @@ Phase 2:
 4. Only then add an MSRC-SMC mode and compare it with `msrc-arg`; retain
    `msrc-arg` as the validation benchmark.
 
-## Neutral SMC′ Validation Follow-up (2026-11-16)
+## Neutral SMC′ Validation Follow-up (2026-11-19)
 
-Completed:
+Corrected and completed:
 
-- Added `scripts/validate_msrc_smc.py` to compare linked-chromosome summaries
-  against 1,000 independent MSC trees per case, msprime SMC′, exact Hudson ARG,
-  and `msrc-arg` over seven 2-, 3-, 4-, and 8-taxon cases.
-- Added chromosome-clustered confidence intervals for marginal and spatial
-  summaries, integrated-hazard checks, a κ sweep for a region of suppressed
-  recombination, and a 4–32-taxon runtime/memory benchmark.
-- Corrected the msprime reference population-size scaling for the project's
-  `1/(2Ne)` pairwise rate and simplified full-ARG marginal trees before
-  measuring branches, to exclude unary recombination nodes.
-- Changed invisible-event classification to use the explicit identity of the
-  original edge, not descendant-set equality. Event records now report the
-  target edge kind and re-coalescence population.
-- Preserved the full map-integration and tree-validity tests. Updated the demo
-  to accept an output directory and reran it with three constant-rate maps and
-  one map containing a region of suppressed recombination.
+- Fixed root-age bias in `msrcsim/smc/engine.py`: the transition interval
+  partition now includes the original cut edge's parent time, when its
+  re-coalescence target expires. A stale target set had allowed impossible
+  invisible events past that time.
+- Added the two-tip analytic target-expiry and conditional re-coalescence-time
+  tests, including 12,000 fixed-guide transitions; added four- and eight-taxon
+  high-recombination marginal comparisons and a regression test for absent
+  quartet topologies being counted as zero.
+- Fixed the validation summarizer's absent-quartet handling. Previously, it
+  omitted chromosomes with zero count for a topology and biased its frequency
+  summaries upward. All corrected results below use the corrected summary.
+- Compared against independent MSC draws, msprime SMC′, msprime Hudson ARG,
+  and `msrc-arg` over seven settings. Added integrated-hazard, spatial
+  autocorrelation, suppressed-region, and runtime/memory checks. No changes
+  were made to `msrc-arg` or production simulation code.
+- Saved compact audit tables and figures at
+  `validation/msrc_smc_corrected/`; raw chromosome/event tables were kept in
+  the temporary run directory and are not committed.
 
-Validation outcomes:
+Validation results:
 
-- Full repository suite after the final code changes: **228 passed, 1
-  existing warning** (the validation-grid regression threshold is outside its
-  sampled grid). Focused SMC suite: **15 passed**.
-- Integrated genomic hazards: 11,087 events, mean Exp(1) variate 0.982,
-  exponential KS p = 0.112.
-- **MSC marginal validation failed for the prototype transition.** Nine of
-  395 prototype marginal comparisons remain significant after Holm correction.
-  In the 8-taxon long-branch case, mean root age is 132,245 generations versus
-  142,516 from independent MSC trees; in the 4-taxon long-branch case, 924
-  versus 1,008 generations. msprime SMC′ had zero Holm-significant results
-  among 417 comparisons; msprime Hudson ARG had zero among 426; `msrc-arg` had
-  one among 422. See `docs/msrc_smc_validation.md`.
-- The map audit shows recombination density in the suppressed region increases
-  with κ from 0 at κ=0 to 0.00063 events/bp at κ=1 under its tested settings.
-  Region-specific quartet checks had no significant deviations in this finite
-  sample, which is not evidence of exact marginal equality.
-- The diagnostic 4–32-taxon benchmark's median seeded runtime ranged from
-  0.004 to 2.464 seconds per chromosome; maximum traced Python memory was
-  about 0.5 MiB. Treat as prototype-only timings.
-- The updated four-taxon demo produced 90, 206, 444, and 148 recombinations
-  across the three constant-rate settings and the suppressed-region setting;
-  corresponding genealogy changes were 52, 132, 264, and 80.
+- Corrected full repository suite: pending final rerun for this commit.
+- Marginal audit: 40 linked chromosomes and 1,000 independent MSC reference
+  trees in each of seven 2-, 3-, 4-, and 8-taxon cases. Of 439 comparisons per
+  method, Holm-significant counts were 0 for this SMC′ implementation,
+  msprime SMC′, msprime Hudson ARG, and `msrc-arg`. Nominal 95% intervals
+  excluded zero 16, 18, 2, and 26 times respectively, consistent with
+  multiple-comparison noise.
+- Four-taxon long-branch root age: independent MSC mean 1008.0 generations;
+  corrected SMC′ 1026.1, chromosome-level 95% difference CI [-2.4, 38.6].
+  Eight-taxon long-branch means were 142516.4 and 142619.9, with CI
+  [-2228.1, 2435.1].
+- Integrated genomic hazards: 23,821 samples, mean 0.9974 for expected 1,
+  exponential KS p=0.731. Spatial topology agreement and coalescence-time
+  correlation decline with genomic distance and increase in recombination,
+  tracking msprime references.
+- Suppressed-region experiment: inside recombination density increased from
+  zero at κ=0 through 0.000003, 0.000073, and 0.000362 to 0.000827
+  events/bp at κ=0.01, 0.1, 0.5, and 1. Marginal quartet differences were
+  not significant in this finite sample; lowering the map rate is treated as
+  a spatial-dependence effect, not a marginal-frequency change.
+- Diagnostic 4–32-taxon runtime: corrected SMC′ median approximately 0.004 s
+  at 4 taxa and 0.86 s at 32 taxa; `msrc-arg` approximately 0.006 s and
+  0.09 s. Current SMC′ implementation is slower for larger trees in this
+  benchmark. Maximum traced Python allocation was about 0.66 MiB.
+- Demo event totals: 90, 206, 444, and 148 recombinations for three constant
+  rates and one map with a suppressed region; genealogy changes 52, 132, 264,
+  and 80.
 
-Decision and limitations:
+Mathematical decision and limits:
 
-- Map hazard generation and its interval-boundary handling pass the stated
-  tests. The transition kernel is **not validated** as an MSC-marginal-
-  preserving multispecies SMC′ process. Do not use it for scientific
-  linked-locus inference or begin Phase 2 on this transition until the
-  discrepancy is resolved.
-- `ipcoal` was unavailable locally; the published waiting-distance package
-  was not executed. msprime and `msrc-arg` supplied independent checks.
-- `msrc-arg` and production simulations remain unchanged. No two-background
-  MSRC behavior was added.
-- The audit run's generated CSVs and figures were written under `/private/tmp`
-  because creating a new validation output folder inside the project was
-  denied by filesystem permissions. The reproduction commands in the report
-  write them to a chosen output path.
+- This is the guide-genealogy multispecies SMC′ approximation with same-edge
+  invisible events and compatibility constrained by species populations. It
+  is not the exact ARG and is not the fixed-distance conditional process of
+  He, Scornavacca & Chan. Detailed transition and two-tip CDF derivation are
+  in `docs/msrc_smc_validation.md`.
+- The kernel has conditional empirical support across the audited neutral
+  grid; this is not a proof for all trees or parameters. The authors'
+  `ipcoal` waiting-distance implementation was not run, so validation is
+  conditional pending that direct comparison and expanded tree/Ne settings.
+- The implementation supports one contemporaneous sample per species and
+  ultrametric species trees. No migration, serial sampling, full ancestral
+  background state, or two-background MSRC behavior is implemented.
+- Genomic recombination and backward background switching remain separate
+  process dimensions. No independent switching clock is introduced.
 
 Next steps:
 
-1. Derive and implement the conditional multispecies SMC′ transition from the
-   published event probabilities, including original, parent, and sibling
-   branch outcomes under species-population barriers.
-2. Add a transition-level test suite against those conditional probabilities,
-   then rerun the MSC marginal, exact ARG, waiting-distance, and suppression
-   checks. Do not relax thresholds to make the current implementation pass.
-3. Keep the background-augmented MSRC-SMC design deferred until the neutral
-   kernel passes those checks.
+1. Compare event waiting distances and conditional outcomes directly to the
+   paper-associated `ipcoal` calculations and expand species-tree/Ne cases.
+2. Profile and optimize transition reconstruction at larger taxon counts.
+3. Derive an augmented ancestral state and joint process for backgrounds,
+   p(t), selection, switching, recombination, and shared demography before
+   starting the neutral-kernel-based MSRC-SMC extension.
+4. Keep `msrc-arg` unchanged as a validation benchmark.

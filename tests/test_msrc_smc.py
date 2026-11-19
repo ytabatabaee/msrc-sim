@@ -133,6 +133,49 @@ def test_recoalescence_on_ancestral_stem_changes_time_not_topology():
     assert _newick(result)!=original_newick
     assert all(c.age<=result.age for c in result.children)
 
+def test_original_target_expires_at_its_parent_coalescence():
+    from msrcsim.smc.engine import _transition
+    species=SpeciesTree("(A:0,B:0)ROOT;",100,1000)
+    guide=SpeciesTree("(A:10,B:10)G;",100,1000).root
+    class BoundaryRng:
+        def __init__(self): self.waits=iter((6.0,.1)); self.draws=iter((0.0,.5))
+        def random(self): return next(self.draws)
+        def exponential(self,scale): return next(self.waits)
+        def integers(self,high): return 0
+    result,tr,tcoal,detached,target,unchanged,target_kind,pop=_transition(guide,species,BoundaryRng())
+    assert not unchanged
+    assert target_kind=="ancestral_stem"
+    assert tcoal==pytest.approx(10.1)
+    assert pop=="ROOT"
+
+def test_fixed_two_lineage_recoalescence_matches_analytic_kernel():
+    import copy
+    from msrcsim.smc.engine import _transition
+    species=SpeciesTree("(A:0,B:0)ROOT;",100,1000)
+    guide=SpeciesTree("(A:10,B:10)G;",100,1000).root
+    n=12000; seed=98321; base=np.random.default_rng(seed); original=0; before_boundary=0; times=[]
+    class FixedCutRng:
+        def random(self): return next(draws)
+        def exponential(self,scale): return base.exponential(scale)
+        def integers(self,high): return base.integers(high)
+    for _ in range(n):
+        draws=iter((0.0,.5))
+        _,tr,tcoal,_,_,unchanged,target_kind,_=_transition(copy.deepcopy(guide),species,FixedCutRng())
+        assert tr==pytest.approx(5.0)
+        original+=target_kind=="original_edge"
+        before_boundary+=tcoal<10.0
+        times.append(tcoal)
+    c=1/(2*species.default_ne); span=5.0
+    p_original=.5*(1-np.exp(-2*c*span))
+    p_before=1-np.exp(-2*c*span)
+    assert abs(original/n-p_original)<.008
+    assert abs(before_boundary/n-p_before)<.012
+    # Survival at age 10 is followed by the single-lineage ancestral-stem
+    # hazard c; compare an unconditional CDF point after that boundary.
+    point=10.5
+    expected=1-np.exp(-2*c*span)*np.exp(-c*(point-10))
+    assert abs(np.mean(np.asarray(times)<=point)-expected)<.012
+
 def test_recoalescence_population_matches_both_lineages():
     from msrcsim.smc.engine import _pop_at
     tr=tree(); r=run(1e-5,31)
