@@ -403,3 +403,49 @@ Next steps:
    p(t), selection, switching, recombination, and shared demography before
    starting the neutral-kernel-based MSRC-SMC extension.
 4. Keep `msrc-arg` unchanged as a validation benchmark.
+
+## Two-background MSRC-SMC′ Phase A Gate (2026-11-20)
+
+Status: **FAIL / implementation blocked by an under-specified kernel**. No
+two-background SMC′ code was added. This follows the task's explicit Phase A
+gate: do not implement if the retained state cannot define a coherent
+transition.
+
+Completed audit:
+
+- Added `docs/msrc_smc_mathematical_model.md`, reviewing the neutral SMC′,
+  legacy single-locus structured coalescent, current MSRC-ARG background
+  model, and shared Moran/Wright–Fisher history conventions.
+- Verified the current marker-mediated ARG's intended one-focal switching
+  intensity under its marker-present assumptions: integrate
+  `r0(x) * p_g(t) * eta(h,g,x)` between focal position and anchor. This
+  intensity alone does not specify the conditional joint ancestry of focal
+  and marker positions.
+- Documented a counterexample: distinct marker/phase ancestry configurations
+  can have the same local tree, focal background, population, map, and shared
+  frequency history, but different conditional local-tree transitions at a
+  neighboring position. Thus the proposed local-tree-plus-color state is not
+  Markov sufficient for the requested spatial coupling.
+- Identified two existing matching hazards: absent-origin handling differs
+  (legacy falls back to root age plus extension; ARG remains structured when
+  origin is missing), and the shared finite-copy floor allows positive
+  coalescence rates for an explicitly supplied lineage in a zero-frequency
+  background.
+
+No tests were run because this commit changes only the mathematical audit and
+project status. No claims of MSRC-SMC′ implementation, spatial dependence,
+marginal equivalence, or performance are made. `msrc-arg`, neutral SMC′, and
+production simulation code remain unchanged.
+
+Required next steps before implementation:
+
+1. Choose the marginal target: legacy effective switching, current
+   marker-mediated ARG, or a specified forward haplotype process.
+2. Define marker inheritance and ancestral phase, and derive either a
+   sufficient reduced state plus its conditional kernel or retain the full
+   marked segment ARG.
+3. Resolve coalescence at background fixation/loss and align origin-age
+   defaults before matched marginal testing.
+4. Only after Phase A passes, implement limiting-case tests and compare
+   topology probabilities, `D=q2-q1`, coalescence-time distributions, and
+   chromosome dependence against appropriately matched references.
