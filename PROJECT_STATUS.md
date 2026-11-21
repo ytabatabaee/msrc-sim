@@ -449,3 +449,26 @@ Required next steps before implementation:
 4. Only after Phase A passes, implement limiting-case tests and compare
    topology probabilities, `D=q2-q1`, coalescence-time distributions, and
    chromosome dependence against appropriately matched references.
+
+## Marker-Aware Approximation Assessment (2026-11-21)
+
+The follow-up task explicitly permits a reduced approximation, so candidate
+states were assessed rather than requiring exact ARG equivalence. The
+minimal binary marker-linkage flag fails: for the same focal tree and flag,
+one versus two compatible marker-associated guide lineages give no-recoal
+probabilities 0.1353 versus 0.0183 over a `2Ne` interval at `p_h=0.5`.
+Consequently it does not define a unique transition law.
+
+A marker gene tree and branch-association map resolves the present target
+count but does not define the conditional ancestry of a third position from
+the current two-locus state. The provided equations define only per-locus
+switch rates, not the hidden multi-position conditional distribution. A
+particle approximation would need a specified proposal, weights, and error
+analysis; those are not defined in the repository. See
+`docs/msrc_smc_marker_aware_validation.md` for the worked calculation and
+candidate-state assessment.
+
+This commit adds analysis only. No simulator, tests, or benchmark were added;
+neutral SMC′, legacy single-locus MSRC, and MSRC-ARG remain unchanged. Overall
+readiness remains **FAIL** until a reproducible hidden-state conditional law
+is defined. The next step is to specify and calibrate that law before coding.

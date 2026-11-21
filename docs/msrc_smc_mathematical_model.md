@@ -186,6 +186,44 @@ distributions. The requested acceptance criterion requires both, so selecting
 one coupling without deriving it from the segment/marker ancestry would be
 ad hoc.
 
+### 3.1 A binary marker-linkage flag is still insufficient
+
+Consider an attempted state extension with one bit `Phi=linked` or
+`Phi=separated`. The bit does not say which marker-tree branches carry the
+marker ancestry, or how many background-compatible guide lineages are
+available as re-coalescence targets. If `m_h(t)` compatible lineages are
+available, the instantaneous total re-coalescence hazard for a detached
+lineage in background `h` is
+
+```
+lambda_recoal(t) = m_h(t) / (2 Ne_B(t) p_(B,h)(t)).
+```
+
+Take `p_h=1/2`, constant `Ne=N`, and an interval of length `2N` during which
+the focal tree, focal background, and linkage bit agree in two hidden states.
+In state A, one marker-associated guide lineage is compatible throughout
+(`m_h=1`); in state B, two are (`m_h=2`). The respective probabilities of
+no re-coalescence over the interval are
+
+```
+P_A = exp(-(1/(2N*0.5))*2N) = exp(-2) = 0.1353,
+P_B = exp(-(2/(2N*0.5))*2N) = exp(-4) = 0.0183.
+```
+
+The focal local tree and binary linkage bit are identical, yet the next-tree
+transition differs. Therefore the flag does not determine the transition
+law. At least the time-indexed set of marker-associated lineages, their
+population and background states, and their branch-time intervals are needed.
+
+Adding a marker gene tree and a map from its branches to focal-tree branches
+resolves this target-count ambiguity for a current two-locus state, but it
+does not specify the update after moving to a third position. That update
+requires the conditional joint ancestry of focal, marker, and next locus.
+The supplied `q_(h->g)` integral is a one-locus switching intensity; it does
+not provide this conditional distribution. Retaining the full
+branch-association partition and its recombination history across the
+chromosome approaches the marked ARG.
+
 ## 4. State required for a well-defined extension
 
 An exact Markov ancestral state sufficient for this model must at least retain
@@ -207,6 +245,32 @@ marker ancestry given the retained state. The current papers and repository
 implementation do not provide that conditional kernel. Keeping only a marker
 gene tree is not automatically sufficient if the focal and marker ancestry
 share hidden recombination/phase links; this needs a separate proof.
+
+Three candidate reduced states were assessed:
+
+1. **One binary linkage flag.** Rejected by the target-count counterexample
+   above: it cannot recover the number, backgrounds, populations, or
+   coalescence-time intervals of compatible marker-associated lineages.
+2. **Marker tree plus branch-association map.** It can determine current
+   compatible targets for a two-locus state, but a sequential update requires
+   the conditional ancestry of the next locus given the current focal-marker
+   association. The one-site integral does not give that law.
+3. **Weighted particles over hidden marker/segment ancestry.** This could
+   approximate the omitted conditional distribution if particles are sampled
+   from a specified marked ARG and reweighted conditional on `(G,H,Phi)`. It
+   is explicit but not computationally efficient as currently specified:
+   particles must retain segment ancestry, and the repository has no proposal,
+   importance weights, or controlled particle-error bound. This is a
+   research direction, not an implemented kernel.
+
+The issue is not that approximation is forbidden. The available equations do
+not define the hidden-state conditional distribution needed to make any of
+these reduced transitions reproducible. A geometric persistence parameter,
+independent switch clock, or arbitrary branch mapping would produce a
+simulator but would not yet be a derived approximation to the selected MSRC
+marginal. A candidate becomes implementable once it states that hidden-state
+law analytically or calibrates it against a specified reference and quantifies
+the resulting marginal and spatial errors.
 
 The sequential scan would need to condition on that augmented state, sample
 physical recombination locations from the joint rate measure, update the
