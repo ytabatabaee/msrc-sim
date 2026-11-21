@@ -1,0 +1,24 @@
+         93301 function calls in 0.071 seconds
+
+   Ordered by: cumulative time
+   List reduced from 85 to 18 due to restriction <18>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.084    0.084 model.py:66(simulate_reservoir_arg)
+        1    0.007    0.007    0.083    0.083 engine.py:55(simulate_arg)
+       32    0.003    0.000    0.034    0.001 engine.py:99(refresh_completed_material)
+      638    0.004    0.000    0.021    0.000 {built-in method builtins.sum}
+      676    0.001    0.000    0.021    0.000 model.py:50(recombination_hazard)
+      676    0.003    0.000    0.017    0.000 msrc_two_state.py:103(recombination_hazard)
+     3477    0.005    0.000    0.014    0.000 model.py:33(coalescence_rate)
+      499    0.001    0.000    0.011    0.000 lineages.py:43(with_active)
+     2373    0.004    0.000    0.010    0.000 segments.py:52(interval_union)
+      565    0.003    0.000    0.009    0.000 lineages.py:20(__post_init__)
+     1350    0.004    0.000    0.007    0.000 msrc_two_state.py:77(_pieces)
+     4709    0.004    0.000    0.007    0.000 {built-in method builtins.sorted}
+     4149    0.004    0.000    0.006    0.000 model.py:27(frequency)
+      675    0.001    0.000    0.005    0.000 model.py:56(_region)
+     4155    0.002    0.000    0.005    0.000 msrc_two_state.py:50(_structured)
+    20856    0.004    0.000    0.004    0.000 engine.py:110(<genexpr>)
+      715    0.001    0.000    0.004    0.000 {method 'extend' of 'list' objects}
+      675    0.001    0.000    0.004    0.000 msrc_two_state.py:96(_map_region)

@@ -472,3 +472,92 @@ This commit adds analysis only. No simulator, tests, or benchmark were added;
 neutral SMC′, legacy single-locus MSRC, and MSRC-ARG remain unchanged. Overall
 readiness remains **FAIL** until a reproducible hidden-state conditional law
 is defined. The next step is to specify and calibrate that law before coding.
+
+## Spatial MSRC Framework Decision and Reference Prototype (2026-11-21)
+
+**Recommendation: trajectory-conditioned structured ancestral material with
+a background-reservoir inheritance rule, before pursuing another SMC kernel.**
+Status is **CONDITIONAL PASS for the fixed-interior-history reference
+prototype**. This supersedes the preceding blanket implementation blocker:
+failure of an exact local-tree Markov state does not prevent a coherent
+evolutionary-time ancestral-material process. The prior target-count example
+is illustrative and does not establish a general impossibility theorem.
+
+Mathematical decisions:
+
+- Primary marginal truth is the legacy conditional MSRC generator, with
+  an explicit origin age and positive occupied background sizes. Under the
+  reservoir rule, each candidate crossover assigns the marker-distal parent
+  a background from the shared realized population-frequency path.
+- Always integrate marker-to-carrier exchange, even when no sampled segment
+  retains the marker. The current ARG's `_stored_anchor` condition removes
+  this measure in some states; a constructed focal-85/marker-0/material-80:90
+  case gives rate 5 rather than 85 map-distance units.
+- A generator-projection argument yields exactly the legacy one-site switch
+  rates and same-background coalescence rates on admissible histories where
+  the finite-copy floor is inactive. The full active carrier partition also
+  defines consistent multi-position laws without a genomic SMC state.
+- Marker phase is approximated by an exchangeable unobserved reservoir.
+  Origin erasure preserves the legacy convention but is distinct from a
+  unique physical founder. Occupied zero-frequency backgrounds raise an
+  explicit error; no forced switch, silent history rejection, or floor is
+  introduced into the new mode.
+
+Implementation:
+
+- Added isolated `msrcsim/spatial_reservoir/` API with an opt-in background
+  adapter, reusing the unchanged existing ARG scheduler/segment machinery.
+  No production simulator, neutral SMC′ transition, or legacy MSRC behavior
+  was modified. Existing Moran/WF/frozen history objects can be supplied,
+  but arbitrary generated paths hitting incompatible boundaries are not
+  yet a validated application domain.
+- Added the requested design, complete specification, and implementation
+  plan at `docs/msrc_spatial_{model_design,recommended_model,implementation_plan}.md`.
+  Added `docs/msrc_spatial_prototype_validation.md` and seeded audit scripts,
+  compact machine-readable tables, profiles, and figures under
+  `validation/spatial_reservoir/`.
+
+Validation performed:
+
+- Focused regression run: **39 passed in 41.10 seconds**, covering the new
+  prototype, existing MSRC-ARG, corrected neutral SMC′, and its marginal tests.
+  The full repository suite was not rerun for this isolated extension.
+- Primary audit: 18 two-/four-taxon cases, each with 1,000 independent
+  chromosome replicates per method, p=0.2/0.5/0.8, k=0/0.1/1, and matched
+  histories, terminal states, map-integrated switching, and origin. No
+  Holm-significant deviations in 63 reservoir-vs-legacy, 63 old-ARG-vs-legacy,
+  or 9 reservoir-vs-independent-two-tip-CTMC comparisons.
+- Reservoir quartet point differences were at most 0.012. Of 63 primary
+  difference intervals, 61 lay within preset practical tolerances (0.05 for
+  quartet frequencies, 10% for time means). The two unresolved time intervals
+  in four-taxon p=0.2/k=1 were refined to 10,000 replicates; all five refined
+  comparisons fit the tolerances. Root mean difference 1.13 generations,
+  95% interval [-0.27,2.54]. The refinement includes the original 1,000 draws.
+- Direct marked-event audit: 216,000 proposals across p/background/k settings;
+  maximum standardized switching-rate discrepancy 2.381. Constructed absent
+  marker domains, origin transition, complete cross suppression, nonzero
+  same-background recombination, zero maps, seed reproducibility, and
+  fixation/invalid-map errors are covered by tests.
+- Spatial diagnostic at 50-bp separation and p=0.5: root correlations 0.570,
+  0.537, and 0.363 for k=0,0.1,1, with chromosome-bootstrap intervals. These
+  establish dependence in the specified model, not correct biological phase
+  dynamics or a multi-distance spatial validation against an independent ARG.
+- Diagnostic benchmark, 4/8/16/32 taxa and two short lengths: reservoir
+  median times 0.0044/0.0084/0.0222/0.1012 seconds with allocation tracing;
+  comparable old ARG medians 0.0045/0.0079/0.0235/0.1058. Neutral SMC′ medians
+  0.0032/0.0170/0.0254/2.4023 but generates different event workloads. No
+  general speed advantage is claimed. Profiling identifies active-material
+  retirement, rate evaluation, and interval operations as main costs.
+
+Remaining limits and next steps:
+
+1. Define founder/boundary bridges before general Moran/WF paths crossing
+   fixation/loss; keep path failures explicit to avoid conditioning bias.
+2. Expand to internal times, D, dwell/switch counts, time-varying shared
+   histories, branch-specific sizes, and an independent selected-ancestry or
+   finite-pedigree implementation. Do not treat the old ARG as ground truth.
+3. Validate multi-distance correlations, tree identity, tract lengths, and
+   map-boundary effects, using independent chromosomes and restriction tests.
+4. Optimize only against the now-specified generator and then derive any SMC
+   approximation against this reference, measuring both marginal and spatial
+   errors. Genome-scale performance is not established.
