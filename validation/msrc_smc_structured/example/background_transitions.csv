@@ -1,0 +1,5 @@
+position,recombination_time,recoal_time,target_edge_kind,population,accepted,genealogy_changed,topology_changed,background_history_changed,background_changed,old_background,new_background,proposed_path_switches,log_acceptance_ratio,detached_descendants,log_forward_path,log_reverse_path
+402.5573620776164,85.96096925156694,101.23462263400212,ancestral_stem,ROOT,True,True,False,True,True,0,,1,0.0,"B,C,D",,
+436.23302301045635,82.96731254819552,94.331158169477,ancestral_stem,ROOT,True,True,False,True,True,0,1,1,0.0,A,,
+534.2362846720446,46.60373586873515,89.65076902282001,ancestral_stem,ROOT,True,True,False,True,True,1,1,0,0.0,"B,C,D",,
+543.4144021037607,36.01327991101418,66.63725581559508,ancestral_stem,ROOT,True,True,False,True,True,1,0,1,0.0,"B,C,D",,

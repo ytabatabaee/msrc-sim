@@ -1,0 +1,68 @@
+{
+  "model": "structured_SMC_prime_MH_window_v1",
+  "seed": 20261121,
+  "origin_age": 100.0,
+  "reference_position": 500,
+  "rho_reference": 0.07300000000000001,
+  "scan_start": 400.0,
+  "scan_end": 600,
+  "marker": 0.0,
+  "suppressed_region": [
+    350,
+    650
+  ],
+  "cross_retention": 0.1,
+  "sampled_backgrounds": {
+    "A": 0,
+    "B": 1,
+    "C": 0,
+    "D": 1
+  },
+  "boundary_policy": "strict_v1",
+  "density_audit": false,
+  "target": "frozen_reference_MSRC_path_density",
+  "event_semantics": "candidate SMC SPR/path proposals; not a physical ARG event census",
+  "approximation": "frozen reference marginal across window; MH-corrected conditional path closure",
+  "rho_window_range": [
+    0.07100000000000001,
+    0.07500000000000001
+  ],
+  "target_rate_constant_on_window": false,
+  "rho_range_is_genealogy_error_bound": false,
+  "configuration": {
+    "seed": 20261121,
+    "species_tree": {
+      "newick": "((A:2,B:2)AB:2,(C:2,D:2)CD:2)ROOT;",
+      "default_effective_population_size": 20,
+      "root_extension": 200
+    },
+    "structured_smc": {
+      "chromosome_length": 1000,
+      "start": 400,
+      "end": 600,
+      "reference_position": 500,
+      "marker": 0,
+      "suppressed_region": [
+        350,
+        650
+      ],
+      "cross_retention": 0.1,
+      "recombination_map": {
+        "rates": [
+          0.0002
+        ]
+      },
+      "frequency_history": {
+        "model": "constant",
+        "p": 0.5,
+        "origin_age": 100
+      },
+      "sampled_backgrounds": {
+        "A": 0,
+        "B": 1,
+        "C": 0,
+        "D": 1
+      }
+    }
+  }
+}

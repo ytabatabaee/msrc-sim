@@ -1,0 +1,16 @@
+rearrangement_id,branch_id,parent_branch_id,forward_generation,absolute_age,copy_count_A1,copy_count_A0,population_chromosomes,frequency_A1,frequency_A0,status,is_origin,is_branch_start,is_branch_end,selection_coefficient,effective_population_size
+frozen_background,ROOT,,0,204.0,20.0,20.0,40,0.5,0.5,externally_fixed,False,True,False,0.0,20
+frozen_background,ROOT,,1,100.0,20.0,20.0,40,0.5,0.5,externally_fixed,True,False,False,0.0,20
+frozen_background,ROOT,,2,4.0,20.0,20.0,40,0.5,0.5,externally_fixed,False,False,True,0.0,20
+frozen_background,AB,ROOT,0,4.0,20.0,20.0,40,0.5,0.5,externally_fixed,False,True,False,0.0,20
+frozen_background,AB,ROOT,1,2.0,20.0,20.0,40,0.5,0.5,externally_fixed,False,False,True,0.0,20
+frozen_background,A,AB,0,2.0,20.0,20.0,40,0.5,0.5,externally_fixed,False,True,False,0.0,20
+frozen_background,A,AB,1,0,20.0,20.0,40,0.5,0.5,externally_fixed,False,False,True,0.0,20
+frozen_background,B,AB,0,2.0,20.0,20.0,40,0.5,0.5,externally_fixed,False,True,False,0.0,20
+frozen_background,B,AB,1,0,20.0,20.0,40,0.5,0.5,externally_fixed,False,False,True,0.0,20
+frozen_background,CD,ROOT,0,4.0,20.0,20.0,40,0.5,0.5,externally_fixed,False,True,False,0.0,20
+frozen_background,CD,ROOT,1,2.0,20.0,20.0,40,0.5,0.5,externally_fixed,False,False,True,0.0,20
+frozen_background,C,CD,0,2.0,20.0,20.0,40,0.5,0.5,externally_fixed,False,True,False,0.0,20
+frozen_background,C,CD,1,0,20.0,20.0,40,0.5,0.5,externally_fixed,False,False,True,0.0,20
+frozen_background,D,CD,0,2.0,20.0,20.0,40,0.5,0.5,externally_fixed,False,True,False,0.0,20
+frozen_background,D,CD,1,0,20.0,20.0,40,0.5,0.5,externally_fixed,False,False,True,0.0,20

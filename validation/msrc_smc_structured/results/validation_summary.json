@@ -1,0 +1,50 @@
+{
+  "cases": 30,
+  "seed": 20261121,
+  "primary_replicates_per_case": 1000,
+  "scientific_scope": "frozen reference marginal at 50, uniform map and whole-region cross suppression",
+  "targets": {
+    "quartet_and_D_absolute_difference": 0.05,
+    "time_mean_relative_difference": 0.1,
+    "spatial_primary_tolerance": "quantified rather than calibrated: no acceptance asserted"
+  },
+  "comparisons": {
+    "SMC": {
+      "n": 150,
+      "holm_significant": 0,
+      "practical_CI_pass": 147
+    },
+    "reservoir": {
+      "n": 150,
+      "holm_significant": 0,
+      "practical_CI_pass": 144
+    },
+    "SMC_analytic": {
+      "n": 15,
+      "holm_significant": 0,
+      "practical_CI_pass": 15
+    }
+  },
+  "max_abs_log_acceptance": 1.0658141036401503e-14,
+  "readiness": {
+    "reference_window": "CONDITIONAL PASS",
+    "whole_chromosome_marker_distance_marginals": "FAIL",
+    "general_speed_advantage": "not demonstrated"
+  },
+  "refinements": {
+    "cases": 3,
+    "replicates_each": 3000,
+    "includes_original_1000": true,
+    "SMC_comparisons": 21,
+    "SMC_practical_CI_pass": 21
+  },
+  "versions": {
+    "python": "3.14.5",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "tskit": "1.0.4"
+  },
+  "primary_density_audit": true,
+  "default_fast_mode": "analytic cancellation, validated against audited states",
+  "primary_unit_tests": "56 passed in 44.92 s; focused new/neutral/reservoir/original-ARG suites"
+}

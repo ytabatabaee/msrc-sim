@@ -1,0 +1,26 @@
+         194008 function calls (138211 primitive calls) in 0.156 seconds
+
+   Ordered by: cumulative time
+   List reduced from 122 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.001    0.001    0.156    0.156 structured.py:364(simulate_structured_smc)
+       11    0.008    0.001    0.066    0.006 structured.py:241(cut_pieces)
+        5    0.001    0.000    0.060    0.012 structured.py:301(transition)
+        1    0.000    0.000    0.053    0.053 structured.py:204(initial)
+        1    0.001    0.001    0.049    0.049 structured.py:171(log_density)
+     2424    0.003    0.000    0.049    0.000 structured.py:113(pop)
+       32    0.000    0.000    0.047    0.001 engine.py:80(_pop_at)
+       32    0.002    0.000    0.046    0.001 engine.py:76(_species_lca)
+      992    0.005    0.000    0.043    0.000 species_tree.py:92(descendants)
+     1024    0.002    0.000    0.033    0.000 species_tree.py:62(nodes)
+31744/1024    0.025    0.000    0.031    0.000 species_tree.py:64(rec)
+     2189    0.022    0.000    0.029    0.000 structured.py:156(next_time)
+  6181/11    0.006    0.000    0.017    0.002 copy.py:110(deepcopy)
+   341/11    0.001    0.000    0.017    0.002 copy.py:228(_reconstruct)
+   341/11    0.002    0.000    0.017    0.002 copy.py:198(_deepcopy_dict)
+   682/22    0.001    0.000    0.017    0.001 copy.py:172(_deepcopy_list)
+     4884    0.012    0.000    0.012    0.000 structured.py:135(p)
+6435/1547    0.008    0.000    0.012    0.000 engine.py:53(_desc)
+    49369    0.010    0.000    0.010    0.000 {method 'append' of 'list' objects}
+     2557    0.003    0.000    0.010    0.000 structured.py:140(pair)

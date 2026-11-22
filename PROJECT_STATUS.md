@@ -561,3 +561,114 @@ Remaining limits and next steps:
 4. Optimize only against the now-specified generator and then derive any SMC
    approximation against this reference, measuring both marginal and spatial
    errors. Genome-scale performance is not established.
+
+## Structured Multispecies SMC′ Prototype (2026-11-21)
+
+Scientific status: **CONDITIONAL PASS for an explicitly frozen-reference
+window; FAIL as a general whole-chromosome MSRC replacement**. A working
+sequential tree/path implementation is now available. It is not another ARG.
+The known spatial and off-reference errors below are retained in the report.
+
+Mathematical model:
+
+- Retain one dated local tree, background jump histories on every branch,
+  a root-stem history to the origin, and one shared frequency-history object.
+  An inherited-state prune/re-coalescence proposal uses the MSRC switching
+  and compatible-pair rates, guide population/background constraints, and
+  the original-edge target only until its old parent time.
+- Candidate spatial rate is the integrated branch-time measure
+  `r0(x) * [p_h(t)+k(x)*p_other(t)]`, reverting to r0 after origin.
+  Map boundaries integrate the hazard; they do not cause tree changes.
+- The target marginal is held at a declared reference position u*: rho is
+  the map-integrated marker-to-u* cross-exchange rate. A forward/reverse
+  path-density calculation gives a continuous-position MH balance equation;
+  total-tree cut-length normalizers must not be inserted into that equation.
+- For the inherited-state proposal, the ratio cancels analytically. Default
+  fast mode uses the cancellation; `audit_density: true` computes all terms.
+  This is a conditional background-path closure and a frozen-window
+  approximation, not a literal census of physical ARG crossovers.
+- `strict_v1` requires explicit origin and rejects occupied absent or
+  sub-one-copy backgrounds. Origin comparison uses the legacy 1e-10 numerical
+  convention, including the Moran nextafter origin record. No legacy floor
+  behavior or existing production implementation was changed.
+
+Software:
+
+- Added `msrcsim/smc/structured.py`, a runnable module CLI, constant/frozen/
+  Moran/WF shared-history inputs, explicit or Bernoulli terminal states,
+  date/path outputs, and independent proposal/genealogy/topology/background
+  flags. Neutral mode delegates directly to corrected neutral SMC′ with
+  identical RNG semantics.
+- Added `examples/msrc_smc_structured.yaml`, saved window realization and
+  figure under `validation/msrc_smc_structured/example/`, transition tests,
+  audited marginal/spatial/history/background/benchmark programs, and compact
+  result tables under `validation/msrc_smc_structured/results/`.
+- Added full model and quantitative validation documents at
+  `docs/msrc_smc_structured_{model,validation}.md`.
+
+Validation completed:
+
+- Final focused new/neutral/reservoir/original-ARG regression suites:
+  **56 passed in 44.92 seconds**. Full repository suite was not rerun.
+- Primary grid: 30 two-/four-taxon settings × 1,000 independent chromosomes
+  per method, p=0.2/0.5/0.8 and k=0/0.01/0.1/0.5/1. Matched coordinate-50
+  marginal comparisons cover quartets, D, root/pair/internal times. No
+  Holm-significant discrepancies among 150 structured-SMC versus legacy,
+  150 reservoir versus legacy, and 15 independent analytic two-lineage tests.
+- SMC quartets differed at most 0.011 and root means at most 3.8% in point
+  estimates. Initial practical intervals passed 147/150 SMC comparisons.
+  The three unresolved D cases were expanded to 3,000 replicates; all 21 SMC
+  comparisons in those expanded cases fit the original tolerance. Refined
+  runs include the first 1,000, so they are not independent replications.
+- Background/dwell audit: 90 between-method comparisons and 45 integrated-
+  exposure rate tests, no Holm-significant differences. Only 34/45 SMC
+  background practical intervals fit 10% tolerance; remaining rare-count/
+  dwell precision is unresolved, not declared equivalent.
+- Actual shared-history checks: 500 SMC and legacy draws each for a realized
+  Moran path (154 records) and WF path (29), origin age 8, history seed 93.
+  No nominal p<0.05 in 14 comparisons. These are admitted conditional paths,
+  not validation of every generated trajectory or founder boundary.
+- Spatial comparisons include genealogy/topology agreement, rooted RF,
+  pair/root correlation, topology agreement above its independent-marginal
+  baseline, completed/censored waits and tract lengths. A five-k boundary
+  experiment adds 500 independent pairs per setting across both edges of a
+  suppressed region. Uncertainty resamples complete chromosomes.
+
+Scientific discrepancies and readiness limits:
+
+- Broad uniform-map p=0.5/k=1: at 90-bp separation pair-time correlation is
+  0.497 for SMC versus 0.151 for reservoir ARG. Excess persistence is
+  substantial and reported, not calibrated away.
+- Freezing rho fails the intended position-specific marginals across a broad
+  chromosome. At position 5, q2 is 0.842 versus reservoir 0.977, difference
+  -0.135, 95% CI [-0.159,-0.111]; at position 95, 0.856 versus 0.751,
+  difference +0.105, CI [0.070,0.140]. This is why whole-chromosome readiness
+  is FAIL despite reference-coordinate marginal support.
+- Within a strongly suppressed region whose marker-path integral is nearly
+  constant, the approximation is more plausible. At 350-bp separation in
+  the boundary experiment, correlation errors were -0.054 for k=0 and
+  -0.011 for k=0.01, but intervals remain wide; no spatial equivalence claimed.
+
+Performance:
+
+- Profiling identified repeated species-LCA traversal and full density scans.
+  Cached clade populations and target density preserved a 20-seed local-tree/
+  background output hash; the analytic fast path is also directly tested
+  against audited seeded states.
+- Diagnostic 32-taxon/1,000-bp runtime went from 84.2 s in uncached audit mode
+  to 2.13 s in cached audit mode and 1.19 s in analytic fast mode. Reservoir
+  ARG was about 0.097 s in the final small benchmark. No overall speed
+  advantage or genome-scale claim is supported. Marks and stochastic workload
+  counts differ between algorithms; one-seed timings are descriptive.
+
+Next steps:
+
+1. Establish usable window-size/rho-variation and spatial-error limits for
+   nearly constant marker-path integrals, especially complete/strong cross
+   suppression with ongoing within-background recombination.
+2. Derive position-varying marginal transport and a more accurate conditional
+   parental-background closure; local invariance at each x alone is insufficient.
+3. Specify genuine fixation/loss founder bridges and test broader shared
+   Moran/WF paths. Keep boundary failures explicit and avoid silent retries.
+4. Optimize cut-history integration only against the stated kernel; benchmark
+   replicated longer chromosomes and matched observables before speed claims.

@@ -1,0 +1,16 @@
+[
+  {
+    "history": "moran",
+    "origin": 8.0,
+    "records": 154,
+    "replicates": 500,
+    "history_seed": 93
+  },
+  {
+    "history": "wright_fisher",
+    "origin": 8.0,
+    "records": 29,
+    "replicates": 500,
+    "history_seed": 93
+  }
+]
