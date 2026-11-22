@@ -1,0 +1,39 @@
+{
+  "M": 20,
+  "newick": "((A:2,B:2)AB:2,(C:2,D:2)CD:2)ROOT;",
+  "shape": "balanced",
+  "root_duration": 30,
+  "history": "fixed",
+  "p": 0.3,
+  "sampling": "unconditional",
+  "marker": 0,
+  "suppressed_region": [
+    20,
+    80
+  ],
+  "kappa": 1.0,
+  "reference": 50,
+  "positions": [
+    5,
+    19,
+    21,
+    50,
+    79,
+    81,
+    95
+  ],
+  "map": {
+    "length": 100,
+    "breakpoints": [
+      20,
+      80
+    ],
+    "rates": [
+      0.0002,
+      0.0003,
+      0.0001
+    ]
+  },
+  "id": "balanced_M20_unconditional",
+  "case_number": 2
+}

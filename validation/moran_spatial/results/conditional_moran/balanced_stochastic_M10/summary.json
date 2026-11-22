@@ -1,0 +1,27 @@
+{
+  "case": "balanced_stochastic_M10",
+  "prior_attempts": 160000,
+  "selected": {
+    "1010": 1975,
+    "0101": 1944
+  },
+  "expected_pattern_probabilities": {
+    "1010": 0.012238620110806963,
+    "0101": 0.012238620110806966
+  },
+  "failures": {
+    "1010": {
+      "ARG": [],
+      "SMC": [],
+      "single_locus": []
+    },
+    "0101": {
+      "ARG": [],
+      "SMC": [],
+      "single_locus": []
+    }
+  },
+  "seconds": 137.19130971000413,
+  "seed": 20261123,
+  "selection_rule": "only sampled terminal pattern, before any genealogy; fixed attempt budget; no replacement on simulator failure"
+}

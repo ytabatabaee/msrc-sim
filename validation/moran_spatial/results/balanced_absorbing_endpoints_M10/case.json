@@ -1,0 +1,49 @@
+{
+  "M": 10,
+  "newick": "((A:2,B:2)AB:2,(C:2,D:2)CD:2)ROOT;",
+  "shape": "balanced",
+  "root_duration": 5,
+  "history": "unconditional_moran",
+  "p": 0.5,
+  "sampling": "unconditional",
+  "marker": 0,
+  "suppressed_region": [
+    20,
+    80
+  ],
+  "kappa": 1.0,
+  "reference": 50,
+  "positions": [
+    5,
+    50,
+    95
+  ],
+  "map": {
+    "length": 100,
+    "breakpoints": [
+      20,
+      80
+    ],
+    "rates": [
+      0.0002,
+      0.0003,
+      0.0001
+    ]
+  },
+  "selection": 0.0,
+  "id": "balanced_absorbing_endpoints_M10",
+  "case_number": 12,
+  "pi_old": [
+    0.5,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.5
+  ]
+}

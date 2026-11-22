@@ -1,0 +1,15 @@
+{
+  "case": "pectinate_M40_cond0101",
+  "n": 4000,
+  "seconds": 80.14943688199855,
+  "failures": {
+    "ARG": 0,
+    "SMC": 0,
+    "single_locus": 0
+  },
+  "statuses": {
+    "PASS": 180,
+    "FAIL_mismatch": 34,
+    "FAIL_uncertainty": 10
+  }
+}

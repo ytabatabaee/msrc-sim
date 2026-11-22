@@ -1,0 +1,19 @@
+{
+  "ARG": {
+    "PASS": 249,
+    "FAIL_uncertainty": 3
+  },
+  "SMC": {
+    "PASS": 198,
+    "FAIL_mismatch": 36,
+    "FAIL_uncertainty": 18
+  },
+  "SMC_frozen_target": {
+    "PASS": 251,
+    "FAIL_uncertainty": 1
+  },
+  "single_locus": {
+    "PASS": 251,
+    "FAIL_uncertainty": 1
+  }
+}

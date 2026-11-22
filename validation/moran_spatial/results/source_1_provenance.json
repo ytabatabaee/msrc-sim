@@ -1,0 +1,126 @@
+{
+  "theory_commit": "ba260f8d4303b5d3bc884fb76a9c5a5032b7e477",
+  "theory_source_hashes": {
+    "moran_quartet_operator.py": "2799431d11f3e371752712d749ce39a52f31380a2a22de8b3820acf8286c443a",
+    "full_species_tree.py": "d0f1c3c42878f5437f7b240e229b8dd3812fcf014b4a35ecdc81c9bcf037b575",
+    "unbalanced_species_tree.py": "6cbb4fcd2088e323ac4438af69caa5623131920365f00afe03ad1410e6cc0d3d",
+    "prescribed_frequency_quartet.py": "541dff135a76802c764f8cb00011a677b3d80e89c974b8c7a02f2e37ad3b2114",
+    "matrix_free_quartet.py": "bd715a814819ed64850d531c468778fbab8fb41053a535f36276f3a7b5ebf57e"
+  },
+  "simulator_commit": "956e20add44859903b99f00ac1d3b648aca67da5",
+  "numpy": "2.5.3",
+  "python": "3.14.5",
+  "seed": 20261122,
+  "replicates": 4000,
+  "quartet_tolerance": 0.05,
+  "D_tolerance": 0.05,
+  "interval": "95% pointwise Wilson q / multinomial normal D",
+  "replication": "independent chromosomes; conditional histories fixed when declared",
+  "configuration": {
+    "theory_commit": "ba260f8d4303b5d3bc884fb76a9c5a5032b7e477",
+    "seed": 20261122,
+    "quartet_tolerance": 0.05,
+    "cases": [
+      {
+        "M": 12,
+        "newick": "((A:1,B:1)AB:3,(C:2,D:2)CD:2)ROOT;",
+        "shape": "balanced",
+        "root_duration": 3,
+        "history": "unconditional_moran",
+        "p": 0.5,
+        "sampling": "unconditional",
+        "marker": 0,
+        "suppressed_region": [
+          20,
+          80
+        ],
+        "kappa": 1.0,
+        "reference": 50,
+        "positions": [
+          5,
+          50,
+          95
+        ],
+        "map": {
+          "length": 100,
+          "breakpoints": [
+            20,
+            80
+          ],
+          "rates": [
+            0.0002,
+            0.0003,
+            0.0001
+          ]
+        },
+        "selection": 0.1,
+        "id": "balanced_asymmetric_M12",
+        "case_number": 11,
+        "pi_old": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "M": 10,
+        "newick": "((A:2,B:2)AB:2,(C:2,D:2)CD:2)ROOT;",
+        "shape": "balanced",
+        "root_duration": 5,
+        "history": "unconditional_moran",
+        "p": 0.5,
+        "sampling": "unconditional",
+        "marker": 0,
+        "suppressed_region": [
+          20,
+          80
+        ],
+        "kappa": 1.0,
+        "reference": 50,
+        "positions": [
+          5,
+          50,
+          95
+        ],
+        "map": {
+          "length": 100,
+          "breakpoints": [
+            20,
+            80
+          ],
+          "rates": [
+            0.0002,
+            0.0003,
+            0.0001
+          ]
+        },
+        "selection": 0.0,
+        "id": "balanced_absorbing_endpoints_M10",
+        "case_number": 12,
+        "pi_old": [
+          0.5,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.5
+        ]
+      }
+    ]
+  }
+}

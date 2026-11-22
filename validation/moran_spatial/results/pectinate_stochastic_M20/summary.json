@@ -1,0 +1,15 @@
+{
+  "case": "pectinate_stochastic_M20",
+  "n": 4000,
+  "seconds": 110.16025331100536,
+  "failures": {
+    "ARG": 0,
+    "SMC": 0,
+    "single_locus": 0
+  },
+  "statuses": {
+    "PASS": 46,
+    "FAIL_uncertainty": 97,
+    "FAIL_mismatch": 1
+  }
+}

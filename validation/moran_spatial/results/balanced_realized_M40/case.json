@@ -1,0 +1,80 @@
+{
+  "M": 40,
+  "newick": "((A:2,B:2)AB:2,(C:2,D:2)CD:2)ROOT;",
+  "shape": "balanced",
+  "root_duration": 4,
+  "history": "realized_moran",
+  "p": 0.5,
+  "sampling": "1010",
+  "marker": 0,
+  "suppressed_region": [
+    20,
+    80
+  ],
+  "kappa": 1.0,
+  "reference": 50,
+  "positions": [
+    5,
+    50,
+    95
+  ],
+  "map": {
+    "length": 100,
+    "breakpoints": [
+      20,
+      80
+    ],
+    "rates": [
+      0.0002,
+      0.0003,
+      0.0001
+    ]
+  },
+  "history_seed": 981,
+  "selection": 0.2,
+  "id": "balanced_realized_M40",
+  "case_number": 6,
+  "pi_old": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ]
+}

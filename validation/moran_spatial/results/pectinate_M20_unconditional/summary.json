@@ -1,0 +1,15 @@
+{
+  "case": "pectinate_M20_unconditional",
+  "n": 4000,
+  "seconds": 47.41278775999672,
+  "failures": {
+    "ARG": 0,
+    "SMC": 0,
+    "single_locus": 0
+  },
+  "statuses": {
+    "PASS": 163,
+    "FAIL_uncertainty": 164,
+    "FAIL_mismatch": 9
+  }
+}

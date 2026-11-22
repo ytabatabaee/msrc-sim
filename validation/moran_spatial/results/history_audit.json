@@ -1,0 +1,42 @@
+[
+  {
+    "case": "balanced_stochastic_M10",
+    "n": 4000,
+    "histories_with_loss": 2020,
+    "histories_with_fixation": 1583,
+    "histories_with_within_branch_count_changes": 4000,
+    "scope": "genuine structured intervals only; pre-origin annotation excluded; exact prior seeds replayed"
+  },
+  {
+    "case": "pectinate_stochastic_M20",
+    "n": 4000,
+    "histories_with_loss": 985,
+    "histories_with_fixation": 1858,
+    "histories_with_within_branch_count_changes": 4000,
+    "scope": "genuine structured intervals only; pre-origin annotation excluded; exact prior seeds replayed"
+  },
+  {
+    "case": "balanced_stochastic_M8",
+    "n": 4000,
+    "histories_with_loss": 2406,
+    "histories_with_fixation": 1556,
+    "histories_with_within_branch_count_changes": 4000,
+    "scope": "genuine structured intervals only; pre-origin annotation excluded; exact prior seeds replayed"
+  },
+  {
+    "case": "balanced_asymmetric_M12",
+    "n": 4000,
+    "histories_with_loss": 1949,
+    "histories_with_fixation": 857,
+    "histories_with_within_branch_count_changes": 4000,
+    "scope": "genuine structured intervals only; pre-origin annotation excluded; exact prior seeds replayed"
+  },
+  {
+    "case": "balanced_absorbing_endpoints_M10",
+    "n": 4000,
+    "histories_with_loss": 1964,
+    "histories_with_fixation": 2036,
+    "histories_with_within_branch_count_changes": 0,
+    "scope": "genuine structured intervals only; pre-origin annotation excluded; exact prior seeds replayed"
+  }
+]

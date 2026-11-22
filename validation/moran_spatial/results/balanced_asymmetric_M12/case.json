@@ -1,0 +1,51 @@
+{
+  "M": 12,
+  "newick": "((A:1,B:1)AB:3,(C:2,D:2)CD:2)ROOT;",
+  "shape": "balanced",
+  "root_duration": 3,
+  "history": "unconditional_moran",
+  "p": 0.5,
+  "sampling": "unconditional",
+  "marker": 0,
+  "suppressed_region": [
+    20,
+    80
+  ],
+  "kappa": 1.0,
+  "reference": 50,
+  "positions": [
+    5,
+    50,
+    95
+  ],
+  "map": {
+    "length": 100,
+    "breakpoints": [
+      20,
+      80
+    ],
+    "rates": [
+      0.0002,
+      0.0003,
+      0.0001
+    ]
+  },
+  "selection": 0.1,
+  "id": "balanced_asymmetric_M12",
+  "case_number": 11,
+  "pi_old": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ]
+}

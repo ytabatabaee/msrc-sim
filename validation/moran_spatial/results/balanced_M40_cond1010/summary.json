@@ -1,0 +1,15 @@
+{
+  "case": "balanced_M40_cond1010",
+  "n": 4000,
+  "seconds": 66.84738342300261,
+  "failures": {
+    "ARG": 0,
+    "SMC": 0,
+    "single_locus": 0
+  },
+  "statuses": {
+    "PASS": 182,
+    "FAIL_mismatch": 34,
+    "FAIL_uncertainty": 8
+  }
+}

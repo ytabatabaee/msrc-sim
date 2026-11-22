@@ -1,0 +1,15 @@
+{
+  "case": "balanced_stochastic_M10",
+  "n": 4000,
+  "seconds": 51.988566644002276,
+  "failures": {
+    "ARG": 0,
+    "SMC": 0,
+    "single_locus": 0
+  },
+  "statuses": {
+    "PASS": 50,
+    "FAIL_uncertainty": 92,
+    "FAIL_mismatch": 2
+  }
+}

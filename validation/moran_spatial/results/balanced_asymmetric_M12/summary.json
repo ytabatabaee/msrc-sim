@@ -1,0 +1,15 @@
+{
+  "case": "balanced_asymmetric_M12",
+  "n": 4000,
+  "seconds": 73.8522766160022,
+  "failures": {
+    "ARG": 0,
+    "SMC": 0,
+    "single_locus": 0
+  },
+  "statuses": {
+    "PASS": 48,
+    "FAIL_uncertainty": 94,
+    "FAIL_mismatch": 2
+  }
+}

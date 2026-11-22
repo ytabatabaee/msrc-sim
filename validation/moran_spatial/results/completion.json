@@ -1,0 +1,46 @@
+{
+  "primary_settings": 13,
+  "chromosomes_per_method_per_setting": 4000,
+  "primary_independent_chromosome_contexts": 52000,
+  "extra_early_chromosomes": 4000,
+  "conditional_prior_draws": 320000,
+  "selected_conditional_chromosomes": 10364,
+  "primary_outcomes": {
+    "ARG": {
+      "PASS": 249,
+      "FAIL_uncertainty": 3
+    },
+    "SMC": {
+      "PASS": 198,
+      "FAIL_mismatch": 36,
+      "FAIL_uncertainty": 18
+    },
+    "SMC_frozen_target": {
+      "PASS": 251,
+      "FAIL_uncertainty": 1
+    },
+    "single_locus": {
+      "PASS": 251,
+      "FAIL_uncertainty": 1
+    }
+  },
+  "tests": {
+    "full_passed": 335,
+    "full_warnings": 1,
+    "full_seconds": 200.75,
+    "adapter_passed": 19,
+    "original_theory_passed": 34
+  },
+  "no_production_model_changes": true,
+  "workflow_source_sha256": {
+    "aggregate.py": "69c7cefab0fb2919580874fe566d43b36e670b96b8d20676226ccd07416c7d95",
+    "collect.py": "6570c8a27b6ca800e66b99f8077f577c67c9836c7ea55b94867d604ec68bd2f2",
+    "run.py": "fcdebe2cf60405fe58a35dd2cf8f247ede358cb206f6da841c99a1c4c1d50c01",
+    "theory.py": "7fcf41a5a948d9809d84c1da2ae07d352b71c8c0eeff7f70b339b01f9f2ceb72",
+    "conditional_moran.py": "f3fbed8c913f50a9b34ae50ad27bd8cc9735e383a28e1262dcc1ba6f11d20da2",
+    "plots.py": "09a737715adb9d0553ae80c678f79fac2b7a0ca31c2d321232270f4f3758cef0",
+    "early_topology.py": "a957d7111f9dd6d0dd403ededc75909c4dfcbac3c9a223962a2aab70d1bf182a",
+    "numerics.py": "c1f541a1f3dc39541387b96543e1431546609a8eb1364b3278c4b9c4273be1b6",
+    "history_audit.py": "8ca1d22006cb6677a813ff25edda4148f1b1da12799e6bd2f5af628ff69829f4"
+  }
+}

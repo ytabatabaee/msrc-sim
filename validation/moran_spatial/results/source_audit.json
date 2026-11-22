@@ -1,0 +1,44 @@
+{
+  "simulator_base": "956e20add44859903b99f00ac1d3b648aca67da5",
+  "theory_commit": "ba260f8d4303b5d3bc884fb76a9c5a5032b7e477",
+  "production_and_existing_SMC_reports": {
+    "msrcsim/moran.py": {
+      "unchanged": true,
+      "sha256": "852cc0d2c24ccf7a9a835309be0c1e8bee21d125f466ab710197f4278f94121d"
+    },
+    "msrcsim/structured_coalescent.py": {
+      "unchanged": true,
+      "sha256": "fd68c0728c68de84afb056142cb234c22071ad464a86045a46ae5aff80ef7df4"
+    },
+    "msrcsim/arg/msrc.py": {
+      "unchanged": true,
+      "sha256": "2d8bf470eb01dbcc0af01ab8c701c3f46d869beb2c873e87a52b8f43c439f2bc"
+    },
+    "msrcsim/arg/backgrounds/reservoir.py": {
+      "unchanged": true,
+      "sha256": "20823cbf12dbf46672d2bafa6aa8f7ce98302cd588e5547ad541a809f8cb0d61"
+    },
+    "msrcsim/arg/backgrounds/msrc_two_state.py": {
+      "unchanged": true,
+      "sha256": "15bdb47595e692d44448b77bc48ebc3a2c17f3be54c380aa01031ceb16cd65f3"
+    },
+    "msrcsim/smc/structured.py": {
+      "unchanged": true,
+      "sha256": "89175a44e8472024d03870a217f296a5b690f3f5512ee833acf261202b2796ea"
+    },
+    "docs/msrc_smc_structured_model.md": {
+      "unchanged": true,
+      "sha256": "f5d870d845652e46ec7cf85f5eb27c0ce22a0dff7f7695e2935d5c3d57f51bf4"
+    },
+    "docs/msrc_smc_structured_validation.md": {
+      "unchanged": true,
+      "sha256": "50639196a876b76bef003fec7322635264debd90ed18c00a2e49e5e3d949c54b"
+    }
+  },
+  "dependency_versions": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "tskit": "1.0.4",
+    "pytest": "9.1.1"
+  }
+}

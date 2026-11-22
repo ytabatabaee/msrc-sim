@@ -707,3 +707,42 @@ Next steps:
   against suitable references before making broader accuracy or speed claims.
 
 Details: [consolidation audit and validation](docs/msrc_arg_consolidation_validation.md).
+
+## Exact multispecies Moran theory versus ARG and SMC′ — 2026-11-22
+
+- Added `validation/moran_spatial`: imports the existing balanced, pectinate,
+  prescribed-path and sparse/matrix-free operators from an external theory
+  checkout. Audited theory source: `msrc-paper` commit ba260f8; production
+  simulator base: 956e20a. No production model or existing SMC′ report changed.
+- Completed 13 settings × 4,000 independent chromosomes per method, covering
+  fixed frequencies, two fixed realized Moran paths and five unconditional
+  Moran settings; nonzero species branches, unequal M, selection, mixed root
+  laws, absorbing endpoints and marker-distance/suppression profiles included.
+- Identified a matched reachable domain: absorbing no-mutation Moran histories,
+  unbiased binomial daughter sampling and supported tips cannot enter an absent
+  background. Positive occupied counts are >=1, so the original floor and strict
+  spatial rates agree there. This does not resolve arbitrary prescribed paths,
+  sub-one-copy frequencies, altered founders or mutation/resurrection models.
+- Primary ARG checks: 249/252 practical CI passes, three unresolved, no
+  demonstrated error beyond ±0.05. Two fixed-realized-path D intervals exclude
+  zero but overlap the practical boundary; possible small bias remains unresolved.
+- SMC′ frozen-target checks: 251/252 pass; reference-only 51/52 pass, one D
+  unresolved. Position-specific comparisons: 198 pass, 36 demonstrated mismatches,
+  18 unresolved. Whole-chromosome exactness remains FAIL; favorable suppressed
+  windows and reference-target agreement are separately assessed.
+- Explicit posterior terminal-pattern test: 320,000 prior draws, 10,364 selected
+  chromosomes for Z=1010/0101; all 16 ARG and 16 SMC′ reference criteria pass,
+  no selected simulation failures. Single-locus control: 15/16, one unresolved.
+  No histories are filtered by survival or replaced after simulator failures.
+- Additional 4,000-chromosome pectinate early-topology audit: all nine criteria
+  pass, including topology contributions from the three-lineage interval.
+- Numerical dense/sparse/matrix-free cross-checks agree near floating precision.
+  Tests: final full simulator suite 335 passed, one existing warning; adapter
+  tests 19 passed; selected original theory tests 34 passed. PNG/SVG profiles,
+  all-pattern joint tables, configurations, seeds and hashes are archived.
+- Next: refine unresolved intervals (especially balanced realized-history D),
+  extend origin/history adapters and boundary specifications, and assess spatial
+  joint laws separately. A position-varying SMC′ kernel is a separate research
+  task, not part of this validation.
+
+Report: [exact Moran/ARG/SMC′ validation](docs/MSRC_MORAN_THEORY_ARG_SMC_VALIDATION.md).

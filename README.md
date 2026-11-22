@@ -65,6 +65,12 @@ explicit origin and rejects occupied absent backgrounds; general fixation/loss
 trajectories remain outside its validated domain. See
 [API, model choices and reproduction](docs/msrc_arg_model.md).
 
+The [exact multispecies Moran validation](docs/MSRC_MORAN_THEORY_ARG_SMC_VALIDATION.md)
+identifies a matched absorbing-Moran domain, tests conditional quartet
+asymmetries, and quantifies the current SMC′ frozen-reference departures.
+The [reusable workflow](validation/moran_spatial/README.md) imports the original
+theory from an external checkout.
+
 ## Simulation Modes
 
 ### Mechanistic simulation

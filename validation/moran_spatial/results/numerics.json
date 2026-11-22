@@ -1,0 +1,74 @@
+[
+  {
+    "check": "full_recursion_sparse_vs_dense",
+    "shape": "balanced",
+    "M": 4,
+    "max_error": 2.7755575615628914e-17,
+    "seconds": 0.24411266899551265
+  },
+  {
+    "check": "full_recursion_sparse_vs_dense",
+    "shape": "pectinate",
+    "M": 4,
+    "max_error": 1.3877787807814457e-16,
+    "seconds": 0.23931292600173037
+  },
+  {
+    "check": "shared_sparse_vs_matrix_free",
+    "M": 8,
+    "dimension": 171,
+    "max_error": 6.938893903907228e-18,
+    "normalization_error": 0.0,
+    "seconds": 0.30438460600271355,
+    "peak_python_traced_bytes": 197955,
+    "process_peak_rss_bytes": 67198976
+  },
+  {
+    "check": "shared_sparse_vs_matrix_free",
+    "M": 20,
+    "dimension": 399,
+    "max_error": 1.0408340855860843e-17,
+    "normalization_error": 0.0,
+    "seconds": 0.6105756260003545,
+    "peak_python_traced_bytes": 456327,
+    "process_peak_rss_bytes": 67543040
+  },
+  {
+    "check": "shared_sparse_vs_matrix_free",
+    "M": 80,
+    "dimension": 1539,
+    "max_error": 1.734723475976807e-17,
+    "normalization_error": 4.440892098500626e-16,
+    "seconds": 2.36231870699703,
+    "peak_python_traced_bytes": 1737328,
+    "process_peak_rss_bytes": 68599808
+  },
+  {
+    "check": "semigroup_and_generator",
+    "n": 1,
+    "dimension": 18,
+    "max_error": 3.3306690738754696e-16
+  },
+  {
+    "check": "semigroup_and_generator",
+    "n": 2,
+    "dimension": 54,
+    "max_error": 5.551115123125783e-16
+  },
+  {
+    "check": "semigroup_and_generator",
+    "n": 3,
+    "dimension": 99,
+    "max_error": 6.661338147750939e-16
+  },
+  {
+    "check": "semigroup_and_generator",
+    "n": 4,
+    "dimension": 171,
+    "max_error": 1.3322676295501878e-15
+  },
+  {
+    "check": "full_species_fixed_half_regression",
+    "max_error": 0.0
+  }
+]

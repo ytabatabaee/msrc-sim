@@ -1,0 +1,15 @@
+{
+  "case": "balanced_plateau_cond1010",
+  "n": 4000,
+  "seconds": 66.47137213800306,
+  "failures": {
+    "ARG": 0,
+    "SMC": 0,
+    "single_locus": 0
+  },
+  "statuses": {
+    "PASS": 218,
+    "FAIL_uncertainty": 4,
+    "FAIL_mismatch": 2
+  }
+}

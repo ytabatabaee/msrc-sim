@@ -1,0 +1,15 @@
+{
+  "case": "balanced_M20_unconditional",
+  "n": 4000,
+  "seconds": 43.85691853900062,
+  "failures": {
+    "ARG": 0,
+    "SMC": 0,
+    "single_locus": 0
+  },
+  "statuses": {
+    "PASS": 182,
+    "FAIL_uncertainty": 144,
+    "FAIL_mismatch": 10
+  }
+}

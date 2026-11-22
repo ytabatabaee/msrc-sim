@@ -1,0 +1,15 @@
+{
+  "case": "balanced_stochastic_M8",
+  "n": 4000,
+  "seconds": 51.47174392200395,
+  "failures": {
+    "ARG": 0,
+    "SMC": 0,
+    "single_locus": 0
+  },
+  "statuses": {
+    "PASS": 48,
+    "FAIL_uncertainty": 95,
+    "FAIL_mismatch": 1
+  }
+}

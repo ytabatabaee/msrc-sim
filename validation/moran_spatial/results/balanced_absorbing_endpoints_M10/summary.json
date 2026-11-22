@@ -1,0 +1,14 @@
+{
+  "case": "balanced_absorbing_endpoints_M10",
+  "n": 4000,
+  "seconds": 27.913057664001826,
+  "failures": {
+    "ARG": 0,
+    "SMC": 0,
+    "single_locus": 0
+  },
+  "statuses": {
+    "PASS": 48,
+    "NOT_DEFINED_zero_probability_pattern": 96
+  }
+}

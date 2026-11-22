@@ -1,0 +1,15 @@
+{
+  "case": "pectinate_plateau_cond0101",
+  "n": 4000,
+  "seconds": 61.1681831599999,
+  "failures": {
+    "ARG": 0,
+    "SMC": 0,
+    "single_locus": 0
+  },
+  "statuses": {
+    "PASS": 220,
+    "FAIL_uncertainty": 2,
+    "FAIL_mismatch": 2
+  }
+}
