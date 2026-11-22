@@ -67,19 +67,21 @@ the gene-tree exporter calls `simplify()` so ASTRAL receives ordinary marginal
 trees. A tskit tree sequence represents marginal ancestry, not every event
 annotation, which is why the separate event log is retained.
 
-## MSRC extension plan
+## Versioned MSRC backgrounds
 
-The `backgrounds.BackgroundModel` interface separates species populations from
-genetic backgrounds and from physical segments. A two-background model can
-replace the neutral coalescence method with
-`1/(2*N_b*p_bh(t))`, return background-specific states on recombination, and
-add position-dependent transition rules. Such transitions should be attached
-to physical crossover events (or to an explicitly defined background process),
-not added as independent neutral switching events. Segment-associated state
-objects allow multiple rearrangements without changing the ARG segment
-machinery.
+The same engine now supports `legacy` and `reservoir_v1` adapters through
+`msrcsim.arg.simulate_msrc_arg`. The new API defaults to reservoir_v1;
+historical `arg.background_model: msrc_two_state` configurations retain legacy.
+Neutral `ARGConfig` and CLI defaults are unchanged.
 
-Known limitations are the lack of a background-dependent implementation, no
-demography changes beyond the existing species-tree branch sizes, and no
-large-scale performance optimization. The engine prioritizes transparent event
-rates and valid ancestry tables over matching msprime's optimized runtime.
+For new YAML runs use `mode: arg`, `arg.background_model: msrc`, and an
+explicit `arg.background_model_version: reservoir_v1`. The existing command
+is `msrc-sim --config examples/arg_msrc_reservoir_v1.yaml`. Set version `legacy`
+to reproduce the original stored-marker-dependent model. The old reservoir
+imports are compatibility wrappers, not a second scheduler.
+
+The [model/API document](msrc_arg_model.md) explains each background policy,
+terminal sampling conventions, outputs and scientific limits. Model version
+is recorded in result metadata and CLI JSON output. The shared segment engine
+has no new selection or switching clock. General fixation/loss histories and
+genome-scale efficiency are not established by this consolidation.

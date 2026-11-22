@@ -46,6 +46,25 @@ pytest
 | `msrc-sim-plot-history --run-dir <dir>` | Plot the realized structural-frequency history |
 | `msrc-sim-compare --input <csv> --output <csv>` | Compare quartet vectors across runs |
 
+## Versioned MSRC-ARG
+
+Use `msrcsim.arg.simulate_msrc_arg(...)` to simulate a chromosome with
+`background_model="reservoir_v1"` (the new API default) or `"legacy"`.
+Both use the same Hudson ARG engine. For YAML runs:
+
+```bash
+msrc-sim --config examples/arg_msrc_reservoir_v1.yaml
+```
+
+The recommended configuration uses `mode: arg`, `arg.background_model: msrc`,
+and `arg.background_model_version: reservoir_v1`. Historical
+`background_model: msrc_two_state` still defaults to legacy; its experiments
+are not silently upgraded. Old spatial_reservoir imports remain compatible.
+Each run records the resolved version in metadata. Reservoir-v1 requires an
+explicit origin and rejects occupied absent backgrounds; general fixation/loss
+trajectories remain outside its validated domain. See
+[API, model choices and reproduction](docs/msrc_arg_model.md).
+
 ## Simulation Modes
 
 ### Mechanistic simulation

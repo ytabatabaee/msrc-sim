@@ -1,0 +1,35 @@
+{
+  "source_commit": "c1823e78edf257f2d6c12c86830723ee2e110008",
+  "numpy": "2.5.3",
+  "scientific_hash_fixtures": 24,
+  "historical_cli_artifact_hashes": 5,
+  "focused_ARG_tests": {
+    "passed": 81,
+    "failed": 0
+  },
+  "full_suite": {
+    "passed": 316,
+    "failed": 0,
+    "warnings": 1,
+    "seconds": 186.17
+  },
+  "prior_full_runs": [
+    {
+      "passed": 313,
+      "failed": 1,
+      "failure": "unchanged analytic test_Hm normalization; cause unresolved"
+    },
+    {
+      "passed": 314,
+      "failed": 0,
+      "warnings": 1
+    }
+  ],
+  "Hm_followup": "isolated current and archived starting-commit tests both passed; baseline failure not reproduced",
+  "structured_SMC_tracked_diff": [],
+  "source_identity": {
+    "legacy_methods_AST_identical": true,
+    "reservoir_v1_methods_AST_identical": true,
+    "ARG_event_loop_AST_identical": true
+  }
+}

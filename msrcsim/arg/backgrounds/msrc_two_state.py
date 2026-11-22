@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Mapping
+from typing import Any, Mapping, ClassVar
 
 from ..segments import interval_union
 
@@ -21,6 +21,9 @@ class MSRCTwoBackground:
     initial_backgrounds: Mapping[str, int] | None = None
 
     name: str = "msrc_two_state"
+    version: ClassVar[str] = "legacy"
+    coalescence_boundary_policy: ClassVar[str] = "legacy_finite_copy_floor"
+    marker_exchange_policy: ClassVar[str] = "requires_stored_marker"
 
     def __post_init__(self):
         if not 0.0 <= self.cross_background_suppression <= 1.0:

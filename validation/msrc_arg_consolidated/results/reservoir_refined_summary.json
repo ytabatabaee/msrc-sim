@@ -1,0 +1,36 @@
+{
+  "replicates_per_case": 10000,
+  "seed": 20261121,
+  "cases": 1,
+  "versions": {
+    "python": "3.14.5",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "tskit": "1.0.4"
+  },
+  "criteria": {
+    "holm_family_alpha": 0.05,
+    "quartet_practical_tolerance": 0.05,
+    "root_mean_relative_tolerance": 0.1
+  },
+  "holm_failures": {
+    "reservoir": 0,
+    "current_ARG": 0,
+    "reservoir_analytic": 0
+  },
+  "scope": "fixed interior p, explicit origin, two and four taxa; no whole-genome scalability claim",
+  "practical_equivalence": {
+    "reservoir": {
+      "comparisons": 5,
+      "95pct_difference_CI_within_tolerance": 5
+    },
+    "current_ARG": {
+      "comparisons": 5,
+      "95pct_difference_CI_within_tolerance": 5
+    },
+    "reservoir_analytic": {
+      "comparisons": 0,
+      "95pct_difference_CI_within_tolerance": 0
+    }
+  }
+}

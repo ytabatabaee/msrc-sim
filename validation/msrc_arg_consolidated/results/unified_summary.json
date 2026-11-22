@@ -1,0 +1,28 @@
+{
+  "seed": 20261122,
+  "independent_chromosomes_per_version_per_setting": 1000,
+  "settings": 15,
+  "marginal_comparisons": {
+    "legacy": {
+      "n": 90,
+      "holm_significant": 0,
+      "practical_CI_pass": 85
+    },
+    "reservoir_v1": {
+      "n": 90,
+      "holm_significant": 0,
+      "practical_CI_pass": 82
+    }
+  },
+  "rate_comparisons": {
+    "legacy": {
+      "n": 15,
+      "holm_significant": 3
+    },
+    "reservoir_v1": {
+      "n": 15,
+      "holm_significant": 0
+    }
+  },
+  "scope": "constant interior p; explicit origin; no claim about arbitrary fixation/loss paths"
+}

@@ -38,6 +38,7 @@ class ARGResult:
     runtime_seconds: float = 0.0
     peak_lineages: int = 0
     peak_segments: int = 0
+    metadata: dict = field(default_factory=dict)
 
     @property
     def marginal_intervals(self):
@@ -53,11 +54,13 @@ def _add_edge(edges, child, parent, left, right):
 
 
 def simulate_arg(tree: SpeciesTree, config: ARGConfig, rng: np.random.Generator) -> ARGResult:
-    """Simulate a neutral, continuous-time Hudson ARG on a species tree.
+    """Simulate a continuous-time Hudson ARG using a background adapter.
 
     Recombination has hazard integral(r(x) dx) over each lineage's current
     ancestral material. Pairwise coalescence has rate 1/(2N) for every pair in
-    the same species population, including pairs with disjoint material.
+    the same species population, including pairs with disjoint material, in
+    the neutral default. Structured adapters supply versioned rates and
+    physical-recombination inheritance without a second scheduler.
     """
     if isinstance(config.background_model, str):
         if config.background_model != "neutral":
@@ -73,6 +76,7 @@ def simulate_arg(tree: SpeciesTree, config: ARGConfig, rng: np.random.Generator)
     lineages: list[ARGLineage] = []
     next_node = 0
     next_lineage = 0
+    terminal_backgrounds = {}
     for taxon in tree.taxa:
         node = next_node
         next_node += 1
@@ -80,6 +84,7 @@ def simulate_arg(tree: SpeciesTree, config: ARGConfig, rng: np.random.Generator)
         state = background.initial_state(tree.branch_for_tip(taxon), (0.0, config.sequence_length_bp), taxon=taxon)
         if config.sampled_backgrounds is not None and taxon in config.sampled_backgrounds:
             state = int(config.sampled_backgrounds[taxon])
+        terminal_backgrounds[taxon] = state
         lineages.append(ARGLineage(next_lineage, tree.branch_for_tip(taxon),
                                    (Segment(0.0, config.sequence_length_bp, node),), 0.0, state))
         next_lineage += 1
@@ -245,7 +250,14 @@ def simulate_arg(tree: SpeciesTree, config: ARGConfig, rng: np.random.Generator)
             refresh_completed_material()
         peak = max(peak, len(lineages))
         peak_segments = max(peak_segments, sum(len(l.segments) for l in lineages))
-    return ARGResult(config.sequence_length_bp, nodes, edges, events, time.perf_counter() - start, peak, peak_segments)
+    metadata = {"background_model": getattr(background, "name", type(background).__name__),
+                "background_model_version": getattr(background, "version", "custom"),
+                "coalescence_boundary_policy": getattr(background, "coalescence_boundary_policy", "ordinary_MSC"),
+                "marker_exchange_policy": getattr(background, "marker_exchange_policy", None),
+                "sampled_backgrounds": terminal_backgrounds,
+                "structured_origin_age": getattr(background, "structured_origin_age", None)}
+    return ARGResult(config.sequence_length_bp, nodes, edges, events,
+                     time.perf_counter() - start, peak, peak_segments, metadata)
 
 
 def write_event_log(events: list[ARGEvent], path: Path):
@@ -296,30 +308,44 @@ def run_arg_config(config: dict) -> Path:
     sampled_backgrounds = arg_cfg.get("sampled_backgrounds")
     if sampled_backgrounds is not None:
         sampled_backgrounds = {str(key): int(value) for key, value in sampled_backgrounds.items()}
-    if model_name == "msrc_two_state":
-        from ..population_process import simulate_population_history
-        from ..rearrangement import Rearrangement
-        rr = config.get("rearrangement", {}) or {}
-        selection = (rr.get("selection", {}) or {}).get("coefficient", rr.get("selection_coefficient", 0.0))
-        rearrangement = Rearrangement(rr.get("id", "inv_1"), rr.get("type", "inversion"), rr["origin_branch"],
-                                     int(rr["origin_time_from_branch_start"]), int(rr.get("initial_copy_count", 1)), float(selection))
+    if model_name in {"msrc_two_state", "msrc"}:
+        from .msrc import simulate_msrc_arg
+        from .backgrounds import BACKGROUND_MODEL_VERSIONS
+        version = str(arg_cfg.get("background_model_version",
+                                  "legacy" if model_name == "msrc_two_state" else "reservoir_v1"))
+        if version not in BACKGROUND_MODEL_VERSIONS:
+            raise ValueError(f"unknown MSRC background version: {version!r}")
         history_path = arg_cfg.get("frequency_history_path")
         if history_path:
             from .history import load_frequency_history
             history = load_frequency_history(history_path, arg_cfg.get("structured_origin_age"))
         else:
+            from ..population_process import simulate_population_history
+            from ..rearrangement import Rearrangement
+            rr = config.get("rearrangement", {}) or {}
+            selection = (rr.get("selection", {}) or {}).get("coefficient", rr.get("selection_coefficient", 0.0))
+            rearrangement = Rearrangement(rr.get("id", "inv_1"), rr.get("type", "inversion"), rr["origin_branch"],
+                                         int(rr["origin_time_from_branch_start"]), int(rr.get("initial_copy_count", 1)), float(selection))
             history = simulate_population_history(tree, rearrangement, rng, config)
-        if sampled_backgrounds is None:
-            sampled_backgrounds = {taxon: int(rng.random() < history.terminal_frequency(taxon)) for taxon in tree.taxa}
-        interval = arg_cfg.get("rearrangement_interval", {}) or {}
-        model = MSRCTwoBackground(history, float(arg_cfg["background_anchor_bp"]),
-                                  (float(interval["start"]), float(interval["end"])),
-                                  float(arg_cfg.get("cross_background_suppression", 1.0)), sampled_backgrounds)
+        interval = arg_cfg.get("rearrangement_interval", arg_cfg.get("suppressed_region", {})) or {}
+        result = simulate_msrc_arg(
+            tree, rec_map, history, float(arg_cfg["background_anchor_bp"]),
+            (float(interval["start"]), float(interval["end"])),
+            kappa=float(arg_cfg.get("cross_background_suppression", 1.0)),
+            background_model=version, sampled_backgrounds=sampled_backgrounds,
+            record_events=bool((config.get("output", {}) or {}).get("record_events", True)), rng=rng)
+        sampled_backgrounds = result.metadata["sampled_backgrounds"]
+    elif model_name == "neutral":
+        if arg_cfg.get("background_model_version") not in (None, "neutral"):
+            raise ValueError("neutral ARG cannot select an MSRC background version")
+        result = simulate_arg(tree, ARGConfig(length, rec_map, "neutral",
+                                              bool((config.get("output", {}) or {}).get("record_events", True)),
+                                              history, sampled_backgrounds), rng)
     else:
-        model = "neutral"
-    result = simulate_arg(tree, ARGConfig(length, rec_map, model,
-                                          bool((config.get("output", {}) or {}).get("record_events", True)),
-                                          history, sampled_backgrounds), rng)
+        raise ValueError(f"unknown arg.background_model: {model_name!r}")
+    result.metadata.update(seed=int(config.get("seed", 1)),
+                           rng_source="configuration_seed_including_population_history",
+                           configuration_background_model=model_name)
     out = Path((config.get("output", {}) or {}).get("directory", "arg_output"))
     out.mkdir(parents=True, exist_ok=True)
     with (out / "config.resolved.yaml").open("w") as handle:
@@ -342,6 +368,7 @@ def run_arg_config(config: dict) -> Path:
                                  e.parental_backgrounds, e.ancestry_changed, e.background_changed])
     summary = {
         "mode": "arg", "model": "hudson", "background_model": model_name,
+        "background_model_version": result.metadata["background_model_version"],
         "sequence_length_bp": length, "num_nodes": len(result.nodes), "num_edges": len(result.edges),
         "num_events": len(result.events), "num_marginal_trees": ts.num_trees,
         "runtime_seconds": result.runtime_seconds, "peak_active_lineages": result.peak_lineages,
@@ -351,4 +378,5 @@ def run_arg_config(config: dict) -> Path:
         "background_transfer_events": sum(e.event_type == "background_transfer" for e in result.events),
     }
     (out / "arg_summary.json").write_text(json.dumps(summary, indent=2))
+    (out / "metadata.json").write_text(json.dumps(result.metadata, indent=2) + "\n")
     return out

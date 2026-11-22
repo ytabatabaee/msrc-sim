@@ -1,5 +1,6 @@
 class NeutralBackground:
     name = "neutral"
+    version = "neutral"
 
     def initial_state(self, population, segment, taxon=None):
         return "neutral"

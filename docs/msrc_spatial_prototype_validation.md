@@ -1,5 +1,16 @@
 # Reservoir-ARG prototype validation report
 
+## Consolidation rerun (2026-11-22)
+
+The unchanged reservoir model now lives in `msrcsim.arg.backgrounds.reservoir`
+and is selected as `reservoir_v1` through the primary MSRC-ARG API. Old imports
+and the reservoir wrapper remain compatible. The 1,000-replicate marginal
+table and physical rate audit reproduce the historical results; a new unified
+API audit includes D, switching exposure and chromosome-bootstrap spatial
+correlations. See the [consolidation report](msrc_arg_consolidation_validation.md)
+for results, unresolved practical intervals and preserved legacy rate failures.
+The historical assessment and results below remain applicable.
+
 ## Assessment
 
 **CONDITIONAL PASS for a reference prototype under fixed interior frequency

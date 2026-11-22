@@ -1,5 +1,17 @@
 # Trajectory-conditioned reservoir ARG: mathematical specification v1
 
+## Consolidated implementation (2026-11-22)
+
+The canonical implementation is now `msrcsim.arg.backgrounds.reservoir` and
+its primary entry point is `msrcsim.arg.simulate_msrc_arg`, with default
+`background_model="reservoir_v1"`. The old spatial_reservoir imports and
+`simulate_reservoir_arg` function remain exact compatibility aliases/wrappers.
+`background_model="legacy"` selects the historical stored-marker/frequency-floor
+adapter through the same scheduler. This is a correctness-preserving software
+consolidation; the following reservoir generator and assumptions are unchanged.
+See [versioned API and YAML usage](msrc_arg_model.md) and
+[consolidation validation](msrc_arg_consolidation_validation.md).
+
 ## Target and approximation
 
 The target is the legacy MSRC effective structured coalescent conditional on
@@ -212,11 +224,12 @@ the chosen conditional genealogy is the exact genealogy of the forward path.
 
 ## Prototype and scientific status
 
-`ReservoirBackground` subclasses the old background adapter to replace the
-marker-presence condition and boundary policy. `simulate_reservoir_arg`
-accepts the species tree, ARG recombination map, history, marker, suppression
-interval, retention factor, seed, and optional sample backgrounds. It reuses
-the existing scheduler without changing production code. Baseline maps and
+`ReservoirBackground` in `msrcsim.arg.backgrounds.reservoir` subclasses the
+legacy adapter to replace the marker-presence condition and boundary policy.
+The primary `simulate_msrc_arg` API (default reservoir_v1) accepts the species tree, ARG recombination map, history, marker, suppression
+interval, retention factor, seed, and optional sample backgrounds. Both versions reuse
+one existing ARG scheduler; consolidation changes routing and metadata without
+changing the event generator. Baseline maps and
 species-dependent population sizes are already accepted by that scheduler.
 The inherited internal parameter name `inversion_interval` is compatibility
 only; the scientific parameter is a region of suppressed recombination.

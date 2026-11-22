@@ -1,0 +1,30 @@
+mode: arg
+seed: 93
+species_tree:
+  newick: '((A:2,B:2)AB:2,(C:2,D:2)CD:2)ROOT;'
+  default_effective_population_size: 20
+  root_extension: 10
+population_process:
+  model: wright_fisher
+rearrangement:
+  id: background_1
+  type: suppressed_recombination
+  origin_branch: ROOT
+  origin_time_from_branch_start: 6
+  initial_copy_count: 20
+  selection_coefficient: 0.0
+arg:
+  background_model: msrc
+  background_model_version: reservoir_v1
+  sequence_length_bp: 100
+  recombination_rate_per_bp: 0.0002
+  background_anchor_bp: 0
+  suppressed_region: {start: 20, end: 80}
+  cross_background_suppression: 0.1
+  sampled_backgrounds: {A: 0, B: 1, C: 0, D: 1}
+  # Alternatively replay a shared frozen history:
+  # frequency_history_path: path/to/frequency_history.csv
+  # structured_origin_age: 8
+output:
+  directory: arg_msrc_reservoir_v1_output
+  record_events: true

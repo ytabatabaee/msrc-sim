@@ -672,3 +672,38 @@ Next steps:
    Moran/WF paths. Keep boundary failures explicit and avoid silent retries.
 4. Optimize cut-history integration only against the stated kernel; benchmark
    replicated longer chromosomes and matched observables before speed claims.
+
+
+## Versioned MSRC-ARG consolidation — 2026-11-22
+
+- Completed one primary `simulate_msrc_arg` API with `legacy` and
+  `reservoir_v1` adapters over the existing ARG scheduler. New API/default
+  YAML `msrc` uses reservoir_v1; old `msrc_two_state` configurations and
+  low-level defaults remain unchanged. Compatibility imports/wrapper retained.
+- Moved reservoir implementation without changing method bodies or the
+  stochastic engine loop. Version, policies, initial states and RNG provenance
+  are recorded; one documented CLI and example YAML exercise version selection.
+- Exact regression fixtures cover 24 scientific scenarios and five old CLI
+  artifacts. Focused ARG suite: 81 passed. Final full suite: 316 passed, one existing
+  validation-grid warning (186.17 s). Full history is in the consolidation
+  report; an initial intermittent analytic Hm failure
+  is disclosed rather than removed.
+- Existing neutral/legacy/reservoir scientific suites rerun at 1,000 replicates;
+  reservoir refined case at 10,000; event audit at 216,000 marks. Historical
+  scientific results reproduce. New 15-setting marginal/rate/autocorrelation
+  audit: no Holm-significant marginal discrepancy for either adapter; practical
+  CI criteria pass 85/90 legacy, 82/90 reservoir. Reservoir switching passes
+  all 15 rate checks; legacy retains three significant switching deficits.
+- Mathematical decisions: preserve reservoir exchangeability and physical
+  crossover-derived exchange; preserve legacy marker restriction, boundary
+  floor and optional-origin conventions for reproduction. No new mechanism,
+  switching clock or SMC change.
+- Readiness limitations: remaining practical intervals are unresolved; arbitrary
+  fixation/loss histories, finite-population founder/phase conditioning and
+  genome-scale performance are not validated. Reservoir_v1 is recommended
+  within its stated admissible domain, not for all generated trajectories.
+- Next: resolve founder/fixation/loss bridges in a separately versioned scientific
+  change, refine uncertain marginal intervals, and validate spatial joint laws
+  against suitable references before making broader accuracy or speed claims.
+
+Details: [consolidation audit and validation](docs/msrc_arg_consolidation_validation.md).
