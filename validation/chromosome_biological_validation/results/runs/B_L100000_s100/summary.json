@@ -1,0 +1,15 @@
+{
+  "job": {
+    "length": 100000,
+    "model": "B",
+    "kappa": 0.01,
+    "duration": 1000,
+    "pattern": "1010",
+    "seed": 100
+  },
+  "status": "incomplete",
+  "error": "ValueError('breakpoints must be sorted and internal to the chromosome')",
+  "traceback": "Traceback (most recent call last):\n  File \"/Users/ytabatabaee/Desktop/msrc-sim/validation/chromosome_biological_validation/run.py\", line 23, in run\n    rec=Map(L,c['suppressed_region'],(1e-8,1e-8*job['kappa'],1e-8)) if job['model']=='B' else Map.constant(L,1e-8)\n        ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<string>\", line 6, in __init__\n  File \"/Users/ytabatabaee/Desktop/msrc-sim/msrcsim/arg/recombination_map.py\", line 20, in __post_init__\n    raise ValueError(\"breakpoints must be sorted and internal to the chromosome\")\nValueError: breakpoints must be sorted and internal to the chromosome\n",
+  "seconds": 0.0030752989987377077,
+  "rss": 66306048
+}

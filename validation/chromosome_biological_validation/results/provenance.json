@@ -1,0 +1,20 @@
+{
+  "simulator_commit": "61ec2eaa446f42d645074c5f643067cb8165498a",
+  "theory_commit": "ff14159e9ddf64cefa6df270ec6bd42aba2b2c67",
+  "hashes": {
+    "msrcsim/arg/engine.py": "a87452a706a7634a3f1de5e85e594e7319eb882a87f493d85f028c1fe6cca134",
+    "msrcsim/arg/coalescence.py": "af7df669546492f0a3d411d5e10eceadf174887a9a97ecc2426cab093154a196",
+    "msrcsim/arg/rates.py": "f3bbdf03a29ae9a543e9c7074f3343ccb2ad13d3a95245098a6de689248afe87"
+  },
+  "updated_theory_sha256": "9c961e58353f30f679bea50ceb78baedabe7f6e364b55a65d96ad038461e455d",
+  "concurrency": "Some independent model cohorts run concurrently. Runtime is diagnostic, not a controlled comparative speed benchmark.",
+  "seed_design": "100 through 119 per model, paired seeds; 20 chromosomes per condition, not 80 independent biological replicates for contrasts",
+  "theory_fix_commit": "87362a2",
+  "validation_scripts_sha256": {
+    "theory_grid.py": "20a1146dc0d3b4e259f27665b26d9f529781287e7b9b33b160f6adcbcb458321",
+    "run.py": "6e26f217d513eaf9cd6b5ade319a8bb65b17811362434a674336630ca4c47b71",
+    "sensitivity.py": "5ecb37a8a08bb4c2acf4f91da6f75f5cfb68b0f8e9e1b39d130f92ef2a416c0f",
+    "details.py": "39d97dbcd974f401a293a283ac7a0df53ea3869e5450fb321bff1687a4c06738",
+    "analyze.py": "5f6055d4ef248fb77282aea2148eb5194e858ede9f19ef2a280021de07726ed2"
+  }
+}

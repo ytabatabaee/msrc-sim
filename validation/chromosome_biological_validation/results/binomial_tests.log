@@ -1,0 +1,8 @@
+................                                                         [100%]
+=============================== warnings summary ===============================
+.venv/lib/python3.14/site-packages/_pytest/cacheprovider.py:469
+  /Users/ytabatabaee/Desktop/msrc-sim/.venv/lib/python3.14/site-packages/_pytest/cacheprovider.py:469: PytestCacheWarning: could not create cache path /Users/ytabatabaee/Desktop/.pytest_cache/v/cache/nodeids: [Errno 1] Operation not permitted: '/Users/ytabatabaee/Desktop/pytest-cache-files-n2066052'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+16 passed, 1 warning in 3.47s

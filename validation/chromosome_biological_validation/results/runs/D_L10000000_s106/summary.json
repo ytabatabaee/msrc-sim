@@ -1,0 +1,21 @@
+{
+  "job": {
+    "length": 10000000,
+    "model": "D",
+    "kappa": 1.0,
+    "duration": 1000,
+    "pattern": "1010",
+    "seed": 106
+  },
+  "status": "complete",
+  "events": {
+    "recombination": 4709,
+    "background_transfer": 1510,
+    "coalescence": 4703,
+    "species_boundary": 104
+  },
+  "intervals": 634,
+  "peak_carriers": 86,
+  "seconds": 13.410214809002355,
+  "rss": 97898496
+}

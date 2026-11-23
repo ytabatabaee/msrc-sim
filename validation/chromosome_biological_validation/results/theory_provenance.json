@@ -1,0 +1,11 @@
+{
+  "hashes": {
+    "moran_quartet_operator.py": "2799431d11f3e371752712d749ce39a52f31380a2a22de8b3820acf8286c443a",
+    "full_species_tree.py": "d0f1c3c42878f5437f7b240e229b8dd3812fcf014b4a35ecdc81c9bcf037b575",
+    "unbalanced_species_tree.py": "6cbb4fcd2088e323ac4438af69caa5623131920365f00afe03ad1410e6cc0d3d",
+    "prescribed_frequency_quartet.py": "541dff135a76802c764f8cb00011a677b3d80e89c974b8c7a02f2e37ad3b2114",
+    "matrix_free_quartet.py": "bd715a814819ed64850d531c468778fbab8fb41053a535f36276f3a7b5ebf57e"
+  },
+  "seconds": 1.7596715100080473,
+  "model": "full balanced multispecies prescribed p=0.5; no Moran approximation"
+}

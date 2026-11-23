@@ -1,0 +1,41 @@
+{
+  "ne": 1000,
+  "divergence_step": 100,
+  "root_extension": 1000,
+  "selection": 0.0,
+  "rate": 1e-08,
+  "kappa": 0.01,
+  "lengths": [
+    100000,
+    500000,
+    1000000,
+    5000000,
+    10000000
+  ],
+  "taxa": [
+    4,
+    8,
+    16,
+    30
+  ],
+  "seeds": [
+    101,
+    202,
+    303
+  ],
+  "replicated_lengths": [
+    100000,
+    500000,
+    10000000
+  ],
+  "rss_gib": 1.5,
+  "small_seconds": 30,
+  "large_seconds": 60,
+  "history_seconds": 60,
+  "region_fraction": [
+    0.3,
+    0.7
+  ],
+  "marker_fraction": 0.5,
+  "notes": "Recently diverged populations/species, Ne=1000 diploids (2000 copies), native neutral Moran histories. A low-Ne compact-population model; not a claim about Ne=1e5 or ancient origins. The 10-Mb region is [3,7] Mb."
+}

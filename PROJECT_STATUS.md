@@ -790,3 +790,33 @@ Report: [exact Moran/ARG/SMC′ validation](docs/MSRC_MORAN_THEORY_ARG_SMC_VALID
   population labels, mutation/outgroup semantics and statistics after these gates.
 
 Report: [MSRC-ARG 10-Mb scalability](docs/MSRC_ARG_10MB_SCALABILITY.md).
+
+## 2026-11-22 — Four-taxon chromosome biological positive control
+
+- Added independent full multispecies prescribed-frequency predictions followed
+  by 100-kb/1-Mb pilots and 20 completed 10-Mb chromosomes in each of four models:
+  neutral uniform, neutral low-map, MSRC cross-suppressed, MSRC unsuppressed.
+- Fixed p=.5 and conditional terminal pattern 1010, Ne=1000, origin1200/root200,
+  marker5Mb, region[3,7)Mb and kappa=.01 produce a broad strong alternative
+  signal: marker q2=.85 versus exact prescribed prediction .909776. Neutral
+  controls give .25/.30. Structured kappa1 has a narrow marker peak (point q2=1).
+- Inside C, TAC/TBD average1613/1617 generations versus TAB/TAD3079/3044;
+  internal branches average3107 inside versus2022 outside. These are simulation
+  time predictions; an analytical branch-time comparison was not established.
+- Four of 108 uncorrected pointwise q intervals exclude their theoretical target.
+  Retained as unresolved discrepancies, not removed or reported as passing.
+  N=20 is insufficient for tight whole-chromosome marginal equivalence.
+- Added three-seed sensitivity settings for duration, kappa, marker, pattern and
+  recombination rate, with all inputs, completed/censored outputs and figures.
+- Existing theory's M2000 binomial overflow fixed in msrc-study with stable PMF,
+  preserving the law; all 86 theory tests pass. Full finite-M operator attempts
+  still time out after inheritance succeeds. Correctly conditioned stochastic
+  Moran validation remains unresolved; fixed paths are not posterior histories.
+- Full simulator tests 343 passed, one existing warning. ARG event generator and
+  SMC source unchanged. No population-genetic statistics implemented.
+- Empirical cod files were inspected for qualitative comparison; this is not
+  quantitative calibration. Next: increase independent replication, resolve
+  boundary discrepancies, improve exact operator cost and test posterior Moran
+  histories with correct conditioning.
+
+Report: [chromosome biological validation](docs/MSRC_ARG_CHROMOSOME_BIOLOGICAL_VALIDATION.md).
