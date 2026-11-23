@@ -1,0 +1,1199 @@
+active_carriers,active_intervals,candidate_options,edges,event_counts,logged_events,nodes,peak_rss_bytes,stage,stored_segments,time_generations,wall
+,,,,,,,85209088,history_generation,,,0.2574494460131973
+,,,,,,,104099840,history_generation,,,0.5009985420037992
+,,,,,,,124002304,history_generation,,,0.7514613610110246
+,,,,,,,142897152,history_generation,,,1.002070533009828
+,,,,,,,157257728,history_generation,,,1.2520961680129403
+,,,,,,,176504832,history_generation,,,1.50208172800194
+,,,,,,,197021696,history_generation,,,1.751685005001491
+,,,,,,,217972736,history_generation,,,2.0020752780110342
+,,,,,,,237477888,history_generation,,,2.252069483001833
+,,,,,,,256020480,history_generation,,,2.5008722210041014
+,,,,,,,275972096,history_generation,,,2.851415163007914
+,,,,,,,287391744,history_generation,,,3.0020816950127482
+,,,,,,,306524160,history_generation,,,3.250711566011887
+,,,,,,,325398528,history_generation,,,3.5020694760023616
+,,,,,,,343965696,history_generation,,,3.751721325010294
+,,,,,,,363343872,history_generation,,,4.0021261280053295
+,,,,,,,382128128,history_generation,,,4.251065452001058
+,,,,,,,399908864,history_generation,,,4.670792498000083
+,,,,,,,406253568,history_generation,,,4.752122883000993
+,,,,,,,422662144,history_generation,,,5.002075039999909
+,,,,,,,435621888,history_generation,,,5.250589991002926
+,,,,,,,454225920,history_generation,,,5.500737525013392
+,,,,,,,473288704,history_generation,,,5.752643667001394
+,,,,,,,491724800,history_generation,,,6.000168753002072
+,,,,,,,510656512,history_generation,,,6.251682902002358
+,,,,,,,521310208,history_generation,,,6.565061954999692
+,,,,,,,535330816,history_generation,,,6.752067603010801
+,,,,,,,554483712,history_generation,,,7.001794550000341
+,,,,,,,573644800,history_generation,,,7.252092253009323
+,,,,,,,592879616,history_generation,,,7.500947833003011
+,,,,,,,611467264,history_generation,,,7.752971845009597
+,,,,,,,630693888,history_generation,,,8.002072721006698
+,,,,,,,646701056,history_generation,,,8.523903068009531
+,,,,,,,664264704,history_generation,,,8.752123975005816
+,,,,,,,682713088,history_generation,,,9.002111357011017
+,,,,,,,701882368,history_generation,,,9.252177124013542
+,,,,,,,720801792,history_generation,,,9.502098892000504
+,,,,,,,739389440,history_generation,,,9.752083828003379
+,,,,,,,758157312,history_generation,,,10.001379463006742
+,,,,,,,777019392,history_generation,,,10.252069125999697
+,,,,,,,795430912,history_generation,,,10.502084389008814
+,,,,,,,804249600,history_generation,,,11.00692003199947
+,,,,,,,822956032,history_generation,,,11.252129509011866
+,,,,,,,840335360,history_generation,,,11.502079280006
+,,,,,,,858898432,history_generation,,,11.75207733901334
+,,,,,,,877326336,history_generation,,,12.001806251006201
+,,,,,,,895467520,history_generation,,,12.25207283400232
+,,,,,,,914182144,history_generation,,,12.500164732002304
+,,,,,,,919150592,history_generation,,,12.752069612004561
+,,,,,,,937705472,history_generation,,,13.002080558013404
+,,,,,,,956477440,history_generation,,,13.251182663007057
+,,,,,,,975540224,history_generation,,,13.502142271012417
+,,,,,,,995557376,history_generation,,,14.109167928007082
+,,,,,,,1006731264,history_generation,,,14.252108077009325
+,,,,,,,1025560576,history_generation,,,14.502127902000211
+,,,,,,,1044078592,history_generation,,,14.75213359000918
+,,,,,,,1063194624,history_generation,,,15.002078057004837
+,,,,,,,1081749504,history_generation,,,15.252067878012895
+,,,,,,,1100353536,history_generation,,,15.502073987008771
+,,,,,,,1118765056,history_generation,,,15.752071428010822
+,,,,,,,1137627136,history_generation,,,16.001722634013277
+,,,,,,,1156468736,history_generation,,,16.251839528005803
+,,,,,,,1175736320,history_generation,,,16.50565850600833
+,,,,,,,1193906176,history_generation,,,16.75207398600469
+,,,,,,,1214132224,history_generation,,,17.001609037004528
+30,30,,,,0,,,ARG_simulation,30,0.0,17.097192990011536
+32,32,30,4,{'recombination': 2},2,34,1225494528,ARG_simulation,32,0.11622474403382585,17.250250119002885
+32,32,17,4,{'recombination': 2},2,34,1225523200,ARG_simulation,32,0.2992116049892703,17.54437901401252
+32,32,25,4,{'recombination': 2},2,34,1225547776,ARG_simulation,32,0.45900203242145293,17.752067998007988
+32,32,33,4,{'recombination': 2},2,34,1225564160,ARG_simulation,32,0.6529094562529313,18.002068339003017
+32,32,0,4,{'recombination': 2},2,34,1225580544,ARG_simulation,32,0.8424058253533215,18.251254870003322
+33,33,16,6,{'recombination': 3},3,36,1225596928,ARG_simulation,33,1.0251610610712028,18.502067230001558
+33,33,35,6,{'recombination': 3},3,36,1225617408,ARG_simulation,33,1.2032733614816997,18.75092869400396
+34,34,30,8,{'recombination': 4},4,38,1225633792,ARG_simulation,34,1.3781939354174877,19.00211229400884
+35,35,39,10,{'recombination': 5},5,40,1225670656,ARG_simulation,35,1.542393834433412,19.252103311009705
+36,36,41,12,{'recombination': 6},6,42,1225678848,ARG_simulation,36,1.7161180181142857,19.502148245010176
+36,36,41,12,{'recombination': 6},6,42,1225695232,ARG_simulation,36,1.876697946746863,19.75049910400412
+37,37,34,14,{'recombination': 7},7,44,1225785344,ARG_simulation,37,2.02561118505107,20.027546443001484
+37,37,10,14,{'recombination': 7},7,44,1225801728,ARG_simulation,37,2.168054097955384,20.252104484010488
+38,38,40,16,{'recombination': 8},8,46,1225822208,ARG_simulation,38,2.3245740340458587,20.502090017005685
+38,38,14,16,{'recombination': 8},8,46,1225826304,ARG_simulation,38,2.477231232165389,20.752069278009003
+38,38,45,16,{'recombination': 8},8,46,1225842688,ARG_simulation,38,2.6281807902486602,21.002138408002793
+38,38,45,16,{'recombination': 8},8,46,1225854976,ARG_simulation,38,2.7887785334108273,21.252105829000357
+38,38,39,16,{'recombination': 8},8,46,1225871360,ARG_simulation,38,2.944308182322821,21.502112075002515
+39,39,47,18,{'recombination': 9},9,48,1225887744,ARG_simulation,39,3.092311617100425,21.75210135000816
+40,40,50,20,{'recombination': 10},10,50,1225904128,ARG_simulation,40,3.2418343914387884,22.001284622005187
+41,41,53,22,{'recombination': 11},11,52,1225916416,ARG_simulation,41,3.3872485353117763,22.252067608002108
+42,42,54,24,{'recombination': 12},12,54,1225945088,ARG_simulation,42,3.532988653510196,22.5021175580041
+43,43,17,26,{'recombination': 13},13,56,1225957376,ARG_simulation,43,3.6669048085647624,22.752107992011588
+43,43,57,26,{'recombination': 13},13,56,1225961472,ARG_simulation,43,3.7959420619080113,23.001267895000638
+43,43,57,26,{'recombination': 13},13,56,1225981952,ARG_simulation,43,3.9329052083842053,23.25208015400858
+43,43,57,26,{'recombination': 13},13,56,1226002432,ARG_simulation,43,4.07492564067097,23.502070557005936
+44,44,58,28,{'recombination': 14},14,58,1226010624,ARG_simulation,44,4.201507661334318,23.752108585002134
+44,44,0,28,{'recombination': 14},14,58,1226022912,ARG_simulation,44,4.32543419968626,24.00213264299964
+44,44,12,28,{'recombination': 14},14,58,1226031104,ARG_simulation,44,4.451807956731569,24.252094981013215
+45,45,61,30,"{'recombination': 15, 'background_transfer': 1}",16,60,1226051584,ARG_simulation,45,4.583670193315477,24.50210573100776
+46,46,1,32,"{'recombination': 16, 'background_transfer': 1}",17,62,1226063872,ARG_simulation,46,4.706883072551825,24.75206927000545
+46,46,43,32,"{'recombination': 16, 'background_transfer': 2}",18,62,1226084352,ARG_simulation,46,4.837894901345262,25.00206943700323
+46,46,6,32,"{'recombination': 16, 'background_transfer': 2}",18,62,1226096640,ARG_simulation,46,4.965655625823976,25.252111922003678
+48,48,67,36,"{'recombination': 18, 'background_transfer': 2}",20,66,1226117120,ARG_simulation,48,5.089663285997945,25.50057994101371
+48,48,67,36,"{'recombination': 18, 'background_transfer': 2}",20,66,1226125312,ARG_simulation,48,5.211437217833437,25.75206882999919
+48,48,33,36,"{'recombination': 18, 'background_transfer': 2}",20,66,1226133504,ARG_simulation,48,5.330329019186662,26.000160598006914
+48,48,30,36,"{'recombination': 18, 'background_transfer': 2}",20,66,1226145792,ARG_simulation,48,5.450500233434423,26.252127883999492
+48,48,67,36,"{'recombination': 18, 'background_transfer': 2}",20,66,1226153984,ARG_simulation,48,5.571815594122653,26.50128145200142
+51,51,65,42,"{'recombination': 21, 'background_transfer': 2}",23,72,1226178560,ARG_simulation,51,5.679461071072997,26.75206851901021
+52,52,75,44,"{'recombination': 22, 'background_transfer': 2}",24,74,1226207232,ARG_simulation,52,5.795400914083524,27.002069008012768
+52,52,8,44,"{'recombination': 22, 'background_transfer': 2}",24,74,1226219520,ARG_simulation,52,5.9086756779985725,27.252095603005728
+52,52,18,44,"{'recombination': 22, 'background_transfer': 3}",25,74,1226227712,ARG_simulation,52,6.020066978907085,27.50099901400972
+52,52,67,44,"{'recombination': 22, 'background_transfer': 3}",25,74,1226235904,ARG_simulation,52,6.13988567927331,27.750115455011837
+52,52,28,44,"{'recombination': 22, 'background_transfer': 3}",25,74,1226252288,ARG_simulation,52,6.248540078631194,28.00200138000946
+52,52,21,44,"{'recombination': 22, 'background_transfer': 3}",25,74,1226256384,ARG_simulation,52,6.362802527172657,28.251764249012922
+54,54,79,48,"{'recombination': 24, 'background_transfer': 3}",27,78,1226280960,ARG_simulation,54,6.4760867191602856,28.502072086004773
+55,55,43,50,"{'recombination': 25, 'background_transfer': 3}",28,80,1226293248,ARG_simulation,55,6.584049881924068,28.752097877004417
+55,55,77,50,"{'recombination': 25, 'background_transfer': 3}",28,80,1226297344,ARG_simulation,55,6.689048436088443,29.002069558002404
+55,55,80,50,"{'recombination': 25, 'background_transfer': 3}",28,80,1226309632,ARG_simulation,55,6.792466554181227,29.25207081400731
+55,55,14,50,"{'recombination': 25, 'background_transfer': 3}",28,80,1226317824,ARG_simulation,55,6.900254243521911,29.500181969007826
+56,56,82,52,"{'recombination': 26, 'background_transfer': 4}",30,82,1226330112,ARG_simulation,56,7.005219088305828,29.752068486006465
+56,56,82,52,"{'recombination': 26, 'background_transfer': 5}",31,82,1226350592,ARG_simulation,56,7.10375497908746,30.00218880501052
+56,56,82,52,"{'recombination': 26, 'background_transfer': 5}",31,82,1226354688,ARG_simulation,56,7.207424205704959,30.2521037980041
+56,56,62,52,"{'recombination': 26, 'background_transfer': 5}",31,82,1226366976,ARG_simulation,56,7.315572462046598,30.502067260007607
+56,56,77,52,"{'recombination': 26, 'background_transfer': 5}",31,82,1226371072,ARG_simulation,56,7.420875796842457,30.750421410004492
+56,56,64,52,"{'recombination': 26, 'background_transfer': 6}",32,82,1226383360,ARG_simulation,56,7.5253599044397115,31.002110238012392
+56,56,77,52,"{'recombination': 26, 'background_transfer': 6}",32,82,1226391552,ARG_simulation,56,7.628624845471688,31.252106312007527
+56,56,82,52,"{'recombination': 26, 'background_transfer': 6}",32,82,1226395648,ARG_simulation,56,7.728303980071788,31.50211639200279
+56,56,82,52,"{'recombination': 26, 'background_transfer': 6}",32,82,1226403840,ARG_simulation,56,7.830790440642592,31.750697918003425
+56,56,82,52,"{'recombination': 26, 'background_transfer': 6}",32,82,1226416128,ARG_simulation,56,7.931478211475099,32.00206664401048
+56,56,76,52,"{'recombination': 26, 'background_transfer': 6}",32,82,1226424320,ARG_simulation,56,8.02880493008323,32.25173084701237
+56,56,21,52,"{'recombination': 26, 'background_transfer': 6}",32,82,1226424320,ARG_simulation,56,8.130953417171026,32.50082042001304
+56,56,82,52,"{'recombination': 26, 'background_transfer': 6}",32,82,1226428416,ARG_simulation,56,8.237477555299579,32.75211057600973
+56,56,5,52,"{'recombination': 26, 'background_transfer': 6}",32,82,1226436608,ARG_simulation,56,8.342942349779658,33.001409889999195
+56,56,36,52,"{'recombination': 26, 'background_transfer': 6}",32,82,1226444800,ARG_simulation,56,8.450063144131256,33.25114042501082
+56,56,60,52,"{'recombination': 26, 'background_transfer': 6}",32,82,1226448896,ARG_simulation,56,8.550473961935339,33.501648650009884
+56,56,79,52,"{'recombination': 26, 'background_transfer': 6}",32,82,1226465280,ARG_simulation,56,8.651204284904086,33.75182079800288
+57,57,85,54,"{'recombination': 27, 'background_transfer': 6}",33,84,1226473472,ARG_simulation,57,8.753638322102615,34.002072266011965
+58,58,29,56,"{'recombination': 28, 'background_transfer': 7}",35,86,1226489856,ARG_simulation,58,8.853653387788981,34.251702906010905
+58,58,40,56,"{'recombination': 28, 'background_transfer': 7}",35,86,1226498048,ARG_simulation,58,8.953045338031641,34.5020722340123
+58,58,78,56,"{'recombination': 28, 'background_transfer': 7}",35,86,1226522624,ARG_simulation,58,9.045792258754823,34.751690659002634
+58,58,42,56,"{'recombination': 28, 'background_transfer': 7}",35,86,1226530816,ARG_simulation,58,9.142113740854295,35.00013830201351
+58,58,88,56,"{'recombination': 28, 'background_transfer': 7}",35,86,1226530816,ARG_simulation,58,9.236242487645,35.25207678700099
+58,58,77,56,"{'recombination': 28, 'background_transfer': 7}",35,86,1226543104,ARG_simulation,58,9.335182301912715,35.50206841601175
+58,58,85,56,"{'recombination': 28, 'background_transfer': 7}",35,86,1226551296,ARG_simulation,58,9.431548884788558,35.75180536900007
+58,58,88,56,"{'recombination': 28, 'background_transfer': 7}",35,86,1226555392,ARG_simulation,58,9.532356776145113,36.00211967701034
+59,59,56,58,"{'recombination': 29, 'background_transfer': 8}",37,88,1226567680,ARG_simulation,59,9.629735354526302,36.2510076710023
+59,59,3,58,"{'recombination': 29, 'background_transfer': 9}",38,88,1226579968,ARG_simulation,59,9.735522506367229,36.502067440000246
+59,59,26,58,"{'recombination': 29, 'background_transfer': 9}",38,88,1226592256,ARG_simulation,59,9.83062522217573,36.75076692200673
+60,60,76,60,"{'recombination': 30, 'background_transfer': 9}",39,90,1226604544,ARG_simulation,60,9.930797554389788,37.00210835300095
+61,61,33,62,"{'recombination': 31, 'background_transfer': 9}",40,92,1226616832,ARG_simulation,61,10.022933154309795,37.25209338100103
+61,61,1,62,"{'recombination': 31, 'background_transfer': 9}",40,92,1226936320,ARG_simulation,61,10.115693656481024,37.50094381500094
+61,61,55,62,"{'recombination': 31, 'background_transfer': 9}",40,92,1226948608,ARG_simulation,61,10.209017223897959,37.75180216600711
+61,61,59,62,"{'recombination': 31, 'background_transfer': 9}",40,92,1226964992,ARG_simulation,61,10.303222924554554,38.00211569000385
+61,61,14,62,"{'recombination': 31, 'background_transfer': 9}",40,92,1226973184,ARG_simulation,61,10.397519791302985,38.25123240301036
+61,61,60,62,"{'recombination': 31, 'background_transfer': 10}",41,92,1226981376,ARG_simulation,61,10.498911407874417,38.502070587011985
+61,61,74,62,"{'recombination': 31, 'background_transfer': 10}",41,92,1226993664,ARG_simulation,61,10.59102874006937,38.75209783500759
+61,61,58,62,"{'recombination': 31, 'background_transfer': 10}",41,92,1227001856,ARG_simulation,61,10.686368686605034,39.00023590800993
+61,61,22,62,"{'recombination': 31, 'background_transfer': 11}",42,92,1227014144,ARG_simulation,61,10.786362736287922,39.252136121009244
+61,61,93,62,"{'recombination': 31, 'background_transfer': 11}",42,92,1227022336,ARG_simulation,61,10.883532399020003,39.50212456801091
+61,61,83,62,"{'recombination': 31, 'background_transfer': 11}",42,92,1227026432,ARG_simulation,61,10.97405352195681,39.751274121008464
+61,61,70,62,"{'recombination': 31, 'background_transfer': 11}",42,92,1227034624,ARG_simulation,61,11.06701279268765,40.00118466900312
+61,61,86,62,"{'recombination': 31, 'background_transfer': 12}",43,92,1227046912,ARG_simulation,61,11.159644630131439,40.25207654001133
+61,61,54,62,"{'recombination': 31, 'background_transfer': 12}",43,92,1227046912,ARG_simulation,61,11.253558219545601,40.50208992300031
+61,61,12,62,"{'recombination': 31, 'background_transfer': 12}",43,92,1227055104,ARG_simulation,61,11.346063461631765,40.752158397008316
+61,61,83,62,"{'recombination': 31, 'background_transfer': 13}",44,92,1227059200,ARG_simulation,61,11.436154612912455,41.000904463013285
+61,61,93,62,"{'recombination': 31, 'background_transfer': 13}",44,92,1227071488,ARG_simulation,61,11.529329106009637,41.25206819901359
+61,61,93,62,"{'recombination': 31, 'background_transfer': 13}",44,92,1227079680,ARG_simulation,61,11.621230276072282,41.50212554101017
+61,61,90,62,"{'recombination': 31, 'background_transfer': 14}",45,92,1227091968,ARG_simulation,61,11.71510156225892,41.75189185200725
+61,61,2,62,"{'recombination': 31, 'background_transfer': 14}",45,92,1227096064,ARG_simulation,61,11.810156881704716,42.00210939500539
+63,63,37,66,"{'recombination': 33, 'background_transfer': 14}",47,96,1227104256,ARG_simulation,63,11.904841979802624,42.252068541012704
+63,63,85,66,"{'recombination': 33, 'background_transfer': 14}",47,96,1227116544,ARG_simulation,63,11.999254086615258,42.50206858001184
+63,63,98,66,"{'recombination': 33, 'background_transfer': 14}",47,96,1227124736,ARG_simulation,63,12.08539107570483,42.75211167499947
+64,64,36,68,"{'recombination': 34, 'background_transfer': 14}",48,98,1227145216,ARG_simulation,64,12.179397726240923,43.002165691010305
+64,64,35,68,"{'recombination': 34, 'background_transfer': 15}",49,98,1227153408,ARG_simulation,64,12.272907837202256,43.25209455800359
+64,64,100,68,"{'recombination': 34, 'background_transfer': 15}",49,98,1227161600,ARG_simulation,64,12.36056522064169,43.502107340013026
+64,64,80,68,"{'recombination': 34, 'background_transfer': 15}",49,98,1227169792,ARG_simulation,64,12.453987700909005,43.75093413500872
+65,65,52,70,"{'recombination': 35, 'background_transfer': 15}",50,100,1227177984,ARG_simulation,65,12.537814070465926,44.00014452601317
+65,65,0,70,"{'recombination': 35, 'background_transfer': 15}",50,100,1227190272,ARG_simulation,65,12.629674457479634,44.252075985001284
+65,65,76,70,"{'recombination': 35, 'background_transfer': 15}",50,100,1227202560,ARG_simulation,65,12.716445548468197,44.50206881901249
+65,65,92,70,"{'recombination': 35, 'background_transfer': 16}",51,100,1227210752,ARG_simulation,65,12.805325547953665,44.752066744011245
+67,67,109,74,"{'recombination': 37, 'background_transfer': 16}",53,104,1227223040,ARG_simulation,67,12.892023903911937,45.002133692003554
+67,67,49,74,"{'recombination': 37, 'background_transfer': 16}",53,104,1227239424,ARG_simulation,67,12.97577371301505,45.25207661901368
+67,67,62,74,"{'recombination': 37, 'background_transfer': 16}",53,104,1227255808,ARG_simulation,67,13.060204218796573,45.502097635006066
+67,67,24,74,"{'recombination': 37, 'background_transfer': 16}",53,104,1227264000,ARG_simulation,67,13.150117752220783,45.75212126300903
+68,68,111,76,"{'recombination': 38, 'background_transfer': 16}",54,106,1227276288,ARG_simulation,68,13.23721927866425,46.00150697999925
+68,68,43,76,"{'recombination': 38, 'background_transfer': 16}",54,106,1227284480,ARG_simulation,68,13.321663974245862,46.2520667980134
+68,68,21,76,"{'recombination': 38, 'background_transfer': 16}",54,106,1227296768,ARG_simulation,68,13.409521881872415,46.501552344008815
+68,68,111,76,"{'recombination': 38, 'background_transfer': 16}",54,106,1227300864,ARG_simulation,68,13.496773847992692,46.75209493500006
+69,69,112,78,"{'recombination': 39, 'background_transfer': 16}",55,108,1227309056,ARG_simulation,69,13.583338713168496,47.0014614410029
+69,69,28,78,"{'recombination': 39, 'background_transfer': 16}",55,108,1227317248,ARG_simulation,69,13.669841676207936,47.252070202011964
+69,69,114,78,"{'recombination': 39, 'background_transfer': 16}",55,108,1227329536,ARG_simulation,69,13.745318003819428,47.50012961300672
+69,69,114,78,"{'recombination': 39, 'background_transfer': 16}",55,108,1227341824,ARG_simulation,69,13.828217353386083,47.75210041500395
+70,70,116,80,"{'recombination': 40, 'background_transfer': 17}",57,110,1227362304,ARG_simulation,70,13.914432740331117,48.00209272101347
+70,70,66,80,"{'recombination': 40, 'background_transfer': 17}",57,110,1227362304,ARG_simulation,70,13.992549928221864,48.25212639900565
+70,70,79,80,"{'recombination': 40, 'background_transfer': 18}",58,110,1227370496,ARG_simulation,70,14.081664490910061,48.50210744701326
+70,70,53,80,"{'recombination': 40, 'background_transfer': 18}",58,110,1227386880,ARG_simulation,70,14.166711932061302,48.7521155160066
+70,70,97,80,"{'recombination': 40, 'background_transfer': 18}",58,110,1227395072,ARG_simulation,70,14.245867252015316,49.001005096011795
+70,70,108,80,"{'recombination': 40, 'background_transfer': 18}",58,110,1227399168,ARG_simulation,70,14.325489249854584,49.25207127101021
+71,71,1,82,"{'recombination': 41, 'background_transfer': 18}",59,112,1227415552,ARG_simulation,71,14.410166636532661,49.50211065400799
+71,71,2,82,"{'recombination': 41, 'background_transfer': 18}",59,112,1227423744,ARG_simulation,71,14.493260646176724,49.75211532501271
+71,71,80,82,"{'recombination': 41, 'background_transfer': 19}",60,112,1227431936,ARG_simulation,71,14.572319412115379,50.001136054008384
+71,71,19,82,"{'recombination': 41, 'background_transfer': 19}",60,112,1227440128,ARG_simulation,71,14.658960350052805,50.25043183201342
+72,72,14,84,"{'recombination': 42, 'background_transfer': 19}",61,114,1227452416,ARG_simulation,72,14.74186373888443,50.50210717400478
+72,72,59,84,"{'recombination': 42, 'background_transfer': 19}",61,114,1227468800,ARG_simulation,72,14.824755619019994,50.752110489003826
+72,72,94,84,"{'recombination': 42, 'background_transfer': 19}",61,114,1227476992,ARG_simulation,72,14.905655737883226,51.00015489201178
+72,72,0,84,"{'recombination': 42, 'background_transfer': 19}",61,114,1227481088,ARG_simulation,72,14.987009991936235,51.25207140800194
+73,73,98,86,"{'recombination': 43, 'background_transfer': 19}",62,116,1227489280,ARG_simulation,73,15.064208655195959,51.50206816500577
+73,73,36,86,"{'recombination': 43, 'background_transfer': 19}",62,116,1227493376,ARG_simulation,73,15.141604130426211,51.75206674700894
+73,73,119,86,"{'recombination': 43, 'background_transfer': 20}",63,116,1227493376,ARG_simulation,73,15.219609041052223,52.00207021301321
+73,73,76,86,"{'recombination': 43, 'background_transfer': 20}",63,116,1227493376,ARG_simulation,73,15.297761810961797,52.25188574701315
+73,73,27,86,"{'recombination': 43, 'background_transfer': 20}",63,116,1227493376,ARG_simulation,73,15.378778815862475,52.50207031100581
+73,73,2,86,"{'recombination': 43, 'background_transfer': 20}",63,116,1227493376,ARG_simulation,73,15.459449661676238,52.75210943901038
+73,73,119,86,"{'recombination': 43, 'background_transfer': 21}",64,116,1227493376,ARG_simulation,73,15.529949541279873,53.002156289003324
+73,73,33,86,"{'recombination': 43, 'background_transfer': 21}",64,116,1227493376,ARG_simulation,73,15.608393810456805,53.251696814011666
+73,73,119,86,"{'recombination': 43, 'background_transfer': 21}",64,116,1227493376,ARG_simulation,73,15.686800282489681,53.50212228400051
+73,73,0,86,"{'recombination': 43, 'background_transfer': 21}",64,116,1227497472,ARG_simulation,73,15.765363037455215,53.75165275701147
+73,73,27,86,"{'recombination': 43, 'background_transfer': 22}",65,116,1227497472,ARG_simulation,73,15.84141346404807,54.002069045003736
+73,73,34,86,"{'recombination': 43, 'background_transfer': 22}",65,116,1227501568,ARG_simulation,73,15.916465089978475,54.2521190430125
+73,73,119,86,"{'recombination': 43, 'background_transfer': 22}",65,116,1227501568,ARG_simulation,73,15.994460372221175,54.50210502000118
+73,73,117,86,"{'recombination': 43, 'background_transfer': 22}",65,116,1227501568,ARG_simulation,73,16.07402626640422,54.75028559700877
+73,73,77,86,"{'recombination': 43, 'background_transfer': 22}",65,116,1227501568,ARG_simulation,73,16.154019168074623,55.00060811600997
+73,73,63,86,"{'recombination': 43, 'background_transfer': 22}",65,116,1227501568,ARG_simulation,73,16.23116237480694,55.25207677400613
+74,74,11,88,"{'recombination': 44, 'background_transfer': 22}",66,118,1227501568,ARG_simulation,74,16.304163761971623,55.50207052301266
+74,74,29,88,"{'recombination': 44, 'background_transfer': 22}",66,118,1227501568,ARG_simulation,74,16.379871004451473,55.75207060101093
+74,74,122,88,"{'recombination': 44, 'background_transfer': 22}",66,118,1227501568,ARG_simulation,74,16.453151584328932,56.00095303800481
+74,74,122,88,"{'recombination': 44, 'background_transfer': 22}",66,118,1227501568,ARG_simulation,74,16.535914583001574,56.252073419003864
+75,75,125,90,"{'recombination': 45, 'background_transfer': 23}",68,120,1227501568,ARG_simulation,75,16.612538486732415,56.50064646700048
+75,75,120,90,"{'recombination': 45, 'background_transfer': 23}",68,120,1227501568,ARG_simulation,75,16.690801525071155,56.75207190999936
+75,75,119,90,"{'recombination': 45, 'background_transfer': 23}",68,120,1227501568,ARG_simulation,75,16.769235601713135,57.00018772200565
+75,75,57,90,"{'recombination': 45, 'background_transfer': 23}",68,120,1227501568,ARG_simulation,75,16.847722623728398,57.25207257500733
+76,76,127,92,"{'recombination': 46, 'background_transfer': 24}",70,122,1227501568,ARG_simulation,76,16.923006936360245,57.502104589002556
+76,76,26,92,"{'recombination': 46, 'background_transfer': 24}",70,122,1227501568,ARG_simulation,76,16.997140302605604,57.752070545000606
+77,77,40,94,"{'recombination': 47, 'background_transfer': 24}",71,124,1227505664,ARG_simulation,77,17.065730547250688,58.002020795000135
+77,77,45,94,"{'recombination': 47, 'background_transfer': 24}",71,124,1227505664,ARG_simulation,77,17.13491972570911,58.252071139999316
+78,78,46,96,"{'recombination': 48, 'background_transfer': 24}",72,126,1227505664,ARG_simulation,78,17.213538667137282,58.50070430900087
+78,78,131,96,"{'recombination': 48, 'background_transfer': 24}",72,126,1227505664,ARG_simulation,78,17.285836590008397,58.75210293100099
+78,78,25,96,"{'recombination': 48, 'background_transfer': 24}",72,126,1227509760,ARG_simulation,78,17.357696541220104,59.00213477600482
+78,78,68,96,"{'recombination': 48, 'background_transfer': 25}",73,126,1227509760,ARG_simulation,78,17.42690845279118,59.25168990800739
+78,78,96,96,"{'recombination': 48, 'background_transfer': 25}",73,126,1227509760,ARG_simulation,78,17.499252009234972,59.50208399000985
+78,78,93,96,"{'recombination': 48, 'background_transfer': 25}",73,126,1227509760,ARG_simulation,78,17.578061120117468,59.75031665401184
+78,78,30,96,"{'recombination': 48, 'background_transfer': 25}",73,126,1227509760,ARG_simulation,78,17.652223924913557,60.00206988400896
+78,78,0,96,"{'recombination': 48, 'background_transfer': 25}",73,126,1227509760,ARG_simulation,78,17.724770004663192,60.25039850000758
+79,79,125,98,"{'recombination': 49, 'background_transfer': 26}",75,128,1227509760,ARG_simulation,79,17.79429622156729,60.50206781200541
+80,80,8,100,"{'recombination': 50, 'background_transfer': 27}",77,130,1227513856,ARG_simulation,80,17.86543285797164,60.75206903601065
+81,81,35,102,"{'recombination': 51, 'background_transfer': 27}",78,132,1227513856,ARG_simulation,81,17.93555601349171,61.00139237100666
+81,81,124,102,"{'recombination': 51, 'background_transfer': 27}",78,132,1227513856,ARG_simulation,81,18.00336481678359,61.25211724500696
+81,81,125,102,"{'recombination': 51, 'background_transfer': 27}",78,132,1227513856,ARG_simulation,81,18.0691264570319,61.502094944007695
+81,81,84,102,"{'recombination': 51, 'background_transfer': 27}",78,132,1227513856,ARG_simulation,81,18.139708806347603,61.750289617004455
+81,81,27,102,"{'recombination': 51, 'background_transfer': 27}",78,132,1227513856,ARG_simulation,81,18.211610977950347,62.0016799330042
+83,83,50,106,"{'recombination': 53, 'background_transfer': 27}",80,136,1227513856,ARG_simulation,83,18.281148325306273,62.2521024220041
+83,83,89,106,"{'recombination': 53, 'background_transfer': 27}",80,136,1227513856,ARG_simulation,83,18.3468838902833,62.50087568600429
+83,83,17,106,"{'recombination': 53, 'background_transfer': 27}",80,136,1227513856,ARG_simulation,83,18.41639357119317,62.75208305301203
+83,83,66,106,"{'recombination': 53, 'background_transfer': 27}",80,136,1227513856,ARG_simulation,83,18.488361203376783,63.002069968002615
+83,83,28,106,"{'recombination': 53, 'background_transfer': 27}",80,136,1227513856,ARG_simulation,83,18.557664198128446,63.25112384800741
+83,83,96,106,"{'recombination': 53, 'background_transfer': 27}",80,136,1227513856,ARG_simulation,83,18.6244579071641,63.50206665600126
+83,83,119,106,"{'recombination': 53, 'background_transfer': 27}",80,136,1227513856,ARG_simulation,83,18.693623661532957,63.750365012005204
+83,83,0,106,"{'recombination': 53, 'background_transfer': 27}",80,136,1227513856,ARG_simulation,83,18.75975511229773,64.00015988700034
+83,83,39,106,"{'recombination': 53, 'background_transfer': 27}",80,136,1227513856,ARG_simulation,83,18.831017629367068,64.25208575300348
+83,83,32,106,"{'recombination': 53, 'background_transfer': 27}",80,136,1227513856,ARG_simulation,83,18.901526902092144,64.50210888400034
+83,83,98,106,"{'recombination': 53, 'background_transfer': 27}",80,136,1227513856,ARG_simulation,83,18.963476125887606,64.75218210800085
+83,83,99,106,"{'recombination': 53, 'background_transfer': 27}",80,136,1227513856,ARG_simulation,83,19.03610400116433,65.00207222900644
+83,83,144,106,"{'recombination': 53, 'background_transfer': 27}",80,136,1227513856,ARG_simulation,83,19.10249192136356,65.2521178570023
+83,83,122,106,"{'recombination': 53, 'background_transfer': 28}",81,136,1227513856,ARG_simulation,83,19.165586976873918,65.50207754300209
+83,83,144,106,"{'recombination': 53, 'background_transfer': 28}",81,136,1227513856,ARG_simulation,83,19.241128226940617,65.75207456800854
+82,82,66,106,"{'recombination': 53, 'background_transfer': 28, 'coalescence': 1}",82,136,1227513856,ARG_simulation,83,19.311243225862036,66.00207884900738
+83,83,73,108,"{'recombination': 54, 'background_transfer': 28, 'coalescence': 1}",83,138,1227513856,ARG_simulation,84,19.37890130945538,66.25207320399932
+83,83,32,108,"{'recombination': 54, 'background_transfer': 28, 'coalescence': 1}",83,138,1227513856,ARG_simulation,84,19.444455082847675,66.50207619200228
+83,83,137,108,"{'recombination': 54, 'background_transfer': 28, 'coalescence': 1}",83,138,1227513856,ARG_simulation,84,19.5133837391446,66.75207334900915
+83,83,146,108,"{'recombination': 54, 'background_transfer': 28, 'coalescence': 1}",83,138,1227513856,ARG_simulation,84,19.58378317006107,67.00107898900751
+84,84,0,110,"{'recombination': 55, 'background_transfer': 28, 'coalescence': 1}",84,140,1227513856,ARG_simulation,85,19.658491368670138,67.252136110008
+84,84,31,110,"{'recombination': 55, 'background_transfer': 28, 'coalescence': 1}",84,140,1227513856,ARG_simulation,85,19.727651097450128,67.50094206001086
+84,84,2,110,"{'recombination': 55, 'background_transfer': 28, 'coalescence': 1}",84,140,1227513856,ARG_simulation,85,19.79436389819006,67.75215206400026
+85,85,18,112,"{'recombination': 56, 'background_transfer': 28, 'coalescence': 1}",85,142,1227513856,ARG_simulation,86,19.862731535943194,68.00211007500184
+85,85,114,112,"{'recombination': 56, 'background_transfer': 28, 'coalescence': 1}",85,142,1227513856,ARG_simulation,86,19.928258575540422,68.2512181080092
+87,87,147,116,"{'recombination': 58, 'background_transfer': 28, 'coalescence': 1}",87,146,1227513856,ARG_simulation,88,19.995939744688165,68.50207753300492
+87,87,113,116,"{'recombination': 58, 'background_transfer': 29, 'coalescence': 1}",88,146,1227513856,ARG_simulation,88,20.06130399155998,68.75213714101119
+87,87,154,116,"{'recombination': 58, 'background_transfer': 31, 'coalescence': 1}",90,146,1227517952,ARG_simulation,88,20.129698571796723,69.00048189901281
+87,87,154,116,"{'recombination': 58, 'background_transfer': 31, 'coalescence': 1}",90,146,1227517952,ARG_simulation,88,20.193984153010373,69.25211203700746
+87,87,99,116,"{'recombination': 58, 'background_transfer': 31, 'coalescence': 1}",90,146,1227517952,ARG_simulation,88,20.26077753102956,69.50209062600334
+87,87,33,116,"{'recombination': 58, 'background_transfer': 31, 'coalescence': 1}",90,146,1227517952,ARG_simulation,88,20.326377766801546,69.75192385801347
+87,87,154,116,"{'recombination': 58, 'background_transfer': 31, 'coalescence': 1}",90,146,1227517952,ARG_simulation,88,20.392624731143613,70.00166521900974
+87,87,130,116,"{'recombination': 58, 'background_transfer': 31, 'coalescence': 1}",90,146,1227517952,ARG_simulation,88,20.459448485952365,70.25208429900522
+87,87,33,116,"{'recombination': 58, 'background_transfer': 31, 'coalescence': 1}",90,146,1227517952,ARG_simulation,88,20.52268097276655,70.50207454900374
+87,87,119,116,"{'recombination': 58, 'background_transfer': 31, 'coalescence': 1}",90,146,1227517952,ARG_simulation,88,20.587818108882185,70.75209922900831
+87,87,70,116,"{'recombination': 58, 'background_transfer': 32, 'coalescence': 1}",91,146,1227517952,ARG_simulation,88,20.65434432851586,71.00114520901116
+88,88,159,118,"{'recombination': 59, 'background_transfer': 32, 'coalescence': 1}",92,148,1227517952,ARG_simulation,89,20.71914518456849,71.25211226900865
+88,88,28,118,"{'recombination': 59, 'background_transfer': 32, 'coalescence': 1}",92,148,1227517952,ARG_simulation,89,20.79010534906275,71.50207190201036
+90,90,104,122,"{'recombination': 61, 'background_transfer': 32, 'coalescence': 1}",94,152,1227517952,ARG_simulation,91,20.853211840258343,71.75078728700464
+91,91,0,124,"{'recombination': 62, 'background_transfer': 32, 'coalescence': 1}",95,154,1227517952,ARG_simulation,92,20.9183970415503,72.0012491170055
+91,91,22,124,"{'recombination': 62, 'background_transfer': 32, 'coalescence': 1}",95,154,1227517952,ARG_simulation,92,20.97927453061057,72.25207632800448
+91,91,25,124,"{'recombination': 62, 'background_transfer': 32, 'coalescence': 1}",95,154,1227517952,ARG_simulation,92,21.046127854452905,72.50207490799949
+91,91,32,124,"{'recombination': 62, 'background_transfer': 32, 'coalescence': 1}",95,154,1227517952,ARG_simulation,92,21.109060630838954,72.75210055700154
+91,91,125,124,"{'recombination': 62, 'background_transfer': 32, 'coalescence': 1}",95,154,1227517952,ARG_simulation,92,21.172833397505823,73.00207222701283
+91,91,166,124,"{'recombination': 62, 'background_transfer': 32, 'coalescence': 1}",95,154,1227517952,ARG_simulation,92,21.235527998363825,73.25209516400355
+91,91,33,124,"{'recombination': 62, 'background_transfer': 32, 'coalescence': 1}",95,154,1227517952,ARG_simulation,92,21.30234194051061,73.50207511101326
+91,91,0,124,"{'recombination': 62, 'background_transfer': 32, 'coalescence': 1}",95,154,1227517952,ARG_simulation,92,21.35934992095549,73.75092694100749
+91,91,84,124,"{'recombination': 62, 'background_transfer': 32, 'coalescence': 1}",95,154,1227522048,ARG_simulation,92,21.419334725047957,74.00131723801314
+91,91,100,124,"{'recombination': 62, 'background_transfer': 32, 'coalescence': 1}",95,154,1227526144,ARG_simulation,92,21.4814940058333,74.25052928100922
+93,93,101,128,"{'recombination': 64, 'background_transfer': 33, 'coalescence': 1}",98,158,1227534336,ARG_simulation,94,21.544750990969693,74.50209920400812
+93,93,49,128,"{'recombination': 64, 'background_transfer': 33, 'coalescence': 1}",98,158,1227538432,ARG_simulation,94,21.60347987509234,74.75206973700551
+93,93,101,128,"{'recombination': 64, 'background_transfer': 33, 'coalescence': 1}",98,158,1227538432,ARG_simulation,94,21.665176605007233,75.00193058401055
+93,93,38,128,"{'recombination': 64, 'background_transfer': 34, 'coalescence': 1}",99,158,1227538432,ARG_simulation,94,21.728381852219037,75.25207257500733
+94,94,16,130,"{'recombination': 65, 'background_transfer': 34, 'coalescence': 1}",100,160,1227538432,ARG_simulation,95,21.787199015282578,75.50042303500231
+94,94,98,130,"{'recombination': 65, 'background_transfer': 34, 'coalescence': 1}",100,160,1227538432,ARG_simulation,95,21.84932428453733,75.75207211601082
+94,94,161,130,"{'recombination': 65, 'background_transfer': 34, 'coalescence': 1}",100,160,1227538432,ARG_simulation,95,21.9060190908061,76.00207383200177
+94,94,23,130,"{'recombination': 65, 'background_transfer': 34, 'coalescence': 1}",100,160,1227542528,ARG_simulation,95,21.962035249622915,76.25082897600078
+94,94,99,130,"{'recombination': 65, 'background_transfer': 34, 'coalescence': 1}",100,160,1227546624,ARG_simulation,95,22.02243090232052,76.50013343500905
+95,95,159,132,"{'recombination': 66, 'background_transfer': 34, 'coalescence': 1}",101,162,1227546624,ARG_simulation,96,22.086204343591593,76.752083090003
+95,95,77,132,"{'recombination': 66, 'background_transfer': 34, 'coalescence': 1}",101,162,1227546624,ARG_simulation,96,22.14312062551222,77.00211747000867
+95,95,1,132,"{'recombination': 66, 'background_transfer': 34, 'coalescence': 1}",101,162,1227546624,ARG_simulation,96,22.20416748823272,77.25034918299934
+95,95,170,132,"{'recombination': 66, 'background_transfer': 35, 'coalescence': 1}",102,162,1227546624,ARG_simulation,96,22.25881904703919,77.50213105200964
+95,95,31,132,"{'recombination': 66, 'background_transfer': 35, 'coalescence': 1}",102,162,1227546624,ARG_simulation,96,22.316741038981704,77.7506809260085
+95,95,136,132,"{'recombination': 66, 'background_transfer': 35, 'coalescence': 1}",102,162,1227546624,ARG_simulation,96,22.37927452493116,78.00207358501211
+95,95,170,132,"{'recombination': 66, 'background_transfer': 36, 'coalescence': 1}",103,162,1227546624,ARG_simulation,96,22.433735042445793,78.25207417500496
+95,95,29,132,"{'recombination': 66, 'background_transfer': 37, 'coalescence': 1}",104,162,1227550720,ARG_simulation,96,22.494035069391714,78.50207323700306
+95,95,170,132,"{'recombination': 66, 'background_transfer': 37, 'coalescence': 1}",104,162,1227558912,ARG_simulation,96,22.557558591682124,78.7501671880018
+95,95,42,132,"{'recombination': 66, 'background_transfer': 37, 'coalescence': 1}",104,162,1227558912,ARG_simulation,96,22.617113180544127,79.00207384300302
+95,95,170,132,"{'recombination': 66, 'background_transfer': 37, 'coalescence': 1}",104,162,1227558912,ARG_simulation,96,22.67686814312271,79.25178524901276
+95,95,144,132,"{'recombination': 66, 'background_transfer': 37, 'coalescence': 1}",104,162,1227563008,ARG_simulation,96,22.736265223820293,79.50015827199968
+95,95,121,132,"{'recombination': 66, 'background_transfer': 37, 'coalescence': 1}",104,162,1227567104,ARG_simulation,96,22.796080317264643,79.7520084320131
+95,95,31,132,"{'recombination': 66, 'background_transfer': 37, 'coalescence': 1}",104,162,1227571200,ARG_simulation,96,22.852551294945847,80.00208738200308
+96,96,172,134,"{'recombination': 67, 'background_transfer': 37, 'coalescence': 1}",105,164,1227579392,ARG_simulation,97,22.91553457092913,80.25031512900023
+96,96,55,134,"{'recombination': 67, 'background_transfer': 37, 'coalescence': 1}",105,164,1227583488,ARG_simulation,97,22.973263223614925,80.50158758200996
+97,97,82,136,"{'recombination': 68, 'background_transfer': 38, 'coalescence': 1}",107,166,1227595776,ARG_simulation,98,23.030269504939998,80.75211336801294
+97,97,176,136,"{'recombination': 68, 'background_transfer': 38, 'coalescence': 1}",107,166,1227599872,ARG_simulation,98,23.087160410218395,81.00207612800295
+97,97,176,136,"{'recombination': 68, 'background_transfer': 38, 'coalescence': 1}",107,166,1227603968,ARG_simulation,98,23.146578283196842,81.25207522400888
+97,97,176,136,"{'recombination': 68, 'background_transfer': 38, 'coalescence': 1}",107,166,1227616256,ARG_simulation,98,23.206269690600013,81.50008344100206
+97,97,0,136,"{'recombination': 68, 'background_transfer': 38, 'coalescence': 1}",107,166,1227628544,ARG_simulation,98,23.26886362064735,81.75209591501334
+97,97,38,136,"{'recombination': 68, 'background_transfer': 39, 'coalescence': 1}",108,166,1227632640,ARG_simulation,98,23.32620144875134,82.00107965701318
+97,97,0,136,"{'recombination': 68, 'background_transfer': 39, 'coalescence': 1}",108,166,1227640832,ARG_simulation,98,23.3864258882643,82.25210949100438
+97,97,51,136,"{'recombination': 68, 'background_transfer': 39, 'coalescence': 1}",108,166,1227644928,ARG_simulation,98,23.44580991143645,82.50212887000816
+98,98,29,138,"{'recombination': 69, 'background_transfer': 39, 'coalescence': 1}",109,168,1227649024,ARG_simulation,99,23.500388158935294,82.75207828100247
+99,99,23,140,"{'recombination': 70, 'background_transfer': 39, 'coalescence': 1}",110,170,1227665408,ARG_simulation,100,23.55484325865091,83.00213979600812
+99,99,108,140,"{'recombination': 70, 'background_transfer': 39, 'coalescence': 1}",110,170,1227669504,ARG_simulation,100,23.61355459216053,83.25208790801116
+99,99,77,140,"{'recombination': 70, 'background_transfer': 40, 'coalescence': 1}",111,170,1227677696,ARG_simulation,100,23.67093345498002,83.50022983600502
+99,99,25,140,"{'recombination': 70, 'background_transfer': 40, 'coalescence': 1}",111,170,1227685888,ARG_simulation,100,23.729464094213697,83.75029680300213
+99,99,18,140,"{'recombination': 70, 'background_transfer': 40, 'coalescence': 1}",111,170,1227694080,ARG_simulation,100,23.785224649489205,84.00207295900327
+99,99,3,140,"{'recombination': 70, 'background_transfer': 40, 'coalescence': 1}",111,170,1227694080,ARG_simulation,100,23.844235888510873,84.25133723601175
+99,99,183,140,"{'recombination': 70, 'background_transfer': 40, 'coalescence': 1}",111,170,1227694080,ARG_simulation,100,23.902429468495317,84.50207841400697
+99,99,70,140,"{'recombination': 70, 'background_transfer': 40, 'coalescence': 1}",111,170,1227694080,ARG_simulation,100,23.952817403721312,84.75146963901352
+99,99,183,140,"{'recombination': 70, 'background_transfer': 40, 'coalescence': 1}",111,170,1227694080,ARG_simulation,100,24.010412203289963,85.00171407400921
+99,99,22,140,"{'recombination': 70, 'background_transfer': 40, 'coalescence': 1}",111,170,1227694080,ARG_simulation,100,24.073440020286196,85.25210595301178
+100,100,85,142,"{'recombination': 71, 'background_transfer': 40, 'coalescence': 1}",112,172,1227694080,ARG_simulation,101,24.134288458599684,85.50210088900349
+100,100,133,142,"{'recombination': 71, 'background_transfer': 40, 'coalescence': 1}",112,172,1227694080,ARG_simulation,101,24.188955777496467,85.75209785100014
+100,100,186,142,"{'recombination': 71, 'background_transfer': 40, 'coalescence': 1}",112,172,1227694080,ARG_simulation,101,24.24183544818439,86.00049309400492
+101,101,189,144,"{'recombination': 72, 'background_transfer': 40, 'coalescence': 1}",113,174,1227694080,ARG_simulation,102,24.30139484397581,86.25207449600566
+101,101,186,144,"{'recombination': 72, 'background_transfer': 40, 'coalescence': 1}",113,174,1227698176,ARG_simulation,102,24.359808612576813,86.50209936201281
+102,102,153,146,"{'recombination': 73, 'background_transfer': 40, 'coalescence': 1}",114,176,1227698176,ARG_simulation,103,24.4138670127805,86.75207560100534
+103,103,162,148,"{'recombination': 74, 'background_transfer': 40, 'coalescence': 1}",115,178,1227698176,ARG_simulation,104,24.46653332133977,87.00207161900471
+103,103,196,148,"{'recombination': 74, 'background_transfer': 40, 'coalescence': 1}",115,178,1227698176,ARG_simulation,104,24.51906990493704,87.25017777000903
+103,103,105,148,"{'recombination': 74, 'background_transfer': 40, 'coalescence': 1}",115,178,1227698176,ARG_simulation,104,24.564217722083608,87.50022108700068
+103,103,112,148,"{'recombination': 74, 'background_transfer': 40, 'coalescence': 1}",115,178,1227698176,ARG_simulation,104,24.615729369456854,87.75030046100437
+103,103,64,148,"{'recombination': 74, 'background_transfer': 40, 'coalescence': 1}",115,178,1227698176,ARG_simulation,104,24.67073024720088,88.00026647500636
+103,103,155,148,"{'recombination': 74, 'background_transfer': 40, 'coalescence': 1}",115,178,1227698176,ARG_simulation,104,24.723037891883607,88.25213606200123
+103,103,170,148,"{'recombination': 74, 'background_transfer': 40, 'coalescence': 1}",115,178,1227698176,ARG_simulation,104,24.77444652652296,88.50074471600237
+103,103,97,148,"{'recombination': 74, 'background_transfer': 40, 'coalescence': 1}",115,178,1227698176,ARG_simulation,104,24.828351906104068,88.75021961600578
+103,103,3,148,"{'recombination': 74, 'background_transfer': 40, 'coalescence': 1}",115,178,1227698176,ARG_simulation,104,24.87940258298776,89.00061525500496
+103,103,83,148,"{'recombination': 74, 'background_transfer': 40, 'coalescence': 1}",115,178,1227702272,ARG_simulation,104,24.929740687434727,89.25031748400943
+103,103,27,148,"{'recombination': 74, 'background_transfer': 40, 'coalescence': 1}",115,178,1227702272,ARG_simulation,104,24.982391773203386,89.50007514700701
+104,104,199,150,"{'recombination': 75, 'background_transfer': 41, 'coalescence': 1}",117,180,1227706368,ARG_simulation,105,25.03440025809801,89.75055668300774
+104,104,97,150,"{'recombination': 75, 'background_transfer': 42, 'coalescence': 1}",118,180,1227706368,ARG_simulation,105,25.0870930074481,90.00031501801277
+104,104,137,150,"{'recombination': 75, 'background_transfer': 43, 'coalescence': 1}",119,180,1227706368,ARG_simulation,105,25.13896400048052,90.25183704400843
+104,104,201,150,"{'recombination': 75, 'background_transfer': 43, 'coalescence': 1}",119,180,1227710464,ARG_simulation,105,25.191735294859342,90.50120126800903
+104,104,147,150,"{'recombination': 75, 'background_transfer': 43, 'coalescence': 1}",119,180,1227710464,ARG_simulation,105,25.240846300342657,90.75210429901199
+104,104,146,150,"{'recombination': 75, 'background_transfer': 43, 'coalescence': 1}",119,180,1227710464,ARG_simulation,105,25.292214585588102,91.00179977201333
+104,104,0,150,"{'recombination': 75, 'background_transfer': 43, 'coalescence': 1}",119,180,1227710464,ARG_simulation,105,25.340827164129013,91.25208752900653
+104,104,26,150,"{'recombination': 75, 'background_transfer': 43, 'coalescence': 1}",119,180,1227710464,ARG_simulation,105,25.39482535491689,91.50209751700459
+104,104,0,150,"{'recombination': 75, 'background_transfer': 43, 'coalescence': 1}",119,180,1227714560,ARG_simulation,105,25.447437626876415,91.75022136000916
+104,104,12,150,"{'recombination': 75, 'background_transfer': 43, 'coalescence': 1}",119,180,1227714560,ARG_simulation,105,25.497833831403014,92.00207699400198
+104,104,201,150,"{'recombination': 75, 'background_transfer': 43, 'coalescence': 1}",119,180,1227714560,ARG_simulation,105,25.549580866964313,92.2506316400104
+104,104,88,150,"{'recombination': 75, 'background_transfer': 44, 'coalescence': 1}",120,180,1227714560,ARG_simulation,105,25.60213764585411,92.50084120700194
+104,104,5,150,"{'recombination': 75, 'background_transfer': 44, 'coalescence': 1}",120,180,1227714560,ARG_simulation,105,25.657229031699707,92.75131577100547
+104,104,160,150,"{'recombination': 75, 'background_transfer': 44, 'coalescence': 1}",120,180,1227718656,ARG_simulation,105,25.68920495579904,93.00030520900327
+105,105,204,152,"{'recombination': 76, 'background_transfer': 44, 'coalescence': 1}",121,182,1227722752,ARG_simulation,106,25.73408476763078,93.25114079299965
+105,105,67,152,"{'recombination': 76, 'background_transfer': 45, 'coalescence': 1}",122,182,1227722752,ARG_simulation,106,25.785926123395296,93.50162551901303
+105,105,15,152,"{'recombination': 76, 'background_transfer': 45, 'coalescence': 1}",122,182,1227722752,ARG_simulation,106,25.834953597505603,93.75049766601296
+105,105,204,152,"{'recombination': 76, 'background_transfer': 45, 'coalescence': 1}",122,182,1227726848,ARG_simulation,106,25.872443447951067,94.00207306000812
+105,105,139,152,"{'recombination': 76, 'background_transfer': 45, 'coalescence': 1}",122,182,1227726848,ARG_simulation,106,25.92253340923157,94.25206967700797
+105,105,3,152,"{'recombination': 76, 'background_transfer': 45, 'coalescence': 1}",122,182,1227726848,ARG_simulation,106,25.973364092142592,94.50206941200304
+106,106,150,155,"{'recombination': 77, 'background_transfer': 45, 'coalescence': 1}",123,184,1227726848,ARG_simulation,106,26.024041954220575,94.7500773339998
+106,106,26,155,"{'recombination': 77, 'background_transfer': 45, 'coalescence': 1}",123,184,1227726848,ARG_simulation,106,26.075043812321507,95.00151911001012
+106,106,69,155,"{'recombination': 77, 'background_transfer': 45, 'coalescence': 1}",123,184,1227726848,ARG_simulation,106,26.12743646249366,95.25208101700991
+106,106,204,155,"{'recombination': 77, 'background_transfer': 46, 'coalescence': 1}",124,184,1227726848,ARG_simulation,106,26.175599135539226,95.50054509101028
+106,106,73,155,"{'recombination': 77, 'background_transfer': 46, 'coalescence': 1}",124,184,1227726848,ARG_simulation,106,26.224801010149104,95.75168692400621
+106,106,18,155,"{'recombination': 77, 'background_transfer': 46, 'coalescence': 1}",124,184,1227726848,ARG_simulation,106,26.27320870566863,96.00208247700357
+106,106,176,155,"{'recombination': 77, 'background_transfer': 46, 'coalescence': 1}",124,184,1227730944,ARG_simulation,106,26.314807104776218,96.26588085701223
+106,106,1,155,"{'recombination': 77, 'background_transfer': 46, 'coalescence': 1}",124,184,1227730944,ARG_simulation,106,26.363726247755665,96.50206935200549
+107,107,25,157,"{'recombination': 78, 'background_transfer': 46, 'coalescence': 1}",125,186,1227735040,ARG_simulation,107,26.413685508848666,96.7520676550048
+107,107,88,157,"{'recombination': 78, 'background_transfer': 46, 'coalescence': 1}",125,186,1227735040,ARG_simulation,107,26.463265421078013,97.00211491000664
+107,107,104,157,"{'recombination': 78, 'background_transfer': 46, 'coalescence': 1}",125,186,1227735040,ARG_simulation,107,26.51524530301394,97.25206931101275
+107,107,115,157,"{'recombination': 78, 'background_transfer': 46, 'coalescence': 1}",125,186,1227735040,ARG_simulation,107,26.568705695875252,97.50097557301342
+107,107,205,157,"{'recombination': 78, 'background_transfer': 46, 'coalescence': 1}",125,186,1227735040,ARG_simulation,107,26.617632919924716,97.75206689401239
+107,107,139,157,"{'recombination': 78, 'background_transfer': 46, 'coalescence': 1}",125,186,1227735040,ARG_simulation,107,26.67170920355171,98.00179233100789
+107,107,120,157,"{'recombination': 78, 'background_transfer': 46, 'coalescence': 1}",125,186,1227735040,ARG_simulation,107,26.72572042225959,98.25122016000387
+107,107,205,157,"{'recombination': 78, 'background_transfer': 46, 'coalescence': 1}",125,186,1227735040,ARG_simulation,107,26.780260415220155,98.50086134400044
+107,107,52,157,"{'recombination': 78, 'background_transfer': 46, 'coalescence': 1}",125,186,1227735040,ARG_simulation,107,26.83094017574964,98.75038866901014
+107,107,44,157,"{'recombination': 78, 'background_transfer': 46, 'coalescence': 1}",125,186,1227735040,ARG_simulation,107,26.88212830391971,99.00146972600487
+107,107,205,157,"{'recombination': 78, 'background_transfer': 46, 'coalescence': 1}",125,186,1227739136,ARG_simulation,107,26.93719279823219,99.25206756000989
+107,107,70,157,"{'recombination': 78, 'background_transfer': 46, 'coalescence': 1}",125,186,1227739136,ARG_simulation,107,26.98961047231085,99.50209373200778
+107,107,197,157,"{'recombination': 78, 'background_transfer': 46, 'coalescence': 1}",125,186,1227739136,ARG_simulation,107,27.042859777213447,99.75210795301246
+107,107,205,157,"{'recombination': 78, 'background_transfer': 47, 'coalescence': 1}",126,186,1227739136,ARG_simulation,107,27.091178363822745,100.00211240600038
+107,107,37,157,"{'recombination': 78, 'background_transfer': 47, 'coalescence': 1}",126,186,1227739136,ARG_simulation,107,27.14179774118867,100.25092348900216
+107,107,205,157,"{'recombination': 78, 'background_transfer': 47, 'coalescence': 1}",126,186,1227739136,ARG_simulation,107,27.193731943368107,100.50206722100847
+107,107,20,157,"{'recombination': 78, 'background_transfer': 47, 'coalescence': 1}",126,186,1227739136,ARG_simulation,107,27.245764706208515,100.75209184800042
+107,107,205,157,"{'recombination': 78, 'background_transfer': 47, 'coalescence': 1}",126,186,1227739136,ARG_simulation,107,27.293774191405088,101.00206711700594
+107,107,12,157,"{'recombination': 78, 'background_transfer': 47, 'coalescence': 1}",126,186,1227739136,ARG_simulation,107,27.34749858999675,101.25207236601273
+107,107,162,157,"{'recombination': 78, 'background_transfer': 47, 'coalescence': 1}",126,186,1227739136,ARG_simulation,107,27.39965292000799,101.50025864400959
+107,107,205,157,"{'recombination': 78, 'background_transfer': 47, 'coalescence': 1}",126,186,1227743232,ARG_simulation,107,27.457185994298005,101.7520732270059
+107,107,198,157,"{'recombination': 78, 'background_transfer': 47, 'coalescence': 1}",126,186,1227743232,ARG_simulation,107,27.508171646211945,102.00130728700606
+107,107,70,157,"{'recombination': 78, 'background_transfer': 47, 'coalescence': 1}",126,186,1227743232,ARG_simulation,107,27.56264373600252,102.25207097599923
+108,108,190,159,"{'recombination': 79, 'background_transfer': 47, 'coalescence': 1}",127,188,1227743232,ARG_simulation,108,27.61179638784599,102.50213403301314
+109,109,88,161,"{'recombination': 80, 'background_transfer': 48, 'coalescence': 1}",129,190,1227747328,ARG_simulation,109,27.662411724157415,102.75211307201243
+109,109,188,161,"{'recombination': 80, 'background_transfer': 48, 'coalescence': 1}",129,190,1227747328,ARG_simulation,109,27.710067501250816,103.00207150600909
+110,110,98,163,"{'recombination': 81, 'background_transfer': 48, 'coalescence': 1}",130,192,1227747328,ARG_simulation,110,27.75583379935674,103.25206609700399
+111,111,220,165,"{'recombination': 82, 'background_transfer': 48, 'coalescence': 1}",131,194,1227747328,ARG_simulation,111,27.808780813763583,103.50116462200822
+111,111,34,165,"{'recombination': 82, 'background_transfer': 48, 'coalescence': 1}",131,194,1227751424,ARG_simulation,111,27.857560594663635,103.75066682400939
+111,111,220,165,"{'recombination': 82, 'background_transfer': 48, 'coalescence': 1}",131,194,1227755520,ARG_simulation,111,27.908126092608203,104.00210776099993
+111,111,95,165,"{'recombination': 82, 'background_transfer': 48, 'coalescence': 1}",131,194,1227755520,ARG_simulation,111,27.95465386565302,104.25207017200592
+111,111,92,165,"{'recombination': 82, 'background_transfer': 48, 'coalescence': 1}",131,194,1227755520,ARG_simulation,111,28.00472851216001,104.50207604600291
+111,111,220,165,"{'recombination': 82, 'background_transfer': 48, 'coalescence': 1}",131,194,1227755520,ARG_simulation,111,28.055171747889435,104.75184029999946
+112,112,224,167,"{'recombination': 83, 'background_transfer': 48, 'coalescence': 1}",132,196,1227755520,ARG_simulation,112,28.10577234171703,105.00206911400892
+112,112,226,167,"{'recombination': 83, 'background_transfer': 49, 'coalescence': 1}",133,196,1227755520,ARG_simulation,112,28.15244758136452,105.25207124100416
+112,112,226,167,"{'recombination': 83, 'background_transfer': 49, 'coalescence': 1}",133,196,1227755520,ARG_simulation,112,28.200653745160533,105.50206778700522
+112,112,23,167,"{'recombination': 83, 'background_transfer': 49, 'coalescence': 1}",133,196,1227755520,ARG_simulation,112,28.250666996171713,105.75206921801146
+112,112,4,167,"{'recombination': 83, 'background_transfer': 49, 'coalescence': 1}",133,196,1227755520,ARG_simulation,112,28.29658732805613,106.00086062301125
+112,112,83,167,"{'recombination': 83, 'background_transfer': 49, 'coalescence': 1}",133,196,1227759616,ARG_simulation,112,28.345592018860376,106.2518967900105
+113,113,214,169,"{'recombination': 84, 'background_transfer': 49, 'coalescence': 1}",134,198,1227759616,ARG_simulation,113,28.394295016563316,106.50034671700269
+113,113,1,169,"{'recombination': 84, 'background_transfer': 49, 'coalescence': 1}",134,198,1227763712,ARG_simulation,113,28.43993299421491,106.75207104200672
+113,113,4,169,"{'recombination': 84, 'background_transfer': 49, 'coalescence': 1}",134,198,1227763712,ARG_simulation,113,28.48702673642919,107.00207783500082
+113,113,191,169,"{'recombination': 84, 'background_transfer': 50, 'coalescence': 1}",135,198,1227767808,ARG_simulation,113,28.533166501725393,107.25194128601288
+113,113,217,169,"{'recombination': 84, 'background_transfer': 50, 'coalescence': 1}",135,198,1227767808,ARG_simulation,113,28.58192646172249,107.50208921601006
+113,113,182,169,"{'recombination': 84, 'background_transfer': 51, 'coalescence': 1}",136,198,1227767808,ARG_simulation,113,28.629832119200284,107.75176044300315
+113,113,32,169,"{'recombination': 84, 'background_transfer': 52, 'coalescence': 1}",137,198,1227767808,ARG_simulation,113,28.67623436950347,108.00058024500322
+113,113,174,169,"{'recombination': 84, 'background_transfer': 53, 'coalescence': 1}",138,198,1227767808,ARG_simulation,113,28.723081811315705,108.25109627601341
+113,113,231,169,"{'recombination': 84, 'background_transfer': 53, 'coalescence': 1}",138,198,1227767808,ARG_simulation,113,28.766907028869547,108.50120527700346
+113,113,203,169,"{'recombination': 84, 'background_transfer': 53, 'coalescence': 1}",138,198,1227767808,ARG_simulation,113,28.81399790595675,108.75017960500554
+113,113,45,169,"{'recombination': 84, 'background_transfer': 54, 'coalescence': 1}",139,198,1227767808,ARG_simulation,113,28.86166794271617,109.00031392800156
+113,113,231,169,"{'recombination': 84, 'background_transfer': 54, 'coalescence': 1}",139,198,1227771904,ARG_simulation,113,28.90904549088583,109.25210951700865
+114,114,8,171,"{'recombination': 85, 'background_transfer': 54, 'coalescence': 1}",140,200,1227776000,ARG_simulation,114,28.96304191202897,109.50210424599936
+115,115,1,173,"{'recombination': 86, 'background_transfer': 55, 'coalescence': 1}",142,202,1227780096,ARG_simulation,115,29.011348387135413,109.75014577399998
+114,115,65,173,"{'recombination': 86, 'background_transfer': 55, 'coalescence': 2}",143,202,1227780096,ARG_simulation,115,29.062061687640302,110.00065979600186
+114,115,236,173,"{'recombination': 86, 'background_transfer': 56, 'coalescence': 2}",144,202,1227780096,ARG_simulation,115,29.104511013589416,110.25015362301201
+114,115,236,173,"{'recombination': 86, 'background_transfer': 56, 'coalescence': 2}",144,202,1227784192,ARG_simulation,115,29.157379965364076,110.50179985100112
+114,115,61,173,"{'recombination': 86, 'background_transfer': 56, 'coalescence': 2}",144,202,1227792384,ARG_simulation,115,29.207291106873253,110.75030421400152
+114,115,215,173,"{'recombination': 86, 'background_transfer': 56, 'coalescence': 2}",144,202,1227792384,ARG_simulation,115,29.255683335309946,111.0020719919994
+114,115,74,173,"{'recombination': 86, 'background_transfer': 56, 'coalescence': 2}",144,202,1227792384,ARG_simulation,115,29.302454846062187,111.25154299401038
+114,115,89,173,"{'recombination': 86, 'background_transfer': 56, 'coalescence': 2}",144,202,1227796480,ARG_simulation,115,29.351022886287396,111.50054311400163
+114,115,236,173,"{'recombination': 86, 'background_transfer': 56, 'coalescence': 2}",144,202,1227800576,ARG_simulation,115,29.398823075674542,111.75207437200879
+114,115,236,173,"{'recombination': 86, 'background_transfer': 58, 'coalescence': 2}",146,202,1227804672,ARG_simulation,115,29.44371851583309,112.00082774700422
+114,115,56,173,"{'recombination': 86, 'background_transfer': 58, 'coalescence': 2}",146,202,1227812864,ARG_simulation,115,29.48736013921498,112.25059914799931
+114,115,29,173,"{'recombination': 86, 'background_transfer': 58, 'coalescence': 2}",146,202,1227821056,ARG_simulation,115,29.536235558553766,112.50206816699938
+114,115,74,173,"{'recombination': 86, 'background_transfer': 59, 'coalescence': 2}",147,202,1227821056,ARG_simulation,115,29.583811726743775,112.75207080900145
+114,115,98,173,"{'recombination': 86, 'background_transfer': 59, 'coalescence': 2}",147,202,1227825152,ARG_simulation,115,29.631264677182376,113.00211038300768
+114,115,236,173,"{'recombination': 86, 'background_transfer': 59, 'coalescence': 2}",147,202,1227825152,ARG_simulation,115,29.679546775184136,113.251641217008
+115,116,94,175,"{'recombination': 87, 'background_transfer': 59, 'coalescence': 2}",148,204,1227837440,ARG_simulation,116,29.727995369157938,113.50210087301093
+115,116,237,175,"{'recombination': 87, 'background_transfer': 59, 'coalescence': 2}",148,204,1227837440,ARG_simulation,116,29.77157380386747,113.75085031701019
+115,116,120,175,"{'recombination': 87, 'background_transfer': 59, 'coalescence': 2}",148,204,1227837440,ARG_simulation,116,29.8130722190006,114.00215175500489
+116,117,123,178,"{'recombination': 88, 'background_transfer': 59, 'coalescence': 2}",149,206,1227841536,ARG_simulation,117,29.859602470254618,114.25207329100522
+116,117,14,178,"{'recombination': 88, 'background_transfer': 59, 'coalescence': 2}",149,206,1227841536,ARG_simulation,117,29.903368350103257,114.50209433901182
+116,117,221,178,"{'recombination': 88, 'background_transfer': 59, 'coalescence': 2}",149,206,1227841536,ARG_simulation,117,29.953642528934893,114.75132559800113
+117,118,242,180,"{'recombination': 89, 'background_transfer': 59, 'coalescence': 2}",150,208,1227845632,ARG_simulation,118,29.998275208831657,115.00012771000911
+117,118,167,180,"{'recombination': 89, 'background_transfer': 59, 'coalescence': 2}",150,208,1227853824,ARG_simulation,118,30.047363905687053,115.2521289090073
+117,118,203,180,"{'recombination': 89, 'background_transfer': 60, 'coalescence': 2}",151,208,1227853824,ARG_simulation,118,30.09192844184732,115.50211847500759
+118,119,65,182,"{'recombination': 90, 'background_transfer': 60, 'coalescence': 2}",152,210,1227853824,ARG_simulation,119,30.139178169739754,115.75211457400292
+119,120,23,184,"{'recombination': 91, 'background_transfer': 60, 'coalescence': 2}",153,212,1227853824,ARG_simulation,120,30.186908227836188,116.00066437201167
+119,120,249,184,"{'recombination': 91, 'background_transfer': 60, 'coalescence': 2}",153,212,1227857920,ARG_simulation,120,30.234498041469973,116.25136074201146
+119,120,65,184,"{'recombination': 91, 'background_transfer': 60, 'coalescence': 2}",153,212,1227866112,ARG_simulation,120,30.2819376205568,116.50206828500086
+119,120,196,184,"{'recombination': 91, 'background_transfer': 60, 'coalescence': 2}",153,212,1227866112,ARG_simulation,120,30.325591883962,116.75212061600178
+119,120,120,184,"{'recombination': 91, 'background_transfer': 60, 'coalescence': 2}",153,212,1227866112,ARG_simulation,120,30.37120973943275,117.00180484900193
+119,120,249,184,"{'recombination': 91, 'background_transfer': 60, 'coalescence': 2}",153,212,1227866112,ARG_simulation,120,30.41410609253146,117.25024295000185
+119,120,50,184,"{'recombination': 91, 'background_transfer': 60, 'coalescence': 2}",153,212,1227866112,ARG_simulation,120,30.458979754981318,117.50124601001153
+119,120,231,184,"{'recombination': 91, 'background_transfer': 60, 'coalescence': 2}",153,212,1227866112,ARG_simulation,120,30.506822806945976,117.75210915900243
+119,120,118,184,"{'recombination': 91, 'background_transfer': 61, 'coalescence': 2}",154,212,1227866112,ARG_simulation,120,30.551271674832545,118.00212585901318
+119,120,72,184,"{'recombination': 91, 'background_transfer': 61, 'coalescence': 2}",154,212,1227866112,ARG_simulation,120,30.59737722212903,118.25206727600016
+119,120,238,184,"{'recombination': 91, 'background_transfer': 61, 'coalescence': 2}",154,212,1227866112,ARG_simulation,120,30.644246166610795,118.50206693500513
+119,120,249,184,"{'recombination': 91, 'background_transfer': 61, 'coalescence': 2}",154,212,1227866112,ARG_simulation,120,30.691994328691816,118.75078120001126
+119,120,220,184,"{'recombination': 91, 'background_transfer': 61, 'coalescence': 2}",154,212,1227866112,ARG_simulation,120,30.739720038777577,119.00034932901326
+119,120,99,184,"{'recombination': 91, 'background_transfer': 61, 'coalescence': 2}",154,212,1227870208,ARG_simulation,120,30.785002544171608,119.25207253400004
+119,120,70,184,"{'recombination': 91, 'background_transfer': 61, 'coalescence': 2}",154,212,1227870208,ARG_simulation,120,30.830898420844427,119.5021471479995
+119,120,107,184,"{'recombination': 91, 'background_transfer': 61, 'coalescence': 2}",154,212,1227870208,ARG_simulation,120,30.87603538541304,119.75210658401193
+119,120,0,184,"{'recombination': 91, 'background_transfer': 61, 'coalescence': 2}",154,212,1227870208,ARG_simulation,120,30.920167637354577,120.00207489600871
+119,120,74,184,"{'recombination': 91, 'background_transfer': 61, 'coalescence': 2}",154,212,1227870208,ARG_simulation,120,30.961987186300743,120.25086096599989
+119,120,233,184,"{'recombination': 91, 'background_transfer': 61, 'coalescence': 2}",154,212,1227874304,ARG_simulation,120,31.004533185432752,120.50096001800557
+119,120,121,184,"{'recombination': 91, 'background_transfer': 61, 'coalescence': 2}",154,212,1227874304,ARG_simulation,120,31.048280881610324,120.7518211780116
+119,120,72,184,"{'recombination': 91, 'background_transfer': 61, 'coalescence': 2}",154,212,1227874304,ARG_simulation,120,31.095030185039505,121.00207092800702
+121,122,255,188,"{'recombination': 93, 'background_transfer': 61, 'coalescence': 2}",156,216,1227878400,ARG_simulation,122,31.140688431049558,121.25207467901055
+121,122,130,188,"{'recombination': 93, 'background_transfer': 61, 'coalescence': 2}",156,216,1227878400,ARG_simulation,122,31.18687624307205,121.50206593800976
+121,122,114,188,"{'recombination': 93, 'background_transfer': 61, 'coalescence': 2}",156,216,1227882496,ARG_simulation,122,31.232932392359118,121.75212043800275
+121,122,242,188,"{'recombination': 93, 'background_transfer': 61, 'coalescence': 2}",156,216,1227882496,ARG_simulation,122,31.277735376163566,122.00211028500053
+123,124,153,192,"{'recombination': 95, 'background_transfer': 62, 'coalescence': 2}",159,220,1227882496,ARG_simulation,124,31.31969612995632,122.2520910440071
+122,123,182,192,"{'recombination': 95, 'background_transfer': 62, 'coalescence': 3}",160,220,1227882496,ARG_simulation,124,31.367211216443863,122.50084098700609
+122,123,184,192,"{'recombination': 95, 'background_transfer': 62, 'coalescence': 3}",160,220,1227882496,ARG_simulation,124,31.413408059541332,122.75207112600037
+122,123,240,192,"{'recombination': 95, 'background_transfer': 62, 'coalescence': 3}",160,220,1227882496,ARG_simulation,124,31.457620827885762,123.0020706840005
+122,123,220,192,"{'recombination': 95, 'background_transfer': 62, 'coalescence': 3}",160,220,1227882496,ARG_simulation,124,31.501188288740465,123.25111388800724
+122,123,257,192,"{'recombination': 95, 'background_transfer': 62, 'coalescence': 3}",160,220,1227882496,ARG_simulation,124,31.545937563745074,123.50057317801111
+122,123,212,192,"{'recombination': 95, 'background_transfer': 63, 'coalescence': 3}",161,220,1227886592,ARG_simulation,124,31.591506840582266,123.75103757000761
+123,124,194,194,"{'recombination': 96, 'background_transfer': 64, 'coalescence': 3}",163,222,1227886592,ARG_simulation,125,31.634085098735262,124.002067739013
+124,124,254,196,"{'recombination': 97, 'background_transfer': 64, 'coalescence': 3}",164,224,1227894784,ARG_simulation,125,31.677871603702314,124.25126137600455
+124,124,220,196,"{'recombination': 97, 'background_transfer': 64, 'coalescence': 3}",164,224,1227894784,ARG_simulation,125,31.721419869546857,124.50068603300315
+124,124,195,196,"{'recombination': 97, 'background_transfer': 64, 'coalescence': 3}",164,224,1227894784,ARG_simulation,125,31.76400797671813,124.75202952700783
+124,124,230,196,"{'recombination': 97, 'background_transfer': 64, 'coalescence': 3}",164,224,1227894784,ARG_simulation,125,31.806259052311812,125.00174597100704
+124,124,264,196,"{'recombination': 97, 'background_transfer': 64, 'coalescence': 3}",164,224,1227894784,ARG_simulation,125,31.849740096838417,125.25081698200665
+124,124,264,196,"{'recombination': 97, 'background_transfer': 64, 'coalescence': 3}",164,224,1227894784,ARG_simulation,125,31.889778504618125,125.50206968199927
+124,124,108,196,"{'recombination': 97, 'background_transfer': 64, 'coalescence': 3}",164,224,1227894784,ARG_simulation,125,31.93164838249484,125.75207256800786
+124,124,264,196,"{'recombination': 97, 'background_transfer': 64, 'coalescence': 3}",164,224,1227894784,ARG_simulation,125,31.97691253654779,126.00016946300457
+124,124,102,196,"{'recombination': 97, 'background_transfer': 64, 'coalescence': 3}",164,224,1227894784,ARG_simulation,125,32.01814412002809,126.2520716170111
+124,124,195,196,"{'recombination': 97, 'background_transfer': 64, 'coalescence': 3}",164,224,1227894784,ARG_simulation,125,32.063293055428794,126.50206704401353
+124,124,264,196,"{'recombination': 97, 'background_transfer': 64, 'coalescence': 3}",164,224,1227898880,ARG_simulation,125,32.10473793805001,126.75207375601167
+125,125,0,198,"{'recombination': 98, 'background_transfer': 66, 'coalescence': 3}",167,226,1227898880,ARG_simulation,126,32.14898943813813,127.00207107800816
+125,125,233,198,"{'recombination': 98, 'background_transfer': 66, 'coalescence': 3}",167,226,1227898880,ARG_simulation,126,32.19089389864151,127.25161986501189
+125,125,214,198,"{'recombination': 98, 'background_transfer': 67, 'coalescence': 3}",168,226,1227898880,ARG_simulation,126,32.23254333837284,127.5019481700001
+125,125,137,198,"{'recombination': 98, 'background_transfer': 67, 'coalescence': 3}",168,226,1227898880,ARG_simulation,126,32.27814288066,127.75206764100585
+125,125,127,198,"{'recombination': 98, 'background_transfer': 67, 'coalescence': 3}",168,226,1227898880,ARG_simulation,126,32.318897523259224,128.00211515001138
+125,125,193,198,"{'recombination': 98, 'background_transfer': 67, 'coalescence': 3}",168,226,1227902976,ARG_simulation,126,32.35821240717739,128.25126054001157
+125,125,265,198,"{'recombination': 98, 'background_transfer': 67, 'coalescence': 3}",168,226,1227902976,ARG_simulation,126,32.3994992373918,128.50086963400827
+126,126,270,200,"{'recombination': 99, 'background_transfer': 67, 'coalescence': 3}",169,228,1227902976,ARG_simulation,127,32.441562773996246,128.75095289200544
+126,126,246,200,"{'recombination': 99, 'background_transfer': 67, 'coalescence': 3}",169,228,1227902976,ARG_simulation,127,32.48740691310286,129.00211145500361
+126,126,50,200,"{'recombination': 99, 'background_transfer': 68, 'coalescence': 3}",170,228,1227907072,ARG_simulation,127,32.531275542850956,129.25206920001074
+126,126,183,200,"{'recombination': 99, 'background_transfer': 68, 'coalescence': 3}",170,228,1227907072,ARG_simulation,127,32.57706793429181,129.50212829600787
+126,126,270,200,"{'recombination': 99, 'background_transfer': 68, 'coalescence': 3}",170,228,1227907072,ARG_simulation,127,32.62165396104027,129.75013448001118
+126,126,245,200,"{'recombination': 99, 'background_transfer': 68, 'coalescence': 3}",170,228,1227907072,ARG_simulation,127,32.66567592079211,130.0010582820105
+126,126,5,200,"{'recombination': 99, 'background_transfer': 68, 'coalescence': 3}",170,228,1227907072,ARG_simulation,127,32.71081196257425,130.2520684510091
+126,126,167,200,"{'recombination': 99, 'background_transfer': 68, 'coalescence': 3}",170,228,1227907072,ARG_simulation,127,32.74989120354669,130.5005120420101
+126,126,194,200,"{'recombination': 99, 'background_transfer': 68, 'coalescence': 3}",170,228,1227907072,ARG_simulation,127,32.7933347642691,130.7520724269998
+126,126,195,200,"{'recombination': 99, 'background_transfer': 68, 'coalescence': 3}",170,228,1227907072,ARG_simulation,127,32.8377028913241,131.00206879701
+127,127,29,202,"{'recombination': 100, 'background_transfer': 68, 'coalescence': 3}",171,230,1227907072,ARG_simulation,128,32.881091068049756,131.2520681820024
+127,127,273,202,"{'recombination': 100, 'background_transfer': 68, 'coalescence': 3}",171,230,1227911168,ARG_simulation,128,32.92346265161752,131.5010690800118
+127,127,235,202,"{'recombination': 100, 'background_transfer': 68, 'coalescence': 3}",171,230,1227911168,ARG_simulation,128,32.96745379523692,131.75206660600088
+128,128,131,204,"{'recombination': 101, 'background_transfer': 68, 'coalescence': 3}",172,232,1227915264,ARG_simulation,129,33.00842040689099,132.00206886400701
+128,128,147,204,"{'recombination': 101, 'background_transfer': 68, 'coalescence': 3}",172,232,1227915264,ARG_simulation,129,33.05242184384907,132.2520715540013
+128,128,74,204,"{'recombination': 101, 'background_transfer': 68, 'coalescence': 3}",172,232,1227915264,ARG_simulation,129,33.09288958747096,132.50109273700218
+128,128,203,204,"{'recombination': 101, 'background_transfer': 68, 'coalescence': 3}",172,232,1227915264,ARG_simulation,129,33.13631640597526,132.75208083400503
+128,128,277,204,"{'recombination': 101, 'background_transfer': 68, 'coalescence': 3}",172,232,1227915264,ARG_simulation,129,33.17831425027062,133.00098928200896
+128,128,230,204,"{'recombination': 101, 'background_transfer': 68, 'coalescence': 3}",172,232,1227915264,ARG_simulation,129,33.218561275960845,133.25206862301275
+128,128,56,204,"{'recombination': 101, 'background_transfer': 69, 'coalescence': 3}",173,232,1227915264,ARG_simulation,129,33.26006921251403,133.50015104901104
+128,128,2,204,"{'recombination': 101, 'background_transfer': 69, 'coalescence': 3}",173,232,1227915264,ARG_simulation,129,33.29535823818644,133.75121081600082
+128,128,238,204,"{'recombination': 101, 'background_transfer': 69, 'coalescence': 3}",173,232,1227915264,ARG_simulation,129,33.3373461799381,134.00014527401072
+128,128,187,204,"{'recombination': 101, 'background_transfer': 69, 'coalescence': 3}",173,232,1227919360,ARG_simulation,129,33.37672364504465,134.25207135701203
+128,128,105,204,"{'recombination': 101, 'background_transfer': 69, 'coalescence': 3}",173,232,1227919360,ARG_simulation,129,33.41668318275159,134.50214594100544
+128,128,247,204,"{'recombination': 101, 'background_transfer': 69, 'coalescence': 3}",173,232,1227919360,ARG_simulation,129,33.46047571911169,134.75207164800668
+128,128,134,204,"{'recombination': 101, 'background_transfer': 69, 'coalescence': 3}",173,232,1227919360,ARG_simulation,129,33.506957560654755,135.00110611300624
+128,128,189,204,"{'recombination': 101, 'background_transfer': 69, 'coalescence': 3}",173,232,1227919360,ARG_simulation,129,33.547862018606594,135.2521072620002
+128,128,9,204,"{'recombination': 101, 'background_transfer': 69, 'coalescence': 3}",173,232,1227919360,ARG_simulation,129,33.59146124469609,135.50105335601256
+128,128,215,204,"{'recombination': 101, 'background_transfer': 69, 'coalescence': 3}",173,232,1227923456,ARG_simulation,129,33.63293755949533,135.7521295230108
+128,128,148,204,"{'recombination': 101, 'background_transfer': 70, 'coalescence': 3}",174,232,1227923456,ARG_simulation,129,33.67503245398261,136.00107174000004
+128,128,25,204,"{'recombination': 101, 'background_transfer': 70, 'coalescence': 3}",174,232,1227923456,ARG_simulation,129,33.71859585639042,136.25206783300382
+129,129,0,206,"{'recombination': 102, 'background_transfer': 70, 'coalescence': 3}",175,234,1227927552,ARG_simulation,130,33.76063349152628,136.50109011000313
+129,129,52,206,"{'recombination': 102, 'background_transfer': 70, 'coalescence': 3}",175,234,1227931648,ARG_simulation,130,33.80195937388192,136.75126901399926
+129,129,12,206,"{'recombination': 102, 'background_transfer': 70, 'coalescence': 3}",175,234,1227931648,ARG_simulation,130,33.843482049859816,137.001050914012
+129,129,69,206,"{'recombination': 102, 'background_transfer': 70, 'coalescence': 3}",175,234,1227931648,ARG_simulation,130,33.88572716847851,137.25036820900277
+129,129,207,206,"{'recombination': 102, 'background_transfer': 70, 'coalescence': 3}",175,234,1227931648,ARG_simulation,130,33.92933532693113,137.5013654360082
+129,129,44,206,"{'recombination': 102, 'background_transfer': 70, 'coalescence': 3}",175,234,1227931648,ARG_simulation,130,33.972147512699415,137.7520741590124
+129,129,96,206,"{'recombination': 102, 'background_transfer': 70, 'coalescence': 3}",175,234,1227931648,ARG_simulation,130,34.012235721420275,138.00104476200067
+129,129,289,206,"{'recombination': 102, 'background_transfer': 70, 'coalescence': 3}",175,234,1227931648,ARG_simulation,130,34.052672965777774,138.25069214901305
+129,129,15,206,"{'recombination': 102, 'background_transfer': 70, 'coalescence': 3}",175,234,1227931648,ARG_simulation,130,34.0954815320472,138.50180261301284
+129,129,235,206,"{'recombination': 102, 'background_transfer': 70, 'coalescence': 3}",175,234,1227939840,ARG_simulation,130,34.13581906216163,138.75110549500096
+129,129,289,206,"{'recombination': 102, 'background_transfer': 70, 'coalescence': 3}",175,234,1227939840,ARG_simulation,130,34.175882404840756,139.00207226800558
+129,129,241,206,"{'recombination': 102, 'background_transfer': 70, 'coalescence': 3}",175,234,1227943936,ARG_simulation,130,34.21934726382916,139.25210570900526
+129,129,149,206,"{'recombination': 102, 'background_transfer': 71, 'coalescence': 3}",176,234,1227943936,ARG_simulation,130,34.262626640310565,139.5001341140014
+129,129,113,206,"{'recombination': 102, 'background_transfer': 71, 'coalescence': 3}",176,234,1227948032,ARG_simulation,130,34.306350570801825,139.75023468901054
+129,129,97,206,"{'recombination': 102, 'background_transfer': 71, 'coalescence': 3}",176,234,1227952128,ARG_simulation,130,34.35123524516734,140.00207020700327
+129,129,44,206,"{'recombination': 102, 'background_transfer': 71, 'coalescence': 3}",176,234,1227956224,ARG_simulation,130,34.39120762917983,140.2520791190036
+129,129,54,206,"{'recombination': 102, 'background_transfer': 72, 'coalescence': 3}",177,234,1227960320,ARG_simulation,130,34.4351394807648,140.50214588901144
+129,129,235,206,"{'recombination': 102, 'background_transfer': 72, 'coalescence': 3}",177,234,1227968512,ARG_simulation,130,34.47673408995007,140.7521085440094
+129,129,0,206,"{'recombination': 102, 'background_transfer': 72, 'coalescence': 3}",177,234,1227988992,ARG_simulation,130,34.51690041224929,141.0021332870092
+129,129,96,206,"{'recombination': 102, 'background_transfer': 72, 'coalescence': 3}",177,234,1227988992,ARG_simulation,130,34.558506971179874,141.25087080401136
+129,129,156,206,"{'recombination': 102, 'background_transfer': 72, 'coalescence': 3}",177,234,1227988992,ARG_simulation,130,34.59992513525246,141.50008201001037
+130,130,151,208,"{'recombination': 103, 'background_transfer': 72, 'coalescence': 3}",178,236,1227993088,ARG_simulation,131,34.64106829798791,141.75097284800722
+131,131,271,210,"{'recombination': 104, 'background_transfer': 72, 'coalescence': 3}",179,238,1227993088,ARG_simulation,132,34.68495087814833,142.00207186001353
+131,131,241,210,"{'recombination': 104, 'background_transfer': 72, 'coalescence': 3}",179,238,1227993088,ARG_simulation,132,34.726890767814396,142.25044701600564
+132,132,60,212,"{'recombination': 105, 'background_transfer': 73, 'coalescence': 3}",181,240,1227993088,ARG_simulation,133,34.76855439238681,142.50211141101317
+132,132,300,212,"{'recombination': 105, 'background_transfer': 73, 'coalescence': 3}",181,240,1227997184,ARG_simulation,133,34.81038588773905,142.7520839050121
+132,132,10,212,"{'recombination': 105, 'background_transfer': 73, 'coalescence': 3}",181,240,1228001280,ARG_simulation,133,34.85217995042426,143.00207289800164
+132,132,238,212,"{'recombination': 105, 'background_transfer': 73, 'coalescence': 3}",181,240,1228001280,ARG_simulation,133,34.89093397399515,143.2507819790044
+132,132,6,212,"{'recombination': 105, 'background_transfer': 73, 'coalescence': 3}",181,240,1228001280,ARG_simulation,133,34.931927366899544,143.50021620201005
+133,133,51,214,"{'recombination': 106, 'background_transfer': 73, 'coalescence': 3}",182,242,1228001280,ARG_simulation,134,34.97237994924,143.75151980000373
+134,134,60,216,"{'recombination': 107, 'background_transfer': 74, 'coalescence': 3}",184,244,1228001280,ARG_simulation,135,35.01029395290759,144.00207240101008
+134,134,302,216,"{'recombination': 107, 'background_transfer': 75, 'coalescence': 3}",185,244,1228009472,ARG_simulation,135,35.049176348834656,144.25019453500863
+135,135,218,218,"{'recombination': 108, 'background_transfer': 75, 'coalescence': 3}",186,246,1228009472,ARG_simulation,136,35.090254209932056,144.50211814900103
+135,135,92,218,"{'recombination': 108, 'background_transfer': 75, 'coalescence': 3}",186,246,1228009472,ARG_simulation,136,35.12581601867127,144.75037336901005
+137,137,61,222,"{'recombination': 110, 'background_transfer': 75, 'coalescence': 3}",188,250,1228013568,ARG_simulation,138,35.16608092348852,145.0021135720017
+137,137,42,222,"{'recombination': 110, 'background_transfer': 75, 'coalescence': 3}",188,250,1228013568,ARG_simulation,138,35.2051863833645,145.25210607600457
+137,137,315,222,"{'recombination': 110, 'background_transfer': 75, 'coalescence': 3}",188,250,1228013568,ARG_simulation,138,35.23917176898058,145.50210543700086
+137,137,168,222,"{'recombination': 110, 'background_transfer': 75, 'coalescence': 3}",188,250,1228013568,ARG_simulation,138,35.28039321154256,145.75207513400528
+138,138,302,224,"{'recombination': 111, 'background_transfer': 75, 'coalescence': 3}",189,252,1228013568,ARG_simulation,139,35.32317429889149,146.00173966500734
+139,139,311,226,"{'recombination': 112, 'background_transfer': 76, 'coalescence': 3}",191,254,1228013568,ARG_simulation,140,35.362414603300216,146.25207285500073
+139,139,136,226,"{'recombination': 112, 'background_transfer': 76, 'coalescence': 3}",191,254,1228013568,ARG_simulation,140,35.401412033838355,146.50211282201053
+139,139,185,226,"{'recombination': 112, 'background_transfer': 76, 'coalescence': 3}",191,254,1228021760,ARG_simulation,140,35.43844651499332,146.75207334601146
+139,139,25,226,"{'recombination': 112, 'background_transfer': 76, 'coalescence': 3}",191,254,1228021760,ARG_simulation,140,35.477459701271265,147.0020687750075
+139,139,326,226,"{'recombination': 112, 'background_transfer': 76, 'coalescence': 3}",191,254,1228021760,ARG_simulation,140,35.51911085831593,147.25206633200287
+140,140,116,228,"{'recombination': 113, 'background_transfer': 77, 'coalescence': 3}",193,256,1228021760,ARG_simulation,141,35.55678167823913,147.50215928500984
+140,140,281,228,"{'recombination': 113, 'background_transfer': 77, 'coalescence': 3}",193,256,1228021760,ARG_simulation,141,35.59534803032735,147.75212688700412
+140,140,84,228,"{'recombination': 113, 'background_transfer': 77, 'coalescence': 3}",193,256,1228021760,ARG_simulation,141,35.63214728373346,148.00035975400533
+140,140,307,228,"{'recombination': 113, 'background_transfer': 77, 'coalescence': 3}",193,256,1228025856,ARG_simulation,141,35.66836340980215,148.25167045400303
+140,140,331,228,"{'recombination': 113, 'background_transfer': 78, 'coalescence': 3}",194,256,1228029952,ARG_simulation,141,35.70620059424314,148.502137856005
+140,140,293,228,"{'recombination': 113, 'background_transfer': 78, 'coalescence': 3}",194,256,1228029952,ARG_simulation,141,35.74250980903086,148.75151991500752
+140,140,15,228,"{'recombination': 113, 'background_transfer': 78, 'coalescence': 3}",194,256,1228034048,ARG_simulation,141,35.78125739821129,149.0021084700129
+140,140,162,228,"{'recombination': 113, 'background_transfer': 78, 'coalescence': 3}",194,256,1228038144,ARG_simulation,141,35.81923597349261,149.2503511350078
+140,140,43,228,"{'recombination': 113, 'background_transfer': 78, 'coalescence': 3}",194,256,1228038144,ARG_simulation,141,35.85791283904815,149.500791028011
+140,140,64,228,"{'recombination': 113, 'background_transfer': 78, 'coalescence': 3}",194,256,1228038144,ARG_simulation,141,35.89622469776944,149.7521049150091
+140,140,150,228,"{'recombination': 113, 'background_transfer': 78, 'coalescence': 3}",194,256,1228038144,ARG_simulation,141,35.93591763482147,150.00207148201298
+140,140,331,228,"{'recombination': 113, 'background_transfer': 79, 'coalescence': 3}",195,256,1228038144,ARG_simulation,141,35.97464795295957,150.25208531600947
+140,140,147,228,"{'recombination': 113, 'background_transfer': 79, 'coalescence': 3}",195,256,1228038144,ARG_simulation,141,36.01291770534495,150.5017176340043
+140,140,161,228,"{'recombination': 113, 'background_transfer': 79, 'coalescence': 3}",195,256,1228038144,ARG_simulation,141,36.05406635113751,150.7520860220102
+140,140,331,228,"{'recombination': 113, 'background_transfer': 79, 'coalescence': 3}",195,256,1228038144,ARG_simulation,141,36.09096841840337,151.00069763200008
+140,140,20,228,"{'recombination': 113, 'background_transfer': 79, 'coalescence': 3}",195,256,1228038144,ARG_simulation,141,36.12859428934177,151.25191966501006
+140,140,187,228,"{'recombination': 113, 'background_transfer': 79, 'coalescence': 3}",195,256,1228042240,ARG_simulation,141,36.16435511375828,151.50207176001277
+140,140,13,228,"{'recombination': 113, 'background_transfer': 79, 'coalescence': 3}",195,256,1228042240,ARG_simulation,141,36.203367693128484,151.7520693250117
+140,140,191,228,"{'recombination': 113, 'background_transfer': 79, 'coalescence': 3}",195,256,1228042240,ARG_simulation,141,36.242101533252644,152.0020690720121
+140,140,41,228,"{'recombination': 113, 'background_transfer': 79, 'coalescence': 3}",195,256,1228042240,ARG_simulation,141,36.28059860286818,152.25209089000418
+140,140,120,228,"{'recombination': 113, 'background_transfer': 79, 'coalescence': 3}",195,256,1228042240,ARG_simulation,141,36.317189330819154,152.50081337901065
+140,140,35,228,"{'recombination': 113, 'background_transfer': 79, 'coalescence': 3}",195,256,1228042240,ARG_simulation,141,36.35732751909354,152.7520686909993
+140,140,331,228,"{'recombination': 113, 'background_transfer': 79, 'coalescence': 3}",195,256,1228042240,ARG_simulation,141,36.39785293735024,153.00207287500962
+140,140,62,228,"{'recombination': 113, 'background_transfer': 80, 'coalescence': 3}",196,256,1228042240,ARG_simulation,141,36.43415417988481,153.25113078800496
+140,140,331,228,"{'recombination': 113, 'background_transfer': 81, 'coalescence': 3}",197,256,1228042240,ARG_simulation,141,36.47192285034161,153.50210925801366
+140,140,219,228,"{'recombination': 113, 'background_transfer': 81, 'coalescence': 3}",197,256,1228042240,ARG_simulation,141,36.50847323011731,153.75172764500894
+140,140,331,228,"{'recombination': 113, 'background_transfer': 82, 'coalescence': 3}",198,256,1228042240,ARG_simulation,141,36.54485866638438,154.00036492700747
+140,140,88,228,"{'recombination': 113, 'background_transfer': 82, 'coalescence': 3}",198,256,1228046336,ARG_simulation,141,36.58218921257866,154.2502117420081
+140,140,135,228,"{'recombination': 113, 'background_transfer': 82, 'coalescence': 3}",198,256,1228046336,ARG_simulation,141,36.61878152587005,154.50207211100496
+140,140,132,228,"{'recombination': 113, 'background_transfer': 83, 'coalescence': 3}",199,256,1228046336,ARG_simulation,141,36.65467437409389,154.75045162100287
+142,142,189,232,"{'recombination': 115, 'background_transfer': 83, 'coalescence': 3}",201,260,1228050432,ARG_simulation,143,36.69259159619934,155.00206727600016
+143,143,4,234,"{'recombination': 116, 'background_transfer': 83, 'coalescence': 3}",202,262,1228050432,ARG_simulation,144,36.72999148680691,155.25207016000059
+143,143,78,234,"{'recombination': 116, 'background_transfer': 83, 'coalescence': 3}",202,262,1228050432,ARG_simulation,144,36.76666579016671,155.50051930001064
+143,143,1,234,"{'recombination': 116, 'background_transfer': 83, 'coalescence': 3}",202,262,1228050432,ARG_simulation,144,36.80427804243282,155.75159066299966
+143,143,298,234,"{'recombination': 116, 'background_transfer': 83, 'coalescence': 3}",202,262,1228050432,ARG_simulation,144,36.84204653049126,156.0007094419998
+143,143,178,234,"{'recombination': 116, 'background_transfer': 83, 'coalescence': 3}",202,262,1228050432,ARG_simulation,144,36.879469480211874,156.2516783530009
+144,144,15,236,"{'recombination': 117, 'background_transfer': 83, 'coalescence': 3}",203,264,1228050432,ARG_simulation,145,36.914372161262925,156.5002960790007
+144,144,51,236,"{'recombination': 117, 'background_transfer': 83, 'coalescence': 3}",203,264,1228058624,ARG_simulation,145,36.949437750776255,156.75206835501012
+144,144,253,236,"{'recombination': 117, 'background_transfer': 83, 'coalescence': 3}",203,264,1228058624,ARG_simulation,145,36.984152574472205,157.0021196680027
+144,144,79,236,"{'recombination': 117, 'background_transfer': 83, 'coalescence': 3}",203,264,1228058624,ARG_simulation,145,37.02131619781102,157.25207954201323
+144,144,87,236,"{'recombination': 117, 'background_transfer': 83, 'coalescence': 3}",203,264,1228058624,ARG_simulation,145,37.06510702313503,157.5009928320069
+144,144,41,236,"{'recombination': 117, 'background_transfer': 83, 'coalescence': 3}",203,264,1228058624,ARG_simulation,145,37.10015321259397,157.75206873900606
+144,144,161,236,"{'recombination': 117, 'background_transfer': 83, 'coalescence': 3}",203,264,1228058624,ARG_simulation,145,37.133525579167504,158.00214257001062
+144,144,236,236,"{'recombination': 117, 'background_transfer': 83, 'coalescence': 3}",203,264,1228058624,ARG_simulation,145,37.16859003215537,158.25122131399985
+144,144,268,236,"{'recombination': 117, 'background_transfer': 83, 'coalescence': 3}",203,264,1228058624,ARG_simulation,145,37.20364137118773,158.50008750800043
+144,144,353,236,"{'recombination': 117, 'background_transfer': 83, 'coalescence': 3}",203,264,1228058624,ARG_simulation,145,37.23655232586495,158.75165931601077
+145,145,355,238,"{'recombination': 118, 'background_transfer': 83, 'coalescence': 3}",204,266,1228062720,ARG_simulation,146,37.26847516642967,159.00210875899938
+145,145,17,238,"{'recombination': 118, 'background_transfer': 84, 'coalescence': 3}",205,266,1228070912,ARG_simulation,146,37.30421828054495,159.25134187900403
+145,145,267,238,"{'recombination': 118, 'background_transfer': 84, 'coalescence': 3}",205,266,1228070912,ARG_simulation,146,37.3424697757755,159.50209541700315
+145,145,151,238,"{'recombination': 118, 'background_transfer': 84, 'coalescence': 3}",205,266,1228070912,ARG_simulation,146,37.377632102784474,159.75067762000253
+145,145,15,238,"{'recombination': 118, 'background_transfer': 84, 'coalescence': 3}",205,266,1228070912,ARG_simulation,146,37.413488556861715,160.00207113400393
+145,145,237,238,"{'recombination': 118, 'background_transfer': 84, 'coalescence': 3}",205,266,1228070912,ARG_simulation,146,37.451568383404194,160.2521043279994
+145,145,159,238,"{'recombination': 118, 'background_transfer': 84, 'coalescence': 3}",205,266,1228070912,ARG_simulation,146,37.48799355064479,160.50211651300197
+145,145,273,238,"{'recombination': 118, 'background_transfer': 84, 'coalescence': 3}",205,266,1228070912,ARG_simulation,146,37.524152291468305,160.75173863800592
+145,145,355,238,"{'recombination': 118, 'background_transfer': 84, 'coalescence': 3}",205,266,1228070912,ARG_simulation,146,37.561977294409985,161.00206794100814
+145,145,203,238,"{'recombination': 118, 'background_transfer': 84, 'coalescence': 3}",205,266,1228070912,ARG_simulation,146,37.600710432924025,161.2520703580085
+146,146,35,240,"{'recombination': 119, 'background_transfer': 84, 'coalescence': 3}",206,268,1228070912,ARG_simulation,147,37.63684554786962,161.50211038401176
+146,146,324,240,"{'recombination': 119, 'background_transfer': 85, 'coalescence': 3}",207,268,1228075008,ARG_simulation,147,37.67364687687987,161.75057289500546
+146,146,299,240,"{'recombination': 119, 'background_transfer': 85, 'coalescence': 3}",207,268,1228075008,ARG_simulation,147,37.709610267935155,162.0020685930067
+146,146,292,240,"{'recombination': 119, 'background_transfer': 85, 'coalescence': 3}",207,268,1228075008,ARG_simulation,147,37.74611900514092,162.25206884200452
+146,146,224,240,"{'recombination': 119, 'background_transfer': 85, 'coalescence': 3}",207,268,1228075008,ARG_simulation,147,37.78134228251258,162.50208682499942
+147,147,366,242,"{'recombination': 120, 'background_transfer': 85, 'coalescence': 3}",208,270,1228079104,ARG_simulation,148,37.81689794981928,162.75206731101207
+147,147,0,242,"{'recombination': 120, 'background_transfer': 85, 'coalescence': 3}",208,270,1228083200,ARG_simulation,148,37.85464887387756,163.0010878739995
+148,148,221,244,"{'recombination': 121, 'background_transfer': 85, 'coalescence': 3}",209,272,1228095488,ARG_simulation,149,37.89201248968902,163.2520736380102
+148,148,177,244,"{'recombination': 121, 'background_transfer': 85, 'coalescence': 3}",209,272,1228099584,ARG_simulation,149,37.926712014809496,163.50128776801284
+148,148,175,244,"{'recombination': 121, 'background_transfer': 85, 'coalescence': 3}",209,272,1228111872,ARG_simulation,149,37.96240124736266,163.7519930670096
+148,148,199,244,"{'recombination': 121, 'background_transfer': 85, 'coalescence': 3}",209,272,1228120064,ARG_simulation,149,37.99802445820259,164.00212155100598
+148,148,164,244,"{'recombination': 121, 'background_transfer': 86, 'coalescence': 3}",210,272,1228136448,ARG_simulation,149,38.03445139598702,164.25157718000992
+148,148,373,244,"{'recombination': 121, 'background_transfer': 86, 'coalescence': 3}",210,272,1228136448,ARG_simulation,149,38.06647030849043,164.50211491600203
+149,149,0,246,"{'recombination': 122, 'background_transfer': 86, 'coalescence': 3}",211,274,1228136448,ARG_simulation,150,38.10091300324074,164.75208164400829
+150,150,222,248,"{'recombination': 123, 'background_transfer': 86, 'coalescence': 3}",212,276,1228136448,ARG_simulation,151,38.13749704884435,165.00207232100365
+150,150,40,248,"{'recombination': 123, 'background_transfer': 86, 'coalescence': 3}",212,276,1228136448,ARG_simulation,151,38.17253961492202,165.25189241000044
+150,150,33,248,"{'recombination': 123, 'background_transfer': 86, 'coalescence': 3}",212,276,1228136448,ARG_simulation,151,38.205966714606184,165.5020682010072
+150,150,160,248,"{'recombination': 123, 'background_transfer': 86, 'coalescence': 3}",212,276,1228136448,ARG_simulation,151,38.2438957742884,165.75206874500145
+150,150,378,248,"{'recombination': 123, 'background_transfer': 87, 'coalescence': 3}",213,276,1228140544,ARG_simulation,151,38.27417490487144,166.00009740200767
+150,150,92,248,"{'recombination': 123, 'background_transfer': 87, 'coalescence': 3}",213,276,1228140544,ARG_simulation,151,38.30604368836978,166.25051265100774
+150,150,378,248,"{'recombination': 123, 'background_transfer': 87, 'coalescence': 3}",213,276,1228140544,ARG_simulation,151,38.33628451155767,166.50179449700227
+150,150,378,248,"{'recombination': 123, 'background_transfer': 87, 'coalescence': 3}",213,276,1228144640,ARG_simulation,151,38.370007974071896,166.75029021000955
+150,150,25,248,"{'recombination': 123, 'background_transfer': 87, 'coalescence': 3}",213,276,1228144640,ARG_simulation,151,38.406916472618484,167.00213206899934
+150,150,232,248,"{'recombination': 123, 'background_transfer': 87, 'coalescence': 3}",213,276,1228144640,ARG_simulation,151,38.440492749359656,167.25210870901356
+150,150,378,248,"{'recombination': 123, 'background_transfer': 87, 'coalescence': 3}",213,276,1228144640,ARG_simulation,151,38.47937235233121,167.50177327700658
+150,150,379,248,"{'recombination': 123, 'background_transfer': 88, 'coalescence': 3}",214,276,1228144640,ARG_simulation,151,38.51357431105781,167.75206961600634
+150,150,6,248,"{'recombination': 123, 'background_transfer': 88, 'coalescence': 3}",214,276,1228144640,ARG_simulation,151,38.547910926599464,168.00181749800686
+150,150,290,248,"{'recombination': 123, 'background_transfer': 88, 'coalescence': 3}",214,276,1228148736,ARG_simulation,151,38.57898214686813,168.25212395000563
+150,150,25,248,"{'recombination': 123, 'background_transfer': 88, 'coalescence': 3}",214,276,1228148736,ARG_simulation,151,38.6124779148727,168.50206900700869
+150,150,76,248,"{'recombination': 123, 'background_transfer': 88, 'coalescence': 3}",214,276,1228152832,ARG_simulation,151,38.646046600253214,168.75190036999993
+150,150,161,248,"{'recombination': 123, 'background_transfer': 88, 'coalescence': 3}",214,276,1228152832,ARG_simulation,151,38.68066811088592,169.00090190200717
+150,150,379,248,"{'recombination': 123, 'background_transfer': 88, 'coalescence': 3}",214,276,1228152832,ARG_simulation,151,38.715876443097905,169.25208165000367
+150,150,360,248,"{'recombination': 123, 'background_transfer': 88, 'coalescence': 3}",214,276,1228152832,ARG_simulation,151,38.748886749902084,169.5021294150065
+150,150,259,248,"{'recombination': 123, 'background_transfer': 88, 'coalescence': 3}",214,276,1228152832,ARG_simulation,151,38.78351656336138,169.7507074640016
+151,151,342,250,"{'recombination': 124, 'background_transfer': 88, 'coalescence': 3}",215,278,1228152832,ARG_simulation,152,38.8200798856449,170.00022375000117
+152,152,129,252,"{'recombination': 125, 'background_transfer': 88, 'coalescence': 3}",216,280,1228152832,ARG_simulation,153,38.85456250356638,170.25173431901203
+152,152,328,252,"{'recombination': 125, 'background_transfer': 90, 'coalescence': 3}",218,280,1228152832,ARG_simulation,153,38.889183669925245,170.50202248700953
+152,152,132,252,"{'recombination': 125, 'background_transfer': 90, 'coalescence': 3}",218,280,1228156928,ARG_simulation,153,38.9245500494927,170.7520851300069
+152,152,146,252,"{'recombination': 125, 'background_transfer': 90, 'coalescence': 3}",218,280,1228156928,ARG_simulation,153,38.959231982049225,171.00149676900764
+152,152,35,252,"{'recombination': 125, 'background_transfer': 90, 'coalescence': 3}",218,280,1228156928,ARG_simulation,153,38.99114118587229,171.25206833000993
+152,152,329,252,"{'recombination': 125, 'background_transfer': 90, 'coalescence': 3}",218,280,1228165120,ARG_simulation,153,39.027939553895315,171.50207021200913
+152,152,109,252,"{'recombination': 125, 'background_transfer': 90, 'coalescence': 3}",218,280,1228165120,ARG_simulation,153,39.06361486873975,171.75210658401193
+152,152,387,252,"{'recombination': 125, 'background_transfer': 90, 'coalescence': 3}",218,280,1228165120,ARG_simulation,153,39.0994676542318,172.00210624600004
+152,152,387,252,"{'recombination': 125, 'background_transfer': 91, 'coalescence': 3}",219,280,1228165120,ARG_simulation,153,39.13703416306812,172.2521087770001
+152,152,87,252,"{'recombination': 125, 'background_transfer': 92, 'coalescence': 3}",220,280,1228165120,ARG_simulation,153,39.173567583094055,172.5020699880115
+153,153,135,254,"{'recombination': 126, 'background_transfer': 92, 'coalescence': 3}",221,282,1228169216,ARG_simulation,154,39.20516331626727,172.7519472450076
+153,153,284,254,"{'recombination': 126, 'background_transfer': 92, 'coalescence': 3}",221,282,1228169216,ARG_simulation,154,39.23939322083916,173.00211364500865
+153,153,389,254,"{'recombination': 126, 'background_transfer': 92, 'coalescence': 3}",221,282,1228169216,ARG_simulation,154,39.27586177883065,173.25201347999973
+153,153,389,254,"{'recombination': 126, 'background_transfer': 92, 'coalescence': 3}",221,282,1228169216,ARG_simulation,154,39.31295853078666,173.5020760870102
+153,153,64,254,"{'recombination': 126, 'background_transfer': 92, 'coalescence': 3}",221,282,1228169216,ARG_simulation,154,39.34687576301516,173.75205179001205
+153,153,236,254,"{'recombination': 126, 'background_transfer': 92, 'coalescence': 3}",221,282,1228169216,ARG_simulation,154,39.377797402559544,174.00207637800486
+153,153,48,254,"{'recombination': 126, 'background_transfer': 93, 'coalescence': 3}",222,282,1228173312,ARG_simulation,154,39.41126964563385,174.25206889300898
+153,153,213,254,"{'recombination': 126, 'background_transfer': 93, 'coalescence': 3}",222,282,1228173312,ARG_simulation,154,39.446007831226,174.5021010620112
+153,153,267,254,"{'recombination': 126, 'background_transfer': 93, 'coalescence': 3}",222,282,1228173312,ARG_simulation,154,39.47675528312853,174.75096026800747
+153,153,147,254,"{'recombination': 126, 'background_transfer': 93, 'coalescence': 3}",222,282,1228173312,ARG_simulation,154,39.50940856161269,175.00207471199974
+153,153,194,254,"{'recombination': 126, 'background_transfer': 93, 'coalescence': 3}",222,282,1228173312,ARG_simulation,154,39.54758925061598,175.25206954200985
+153,153,389,254,"{'recombination': 126, 'background_transfer': 93, 'coalescence': 3}",222,282,1228173312,ARG_simulation,154,39.582438953603464,175.50206861901097
+153,153,58,254,"{'recombination': 126, 'background_transfer': 93, 'coalescence': 3}",222,282,1228173312,ARG_simulation,154,39.61738505370212,175.75210312100535
+153,153,389,254,"{'recombination': 126, 'background_transfer': 93, 'coalescence': 3}",222,282,1228173312,ARG_simulation,154,39.65450062047181,176.00211371500336
+154,154,392,256,"{'recombination': 127, 'background_transfer': 93, 'coalescence': 3}",223,284,1228173312,ARG_simulation,155,39.68914184898448,176.25216258800356
+154,154,12,256,"{'recombination': 127, 'background_transfer': 93, 'coalescence': 3}",223,284,1228173312,ARG_simulation,155,39.72383247148908,176.50101873899985
+154,154,22,256,"{'recombination': 127, 'background_transfer': 93, 'coalescence': 3}",223,284,1228177408,ARG_simulation,155,39.75803007699679,176.752068908012
+154,154,111,256,"{'recombination': 127, 'background_transfer': 93, 'coalescence': 3}",223,284,1228177408,ARG_simulation,155,39.7929756524504,177.00211328500882
+154,154,392,256,"{'recombination': 127, 'background_transfer': 93, 'coalescence': 3}",223,284,1228177408,ARG_simulation,155,39.82646096811924,177.25207002500247
+154,154,105,256,"{'recombination': 127, 'background_transfer': 93, 'coalescence': 3}",223,284,1228177408,ARG_simulation,155,39.862339011924654,177.50210958599928
+154,154,43,256,"{'recombination': 127, 'background_transfer': 93, 'coalescence': 3}",223,284,1228177408,ARG_simulation,155,39.895267344609756,177.75206879701
+154,154,0,256,"{'recombination': 127, 'background_transfer': 93, 'coalescence': 3}",223,284,1228177408,ARG_simulation,155,39.92989177327249,178.0020848710119
+154,154,392,256,"{'recombination': 127, 'background_transfer': 93, 'coalescence': 3}",223,284,1228177408,ARG_simulation,155,39.964112195691996,178.25211566701182
+154,154,76,256,"{'recombination': 127, 'background_transfer': 94, 'coalescence': 3}",224,284,1228177408,ARG_simulation,155,40.00326189133537,178.50216453200846
+154,154,319,256,"{'recombination': 127, 'background_transfer': 95, 'coalescence': 3}",225,284,1228177408,ARG_simulation,155,40.036787546450675,178.75206832900585
+154,154,116,256,"{'recombination': 127, 'background_transfer': 95, 'coalescence': 3}",225,284,1228181504,ARG_simulation,155,40.071238288801325,179.0020697100117
+154,154,401,256,"{'recombination': 127, 'background_transfer': 96, 'coalescence': 3}",226,284,1228185600,ARG_simulation,155,40.10318060658528,179.25168412701169
+154,154,397,256,"{'recombination': 127, 'background_transfer': 96, 'coalescence': 3}",226,284,1228185600,ARG_simulation,155,40.139117010996216,179.50108670700865
+154,154,197,256,"{'recombination': 127, 'background_transfer': 96, 'coalescence': 3}",226,284,1228185600,ARG_simulation,155,40.175788655525025,179.75208668100822
+154,154,398,256,"{'recombination': 127, 'background_transfer': 97, 'coalescence': 3}",227,284,1228185600,ARG_simulation,155,40.2074219126042,180.00044660900312
+154,154,40,256,"{'recombination': 127, 'background_transfer': 97, 'coalescence': 3}",227,284,1228185600,ARG_simulation,155,40.24200637688597,180.2521509460057
+154,154,401,256,"{'recombination': 127, 'background_transfer': 97, 'coalescence': 3}",227,284,1228185600,ARG_simulation,155,40.278423881409275,180.50207082999987
+154,154,63,256,"{'recombination': 127, 'background_transfer': 97, 'coalescence': 3}",227,284,1228185600,ARG_simulation,155,40.311707244100816,180.75150237200432
+154,154,16,256,"{'recombination': 127, 'background_transfer': 97, 'coalescence': 3}",227,284,1228185600,ARG_simulation,155,40.34936741718867,181.00208002699947
+154,154,401,256,"{'recombination': 127, 'background_transfer': 97, 'coalescence': 3}",227,284,1228189696,ARG_simulation,155,40.38211431232259,181.25150772501365
+154,154,80,256,"{'recombination': 127, 'background_transfer': 97, 'coalescence': 3}",227,284,1228189696,ARG_simulation,155,40.420146547388846,181.50177869500476
+154,154,355,256,"{'recombination': 127, 'background_transfer': 97, 'coalescence': 3}",227,284,1228189696,ARG_simulation,155,40.45440724329836,181.7503311210021
+154,154,11,256,"{'recombination': 127, 'background_transfer': 97, 'coalescence': 3}",227,284,1228189696,ARG_simulation,155,40.490134209044086,182.00218223700358
+154,154,261,256,"{'recombination': 127, 'background_transfer': 97, 'coalescence': 3}",227,284,1228189696,ARG_simulation,155,40.523488600699096,182.25153305500862
+154,154,146,256,"{'recombination': 127, 'background_transfer': 97, 'coalescence': 3}",227,284,1228197888,ARG_simulation,155,40.56128378387627,182.5008266870136
+154,154,0,256,"{'recombination': 127, 'background_transfer': 97, 'coalescence': 3}",227,284,1228201984,ARG_simulation,155,40.59643283195532,182.7515153770073
+154,154,6,256,"{'recombination': 127, 'background_transfer': 98, 'coalescence': 3}",228,284,1228201984,ARG_simulation,155,40.6323644368384,183.0020976800006
+154,154,401,256,"{'recombination': 127, 'background_transfer': 98, 'coalescence': 3}",228,284,1228206080,ARG_simulation,155,40.66576380531147,183.25118309500976
+154,154,189,256,"{'recombination': 127, 'background_transfer': 98, 'coalescence': 3}",228,284,1228214272,ARG_simulation,155,40.699937857203956,183.50079906900646
+154,154,224,256,"{'recombination': 127, 'background_transfer': 98, 'coalescence': 3}",228,284,1228218368,ARG_simulation,155,40.73686054650337,183.75120197900105
+154,154,110,256,"{'recombination': 127, 'background_transfer': 98, 'coalescence': 3}",228,284,1228218368,ARG_simulation,155,40.77240889636193,184.00215712201316
+154,154,401,256,"{'recombination': 127, 'background_transfer': 98, 'coalescence': 3}",228,284,1228222464,ARG_simulation,155,40.80567313871961,184.25150466000196
+154,154,152,256,"{'recombination': 127, 'background_transfer': 99, 'coalescence': 3}",229,284,1228222464,ARG_simulation,155,40.84291266554362,184.5001587010047
+154,154,401,256,"{'recombination': 127, 'background_transfer': 99, 'coalescence': 3}",229,284,1228222464,ARG_simulation,155,40.87477285274599,184.7510091180011
+154,154,69,256,"{'recombination': 127, 'background_transfer': 100, 'coalescence': 3}",230,284,1228222464,ARG_simulation,155,40.906972379305046,185.00014290701074
+154,154,401,256,"{'recombination': 127, 'background_transfer': 100, 'coalescence': 3}",230,284,1228222464,ARG_simulation,155,40.9401354008624,185.25011373600864
+154,154,328,256,"{'recombination': 127, 'background_transfer': 100, 'coalescence': 3}",230,284,1228222464,ARG_simulation,155,40.97145068030029,185.50206755500403
+155,155,218,258,"{'recombination': 128, 'background_transfer': 100, 'coalescence': 3}",231,286,1228226560,ARG_simulation,156,41.00748805134209,185.75130974200147
+155,155,23,258,"{'recombination': 128, 'background_transfer': 101, 'coalescence': 3}",232,286,1228226560,ARG_simulation,156,41.040836553701475,186.00077166401024
+155,155,16,258,"{'recombination': 128, 'background_transfer': 101, 'coalescence': 3}",232,286,1228226560,ARG_simulation,156,41.075246454829546,186.25150389201008
+155,155,329,258,"{'recombination': 128, 'background_transfer': 101, 'coalescence': 3}",232,286,1228230656,ARG_simulation,156,41.109472867031876,186.50049147100071
+156,156,277,260,"{'recombination': 129, 'background_transfer': 101, 'coalescence': 3}",233,288,1228234752,ARG_simulation,157,41.14389730180979,186.75061428701156
+156,156,268,260,"{'recombination': 129, 'background_transfer': 101, 'coalescence': 3}",233,288,1228234752,ARG_simulation,157,41.17564575995624,187.00208237601328
+156,156,405,260,"{'recombination': 129, 'background_transfer': 101, 'coalescence': 3}",233,288,1228234752,ARG_simulation,157,41.20657347954434,187.25098387501203
+156,156,49,260,"{'recombination': 129, 'background_transfer': 102, 'coalescence': 3}",234,288,1228234752,ARG_simulation,157,41.24064658949828,187.5010274570086
+156,156,87,260,"{'recombination': 129, 'background_transfer': 102, 'coalescence': 3}",234,288,1228234752,ARG_simulation,157,41.274776206066996,187.75120576900372
+156,156,0,260,"{'recombination': 129, 'background_transfer': 102, 'coalescence': 3}",234,288,1228234752,ARG_simulation,157,41.30868752141928,188.00207524301368
+156,156,82,260,"{'recombination': 129, 'background_transfer': 102, 'coalescence': 3}",234,288,1228234752,ARG_simulation,157,41.341996999814086,188.251349520011
+156,156,221,260,"{'recombination': 129, 'background_transfer': 102, 'coalescence': 3}",234,288,1228234752,ARG_simulation,157,41.37746147252467,188.50208063299942
+156,156,0,260,"{'recombination': 129, 'background_transfer': 102, 'coalescence': 3}",234,288,1228234752,ARG_simulation,157,41.41399767683028,188.75147287599975
+156,156,170,260,"{'recombination': 129, 'background_transfer': 102, 'coalescence': 3}",234,288,1228234752,ARG_simulation,157,41.44598186027324,189.00173719400482
+156,156,201,260,"{'recombination': 129, 'background_transfer': 103, 'coalescence': 3}",235,288,1228238848,ARG_simulation,157,41.477398868380966,189.25152343400987
+156,156,399,260,"{'recombination': 129, 'background_transfer': 103, 'coalescence': 3}",235,288,1228238848,ARG_simulation,157,41.51253356582246,189.50209288801125
+156,156,106,260,"{'recombination': 129, 'background_transfer': 103, 'coalescence': 3}",235,288,1228238848,ARG_simulation,157,41.54702936155232,189.7512197670003
+156,156,352,260,"{'recombination': 129, 'background_transfer': 103, 'coalescence': 3}",235,288,1228238848,ARG_simulation,157,41.5822113350278,190.00216872700548
+156,156,147,260,"{'recombination': 129, 'background_transfer': 103, 'coalescence': 3}",235,288,1228238848,ARG_simulation,157,41.61471665965195,190.25064342201222
+156,156,10,260,"{'recombination': 129, 'background_transfer': 103, 'coalescence': 3}",235,288,1228238848,ARG_simulation,157,41.65108349436253,190.50213958701352
+156,156,241,260,"{'recombination': 129, 'background_transfer': 104, 'coalescence': 3}",236,288,1228238848,ARG_simulation,157,41.68222681428499,190.75207372200384
+156,156,223,260,"{'recombination': 129, 'background_transfer': 104, 'coalescence': 3}",236,288,1228238848,ARG_simulation,157,41.716976161830736,191.002105535008
+156,156,42,260,"{'recombination': 129, 'background_transfer': 104, 'coalescence': 3}",236,288,1228238848,ARG_simulation,157,41.7539906759792,191.25192348800192
+156,156,232,260,"{'recombination': 129, 'background_transfer': 104, 'coalescence': 3}",236,288,1228238848,ARG_simulation,157,41.787754305008214,191.50055924800108
+157,157,377,262,"{'recombination': 130, 'background_transfer': 104, 'coalescence': 3}",237,290,1228247040,ARG_simulation,158,41.82081302417348,191.7520748290117
+157,157,18,262,"{'recombination': 130, 'background_transfer': 104, 'coalescence': 3}",237,290,1228247040,ARG_simulation,158,41.852061649485,192.00058149501274
+157,157,3,262,"{'recombination': 130, 'background_transfer': 104, 'coalescence': 3}",237,290,1228247040,ARG_simulation,158,41.88470781236101,192.25127458300267
+157,157,104,262,"{'recombination': 130, 'background_transfer': 104, 'coalescence': 3}",237,290,1228247040,ARG_simulation,158,41.9171033896216,192.50212445000943
+157,157,406,262,"{'recombination': 130, 'background_transfer': 104, 'coalescence': 3}",237,290,1228247040,ARG_simulation,158,41.94771094213594,192.75121296300495
+157,157,152,262,"{'recombination': 130, 'background_transfer': 104, 'coalescence': 3}",237,290,1228247040,ARG_simulation,158,41.98362153311696,193.00093485901016
+157,157,166,262,"{'recombination': 130, 'background_transfer': 104, 'coalescence': 3}",237,290,1228247040,ARG_simulation,158,42.01879528777254,193.25210266500653
+157,157,347,262,"{'recombination': 130, 'background_transfer': 104, 'coalescence': 3}",237,290,1228247040,ARG_simulation,158,42.05144618757749,193.50018488201022
+157,157,339,262,"{'recombination': 130, 'background_transfer': 104, 'coalescence': 3}",237,290,1228247040,ARG_simulation,158,42.08042280529604,193.7512553550041
+157,157,5,262,"{'recombination': 130, 'background_transfer': 104, 'coalescence': 3}",237,290,1228247040,ARG_simulation,158,42.11094211598942,194.00207130001218
+157,157,103,262,"{'recombination': 130, 'background_transfer': 104, 'coalescence': 3}",237,290,1228251136,ARG_simulation,158,42.143878451047996,194.25010592699982
+157,157,0,262,"{'recombination': 130, 'background_transfer': 104, 'coalescence': 3}",237,290,1228251136,ARG_simulation,158,42.17756669976628,194.50210118701216
+158,158,116,264,"{'recombination': 131, 'background_transfer': 104, 'coalescence': 3}",238,292,1228251136,ARG_simulation,159,42.2109034490305,194.75111872400157
+158,158,86,264,"{'recombination': 131, 'background_transfer': 104, 'coalescence': 3}",238,292,1228251136,ARG_simulation,159,42.24525400327363,195.00210601100116
+158,158,354,264,"{'recombination': 131, 'background_transfer': 104, 'coalescence': 3}",238,292,1228251136,ARG_simulation,159,42.27983259520104,195.2520730820106
+158,158,221,264,"{'recombination': 131, 'background_transfer': 104, 'coalescence': 3}",238,292,1228251136,ARG_simulation,159,42.31172332814259,195.50212022200867
+158,158,74,264,"{'recombination': 131, 'background_transfer': 105, 'coalescence': 3}",239,292,1228251136,ARG_simulation,159,42.34413683800741,195.75207121700805
+158,158,141,264,"{'recombination': 131, 'background_transfer': 105, 'coalescence': 3}",239,292,1228251136,ARG_simulation,159,42.375485482599494,196.0020711130055
+158,158,386,264,"{'recombination': 131, 'background_transfer': 105, 'coalescence': 3}",239,292,1228251136,ARG_simulation,159,42.411800266793406,196.2518565870123
+158,158,256,264,"{'recombination': 131, 'background_transfer': 105, 'coalescence': 3}",239,292,1228255232,ARG_simulation,159,42.446339970124455,196.5003958610032
+159,159,200,266,"{'recombination': 132, 'background_transfer': 105, 'coalescence': 3}",240,294,1228263424,ARG_simulation,160,42.47829023474416,196.7521086610068
+159,159,0,266,"{'recombination': 132, 'background_transfer': 105, 'coalescence': 3}",240,294,1228263424,ARG_simulation,160,42.515022507096035,197.00207941701228
+160,160,218,268,"{'recombination': 133, 'background_transfer': 105, 'coalescence': 3}",241,296,1228263424,ARG_simulation,161,42.549765058366354,197.25182472300366
+160,160,39,268,"{'recombination': 133, 'background_transfer': 106, 'coalescence': 3}",242,296,1228263424,ARG_simulation,161,42.58457102666019,197.5021345540008
+160,160,108,268,"{'recombination': 133, 'background_transfer': 106, 'coalescence': 3}",242,296,1228263424,ARG_simulation,161,42.616523580075544,197.75057658500737
+160,160,313,268,"{'recombination': 133, 'background_transfer': 106, 'coalescence': 3}",242,296,1228263424,ARG_simulation,161,42.648395260383616,198.00091575901024
+161,161,403,270,"{'recombination': 134, 'background_transfer': 106, 'coalescence': 3}",243,298,1228263424,ARG_simulation,162,42.68340311483334,198.25096674301312
+161,161,343,270,"{'recombination': 134, 'background_transfer': 106, 'coalescence': 3}",243,298,1228263424,ARG_simulation,162,42.71431650909294,198.50212156301131
+162,162,311,272,"{'recombination': 135, 'background_transfer': 106, 'coalescence': 3}",244,300,1228263424,ARG_simulation,163,42.746626572796515,198.75206774901017
+162,162,423,272,"{'recombination': 135, 'background_transfer': 106, 'coalescence': 3}",244,300,1228263424,ARG_simulation,163,42.779248653955406,199.00036525800533
+162,162,286,272,"{'recombination': 135, 'background_transfer': 106, 'coalescence': 3}",244,300,1228267520,ARG_simulation,163,42.81040123234248,199.2520837910124
+162,162,168,272,"{'recombination': 135, 'background_transfer': 106, 'coalescence': 3}",244,300,1228267520,ARG_simulation,163,42.84158754715021,199.50030735701148
+162,162,140,272,"{'recombination': 135, 'background_transfer': 106, 'coalescence': 3}",244,300,1228267520,ARG_simulation,163,42.872053929226595,199.75122236400784
+162,162,423,272,"{'recombination': 135, 'background_transfer': 107, 'coalescence': 3}",245,300,1228267520,ARG_simulation,163,42.90416031795684,200.0011632680107
+162,162,130,272,"{'recombination': 135, 'background_transfer': 108, 'coalescence': 3}",246,300,1228267520,ARG_simulation,163,42.936639544107706,200.25090580900724
+162,162,47,272,"{'recombination': 135, 'background_transfer': 108, 'coalescence': 3}",246,300,1228267520,ARG_simulation,163,42.9676434054033,200.5009578050085
+162,162,423,272,"{'recombination': 135, 'background_transfer': 108, 'coalescence': 3}",246,300,1228271616,ARG_simulation,163,43.00165509959507,200.75209987901326
+162,162,1,272,"{'recombination': 135, 'background_transfer': 108, 'coalescence': 3}",246,300,1228271616,ARG_simulation,163,43.037357859949246,201.00133691400697
+162,162,423,272,"{'recombination': 135, 'background_transfer': 108, 'coalescence': 3}",246,300,1228271616,ARG_simulation,163,43.06665444953792,201.250398950011
+162,162,423,272,"{'recombination': 135, 'background_transfer': 108, 'coalescence': 3}",246,300,1228271616,ARG_simulation,163,43.095267706157365,201.5004255560052
+162,162,291,272,"{'recombination': 135, 'background_transfer': 108, 'coalescence': 3}",246,300,1228275712,ARG_simulation,163,43.12913045859189,201.7520704010094
+162,162,60,272,"{'recombination': 135, 'background_transfer': 108, 'coalescence': 3}",246,300,1228275712,ARG_simulation,163,43.159060209041556,202.0007202590059
+162,162,262,272,"{'recombination': 135, 'background_transfer': 109, 'coalescence': 3}",247,300,1228275712,ARG_simulation,163,43.18751658407395,202.2502013970079
+162,162,423,272,"{'recombination': 135, 'background_transfer': 109, 'coalescence': 3}",247,300,1228275712,ARG_simulation,163,43.22412443890764,202.50087454500317
+162,162,423,272,"{'recombination': 135, 'background_transfer': 109, 'coalescence': 3}",247,300,1228275712,ARG_simulation,163,43.25595834102514,202.75156024300668
+162,162,110,272,"{'recombination': 135, 'background_transfer': 109, 'coalescence': 3}",247,300,1228275712,ARG_simulation,163,43.2830425357211,203.00163084000815
+162,162,350,272,"{'recombination': 135, 'background_transfer': 109, 'coalescence': 3}",247,300,1228275712,ARG_simulation,163,43.317179342114514,203.25211268301064
+162,162,72,272,"{'recombination': 135, 'background_transfer': 109, 'coalescence': 3}",247,300,1228275712,ARG_simulation,163,43.34908746825487,203.50208672101144
+162,162,186,272,"{'recombination': 135, 'background_transfer': 109, 'coalescence': 3}",247,300,1228275712,ARG_simulation,163,43.380678740698784,203.75207635801053
+162,162,423,272,"{'recombination': 135, 'background_transfer': 109, 'coalescence': 3}",247,300,1228275712,ARG_simulation,163,43.41063760286384,204.00213050701132
+162,162,232,272,"{'recombination': 135, 'background_transfer': 110, 'coalescence': 3}",248,300,1228283904,ARG_simulation,163,43.44392495561982,204.25206992900348
+162,162,12,272,"{'recombination': 135, 'background_transfer': 110, 'coalescence': 3}",248,300,1228288000,ARG_simulation,163,43.47489437514478,204.5020704780036
+162,162,200,272,"{'recombination': 135, 'background_transfer': 110, 'coalescence': 3}",248,300,1228296192,ARG_simulation,163,43.50537496775467,204.75143090500205
+162,162,303,272,"{'recombination': 135, 'background_transfer': 110, 'coalescence': 3}",248,300,1228304384,ARG_simulation,163,43.53629023159537,205.0020721990004
+162,162,429,272,"{'recombination': 135, 'background_transfer': 110, 'coalescence': 3}",248,300,1228308480,ARG_simulation,163,43.56841209087404,205.25175493801362
+162,162,429,272,"{'recombination': 135, 'background_transfer': 110, 'coalescence': 3}",248,300,1228316672,ARG_simulation,163,43.59959151953811,205.50104989401007
+162,162,216,272,"{'recombination': 135, 'background_transfer': 110, 'coalescence': 3}",248,300,1228316672,ARG_simulation,163,43.63464956520708,205.7517248600052
+163,163,367,274,"{'recombination': 136, 'background_transfer': 110, 'coalescence': 3}",249,302,1228316672,ARG_simulation,164,43.66760200977499,206.00206740600697
+163,163,394,274,"{'recombination': 136, 'background_transfer': 110, 'coalescence': 3}",249,302,1228324864,ARG_simulation,164,43.69903948590202,206.25013961399964
+163,163,98,274,"{'recombination': 136, 'background_transfer': 110, 'coalescence': 3}",249,302,1228324864,ARG_simulation,164,43.72950016572055,206.5020676270069
+163,163,121,274,"{'recombination': 136, 'background_transfer': 110, 'coalescence': 3}",249,302,1228328960,ARG_simulation,164,43.76127209225619,206.752069071008
+163,163,437,274,"{'recombination': 136, 'background_transfer': 110, 'coalescence': 3}",249,302,1228328960,ARG_simulation,164,43.791352528542006,207.00206677800452
+163,163,126,274,"{'recombination': 136, 'background_transfer': 110, 'coalescence': 3}",249,302,1228333056,ARG_simulation,164,43.82290438123527,207.25121895100165
+163,163,16,274,"{'recombination': 136, 'background_transfer': 111, 'coalescence': 3}",250,302,1228333056,ARG_simulation,164,43.85445686209331,207.50129381200531
+163,163,0,274,"{'recombination': 136, 'background_transfer': 111, 'coalescence': 3}",250,302,1228333056,ARG_simulation,164,43.88563908912542,207.75208062501042
+163,163,102,274,"{'recombination': 136, 'background_transfer': 111, 'coalescence': 3}",250,302,1228333056,ARG_simulation,164,43.915684072417065,208.00212912300776
+163,163,35,274,"{'recombination': 136, 'background_transfer': 111, 'coalescence': 3}",250,302,1228333056,ARG_simulation,164,43.94622445988192,208.25159168700338
+163,163,242,274,"{'recombination': 136, 'background_transfer': 112, 'coalescence': 3}",251,302,1228333056,ARG_simulation,164,43.978976306555175,208.5009661540098
+163,163,185,274,"{'recombination': 136, 'background_transfer': 112, 'coalescence': 3}",251,302,1228333056,ARG_simulation,164,44.0117255190427,208.75207646700437
+164,164,0,276,"{'recombination': 137, 'background_transfer': 113, 'coalescence': 3}",253,304,1228341248,ARG_simulation,165,44.04445657468739,209.00070283800596
+164,164,403,276,"{'recombination': 137, 'background_transfer': 113, 'coalescence': 3}",253,304,1228345344,ARG_simulation,165,44.07573741642524,209.25207282400515
+164,164,35,276,"{'recombination': 137, 'background_transfer': 113, 'coalescence': 3}",253,304,1228345344,ARG_simulation,165,44.103870156713775,209.50014130500495
+164,164,101,276,"{'recombination': 137, 'background_transfer': 113, 'coalescence': 3}",253,304,1228345344,ARG_simulation,165,44.13182445212326,209.7521206290112
+164,164,266,276,"{'recombination': 137, 'background_transfer': 113, 'coalescence': 3}",253,304,1228345344,ARG_simulation,165,44.16319173847818,210.0021328280127
+164,164,27,276,"{'recombination': 137, 'background_transfer': 113, 'coalescence': 3}",253,304,1228345344,ARG_simulation,165,44.19625682102496,210.25209913500294
+164,164,60,276,"{'recombination': 137, 'background_transfer': 113, 'coalescence': 3}",253,304,1228345344,ARG_simulation,165,44.22275953869248,210.50212878000457
+164,164,439,276,"{'recombination': 137, 'background_transfer': 114, 'coalescence': 3}",254,304,1228345344,ARG_simulation,165,44.253971532946636,210.7504111550079
+164,164,69,276,"{'recombination': 137, 'background_transfer': 114, 'coalescence': 3}",254,304,1228345344,ARG_simulation,165,44.28362744079561,211.00207318800676
+164,164,303,276,"{'recombination': 137, 'background_transfer': 114, 'coalescence': 3}",254,304,1228345344,ARG_simulation,165,44.31429415211306,211.2502430500026
+164,164,380,276,"{'recombination': 137, 'background_transfer': 114, 'coalescence': 3}",254,304,1228345344,ARG_simulation,165,44.347556350833,211.50209443300264
+164,164,70,276,"{'recombination': 137, 'background_transfer': 115, 'coalescence': 3}",255,304,1228349440,ARG_simulation,165,44.379495904504004,211.75210986200545
+164,164,69,276,"{'recombination': 137, 'background_transfer': 115, 'coalescence': 3}",255,304,1228349440,ARG_simulation,165,44.41226128334908,212.0021593880083
+164,164,115,276,"{'recombination': 137, 'background_transfer': 116, 'coalescence': 3}",256,304,1228349440,ARG_simulation,165,44.44581865837534,212.25207144200976
+164,164,439,276,"{'recombination': 137, 'background_transfer': 116, 'coalescence': 3}",256,304,1228349440,ARG_simulation,165,44.476560548456405,212.50083567200636
+164,164,14,276,"{'recombination': 137, 'background_transfer': 116, 'coalescence': 3}",256,304,1228349440,ARG_simulation,165,44.50941074504499,212.7521097620047
+164,164,380,276,"{'recombination': 137, 'background_transfer': 116, 'coalescence': 3}",256,304,1228349440,ARG_simulation,165,44.53949819547455,213.00174906601023
+164,164,439,276,"{'recombination': 137, 'background_transfer': 116, 'coalescence': 3}",256,304,1228349440,ARG_simulation,165,44.5738013041605,213.2508157100092
+164,164,352,276,"{'recombination': 137, 'background_transfer': 116, 'coalescence': 3}",256,304,1228349440,ARG_simulation,165,44.607382852886076,213.50169204101257
+164,164,47,276,"{'recombination': 137, 'background_transfer': 116, 'coalescence': 3}",256,304,1228349440,ARG_simulation,165,44.64081416948873,213.75211045800825
+164,164,141,276,"{'recombination': 137, 'background_transfer': 116, 'coalescence': 3}",256,304,1228353536,ARG_simulation,165,44.67430039865618,214.00211021200812
+164,164,42,276,"{'recombination': 137, 'background_transfer': 116, 'coalescence': 3}",256,304,1228357632,ARG_simulation,165,44.70698895454946,214.2520704930066
+165,165,342,278,"{'recombination': 138, 'background_transfer': 116, 'coalescence': 3}",257,306,1228357632,ARG_simulation,166,44.738376660050335,214.50213412501034
+165,165,220,278,"{'recombination': 138, 'background_transfer': 116, 'coalescence': 3}",257,306,1228357632,ARG_simulation,166,44.77302070710856,214.75147954100976
+165,165,43,278,"{'recombination': 138, 'background_transfer': 116, 'coalescence': 3}",257,306,1228357632,ARG_simulation,166,44.80472848017532,215.00210594700184
+165,165,29,278,"{'recombination': 138, 'background_transfer': 116, 'coalescence': 3}",257,306,1228357632,ARG_simulation,166,44.834878194067635,215.2510711930081
+165,165,446,278,"{'recombination': 138, 'background_transfer': 116, 'coalescence': 3}",257,306,1228357632,ARG_simulation,166,44.869050076761006,215.5021211780113
+165,165,186,278,"{'recombination': 138, 'background_transfer': 116, 'coalescence': 3}",257,306,1228357632,ARG_simulation,166,44.9012672104196,215.750424088008
+165,165,446,278,"{'recombination': 138, 'background_transfer': 116, 'coalescence': 3}",257,306,1228357632,ARG_simulation,166,44.93204516172561,216.00206900200283
+165,165,2,278,"{'recombination': 138, 'background_transfer': 116, 'coalescence': 3}",257,306,1228357632,ARG_simulation,166,44.96242465589843,216.25009295000928
+165,165,446,278,"{'recombination': 138, 'background_transfer': 116, 'coalescence': 3}",257,306,1228357632,ARG_simulation,166,44.99652216476875,216.50213166000322
+165,165,94,278,"{'recombination': 138, 'background_transfer': 116, 'coalescence': 3}",257,306,1228361728,ARG_simulation,166,45.02627395154412,216.75191418900795
+166,166,447,280,"{'recombination': 139, 'background_transfer': 116, 'coalescence': 3}",258,308,1228361728,ARG_simulation,167,45.05581636798554,217.00207159000274
+166,166,447,280,"{'recombination': 139, 'background_transfer': 116, 'coalescence': 3}",258,308,1228361728,ARG_simulation,167,45.08700497136855,217.25206965301186
+166,166,334,280,"{'recombination': 139, 'background_transfer': 117, 'coalescence': 3}",259,308,1228361728,ARG_simulation,167,45.11919016216471,217.50090251601068
+166,166,445,280,"{'recombination': 139, 'background_transfer': 117, 'coalescence': 3}",259,308,1228361728,ARG_simulation,167,45.1491191768404,217.75206876800803
+166,166,309,280,"{'recombination': 139, 'background_transfer': 117, 'coalescence': 3}",259,308,1228361728,ARG_simulation,167,45.17923256141982,218.0021122310136
+166,166,216,280,"{'recombination': 139, 'background_transfer': 117, 'coalescence': 3}",259,308,1228361728,ARG_simulation,167,45.210221170498365,218.25123181501112
+166,166,4,280,"{'recombination': 139, 'background_transfer': 117, 'coalescence': 3}",259,308,1228361728,ARG_simulation,167,45.243873380377586,218.50213293501292
+166,166,143,280,"{'recombination': 139, 'background_transfer': 117, 'coalescence': 3}",259,308,1228361728,ARG_simulation,167,45.27568517827348,218.7504637450038
+166,166,80,280,"{'recombination': 139, 'background_transfer': 118, 'coalescence': 3}",260,308,1228365824,ARG_simulation,167,45.306207275149944,219.00191728500067
+166,166,6,280,"{'recombination': 139, 'background_transfer': 118, 'coalescence': 3}",260,308,1228369920,ARG_simulation,167,45.334032016945415,219.25207519000105
+166,166,100,280,"{'recombination': 139, 'background_transfer': 118, 'coalescence': 3}",260,308,1228369920,ARG_simulation,167,45.36463771449949,219.50209204400016
+166,166,30,280,"{'recombination': 139, 'background_transfer': 118, 'coalescence': 3}",260,308,1228369920,ARG_simulation,167,45.39356413232299,219.75174377700023
+166,166,80,280,"{'recombination': 139, 'background_transfer': 118, 'coalescence': 3}",260,308,1228369920,ARG_simulation,167,45.42565750480245,220.00206876300217
+166,166,371,280,"{'recombination': 139, 'background_transfer': 118, 'coalescence': 3}",260,308,1228369920,ARG_simulation,167,45.45809806428859,220.25156761400285
+166,166,139,280,"{'recombination': 139, 'background_transfer': 118, 'coalescence': 3}",260,308,1228369920,ARG_simulation,167,45.491999510050384,220.50208438000118
+166,166,447,280,"{'recombination': 139, 'background_transfer': 119, 'coalescence': 3}",261,308,1228369920,ARG_simulation,167,45.521036174016,220.75207040300302
+166,166,382,280,"{'recombination': 139, 'background_transfer': 119, 'coalescence': 3}",261,308,1228369920,ARG_simulation,167,45.55130533956572,221.00207250501262
+167,167,73,282,"{'recombination': 140, 'background_transfer': 119, 'coalescence': 3}",262,310,1228369920,ARG_simulation,168,45.583315927649075,221.25207350900746
+167,167,120,282,"{'recombination': 140, 'background_transfer': 119, 'coalescence': 3}",262,310,1228369920,ARG_simulation,168,45.61612303734099,221.50027874100488
+168,168,157,284,"{'recombination': 141, 'background_transfer': 119, 'coalescence': 3}",263,312,1228374016,ARG_simulation,169,45.64640501489024,221.7520706510113
+168,168,94,284,"{'recombination': 141, 'background_transfer': 119, 'coalescence': 3}",263,312,1228378112,ARG_simulation,169,45.67837982435571,222.00207280401082
+168,168,459,284,"{'recombination': 141, 'background_transfer': 119, 'coalescence': 3}",263,312,1228378112,ARG_simulation,169,45.710393590643974,222.25206961200456
+168,168,329,284,"{'recombination': 141, 'background_transfer': 119, 'coalescence': 3}",263,312,1228378112,ARG_simulation,169,45.74241321648923,222.5020703629998
+168,168,1,284,"{'recombination': 141, 'background_transfer': 119, 'coalescence': 3}",263,312,1228378112,ARG_simulation,169,45.77243703328749,222.75207648100331
+168,168,199,284,"{'recombination': 141, 'background_transfer': 119, 'coalescence': 3}",263,312,1228378112,ARG_simulation,169,45.80331312811243,223.00058284201077
+168,168,21,284,"{'recombination': 141, 'background_transfer': 120, 'coalescence': 3}",264,312,1228378112,ARG_simulation,169,45.83714258182256,223.2520873320027
+168,168,370,284,"{'recombination': 141, 'background_transfer': 120, 'coalescence': 3}",264,312,1228378112,ARG_simulation,169,45.867421404731765,223.50206773000536
+168,168,459,284,"{'recombination': 141, 'background_transfer': 120, 'coalescence': 3}",264,312,1228378112,ARG_simulation,169,45.89833622372455,223.75162796801305
+168,168,459,284,"{'recombination': 141, 'background_transfer': 120, 'coalescence': 3}",264,312,1228378112,ARG_simulation,169,45.92933699602846,224.00210855400655
+168,168,144,284,"{'recombination': 141, 'background_transfer': 120, 'coalescence': 3}",264,312,1228382208,ARG_simulation,169,45.96117388847623,224.25142581001273
+168,168,0,284,"{'recombination': 141, 'background_transfer': 120, 'coalescence': 3}",264,312,1228382208,ARG_simulation,169,45.99190488382917,224.50209557800554
+168,168,231,284,"{'recombination': 141, 'background_transfer': 120, 'coalescence': 3}",264,312,1228386304,ARG_simulation,169,46.023642432054814,224.7520706300129
+168,168,459,284,"{'recombination': 141, 'background_transfer': 120, 'coalescence': 3}",264,312,1228386304,ARG_simulation,169,46.05476510980999,225.0021133750124
+168,168,134,284,"{'recombination': 141, 'background_transfer': 120, 'coalescence': 3}",264,312,1228386304,ARG_simulation,169,46.08361075578728,225.2520761390042
+168,168,459,284,"{'recombination': 141, 'background_transfer': 120, 'coalescence': 3}",264,312,1228386304,ARG_simulation,169,46.11269817149088,225.5010809170053
+168,168,37,284,"{'recombination': 141, 'background_transfer': 120, 'coalescence': 3}",264,312,1228390400,ARG_simulation,169,46.142266591005075,225.75031782200676
+168,168,59,284,"{'recombination': 141, 'background_transfer': 120, 'coalescence': 3}",264,312,1228398592,ARG_simulation,169,46.17207842129878,226.0020711110119
+168,168,11,284,"{'recombination': 141, 'background_transfer': 120, 'coalescence': 3}",264,312,1228410880,ARG_simulation,169,46.200910603883436,226.25206863500352
+168,168,199,284,"{'recombination': 141, 'background_transfer': 120, 'coalescence': 3}",264,312,1228423168,ARG_simulation,169,46.22947013102358,226.50175101400237
+168,168,235,284,"{'recombination': 141, 'background_transfer': 120, 'coalescence': 3}",264,312,1228427264,ARG_simulation,169,46.257127510140194,226.75206966001133
+168,168,72,284,"{'recombination': 141, 'background_transfer': 120, 'coalescence': 3}",264,312,1228427264,ARG_simulation,169,46.285940919517735,227.00206986600824
+168,168,270,284,"{'recombination': 141, 'background_transfer': 120, 'coalescence': 3}",264,312,1228427264,ARG_simulation,169,46.317596350662306,227.25206909500412
+168,168,231,284,"{'recombination': 141, 'background_transfer': 120, 'coalescence': 3}",264,312,1228427264,ARG_simulation,169,46.3489737155726,227.50010196999938
+168,168,269,284,"{'recombination': 141, 'background_transfer': 120, 'coalescence': 3}",264,312,1228427264,ARG_simulation,169,46.38089325423456,227.7520662099996
+168,168,85,284,"{'recombination': 141, 'background_transfer': 121, 'coalescence': 3}",265,312,1228427264,ARG_simulation,169,46.41006466994989,228.00206974700268
+168,168,58,284,"{'recombination': 141, 'background_transfer': 121, 'coalescence': 3}",265,312,1228427264,ARG_simulation,169,46.4383738895069,228.25209364401235
+168,168,0,284,"{'recombination': 141, 'background_transfer': 121, 'coalescence': 3}",265,312,1228427264,ARG_simulation,169,46.46844124616709,228.5013064280065
+168,168,50,284,"{'recombination': 141, 'background_transfer': 122, 'coalescence': 3}",266,312,1228427264,ARG_simulation,169,46.4985164979696,228.7520699250017
+168,168,98,284,"{'recombination': 141, 'background_transfer': 122, 'coalescence': 3}",266,312,1228427264,ARG_simulation,169,46.53157163105579,229.00207337000757
+168,168,72,284,"{'recombination': 141, 'background_transfer': 122, 'coalescence': 3}",266,312,1228431360,ARG_simulation,169,46.56140979113134,229.2516676410014
+168,168,114,284,"{'recombination': 141, 'background_transfer': 123, 'coalescence': 3}",267,312,1228431360,ARG_simulation,169,46.592145514358535,229.50209263800934
+168,168,233,284,"{'recombination': 141, 'background_transfer': 123, 'coalescence': 3}",267,312,1228431360,ARG_simulation,169,46.62349620279132,229.75185954300105
+168,168,287,284,"{'recombination': 141, 'background_transfer': 123, 'coalescence': 3}",267,312,1228431360,ARG_simulation,169,46.65199012146396,230.00215972300794
+168,168,1,284,"{'recombination': 141, 'background_transfer': 123, 'coalescence': 3}",267,312,1228431360,ARG_simulation,169,46.68105955210546,230.2517586340109
+168,168,196,284,"{'recombination': 141, 'background_transfer': 124, 'coalescence': 3}",268,312,1228431360,ARG_simulation,169,46.71238890783801,230.5009416190005
+168,168,57,284,"{'recombination': 141, 'background_transfer': 124, 'coalescence': 3}",268,312,1228431360,ARG_simulation,169,46.74236223925989,230.75210811001307
+168,168,21,284,"{'recombination': 141, 'background_transfer': 125, 'coalescence': 3}",269,312,1228431360,ARG_simulation,169,46.77322839427494,231.00019700601115
+168,168,0,284,"{'recombination': 141, 'background_transfer': 125, 'coalescence': 3}",269,312,1228435456,ARG_simulation,169,46.80241954518633,231.2520667630015
+168,168,0,284,"{'recombination': 141, 'background_transfer': 126, 'coalescence': 3}",270,312,1228435456,ARG_simulation,169,46.83269386938888,231.50183013800415
+168,168,454,284,"{'recombination': 141, 'background_transfer': 126, 'coalescence': 3}",270,312,1228435456,ARG_simulation,169,46.86437305220985,231.75210222401074
+168,168,273,284,"{'recombination': 141, 'background_transfer': 126, 'coalescence': 3}",270,312,1228435456,ARG_simulation,169,46.893066506276654,232.00207188700733
+168,168,38,284,"{'recombination': 141, 'background_transfer': 126, 'coalescence': 3}",270,312,1228435456,ARG_simulation,169,46.92111199824027,232.2505288070097
+168,168,90,284,"{'recombination': 141, 'background_transfer': 126, 'coalescence': 3}",270,312,1228439552,ARG_simulation,169,46.95353818159109,232.50118772301357
+168,168,271,284,"{'recombination': 141, 'background_transfer': 126, 'coalescence': 3}",270,312,1228439552,ARG_simulation,169,46.983830356158066,232.7516954790044
+168,168,145,284,"{'recombination': 141, 'background_transfer': 126, 'coalescence': 3}",270,312,1228439552,ARG_simulation,169,47.014628774211616,233.00207988001057
+168,168,165,284,"{'recombination': 141, 'background_transfer': 126, 'coalescence': 3}",270,312,1228439552,ARG_simulation,169,47.043969131303896,233.25210938700184
+168,168,147,284,"{'recombination': 141, 'background_transfer': 126, 'coalescence': 3}",270,312,1228439552,ARG_simulation,169,47.07592712501189,233.50008752199938
+169,169,165,286,"{'recombination': 142, 'background_transfer': 126, 'coalescence': 3}",271,314,1228439552,ARG_simulation,170,47.107429048022574,233.7520673060062
+169,169,27,286,"{'recombination': 142, 'background_transfer': 127, 'coalescence': 3}",272,314,1228443648,ARG_simulation,170,47.13691595060497,234.00018242800434
+169,169,461,286,"{'recombination': 142, 'background_transfer': 128, 'coalescence': 3}",273,314,1228447744,ARG_simulation,170,47.16694770509502,234.25206948599953
+169,169,354,286,"{'recombination': 142, 'background_transfer': 128, 'coalescence': 3}",273,314,1228447744,ARG_simulation,170,47.19435135331677,234.50054367301345
+169,169,36,286,"{'recombination': 142, 'background_transfer': 128, 'coalescence': 3}",273,314,1228447744,ARG_simulation,170,47.22331770177704,234.75198884800193
+169,169,461,286,"{'recombination': 142, 'background_transfer': 128, 'coalescence': 3}",273,314,1228447744,ARG_simulation,170,47.251691380529465,235.00070218800101
+169,169,32,286,"{'recombination': 142, 'background_transfer': 128, 'coalescence': 3}",273,314,1228447744,ARG_simulation,170,47.283689681623095,235.25206735100073
+169,169,162,286,"{'recombination': 142, 'background_transfer': 129, 'coalescence': 3}",274,314,1228451840,ARG_simulation,170,47.314193194885114,235.50215048300743
+169,169,461,286,"{'recombination': 142, 'background_transfer': 129, 'coalescence': 3}",274,314,1228451840,ARG_simulation,170,47.34528448733755,235.75207060899993
+169,169,114,286,"{'recombination': 142, 'background_transfer': 129, 'coalescence': 3}",274,314,1228451840,ARG_simulation,170,47.37624885556859,236.00207197800046
+169,169,11,286,"{'recombination': 142, 'background_transfer': 129, 'coalescence': 3}",274,314,1228451840,ARG_simulation,170,47.40632093362685,236.25181027701183
+169,169,113,286,"{'recombination': 142, 'background_transfer': 129, 'coalescence': 3}",274,314,1228451840,ARG_simulation,170,47.43773732547503,236.50210587900074
+169,169,76,286,"{'recombination': 142, 'background_transfer': 129, 'coalescence': 3}",274,314,1228455936,ARG_simulation,170,47.46767050061092,236.75019469900872
+169,169,15,286,"{'recombination': 142, 'background_transfer': 129, 'coalescence': 3}",274,314,1228455936,ARG_simulation,170,47.49748564306721,237.00045506301103
+169,169,461,286,"{'recombination': 142, 'background_transfer': 129, 'coalescence': 3}",274,314,1228455936,ARG_simulation,170,47.52457948808951,237.25206889100082
+169,169,200,286,"{'recombination': 142, 'background_transfer': 129, 'coalescence': 3}",274,314,1228455936,ARG_simulation,170,47.554680774911176,237.5015949170047
+169,169,443,286,"{'recombination': 142, 'background_transfer': 129, 'coalescence': 3}",274,314,1228455936,ARG_simulation,170,47.58567482868867,237.7521195240115
+170,170,103,288,"{'recombination': 143, 'background_transfer': 129, 'coalescence': 3}",275,316,1228460032,ARG_simulation,171,47.61687456293855,238.00018555000133
+170,170,145,288,"{'recombination': 143, 'background_transfer': 129, 'coalescence': 3}",275,316,1228460032,ARG_simulation,171,47.64755610692267,238.251310423002
+170,170,86,288,"{'recombination': 143, 'background_transfer': 129, 'coalescence': 3}",275,316,1228460032,ARG_simulation,171,47.67829929887724,238.50210056301148
+170,170,469,288,"{'recombination': 143, 'background_transfer': 129, 'coalescence': 3}",275,316,1228460032,ARG_simulation,171,47.70849711441635,238.75035023401142
+170,170,264,288,"{'recombination': 143, 'background_transfer': 129, 'coalescence': 3}",275,316,1228460032,ARG_simulation,171,47.736852479492356,239.00211611301347
+170,170,469,288,"{'recombination': 143, 'background_transfer': 129, 'coalescence': 3}",275,316,1228464128,ARG_simulation,171,47.76709802498675,239.25212566301343
+170,170,4,288,"{'recombination': 143, 'background_transfer': 129, 'coalescence': 3}",275,316,1228464128,ARG_simulation,171,47.7961399206857,239.5021693430026
+170,170,469,288,"{'recombination': 143, 'background_transfer': 129, 'coalescence': 3}",275,316,1228464128,ARG_simulation,171,47.825098681809656,239.75214224201045
+170,170,6,288,"{'recombination': 143, 'background_transfer': 129, 'coalescence': 3}",275,316,1228464128,ARG_simulation,171,47.8531520657252,240.0020693930128
+170,170,469,288,"{'recombination': 143, 'background_transfer': 129, 'coalescence': 3}",275,316,1228464128,ARG_simulation,171,47.88225885199888,240.25207839200448
+170,170,141,288,"{'recombination': 143, 'background_transfer': 129, 'coalescence': 3}",275,316,1228464128,ARG_simulation,171,47.9112716077859,240.50108453200664
+171,171,477,290,"{'recombination': 144, 'background_transfer': 129, 'coalescence': 3}",276,318,1228464128,ARG_simulation,172,47.93956034176706,240.7517482300027
+172,172,401,292,"{'recombination': 145, 'background_transfer': 129, 'coalescence': 3}",277,320,1228464128,ARG_simulation,173,47.96960587813123,241.002073569005
+172,172,483,292,"{'recombination': 145, 'background_transfer': 129, 'coalescence': 3}",277,320,1228464128,ARG_simulation,173,47.99811785615066,241.25052248200518
+172,172,483,292,"{'recombination': 145, 'background_transfer': 129, 'coalescence': 3}",277,320,1228464128,ARG_simulation,173,48.031575428477694,241.50210726501246
+172,172,341,292,"{'recombination': 145, 'background_transfer': 129, 'coalescence': 3}",277,320,1228468224,ARG_simulation,173,48.06158054070171,241.75176625300082
+172,172,260,292,"{'recombination': 145, 'background_transfer': 129, 'coalescence': 3}",277,320,1228468224,ARG_simulation,173,48.09321722193212,242.00209605701093
+172,172,6,292,"{'recombination': 145, 'background_transfer': 129, 'coalescence': 3}",277,320,1228468224,ARG_simulation,173,48.1245006986595,242.2506125550135
+172,172,443,292,"{'recombination': 145, 'background_transfer': 130, 'coalescence': 3}",278,320,1228468224,ARG_simulation,173,48.15657776669535,242.50086889100203
+172,172,27,292,"{'recombination': 145, 'background_transfer': 131, 'coalescence': 3}",279,320,1228468224,ARG_simulation,173,48.18728103553385,242.75207272999978
+172,172,1,292,"{'recombination': 145, 'background_transfer': 131, 'coalescence': 3}",279,320,1228468224,ARG_simulation,173,48.217846854629244,243.0021216150053
+172,172,57,292,"{'recombination': 145, 'background_transfer': 131, 'coalescence': 3}",279,320,1228472320,ARG_simulation,173,48.24586369958044,243.25111936900066
+172,172,191,292,"{'recombination': 145, 'background_transfer': 132, 'coalescence': 3}",280,320,1228472320,ARG_simulation,173,48.27741810038909,243.50207355699968
+172,172,0,292,"{'recombination': 145, 'background_transfer': 132, 'coalescence': 3}",280,320,1228476416,ARG_simulation,173,48.30825632463134,243.75208742301038
+172,172,54,292,"{'recombination': 145, 'background_transfer': 132, 'coalescence': 3}",280,320,1228476416,ARG_simulation,173,48.337908286026085,244.00114047901297
+172,172,419,292,"{'recombination': 145, 'background_transfer': 132, 'coalescence': 3}",280,320,1228484608,ARG_simulation,173,48.3666573020145,244.25207945400325
+173,173,392,294,"{'recombination': 146, 'background_transfer': 132, 'coalescence': 3}",281,322,1228496896,ARG_simulation,174,48.394465749175936,244.50210093799978
+173,173,82,294,"{'recombination': 146, 'background_transfer': 132, 'coalescence': 3}",281,322,1228505088,ARG_simulation,174,48.42338318032393,244.75205104000634
+173,173,144,294,"{'recombination': 146, 'background_transfer': 132, 'coalescence': 3}",281,322,1228505088,ARG_simulation,174,48.45163657466039,245.000304761008
+173,173,397,294,"{'recombination': 146, 'background_transfer': 133, 'coalescence': 3}",282,322,1228505088,ARG_simulation,174,48.48038632588289,245.2515244380047
+173,173,464,294,"{'recombination': 146, 'background_transfer': 133, 'coalescence': 3}",282,322,1228505088,ARG_simulation,174,48.50807621658247,245.50203789300576
+173,173,490,294,"{'recombination': 146, 'background_transfer': 133, 'coalescence': 3}",282,322,1228505088,ARG_simulation,174,48.53748153348243,245.7520822170045
+173,173,331,294,"{'recombination': 146, 'background_transfer': 133, 'coalescence': 3}",282,322,1228505088,ARG_simulation,174,48.56648009289069,246.00212181200914
+173,173,314,294,"{'recombination': 146, 'background_transfer': 133, 'coalescence': 3}",282,322,1228505088,ARG_simulation,174,48.594708367941244,246.25212248400203
+173,173,302,294,"{'recombination': 146, 'background_transfer': 133, 'coalescence': 3}",282,322,1228505088,ARG_simulation,174,48.62298066278423,246.50206878301105
+173,173,48,294,"{'recombination': 146, 'background_transfer': 133, 'coalescence': 3}",282,322,1228509184,ARG_simulation,174,48.6532993940822,246.75208533801197
+174,174,125,296,"{'recombination': 147, 'background_transfer': 133, 'coalescence': 3}",283,324,1228509184,ARG_simulation,175,48.68251379727689,247.00207128100737
+174,174,78,296,"{'recombination': 147, 'background_transfer': 134, 'coalescence': 3}",284,324,1228509184,ARG_simulation,175,48.71064262280134,247.25207977500395
+174,174,368,296,"{'recombination': 147, 'background_transfer': 134, 'coalescence': 3}",284,324,1228509184,ARG_simulation,175,48.740320311072615,247.5009710350132
+174,174,53,296,"{'recombination': 147, 'background_transfer': 134, 'coalescence': 3}",284,324,1228509184,ARG_simulation,175,48.77151310663041,247.75212421901233
+174,174,177,296,"{'recombination': 147, 'background_transfer': 134, 'coalescence': 3}",284,324,1228509184,ARG_simulation,175,48.80054135840726,248.00208346699947
+174,174,30,296,"{'recombination': 147, 'background_transfer': 134, 'coalescence': 3}",284,324,1228509184,ARG_simulation,175,48.83114365553784,248.2512524460035
+175,175,136,298,"{'recombination': 148, 'background_transfer': 134, 'coalescence': 3}",285,326,1228517376,ARG_simulation,176,48.85954566080233,248.50101616801112
+175,175,419,298,"{'recombination': 148, 'background_transfer': 134, 'coalescence': 3}",285,326,1228517376,ARG_simulation,176,48.88558611084679,248.75211962900357
+175,175,43,298,"{'recombination': 148, 'background_transfer': 134, 'coalescence': 3}",285,326,1228521472,ARG_simulation,176,48.913427616716675,249.00211690700962
+175,175,57,298,"{'recombination': 148, 'background_transfer': 135, 'coalescence': 3}",286,326,1228525568,ARG_simulation,176,48.94105912250929,249.25212033100252
+175,175,271,298,"{'recombination': 148, 'background_transfer': 135, 'coalescence': 3}",286,326,1228525568,ARG_simulation,176,48.971149489628345,249.50214221701026
+176,176,211,301,"{'recombination': 149, 'background_transfer': 135, 'coalescence': 3}",287,328,1228525568,ARG_simulation,176,49.00388814624907,249.75209724000888
+176,176,311,301,"{'recombination': 149, 'background_transfer': 135, 'coalescence': 3}",287,328,1228525568,ARG_simulation,176,49.03232986612855,250.0021400960104
+176,176,0,301,"{'recombination': 149, 'background_transfer': 135, 'coalescence': 3}",287,328,1228525568,ARG_simulation,176,49.06288426579139,250.25028038000164
+177,177,467,303,"{'recombination': 150, 'background_transfer': 135, 'coalescence': 3}",288,330,1228525568,ARG_simulation,177,49.09321725491658,250.5020685740019
+177,177,264,303,"{'recombination': 150, 'background_transfer': 135, 'coalescence': 3}",288,330,1228525568,ARG_simulation,177,49.119023320530225,250.75212693300273
+177,177,122,303,"{'recombination': 150, 'background_transfer': 135, 'coalescence': 3}",288,330,1228525568,ARG_simulation,177,49.14571779175821,251.00211060000584
+177,177,185,303,"{'recombination': 150, 'background_transfer': 135, 'coalescence': 3}",288,330,1228525568,ARG_simulation,177,49.17332212147315,251.25213477101352
+177,177,107,303,"{'recombination': 150, 'background_transfer': 136, 'coalescence': 3}",289,330,1228525568,ARG_simulation,177,49.203724816638335,251.5020688240038
+177,177,70,303,"{'recombination': 150, 'background_transfer': 136, 'coalescence': 3}",289,330,1228529664,ARG_simulation,177,49.232173173908755,251.75206784100737
+177,177,346,303,"{'recombination': 150, 'background_transfer': 136, 'coalescence': 3}",289,330,1228529664,ARG_simulation,177,49.26202044327965,252.00209710501076
+177,177,80,303,"{'recombination': 150, 'background_transfer': 136, 'coalescence': 3}",289,330,1228529664,ARG_simulation,177,49.29161037227577,252.2521192770073
+177,177,500,303,"{'recombination': 150, 'background_transfer': 137, 'coalescence': 3}",290,330,1228529664,ARG_simulation,177,49.319274119456736,252.50206798700674
+177,177,196,303,"{'recombination': 150, 'background_transfer': 137, 'coalescence': 3}",290,330,1228537856,ARG_simulation,177,49.34691193784032,252.75212178000947
+177,177,63,303,"{'recombination': 150, 'background_transfer': 137, 'coalescence': 3}",290,330,1228537856,ARG_simulation,177,49.37702813041011,253.00207971601048
+178,178,122,305,"{'recombination': 151, 'background_transfer': 137, 'coalescence': 3}",291,332,1228537856,ARG_simulation,178,49.40841887508996,253.25213352500577
+178,178,209,305,"{'recombination': 151, 'background_transfer': 137, 'coalescence': 3}",291,332,1228537856,ARG_simulation,178,49.437475014646985,253.5021269160061
+178,178,18,305,"{'recombination': 151, 'background_transfer': 137, 'coalescence': 3}",291,332,1228537856,ARG_simulation,178,49.459445050571745,253.75050197901146
+178,178,253,305,"{'recombination': 151, 'background_transfer': 137, 'coalescence': 3}",291,332,1228541952,ARG_simulation,178,49.488981097180606,254.00020017201314
+178,178,502,305,"{'recombination': 151, 'background_transfer': 137, 'coalescence': 3}",291,332,1228541952,ARG_simulation,178,49.51941733857287,254.252105372012
+178,178,461,305,"{'recombination': 151, 'background_transfer': 137, 'coalescence': 3}",291,332,1228541952,ARG_simulation,178,49.547125494112855,254.5020928300073
+178,178,54,305,"{'recombination': 151, 'background_transfer': 137, 'coalescence': 3}",291,332,1228541952,ARG_simulation,178,49.57259886211758,254.75071680900874
+178,178,267,305,"{'recombination': 151, 'background_transfer': 138, 'coalescence': 3}",292,332,1228541952,ARG_simulation,178,49.60291252192788,255.00208689901046
+178,178,502,305,"{'recombination': 151, 'background_transfer': 138, 'coalescence': 3}",292,332,1228541952,ARG_simulation,178,49.632300382203184,255.25212163600372
+178,178,392,305,"{'recombination': 151, 'background_transfer': 138, 'coalescence': 3}",292,332,1228541952,ARG_simulation,178,49.65962067178686,255.50207387200498
+178,178,502,305,"{'recombination': 151, 'background_transfer': 138, 'coalescence': 3}",292,332,1228541952,ARG_simulation,178,49.688446055817955,255.75186950500938
+178,178,502,305,"{'recombination': 151, 'background_transfer': 138, 'coalescence': 3}",292,332,1228541952,ARG_simulation,178,49.714112994707705,256.0021138890006
+178,178,450,305,"{'recombination': 151, 'background_transfer': 138, 'coalescence': 3}",292,332,1228541952,ARG_simulation,178,49.745217273573566,256.252082898005
+178,178,338,305,"{'recombination': 151, 'background_transfer': 138, 'coalescence': 3}",292,332,1228541952,ARG_simulation,178,49.77254966416376,256.50216311300755
+178,178,502,305,"{'recombination': 151, 'background_transfer': 138, 'coalescence': 3}",292,332,1228546048,ARG_simulation,178,49.797849697406065,256.7521210450068
+178,178,339,305,"{'recombination': 151, 'background_transfer': 138, 'coalescence': 3}",292,332,1228546048,ARG_simulation,178,49.824979144352184,257.00207048600714
+178,178,478,305,"{'recombination': 151, 'background_transfer': 139, 'coalescence': 3}",293,332,1228546048,ARG_simulation,178,49.85032147238348,257.25171893200604
+178,178,481,305,"{'recombination': 151, 'background_transfer': 140, 'coalescence': 3}",294,332,1228546048,ARG_simulation,178,49.877425616753214,257.50033303300734
+178,178,504,305,"{'recombination': 151, 'background_transfer': 140, 'coalescence': 3}",294,332,1228546048,ARG_simulation,178,49.905705243498346,257.7520841660007
+178,178,129,305,"{'recombination': 151, 'background_transfer': 140, 'coalescence': 3}",294,332,1228546048,ARG_simulation,178,49.935704555038555,258.00167375200544
+180,180,0,309,"{'recombination': 153, 'background_transfer': 140, 'coalescence': 3}",296,336,1228550144,ARG_simulation,180,49.964678324238456,258.2521012970101
+180,180,509,309,"{'recombination': 153, 'background_transfer': 140, 'coalescence': 3}",296,336,1228550144,ARG_simulation,180,49.99221127285864,258.5020699130109
+180,180,0,309,"{'recombination': 153, 'background_transfer': 140, 'coalescence': 3}",296,336,1228550144,ARG_simulation,180,50.02041261304283,258.75121541600674
+180,180,417,309,"{'recombination': 153, 'background_transfer': 140, 'coalescence': 3}",296,336,1228550144,ARG_simulation,180,50.04698114399479,259.00216233001265
+180,180,227,309,"{'recombination': 153, 'background_transfer': 140, 'coalescence': 3}",296,336,1228554240,ARG_simulation,180,50.075739220602415,259.25208426800964
+180,180,366,309,"{'recombination': 153, 'background_transfer': 140, 'coalescence': 3}",296,336,1228554240,ARG_simulation,180,50.1065433298636,259.50208639900666
+180,180,10,309,"{'recombination': 153, 'background_transfer': 140, 'coalescence': 3}",296,336,1228554240,ARG_simulation,180,50.13661113661697,259.7520725050126
+180,180,244,309,"{'recombination': 153, 'background_transfer': 140, 'coalescence': 3}",296,336,1228554240,ARG_simulation,180,50.16378710175832,260.00019157200586
+180,180,164,309,"{'recombination': 153, 'background_transfer': 140, 'coalescence': 3}",296,336,1228554240,ARG_simulation,180,50.189603962380424,260.2521329020092
+180,180,509,309,"{'recombination': 153, 'background_transfer': 140, 'coalescence': 3}",296,336,1228554240,ARG_simulation,180,50.218267593985345,260.50208687801205
+180,180,250,309,"{'recombination': 153, 'background_transfer': 141, 'coalescence': 3}",297,336,1228558336,ARG_simulation,180,50.244389373176745,260.75209199200617
+180,180,213,309,"{'recombination': 153, 'background_transfer': 141, 'coalescence': 3}",297,336,1228558336,ARG_simulation,180,50.274772379291974,261.00210176900146
+180,180,150,309,"{'recombination': 153, 'background_transfer': 141, 'coalescence': 3}",297,336,1228558336,ARG_simulation,180,50.302651587112166,261.25211958600266
+180,180,512,309,"{'recombination': 153, 'background_transfer': 141, 'coalescence': 3}",297,336,1228558336,ARG_simulation,180,50.326497390865,261.50049278901133
+180,180,233,309,"{'recombination': 153, 'background_transfer': 141, 'coalescence': 3}",297,336,1228562432,ARG_simulation,180,50.355879105794465,261.7521075930126
+180,180,512,309,"{'recombination': 153, 'background_transfer': 141, 'coalescence': 3}",297,336,1228566528,ARG_simulation,180,50.38419422556434,262.0001284040045
+180,180,389,309,"{'recombination': 153, 'background_transfer': 141, 'coalescence': 3}",297,336,1228566528,ARG_simulation,180,50.410794242534266,262.25208115699934
+180,180,233,309,"{'recombination': 153, 'background_transfer': 141, 'coalescence': 3}",297,336,1228566528,ARG_simulation,180,50.43828248024706,262.50206940701173
+180,180,149,309,"{'recombination': 153, 'background_transfer': 141, 'coalescence': 3}",297,336,1228578816,ARG_simulation,180,50.4701673047951,262.7506240090006
+180,180,397,309,"{'recombination': 153, 'background_transfer': 141, 'coalescence': 3}",297,336,1228587008,ARG_simulation,180,50.498805008847775,263.0006174270093
+180,180,491,309,"{'recombination': 153, 'background_transfer': 141, 'coalescence': 3}",297,336,1228595200,ARG_simulation,180,50.533451052957474,263.25208344300336
+180,180,121,309,"{'recombination': 153, 'background_transfer': 142, 'coalescence': 3}",298,336,1228603392,ARG_simulation,180,50.55987066565803,263.50027883800794
+180,180,354,309,"{'recombination': 153, 'background_transfer': 143, 'coalescence': 3}",299,336,1228603392,ARG_simulation,180,50.587542438230635,263.7521069409995
+180,180,518,309,"{'recombination': 153, 'background_transfer': 143, 'coalescence': 3}",299,336,1228603392,ARG_simulation,180,50.617237711684155,264.0020693930128
+180,180,247,309,"{'recombination': 153, 'background_transfer': 143, 'coalescence': 3}",299,336,1228607488,ARG_simulation,180,50.645107121159796,264.25207342200156
+180,180,250,309,"{'recombination': 153, 'background_transfer': 144, 'coalescence': 3}",300,336,1228607488,ARG_simulation,180,50.67188742775381,264.5020682080067
+181,181,407,311,"{'recombination': 154, 'background_transfer': 144, 'coalescence': 3}",301,338,1228611584,ARG_simulation,181,50.69815138129973,264.7502340180072
+181,181,524,311,"{'recombination': 154, 'background_transfer': 144, 'coalescence': 3}",301,338,1228611584,ARG_simulation,181,50.72636439639181,265.000906982008
+181,181,14,311,"{'recombination': 154, 'background_transfer': 144, 'coalescence': 3}",301,338,1228611584,ARG_simulation,181,50.75365176362844,265.2521114080009
+181,181,452,311,"{'recombination': 154, 'background_transfer': 145, 'coalescence': 3}",302,338,1228611584,ARG_simulation,181,50.77932074020033,265.50212532500154
+182,182,531,313,"{'recombination': 155, 'background_transfer': 146, 'coalescence': 3}",304,340,1228611584,ARG_simulation,182,50.80747160853146,265.7520687480137
+182,182,430,313,"{'recombination': 155, 'background_transfer': 146, 'coalescence': 3}",304,340,1228611584,ARG_simulation,182,50.83217717979851,266.00106161901203
+182,182,385,313,"{'recombination': 155, 'background_transfer': 146, 'coalescence': 3}",304,340,1228611584,ARG_simulation,182,50.859734770011904,266.2521242760122
+182,182,531,313,"{'recombination': 155, 'background_transfer': 146, 'coalescence': 3}",304,340,1228611584,ARG_simulation,182,50.887646161698996,266.5014719890023
+182,182,204,313,"{'recombination': 155, 'background_transfer': 146, 'coalescence': 3}",304,340,1228615680,ARG_simulation,182,50.912584421381496,266.7520828110137
+182,182,469,313,"{'recombination': 155, 'background_transfer': 146, 'coalescence': 3}",304,340,1228615680,ARG_simulation,182,50.93723647742503,267.0012230430002
+181,181,33,313,"{'recombination': 155, 'background_transfer': 146, 'coalescence': 4}",305,340,1228615680,ARG_simulation,182,50.96809046617416,267.2521210940031
+181,181,529,313,"{'recombination': 155, 'background_transfer': 146, 'coalescence': 4}",305,340,1228615680,ARG_simulation,182,50.99463716056279,267.5021176540031
+181,181,498,313,"{'recombination': 155, 'background_transfer': 146, 'coalescence': 4}",305,340,1228615680,ARG_simulation,182,51.02281239339326,267.75209105700196
+181,181,326,313,"{'recombination': 155, 'background_transfer': 146, 'coalescence': 4}",305,340,1228615680,ARG_simulation,182,51.051270701441226,268.0014504950086
+181,181,338,313,"{'recombination': 155, 'background_transfer': 147, 'coalescence': 4}",306,340,1228615680,ARG_simulation,182,51.07938929586274,268.25209357200947
+181,181,110,313,"{'recombination': 155, 'background_transfer': 147, 'coalescence': 4}",306,340,1228615680,ARG_simulation,182,51.105434692632585,268.5011637800053
+181,181,534,313,"{'recombination': 155, 'background_transfer': 147, 'coalescence': 4}",306,340,1228615680,ARG_simulation,182,51.13354284435509,268.75206975400215
+181,181,534,313,"{'recombination': 155, 'background_transfer': 148, 'coalescence': 4}",307,340,1228615680,ARG_simulation,182,51.159146957127255,269.0007326250052
+182,182,497,315,"{'recombination': 156, 'background_transfer': 148, 'coalescence': 4}",308,342,1228623872,ARG_simulation,183,51.18782012018635,269.25212435401045
+182,182,541,315,"{'recombination': 156, 'background_transfer': 148, 'coalescence': 4}",308,342,1228623872,ARG_simulation,183,51.215815325478154,269.5021573330014
+182,182,272,315,"{'recombination': 156, 'background_transfer': 148, 'coalescence': 4}",308,342,1228623872,ARG_simulation,183,51.24190126529342,269.7504735380062
+182,182,474,315,"{'recombination': 156, 'background_transfer': 148, 'coalescence': 4}",308,342,1228623872,ARG_simulation,183,51.2702546181542,270.0015337590012
+182,182,541,315,"{'recombination': 156, 'background_transfer': 148, 'coalescence': 4}",308,342,1228623872,ARG_simulation,183,51.29731760405277,270.25214458401024
+182,182,96,315,"{'recombination': 156, 'background_transfer': 148, 'coalescence': 4}",308,342,1228623872,ARG_simulation,183,51.325469832086796,270.50106312900607
+182,182,498,315,"{'recombination': 156, 'background_transfer': 148, 'coalescence': 4}",308,342,1228623872,ARG_simulation,183,51.354263054775465,270.7521064370085
+182,182,541,315,"{'recombination': 156, 'background_transfer': 148, 'coalescence': 4}",308,342,1228623872,ARG_simulation,183,51.38122801667181,271.0020768150134
+182,182,128,315,"{'recombination': 156, 'background_transfer': 148, 'coalescence': 4}",308,342,1228623872,ARG_simulation,183,51.41167819533024,271.2521306750132
+182,182,121,315,"{'recombination': 156, 'background_transfer': 148, 'coalescence': 4}",308,342,1228623872,ARG_simulation,183,51.43945498375039,271.50207291101106
+182,182,521,315,"{'recombination': 156, 'background_transfer': 148, 'coalescence': 4}",308,342,1228627968,ARG_simulation,183,51.46469716497248,271.7521722370002
+182,182,24,315,"{'recombination': 156, 'background_transfer': 148, 'coalescence': 4}",308,342,1228627968,ARG_simulation,183,51.49102180570495,272.00178751900967
+182,182,196,315,"{'recombination': 156, 'background_transfer': 149, 'coalescence': 4}",309,342,1228627968,ARG_simulation,183,51.51938763199008,272.2518857590039
+182,182,16,315,"{'recombination': 156, 'background_transfer': 149, 'coalescence': 4}",309,342,1228627968,ARG_simulation,183,51.5463948740107,272.50083809100033
+182,182,493,315,"{'recombination': 156, 'background_transfer': 149, 'coalescence': 4}",309,342,1228627968,ARG_simulation,183,51.575536559592365,272.7509715470078
+182,182,539,315,"{'recombination': 156, 'background_transfer': 149, 'coalescence': 4}",309,342,1228627968,ARG_simulation,183,51.60550827138446,273.00164764501096
+182,182,185,315,"{'recombination': 156, 'background_transfer': 149, 'coalescence': 4}",309,342,1228627968,ARG_simulation,183,51.631433746508144,273.2511021980026
+182,182,19,315,"{'recombination': 156, 'background_transfer': 150, 'coalescence': 4}",310,342,1228627968,ARG_simulation,183,51.66115397739001,273.5020688060031
+182,182,81,315,"{'recombination': 156, 'background_transfer': 150, 'coalescence': 4}",310,342,1228636160,ARG_simulation,183,51.68850670703637,273.7516588889994
+182,182,539,315,"{'recombination': 156, 'background_transfer': 150, 'coalescence': 4}",310,342,1228636160,ARG_simulation,183,51.71344797234488,274.00162211801216
+183,183,58,317,"{'recombination': 157, 'background_transfer': 150, 'coalescence': 4}",311,344,1228640256,ARG_simulation,184,51.74156905029135,274.2521098090074
+183,183,199,317,"{'recombination': 157, 'background_transfer': 151, 'coalescence': 4}",312,344,1228640256,ARG_simulation,184,51.76811211849876,274.5020948780002
+183,183,77,317,"{'recombination': 157, 'background_transfer': 151, 'coalescence': 4}",312,344,1228640256,ARG_simulation,184,51.794045618628786,274.75177844300924
+183,183,542,317,"{'recombination': 157, 'background_transfer': 151, 'coalescence': 4}",312,344,1228640256,ARG_simulation,184,51.819444798555224,275.00010800900054
+183,183,542,317,"{'recombination': 157, 'background_transfer': 151, 'coalescence': 4}",312,344,1228640256,ARG_simulation,184,51.846912629635284,275.2521421190031
+183,183,433,317,"{'recombination': 157, 'background_transfer': 152, 'coalescence': 4}",313,344,1228640256,ARG_simulation,184,51.87486538251479,275.5001927000121
+183,183,538,317,"{'recombination': 157, 'background_transfer': 153, 'coalescence': 4}",314,344,1228640256,ARG_simulation,184,51.90042060131002,275.75009799501277
+183,183,158,317,"{'recombination': 157, 'background_transfer': 154, 'coalescence': 4}",315,344,1228640256,ARG_simulation,184,51.92675488098171,276.00214447701
+183,183,123,317,"{'recombination': 157, 'background_transfer': 155, 'coalescence': 4}",316,344,1228644352,ARG_simulation,184,51.95617863715643,276.25211130300886
+183,183,57,317,"{'recombination': 157, 'background_transfer': 155, 'coalescence': 4}",316,344,1228644352,ARG_simulation,184,51.98501060215347,276.50215753800876
+183,183,211,317,"{'recombination': 157, 'background_transfer': 155, 'coalescence': 4}",316,344,1228644352,ARG_simulation,184,52.01298950202778,276.7520790240087
+183,183,532,317,"{'recombination': 157, 'background_transfer': 155, 'coalescence': 4}",316,344,1228648448,ARG_simulation,184,52.041685556803,277.00210768599936
+183,183,6,317,"{'recombination': 157, 'background_transfer': 155, 'coalescence': 4}",316,344,1228648448,ARG_simulation,184,52.06893942847185,277.25209229500615
+183,183,230,317,"{'recombination': 157, 'background_transfer': 155, 'coalescence': 4}",316,344,1228648448,ARG_simulation,184,52.094062967127385,277.5010030900012
+183,183,36,317,"{'recombination': 157, 'background_transfer': 155, 'coalescence': 4}",316,344,1228648448,ARG_simulation,184,52.12370487802627,277.7520858360076
+183,183,226,317,"{'recombination': 157, 'background_transfer': 155, 'coalescence': 4}",316,344,1228648448,ARG_simulation,184,52.148810825073454,278.00211711000884
+183,183,532,317,"{'recombination': 157, 'background_transfer': 155, 'coalescence': 4}",316,344,1228648448,ARG_simulation,184,52.17922327663322,278.2512069860095
+183,183,514,317,"{'recombination': 157, 'background_transfer': 155, 'coalescence': 4}",316,344,1228652544,ARG_simulation,184,52.20486826310246,278.5020826890104
+183,183,399,317,"{'recombination': 157, 'background_transfer': 155, 'coalescence': 4}",316,344,1228652544,ARG_simulation,184,52.23233523798121,278.75163976001204
+183,183,360,317,"{'recombination': 157, 'background_transfer': 155, 'coalescence': 4}",316,344,1228652544,ARG_simulation,184,52.25811838520473,279.00134699100454
+183,183,0,317,"{'recombination': 157, 'background_transfer': 156, 'coalescence': 4}",317,344,1228656640,ARG_simulation,184,52.28616133961038,279.25010453800496
+183,183,420,317,"{'recombination': 157, 'background_transfer': 156, 'coalescence': 4}",317,344,1228656640,ARG_simulation,184,52.31406359573565,279.50206948300183
+183,183,238,317,"{'recombination': 157, 'background_transfer': 156, 'coalescence': 4}",317,344,1228656640,ARG_simulation,184,52.34164028838465,279.7520754580037
+183,183,93,317,"{'recombination': 157, 'background_transfer': 156, 'coalescence': 4}",317,344,1228656640,ARG_simulation,184,52.36805596421378,280.0003533310082
+184,184,536,319,"{'recombination': 158, 'background_transfer': 156, 'coalescence': 4}",318,346,1228656640,ARG_simulation,185,52.39493479828579,280.2520710210083
+184,184,525,319,"{'recombination': 158, 'background_transfer': 156, 'coalescence': 4}",318,346,1228656640,ARG_simulation,185,52.423702199253384,280.5001278970012
+185,185,457,321,"{'recombination': 159, 'background_transfer': 156, 'coalescence': 4}",319,348,1228656640,ARG_simulation,186,52.44953134497904,280.7520718110027
+185,185,118,321,"{'recombination': 159, 'background_transfer': 156, 'coalescence': 4}",319,348,1228656640,ARG_simulation,186,52.47615750990845,281.00190221900993
+185,185,69,321,"{'recombination': 159, 'background_transfer': 156, 'coalescence': 4}",319,348,1228660736,ARG_simulation,186,52.503665874966885,281.25085546600167
+185,185,114,321,"{'recombination': 159, 'background_transfer': 156, 'coalescence': 4}",319,348,1228660736,ARG_simulation,186,52.530132021131045,281.5021512930107
+186,186,239,323,"{'recombination': 160, 'background_transfer': 157, 'coalescence': 4}",321,350,1228664832,ARG_simulation,187,52.55607662438256,281.7512395770027
+186,186,56,323,"{'recombination': 160, 'background_transfer': 157, 'coalescence': 4}",321,350,1228668928,ARG_simulation,187,52.580024619721286,282.0012731260067
+186,186,457,323,"{'recombination': 160, 'background_transfer': 157, 'coalescence': 4}",321,350,1228668928,ARG_simulation,187,52.60611596614642,282.25164657500864
+186,186,74,323,"{'recombination': 160, 'background_transfer': 157, 'coalescence': 4}",321,350,1228668928,ARG_simulation,187,52.63389068347832,282.50207055700594
+186,186,246,323,"{'recombination': 160, 'background_transfer': 157, 'coalescence': 4}",321,350,1228668928,ARG_simulation,187,52.66053179232058,282.7504765710037
+186,186,271,323,"{'recombination': 160, 'background_transfer': 157, 'coalescence': 4}",321,350,1228668928,ARG_simulation,187,52.687750501587516,283.0004502590018
+186,186,117,323,"{'recombination': 160, 'background_transfer': 157, 'coalescence': 4}",321,350,1228668928,ARG_simulation,187,52.71656026967995,283.25210768400575
+186,186,210,323,"{'recombination': 160, 'background_transfer': 157, 'coalescence': 4}",321,350,1228668928,ARG_simulation,187,52.74228491324189,283.50170819500636
+186,186,48,323,"{'recombination': 160, 'background_transfer': 157, 'coalescence': 4}",321,350,1228668928,ARG_simulation,187,52.77024924746506,283.7520695380081
+186,186,172,323,"{'recombination': 160, 'background_transfer': 158, 'coalescence': 4}",322,350,1228668928,ARG_simulation,187,52.79857491094867,284.00212735901005
+186,186,320,323,"{'recombination': 160, 'background_transfer': 159, 'coalescence': 4}",323,350,1228685312,ARG_simulation,187,52.82450567611537,284.2518559290038
+186,186,281,323,"{'recombination': 160, 'background_transfer': 159, 'coalescence': 4}",323,350,1228701696,ARG_simulation,187,52.85276551875243,284.50207153800875
+186,186,476,323,"{'recombination': 160, 'background_transfer': 159, 'coalescence': 4}",323,350,1228713984,ARG_simulation,187,52.878253403858665,284.7520766230009
+186,186,522,323,"{'recombination': 160, 'background_transfer': 159, 'coalescence': 4}",323,350,1228713984,ARG_simulation,187,52.90290514015016,285.00178598800267
+186,186,246,323,"{'recombination': 160, 'background_transfer': 159, 'coalescence': 4}",323,350,1228713984,ARG_simulation,187,52.929867619288586,285.25210814599996
+186,186,48,323,"{'recombination': 160, 'background_transfer': 159, 'coalescence': 4}",323,350,1228713984,ARG_simulation,187,52.9574563862355,285.5011201580055
+186,186,62,323,"{'recombination': 160, 'background_transfer': 159, 'coalescence': 4}",323,350,1228713984,ARG_simulation,187,52.98674024451251,285.7520682010072
+188,188,268,327,"{'recombination': 162, 'background_transfer': 159, 'coalescence': 4}",325,354,1228718080,ARG_simulation,189,53.01503908554271,286.00207154000236
+188,188,474,327,"{'recombination': 162, 'background_transfer': 160, 'coalescence': 4}",326,354,1228718080,ARG_simulation,189,53.04061993293479,286.2520741879998
+188,188,418,327,"{'recombination': 162, 'background_transfer': 160, 'coalescence': 4}",326,354,1228718080,ARG_simulation,189,53.06647155164456,286.5021010210039
+188,188,353,327,"{'recombination': 162, 'background_transfer': 160, 'coalescence': 4}",326,354,1228722176,ARG_simulation,189,53.0933189241248,286.7520700830064
+188,188,206,327,"{'recombination': 162, 'background_transfer': 160, 'coalescence': 4}",326,354,1228722176,ARG_simulation,189,53.11941384006768,287.0007859440084
+187,188,188,327,"{'recombination': 162, 'background_transfer': 160, 'coalescence': 5}",327,354,1228722176,ARG_simulation,189,53.143858670183945,287.2500962040067
+187,188,549,327,"{'recombination': 162, 'background_transfer': 160, 'coalescence': 5}",327,354,1228722176,ARG_simulation,189,53.17140540263299,287.5000925090135
+187,188,324,327,"{'recombination': 162, 'background_transfer': 160, 'coalescence': 5}",327,354,1228722176,ARG_simulation,189,53.19773932802055,287.75209240900585
+187,188,159,327,"{'recombination': 162, 'background_transfer': 160, 'coalescence': 5}",327,354,1228722176,ARG_simulation,189,53.22487979731611,288.00212192600884
+187,188,133,327,"{'recombination': 162, 'background_transfer': 160, 'coalescence': 5}",327,354,1228722176,ARG_simulation,189,53.254522473674704,288.25210951700865
+187,188,505,327,"{'recombination': 162, 'background_transfer': 160, 'coalescence': 5}",327,354,1228722176,ARG_simulation,189,53.2815711664208,288.50208006601315
+187,188,149,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228722176,ARG_simulation,189,53.30598893985146,288.75211437701364
+187,188,507,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228722176,ARG_simulation,189,53.333402697154185,289.00101592901046
+187,188,549,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228726272,ARG_simulation,189,53.35783650300393,289.25207167101325
+187,188,457,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228726272,ARG_simulation,189,53.38856526016182,289.5020931990002
+187,188,442,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228726272,ARG_simulation,189,53.41463799545172,289.75206716600223
+187,188,156,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228726272,ARG_simulation,189,53.44160583369057,290.0020924290002
+187,188,549,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228726272,ARG_simulation,189,53.46975814049802,290.2503782470012
+187,188,161,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228726272,ARG_simulation,189,53.49274341812023,290.50404207500105
+187,188,285,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228726272,ARG_simulation,189,53.49275941636766,290.75663908800925
+187,188,453,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228726272,ARG_simulation,189,53.4984104484252,291.001014088004
+187,188,123,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228730368,ARG_simulation,189,53.50667132247093,291.2501842290076
+187,188,133,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228730368,ARG_simulation,189,53.5281604394889,291.500777253008
+187,188,263,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228734464,ARG_simulation,189,53.54593066803558,291.7502094680094
+187,188,107,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228734464,ARG_simulation,189,53.56333160502152,292.00135102900094
+187,188,0,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228734464,ARG_simulation,189,53.587416693330326,292.25208562100306
+187,188,549,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228734464,ARG_simulation,189,53.61004247477091,292.5021550720121
+187,188,36,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228734464,ARG_simulation,189,53.63439365229616,292.75168452301295
+187,188,549,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228734464,ARG_simulation,189,53.659743225442135,293.00212926500535
+187,188,549,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228734464,ARG_simulation,189,53.681809931047965,293.2501486470137
+187,188,233,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228734464,ARG_simulation,189,53.70907615196062,293.502071283001
+187,188,130,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228734464,ARG_simulation,189,53.73194975067485,293.75037135501043
+187,188,91,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228738560,ARG_simulation,189,53.75217711037893,294.0020797560137
+187,188,506,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228742656,ARG_simulation,189,53.78054391608211,294.2501358110021
+187,188,298,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228742656,ARG_simulation,189,53.806204103573585,294.50211823200516
+187,188,342,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228742656,ARG_simulation,189,53.83245383617216,294.7520769870025
+187,188,158,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228742656,ARG_simulation,189,53.86063415475395,295.00211678500636
+187,188,549,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228742656,ARG_simulation,189,53.87929209405357,295.25022454700957
+187,188,0,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228742656,ARG_simulation,189,53.900174563269296,295.5013328500063
+187,188,11,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228742656,ARG_simulation,189,53.92339762626954,295.7520738420135
+187,188,223,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228742656,ARG_simulation,189,53.94965716220501,296.0003919860028
+187,188,530,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228742656,ARG_simulation,189,53.977071431486436,296.2521221650095
+187,188,462,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228742656,ARG_simulation,189,54.002012240737294,296.50017752200074
+187,188,454,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228746752,ARG_simulation,189,54.02733931493284,296.7507585630083
+187,188,549,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228746752,ARG_simulation,189,54.053926348120555,297.0019413320115
+187,188,549,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228746752,ARG_simulation,189,54.078004814715335,297.2521205610101
+187,188,549,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228746752,ARG_simulation,189,54.10223922214499,297.5004661450075
+187,188,337,327,"{'recombination': 162, 'background_transfer': 161, 'coalescence': 5}",328,354,1228746752,ARG_simulation,189,54.12662438267226,297.75066506900475
+187,188,113,327,"{'recombination': 162, 'background_transfer': 162, 'coalescence': 5}",329,354,1228746752,ARG_simulation,189,54.14882579437764,298.00050070500583
+187,188,401,327,"{'recombination': 162, 'background_transfer': 162, 'coalescence': 5}",329,354,1228746752,ARG_simulation,189,54.1737782959111,298.25211867300095
+187,188,549,327,"{'recombination': 162, 'background_transfer': 163, 'coalescence': 5}",330,354,1228750848,ARG_simulation,189,54.20075219927128,298.5001095730113
+187,188,549,327,"{'recombination': 162, 'background_transfer': 163, 'coalescence': 5}",330,354,1228750848,ARG_simulation,189,54.218264638065875,298.7501756140118
+188,189,268,329,"{'recombination': 163, 'background_transfer': 163, 'coalescence': 5}",331,356,1228750848,ARG_simulation,190,54.24262120693696,299.00019026400696
+189,190,334,331,"{'recombination': 164, 'background_transfer': 163, 'coalescence': 5}",332,358,1228759040,ARG_simulation,191,54.270529627577744,299.25057982301223
+190,191,90,333,"{'recombination': 165, 'background_transfer': 163, 'coalescence': 5}",333,360,1228759040,ARG_simulation,192,54.297749108330024,299.50209166901186
+190,191,35,333,"{'recombination': 165, 'background_transfer': 163, 'coalescence': 5}",333,360,1228763136,ARG_simulation,192,54.31971727798528,299.75078636500984
+190,191,78,333,"{'recombination': 165, 'background_transfer': 163, 'coalescence': 5}",333,360,1228763136,ARG_simulation,192,54.34146540872686,300.00124890300503

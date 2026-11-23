@@ -9,6 +9,7 @@ def build_tree_sequence(result):
     except ImportError as exc:
         raise ImportError("ARG output requires tskit; install msrc-sim with its runtime dependencies") from exc
     tables = tskit.TableCollection(result.sequence_length)
+    tables.time_units = "generations"
     for node in result.nodes:
         tables.nodes.add_row(flags=node["flags"], time=node["time"], metadata=json.dumps(node["metadata"]).encode())
     for edge in result.edges:

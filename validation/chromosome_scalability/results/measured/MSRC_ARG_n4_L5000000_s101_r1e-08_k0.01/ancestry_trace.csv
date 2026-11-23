@@ -1,0 +1,200 @@
+active_carriers,active_intervals,candidate_options,edges,event_counts,logged_events,nodes,peak_rss_bytes,stage,stored_segments,time_generations,wall
+,,,,,,,423022592,history_load,,,1.1983698580006603
+4,4,,,,0,,,ARG_simulation,4,0.0,1.1990233120013727
+5,5,6,2,{'recombination': 1},1,6,423124992,ARG_simulation,5,1.0164311131585302,1.2507409300014842
+6,6,7,4,{'recombination': 2},2,8,423137280,ARG_simulation,6,5.5173430733502125,1.501132338991738
+7,7,9,6,{'recombination': 3},3,10,423137280,ARG_simulation,7,9.082796892813633,1.7507404109928757
+8,8,6,8,{'recombination': 4},4,12,423141376,ARG_simulation,8,12.336196294678368,2.000209095989703
+8,8,6,8,{'recombination': 4},4,12,423141376,ARG_simulation,8,15.227323025908246,2.25110376199882
+8,8,12,8,{'recombination': 4},4,12,423141376,ARG_simulation,8,16.846819983275434,2.500283079993096
+8,8,8,8,{'recombination': 4},4,12,423141376,ARG_simulation,8,17.86199326319106,2.7503701629902935
+11,11,10,14,{'recombination': 7},7,18,423141376,ARG_simulation,11,19.819543830310757,3.001117569001508
+11,11,4,14,{'recombination': 7},7,18,423141376,ARG_simulation,11,21.82066466776919,3.250593665987253
+11,11,2,14,{'recombination': 7},7,18,423141376,ARG_simulation,11,23.59787851951084,3.5005796939949505
+12,12,9,16,{'recombination': 8},8,20,423141376,ARG_simulation,12,25.55872959440652,3.7501639499969315
+12,12,18,16,{'recombination': 8},8,20,423141376,ARG_simulation,12,27.210688895947644,4.0003575529990485
+13,13,25,18,"{'recombination': 9, 'background_transfer': 1}",10,22,423141376,ARG_simulation,13,29.0062680806637,4.250249573990004
+13,13,14,18,"{'recombination': 9, 'background_transfer': 1}",10,22,423145472,ARG_simulation,13,29.6473298142148,4.500373240996851
+14,14,3,20,"{'recombination': 10, 'background_transfer': 1}",11,24,423145472,ARG_simulation,14,30.78347413021871,4.75016247399617
+14,14,11,20,"{'recombination': 10, 'background_transfer': 2}",12,24,423145472,ARG_simulation,14,32.412136509025615,5.00111900200136
+15,15,27,22,"{'recombination': 11, 'background_transfer': 3}",14,26,423145472,ARG_simulation,15,33.799820236557785,5.2507079869974405
+15,15,20,22,"{'recombination': 11, 'background_transfer': 4}",15,26,423145472,ARG_simulation,15,35.326477853394806,5.5011437609937275
+17,17,28,26,"{'recombination': 13, 'background_transfer': 5}",18,30,423145472,ARG_simulation,17,36.90312217256314,5.751078673987649
+18,18,37,28,"{'recombination': 14, 'background_transfer': 5}",19,32,423149568,ARG_simulation,18,38.364018677874654,6.001113380989409
+18,18,23,28,"{'recombination': 14, 'background_transfer': 5}",19,32,423149568,ARG_simulation,18,39.72366962905244,6.250548361989786
+18,18,10,28,"{'recombination': 14, 'background_transfer': 5}",19,32,423149568,ARG_simulation,18,40.9220699665658,6.501095935993362
+18,18,29,28,"{'recombination': 14, 'background_transfer': 5}",19,32,423149568,ARG_simulation,18,41.93894532893939,6.751068931000191
+18,18,10,28,"{'recombination': 14, 'background_transfer': 5}",19,32,423149568,ARG_simulation,18,43.14085024123662,7.000168524988112
+18,18,37,28,"{'recombination': 14, 'background_transfer': 5}",19,32,423149568,ARG_simulation,18,44.5375800323784,7.250270915988949
+19,19,1,30,"{'recombination': 15, 'background_transfer': 5}",20,34,423149568,ARG_simulation,19,45.62792679391185,7.501099524990423
+19,19,33,30,"{'recombination': 15, 'background_transfer': 5}",20,34,423157760,ARG_simulation,19,46.54775836155189,7.7502372289891355
+19,19,23,30,"{'recombination': 15, 'background_transfer': 5}",20,34,423157760,ARG_simulation,19,47.59189921197838,8.000449618994026
+19,19,2,30,"{'recombination': 15, 'background_transfer': 5}",20,34,423157760,ARG_simulation,19,48.63378161305481,8.250153253000462
+19,19,0,30,"{'recombination': 15, 'background_transfer': 5}",20,34,423157760,ARG_simulation,19,49.817277117476806,8.500145931000588
+19,19,19,30,"{'recombination': 15, 'background_transfer': 5}",20,34,423157760,ARG_simulation,19,50.8926891083125,8.750328567999532
+20,20,40,32,"{'recombination': 16, 'background_transfer': 5}",21,36,423157760,ARG_simulation,20,51.98585151736826,9.00019825399795
+20,20,6,32,"{'recombination': 16, 'background_transfer': 5}",21,36,423157760,ARG_simulation,20,53.10306116067624,9.250214946994674
+20,20,22,32,"{'recombination': 16, 'background_transfer': 5}",21,36,423157760,ARG_simulation,20,54.27117780266479,9.500993815992842
+20,20,0,32,"{'recombination': 16, 'background_transfer': 5}",21,36,423157760,ARG_simulation,20,55.48061855108001,9.751150990996393
+21,21,49,34,"{'recombination': 17, 'background_transfer': 6}",23,38,423157760,ARG_simulation,21,56.353230031934544,10.003999074993772
+21,21,21,34,"{'recombination': 17, 'background_transfer': 6}",23,38,423157760,ARG_simulation,21,56.81316663397884,10.25105460800114
+21,21,7,34,"{'recombination': 17, 'background_transfer': 7}",24,38,423157760,ARG_simulation,21,57.80413624653534,10.500753795000492
+21,21,49,34,"{'recombination': 17, 'background_transfer': 7}",24,38,423157760,ARG_simulation,21,58.860987272740424,10.75036800399539
+21,21,0,36,"{'recombination': 18, 'background_transfer': 7, 'coalescence': 1}",26,40,423157760,ARG_simulation,22,59.94520671646786,11.000138741990668
+21,21,22,36,"{'recombination': 18, 'background_transfer': 8, 'coalescence': 1}",27,40,423157760,ARG_simulation,22,60.9773611481367,11.250272578996373
+21,21,1,36,"{'recombination': 18, 'background_transfer': 9, 'coalescence': 1}",28,40,423157760,ARG_simulation,22,61.94189446626598,11.501128573989263
+21,21,11,36,"{'recombination': 18, 'background_transfer': 10, 'coalescence': 1}",29,40,423456768,ARG_simulation,22,62.84937070424134,11.750308711998514
+22,22,34,38,"{'recombination': 19, 'background_transfer': 10, 'coalescence': 1}",30,42,423456768,ARG_simulation,23,63.845376306868,12.000182594987564
+22,22,59,38,"{'recombination': 19, 'background_transfer': 11, 'coalescence': 1}",31,42,423456768,ARG_simulation,23,64.8331065396463,12.250141005992191
+22,22,21,38,"{'recombination': 19, 'background_transfer': 11, 'coalescence': 1}",31,42,423456768,ARG_simulation,23,65.7811412301453,12.500385645995266
+23,23,60,41,"{'recombination': 20, 'background_transfer': 11, 'coalescence': 1}",32,44,423456768,ARG_simulation,23,66.76752319905638,12.751163693988929
+23,23,9,41,"{'recombination': 20, 'background_transfer': 12, 'coalescence': 1}",33,44,423456768,ARG_simulation,23,67.81862910719518,13.000374062001356
+23,23,8,41,"{'recombination': 20, 'background_transfer': 12, 'coalescence': 1}",33,44,423456768,ARG_simulation,23,68.94105249902125,13.251128650997998
+23,23,63,41,"{'recombination': 20, 'background_transfer': 12, 'coalescence': 1}",33,44,423456768,ARG_simulation,23,69.89735104719566,13.501145672998973
+23,23,0,41,"{'recombination': 20, 'background_transfer': 13, 'coalescence': 1}",34,44,423456768,ARG_simulation,23,71.00405491766114,13.750780950998887
+23,23,50,41,"{'recombination': 20, 'background_transfer': 13, 'coalescence': 1}",34,44,423456768,ARG_simulation,23,72.25959530527737,14.00107797999226
+24,24,0,43,"{'recombination': 21, 'background_transfer': 15, 'coalescence': 1}",37,46,423456768,ARG_simulation,24,73.47216104829947,14.251078757995856
+24,24,8,43,"{'recombination': 21, 'background_transfer': 15, 'coalescence': 1}",37,46,423456768,ARG_simulation,24,74.64013217898679,14.501083839000785
+25,25,7,45,"{'recombination': 22, 'background_transfer': 15, 'coalescence': 1}",38,48,423456768,ARG_simulation,25,75.77271225976823,14.751119419990573
+25,25,62,45,"{'recombination': 22, 'background_transfer': 16, 'coalescence': 1}",39,48,423456768,ARG_simulation,25,76.92678178152174,15.001126161994762
+25,25,62,45,"{'recombination': 22, 'background_transfer': 16, 'coalescence': 1}",39,48,423456768,ARG_simulation,25,78.02964605927505,15.251079631998437
+25,25,0,45,"{'recombination': 22, 'background_transfer': 16, 'coalescence': 1}",39,48,423456768,ARG_simulation,25,79.10860112294012,15.50102309200156
+25,25,18,45,"{'recombination': 22, 'background_transfer': 16, 'coalescence': 1}",39,48,423456768,ARG_simulation,25,80.13973057816008,15.751065797987394
+26,26,11,47,"{'recombination': 23, 'background_transfer': 17, 'coalescence': 1}",41,50,423456768,ARG_simulation,26,81.19432760437441,16.001112063997425
+26,26,0,47,"{'recombination': 23, 'background_transfer': 17, 'coalescence': 1}",41,50,423456768,ARG_simulation,26,82.20954235936324,16.251145749993157
+26,26,0,47,"{'recombination': 23, 'background_transfer': 17, 'coalescence': 1}",41,50,423456768,ARG_simulation,26,83.2699188412646,16.50108325999463
+28,28,75,51,"{'recombination': 25, 'background_transfer': 17, 'coalescence': 1}",43,54,423456768,ARG_simulation,28,84.28019569122202,16.750130867992993
+28,28,26,51,"{'recombination': 25, 'background_transfer': 18, 'coalescence': 1}",44,54,423456768,ARG_simulation,28,85.26029134925244,17.001151429998572
+28,28,75,51,"{'recombination': 25, 'background_transfer': 21, 'coalescence': 1}",47,54,423456768,ARG_simulation,28,86.2168507562657,17.25109026899736
+28,28,3,51,"{'recombination': 25, 'background_transfer': 21, 'coalescence': 1}",47,54,423456768,ARG_simulation,28,87.25484134772881,17.501079406996723
+28,28,7,51,"{'recombination': 25, 'background_transfer': 21, 'coalescence': 1}",47,54,423456768,ARG_simulation,28,88.223648795325,17.75107872899389
+30,30,70,55,"{'recombination': 27, 'background_transfer': 23, 'coalescence': 1}",51,58,423456768,ARG_simulation,30,89.15455132569667,18.00111809199734
+30,30,55,55,"{'recombination': 27, 'background_transfer': 23, 'coalescence': 1}",51,58,423456768,ARG_simulation,30,89.99278866862501,18.250149833998876
+30,30,87,55,"{'recombination': 27, 'background_transfer': 25, 'coalescence': 1}",53,58,423456768,ARG_simulation,30,90.85736924194228,18.50114038499305
+30,30,52,55,"{'recombination': 27, 'background_transfer': 25, 'coalescence': 1}",53,58,423456768,ARG_simulation,30,91.75090652342666,18.75055551699188
+30,30,5,55,"{'recombination': 27, 'background_transfer': 26, 'coalescence': 1}",54,58,423456768,ARG_simulation,30,92.63635986423698,19.001082056987798
+29,30,17,55,"{'recombination': 27, 'background_transfer': 27, 'coalescence': 2}",56,58,423456768,ARG_simulation,30,93.5280116192054,19.25108128399006
+29,30,57,55,"{'recombination': 27, 'background_transfer': 27, 'coalescence': 2}",56,58,423456768,ARG_simulation,30,94.18563475404659,19.5675935199979
+30,31,87,57,"{'recombination': 28, 'background_transfer': 27, 'coalescence': 2}",57,60,423456768,ARG_simulation,31,94.7912569796681,19.750836542996694
+30,31,25,57,"{'recombination': 28, 'background_transfer': 28, 'coalescence': 2}",58,60,423456768,ARG_simulation,31,95.57322760853845,20.000827012001537
+31,32,29,59,"{'recombination': 29, 'background_transfer': 29, 'coalescence': 2}",60,62,423456768,ARG_simulation,32,96.40187618150586,20.251092342994525
+31,32,88,59,"{'recombination': 29, 'background_transfer': 29, 'coalescence': 2}",60,62,423456768,ARG_simulation,32,97.21464112781858,20.501083647992346
+32,33,31,61,"{'recombination': 30, 'background_transfer': 30, 'coalescence': 2}",62,64,423456768,ARG_simulation,33,97.9958554961129,20.750996282993583
+32,33,4,61,"{'recombination': 30, 'background_transfer': 30, 'coalescence': 2}",62,64,423456768,ARG_simulation,33,98.78098639437118,21.00080880499445
+32,33,1,61,"{'recombination': 30, 'background_transfer': 30, 'coalescence': 2}",62,64,423456768,ARG_simulation,33,99.63516900920531,21.251098954991903
+32,33,1,61,"{'recombination': 30, 'background_transfer': 31, 'coalescence': 2, 'species_boundary': 32}",95,64,425013248,ARG_simulation,33,100.55420110683228,21.501082706992747
+32,33,84,61,"{'recombination': 30, 'background_transfer': 31, 'coalescence': 2, 'species_boundary': 32}",95,64,425013248,ARG_simulation,33,101.87067939431019,21.75108325999463
+32,33,118,61,"{'recombination': 30, 'background_transfer': 31, 'coalescence': 2, 'species_boundary': 32}",95,64,425013248,ARG_simulation,33,103.07324115376461,22.001076264001313
+31,33,60,61,"{'recombination': 30, 'background_transfer': 31, 'coalescence': 3, 'species_boundary': 32}",96,64,425013248,ARG_simulation,33,104.31974308494847,22.251079055989976
+31,33,148,61,"{'recombination': 30, 'background_transfer': 31, 'coalescence': 3, 'species_boundary': 32}",96,64,425013248,ARG_simulation,33,105.70239588163473,22.501080101996195
+31,33,30,61,"{'recombination': 30, 'background_transfer': 31, 'coalescence': 3, 'species_boundary': 32}",96,64,425013248,ARG_simulation,33,107.14510570470631,22.751082841990865
+31,33,148,61,"{'recombination': 30, 'background_transfer': 32, 'coalescence': 3, 'species_boundary': 32}",97,64,425013248,ARG_simulation,33,108.51858368038963,23.001077486987924
+31,33,144,61,"{'recombination': 30, 'background_transfer': 33, 'coalescence': 3, 'species_boundary': 32}",98,64,425013248,ARG_simulation,33,109.94246144349117,23.251091224999982
+31,33,148,61,"{'recombination': 30, 'background_transfer': 33, 'coalescence': 3, 'species_boundary': 32}",98,64,425013248,ARG_simulation,33,111.15554248225902,23.501165067995316
+31,33,3,61,"{'recombination': 30, 'background_transfer': 33, 'coalescence': 3, 'species_boundary': 32}",98,64,425013248,ARG_simulation,33,112.35030882278917,23.750206600991078
+31,33,12,61,"{'recombination': 30, 'background_transfer': 33, 'coalescence': 3, 'species_boundary': 32}",98,64,425013248,ARG_simulation,33,113.51912478594237,24.00087086399435
+31,33,129,61,"{'recombination': 30, 'background_transfer': 33, 'coalescence': 3, 'species_boundary': 32}",98,64,425013248,ARG_simulation,33,114.27733095488526,24.26034250498924
+31,33,148,61,"{'recombination': 30, 'background_transfer': 33, 'coalescence': 3, 'species_boundary': 32}",98,64,425013248,ARG_simulation,33,114.53529235540533,24.5002119569981
+31,33,10,61,"{'recombination': 30, 'background_transfer': 34, 'coalescence': 3, 'species_boundary': 32}",99,64,425013248,ARG_simulation,33,115.29821036396197,24.750257275998592
+31,33,143,61,"{'recombination': 30, 'background_transfer': 34, 'coalescence': 3, 'species_boundary': 32}",99,64,425013248,ARG_simulation,33,116.55186867032404,25.000755487999413
+31,33,6,61,"{'recombination': 30, 'background_transfer': 35, 'coalescence': 3, 'species_boundary': 32}",100,64,425013248,ARG_simulation,33,117.6362107301472,25.25099326999043
+31,33,50,61,"{'recombination': 30, 'background_transfer': 37, 'coalescence': 3, 'species_boundary': 32}",102,64,425013248,ARG_simulation,33,118.71933130719475,25.500424609999754
+30,33,10,61,"{'recombination': 30, 'background_transfer': 38, 'coalescence': 4, 'species_boundary': 32}",104,64,425013248,ARG_simulation,33,119.84293972361571,25.750420823998866
+30,33,44,61,"{'recombination': 30, 'background_transfer': 39, 'coalescence': 4, 'species_boundary': 32}",105,64,425013248,ARG_simulation,33,121.00766465276477,26.00037782799336
+30,33,63,61,"{'recombination': 30, 'background_transfer': 40, 'coalescence': 4, 'species_boundary': 32}",106,64,425013248,ARG_simulation,33,122.23425522403105,26.251115706996643
+30,33,50,61,"{'recombination': 30, 'background_transfer': 42, 'coalescence': 4, 'species_boundary': 32}",108,64,425013248,ARG_simulation,33,123.66214917327387,26.501086065996788
+30,33,54,63,"{'recombination': 31, 'background_transfer': 44, 'coalescence': 5, 'species_boundary': 32}",112,66,425013248,ARG_simulation,33,124.99871507408861,26.75012410400086
+31,34,102,65,"{'recombination': 32, 'background_transfer': 44, 'coalescence': 5, 'species_boundary': 32}",113,68,425013248,ARG_simulation,34,126.15276786153044,27.00114469899563
+32,34,92,67,"{'recombination': 33, 'background_transfer': 46, 'coalescence': 5, 'species_boundary': 32}",116,70,425013248,ARG_simulation,34,127.53917999996295,27.25041215500096
+32,34,5,67,"{'recombination': 33, 'background_transfer': 47, 'coalescence': 5, 'species_boundary': 32}",117,70,425013248,ARG_simulation,34,128.9276129762251,27.501090847988962
+32,34,53,67,"{'recombination': 33, 'background_transfer': 47, 'coalescence': 5, 'species_boundary': 32}",117,70,425013248,ARG_simulation,34,130.1770540933011,27.75100338899938
+32,34,136,67,"{'recombination': 33, 'background_transfer': 48, 'coalescence': 5, 'species_boundary': 32}",118,70,425013248,ARG_simulation,34,131.41953823253522,28.001132533987402
+32,34,161,67,"{'recombination': 33, 'background_transfer': 51, 'coalescence': 5, 'species_boundary': 32}",121,70,425013248,ARG_simulation,34,132.66099326845026,28.250560576998396
+32,34,110,67,"{'recombination': 33, 'background_transfer': 51, 'coalescence': 5, 'species_boundary': 32}",121,70,425017344,ARG_simulation,34,133.88616068754055,28.501084342991817
+31,34,98,67,"{'recombination': 33, 'background_transfer': 53, 'coalescence': 6, 'species_boundary': 32}",124,70,425017344,ARG_simulation,34,135.24508985252746,28.75111399999878
+32,35,99,69,"{'recombination': 34, 'background_transfer': 53, 'coalescence': 6, 'species_boundary': 32}",125,72,425017344,ARG_simulation,35,136.7158500850595,29.001080814996385
+33,36,68,71,"{'recombination': 35, 'background_transfer': 55, 'coalescence': 6, 'species_boundary': 32}",128,74,425017344,ARG_simulation,36,137.9716172838732,29.250871530995937
+33,36,168,71,"{'recombination': 35, 'background_transfer': 55, 'coalescence': 6, 'species_boundary': 32}",128,74,425017344,ARG_simulation,36,139.1529005461303,29.50108291200013
+33,37,104,73,"{'recombination': 36, 'background_transfer': 56, 'coalescence': 7, 'species_boundary': 32}",131,76,425017344,ARG_simulation,37,140.46304819879265,29.751087428987375
+32,37,149,73,"{'recombination': 36, 'background_transfer': 56, 'coalescence': 8, 'species_boundary': 32}",132,76,425017344,ARG_simulation,37,141.66033991450308,30.001077697001165
+32,37,128,73,"{'recombination': 36, 'background_transfer': 57, 'coalescence': 8, 'species_boundary': 32}",133,76,425017344,ARG_simulation,37,143.02644022068648,30.250312456992106
+32,38,38,75,"{'recombination': 37, 'background_transfer': 58, 'coalescence': 9, 'species_boundary': 32}",136,78,425017344,ARG_simulation,38,144.38802555751374,30.500689844993758
+32,38,111,75,"{'recombination': 37, 'background_transfer': 58, 'coalescence': 9, 'species_boundary': 32}",136,78,425017344,ARG_simulation,38,145.79608451286887,30.75111731099605
+32,38,0,75,"{'recombination': 37, 'background_transfer': 59, 'coalescence': 9, 'species_boundary': 32}",137,78,425017344,ARG_simulation,38,147.2024016049054,31.001086338001187
+32,38,127,75,"{'recombination': 37, 'background_transfer': 61, 'coalescence': 9, 'species_boundary': 32}",139,78,425017344,ARG_simulation,38,148.59534839696636,31.25102392199915
+32,38,5,75,"{'recombination': 37, 'background_transfer': 62, 'coalescence': 9, 'species_boundary': 32}",140,78,425017344,ARG_simulation,38,149.9444596471499,31.50010544899851
+33,39,158,77,"{'recombination': 38, 'background_transfer': 62, 'coalescence': 9, 'species_boundary': 32}",141,80,425017344,ARG_simulation,39,151.23268210339796,31.750910495989956
+33,39,8,77,"{'recombination': 38, 'background_transfer': 63, 'coalescence': 9, 'species_boundary': 32}",142,80,425017344,ARG_simulation,39,152.5048493304599,32.001130545992055
+33,39,0,77,"{'recombination': 38, 'background_transfer': 64, 'coalescence': 9, 'species_boundary': 32}",143,80,425017344,ARG_simulation,39,153.66783851171132,32.25107360599213
+33,39,120,77,"{'recombination': 38, 'background_transfer': 65, 'coalescence': 9, 'species_boundary': 32}",144,80,425017344,ARG_simulation,39,154.85735716271122,32.50108700498822
+33,40,0,80,"{'recombination': 39, 'background_transfer': 66, 'coalescence': 10, 'species_boundary': 32}",147,82,425017344,ARG_simulation,40,156.14206840841203,32.75110774098721
+33,40,12,80,"{'recombination': 39, 'background_transfer': 66, 'coalescence': 10, 'species_boundary': 32}",147,82,425017344,ARG_simulation,40,157.36837847127018,33.00074757999391
+33,40,149,80,"{'recombination': 39, 'background_transfer': 66, 'coalescence': 10, 'species_boundary': 32}",147,82,425017344,ARG_simulation,40,158.74342153239226,33.25112479599193
+32,39,43,82,"{'recombination': 39, 'background_transfer': 66, 'coalescence': 11, 'species_boundary': 32}",148,83,425017344,ARG_simulation,40,160.05177036943726,33.50108383499901
+32,39,0,82,"{'recombination': 39, 'background_transfer': 66, 'coalescence': 11, 'species_boundary': 32}",148,83,425017344,ARG_simulation,40,161.38113674290258,33.7510795089911
+32,39,4,82,"{'recombination': 39, 'background_transfer': 68, 'coalescence': 11, 'species_boundary': 32}",150,83,425017344,ARG_simulation,40,162.7596794940564,34.000157456001034
+33,39,116,84,"{'recombination': 40, 'background_transfer': 68, 'coalescence': 11, 'species_boundary': 32}",151,85,425017344,ARG_simulation,40,164.12467038005994,34.25115395299508
+33,39,166,84,"{'recombination': 40, 'background_transfer': 70, 'coalescence': 11, 'species_boundary': 32}",153,85,425017344,ARG_simulation,40,165.50137701877208,34.50109366000106
+32,39,11,84,"{'recombination': 40, 'background_transfer': 71, 'coalescence': 12, 'species_boundary': 32}",155,85,425017344,ARG_simulation,40,166.16330643396267,34.75113042000157
+32,39,60,84,"{'recombination': 40, 'background_transfer': 73, 'coalescence': 12, 'species_boundary': 32}",157,85,425017344,ARG_simulation,40,167.44383843069443,35.00107460099389
+32,39,42,84,"{'recombination': 40, 'background_transfer': 74, 'coalescence': 12, 'species_boundary': 32}",158,85,425017344,ARG_simulation,40,168.6833875485093,35.250988357991446
+31,38,111,84,"{'recombination': 40, 'background_transfer': 75, 'coalescence': 13, 'species_boundary': 32}",160,85,425017344,ARG_simulation,40,169.5058321445776,35.5010300540016
+31,38,17,84,"{'recombination': 40, 'background_transfer': 75, 'coalescence': 13, 'species_boundary': 32}",160,85,425017344,ARG_simulation,40,170.59240826713642,35.75110723199032
+31,38,54,84,"{'recombination': 40, 'background_transfer': 75, 'coalescence': 13, 'species_boundary': 32}",160,85,425017344,ARG_simulation,40,171.7877859627979,36.000143803990795
+32,39,144,86,"{'recombination': 41, 'background_transfer': 75, 'coalescence': 13, 'species_boundary': 32}",161,87,425017344,ARG_simulation,41,172.90694305335205,36.25014535999799
+33,40,120,88,"{'recombination': 42, 'background_transfer': 75, 'coalescence': 13, 'species_boundary': 32}",162,89,425017344,ARG_simulation,42,174.08504242672868,36.5002813339961
+31,40,29,88,"{'recombination': 42, 'background_transfer': 75, 'coalescence': 15, 'species_boundary': 32}",164,89,425017344,ARG_simulation,42,175.3613767367093,36.750369740999304
+32,40,86,90,"{'recombination': 43, 'background_transfer': 76, 'coalescence': 15, 'species_boundary': 32}",166,91,425017344,ARG_simulation,42,176.6544739565297,37.00111533299787
+32,40,67,90,"{'recombination': 43, 'background_transfer': 76, 'coalescence': 15, 'species_boundary': 32}",166,91,425017344,ARG_simulation,42,177.88317746683538,37.25095706799766
+32,40,63,90,"{'recombination': 43, 'background_transfer': 76, 'coalescence': 15, 'species_boundary': 32}",166,91,425017344,ARG_simulation,42,179.15121662429164,37.50107999499596
+32,40,15,90,"{'recombination': 43, 'background_transfer': 77, 'coalescence': 15, 'species_boundary': 32}",167,91,425017344,ARG_simulation,42,180.4247979317163,37.75107239099452
+32,40,37,90,"{'recombination': 43, 'background_transfer': 77, 'coalescence': 15, 'species_boundary': 32}",167,91,425017344,ARG_simulation,42,181.7347163624004,38.00107786100125
+32,40,166,90,"{'recombination': 43, 'background_transfer': 77, 'coalescence': 15, 'species_boundary': 32}",167,91,425017344,ARG_simulation,42,182.922757804405,38.25110924099863
+32,40,36,90,"{'recombination': 43, 'background_transfer': 77, 'coalescence': 15, 'species_boundary': 32}",167,91,425017344,ARG_simulation,42,184.1717908308615,38.501106864991016
+32,40,30,90,"{'recombination': 43, 'background_transfer': 77, 'coalescence': 15, 'species_boundary': 32}",167,91,425017344,ARG_simulation,42,185.43090082573923,38.751072508996
+32,40,0,90,"{'recombination': 43, 'background_transfer': 77, 'coalescence': 15, 'species_boundary': 32}",167,91,425017344,ARG_simulation,42,186.73121064395204,39.001084819989046
+33,40,5,92,"{'recombination': 44, 'background_transfer': 77, 'coalescence': 15, 'species_boundary': 32}",168,93,425017344,ARG_simulation,42,188.0026396538826,39.25114172199392
+34,41,51,94,"{'recombination': 45, 'background_transfer': 77, 'coalescence': 15, 'species_boundary': 32}",169,95,425017344,ARG_simulation,43,189.17319879092804,39.50108187099977
+34,41,153,94,"{'recombination': 45, 'background_transfer': 78, 'coalescence': 15, 'species_boundary': 32}",170,95,425017344,ARG_simulation,43,190.26992736741585,39.750277984989225
+35,42,138,97,"{'recombination': 46, 'background_transfer': 79, 'coalescence': 15, 'species_boundary': 32}",172,97,425017344,ARG_simulation,44,191.32991745985896,40.00066706899088
+36,43,89,99,"{'recombination': 47, 'background_transfer': 79, 'coalescence': 15, 'species_boundary': 32}",173,99,425017344,ARG_simulation,45,192.41817752183945,40.251080648988136
+35,42,177,101,"{'recombination': 47, 'background_transfer': 79, 'coalescence': 16, 'species_boundary': 32}",174,100,425017344,ARG_simulation,46,193.45176483494765,40.50109589898784
+35,42,1,101,"{'recombination': 47, 'background_transfer': 79, 'coalescence': 16, 'species_boundary': 32}",174,100,425017344,ARG_simulation,46,194.47674973590864,40.750872936987435
+35,42,32,101,"{'recombination': 47, 'background_transfer': 79, 'coalescence': 16, 'species_boundary': 32}",174,100,425017344,ARG_simulation,46,195.5929704767944,41.00113185599912
+35,42,34,101,"{'recombination': 47, 'background_transfer': 79, 'coalescence': 16, 'species_boundary': 32}",174,100,425017344,ARG_simulation,46,196.69393632580355,41.25109410499863
+35,42,67,101,"{'recombination': 47, 'background_transfer': 80, 'coalescence': 16, 'species_boundary': 32}",175,100,425017344,ARG_simulation,46,197.76260914362493,41.501102073991206
+35,42,201,101,"{'recombination': 47, 'background_transfer': 80, 'coalescence': 16, 'species_boundary': 32}",175,100,425017344,ARG_simulation,46,198.74898736266871,41.75111459799518
+36,42,119,103,"{'recombination': 48, 'background_transfer': 82, 'coalescence': 16, 'species_boundary': 32}",178,102,425017344,ARG_simulation,46,199.81656525571515,42.001116898987675
+35,42,3,103,"{'recombination': 48, 'background_transfer': 83, 'coalescence': 17, 'species_boundary': 68}",216,102,425222144,ARG_simulation,46,201.11028481949543,42.25110477099952
+35,42,37,103,"{'recombination': 48, 'background_transfer': 83, 'coalescence': 17, 'species_boundary': 68}",216,102,425222144,ARG_simulation,46,202.61468757491235,42.501082803995814
+35,42,20,103,"{'recombination': 48, 'background_transfer': 83, 'coalescence': 17, 'species_boundary': 68}",216,102,425222144,ARG_simulation,46,204.15049388358082,42.75111072999425
+35,42,191,103,"{'recombination': 48, 'background_transfer': 85, 'coalescence': 17, 'species_boundary': 68}",218,102,425222144,ARG_simulation,46,205.74839233846177,43.00107869198837
+34,42,277,103,"{'recombination': 48, 'background_transfer': 86, 'coalescence': 18, 'species_boundary': 68}",220,102,425222144,ARG_simulation,46,207.37038111913023,43.25108580799133
+34,42,0,103,"{'recombination': 48, 'background_transfer': 88, 'coalescence': 18, 'species_boundary': 68}",222,102,425521152,ARG_simulation,46,208.6864771632025,43.50027373099874
+34,42,174,103,"{'recombination': 48, 'background_transfer': 90, 'coalescence': 18, 'species_boundary': 68}",224,102,425521152,ARG_simulation,46,210.0690726215805,43.75107839998964
+34,42,124,103,"{'recombination': 48, 'background_transfer': 91, 'coalescence': 18, 'species_boundary': 68}",225,102,425521152,ARG_simulation,46,211.61928255503025,44.00113713699102
+33,42,228,103,"{'recombination': 48, 'background_transfer': 91, 'coalescence': 19, 'species_boundary': 68}",226,102,425521152,ARG_simulation,46,213.13321995393838,44.25111877999734
+32,41,256,103,"{'recombination': 48, 'background_transfer': 92, 'coalescence': 20, 'species_boundary': 68}",228,102,425521152,ARG_simulation,46,214.5251146125873,44.501140541993664
+31,40,103,105,"{'recombination': 48, 'background_transfer': 93, 'coalescence': 21, 'species_boundary': 68}",230,103,425521152,ARG_simulation,47,216.21646920457346,44.75051805000112
+31,40,8,105,"{'recombination': 48, 'background_transfer': 93, 'coalescence': 21, 'species_boundary': 68}",230,103,425521152,ARG_simulation,47,218.23028581150265,45.00107669198769
+30,39,214,107,"{'recombination': 48, 'background_transfer': 93, 'coalescence': 22, 'species_boundary': 68}",231,104,425521152,ARG_simulation,48,220.35741090683732,45.251072225990356
+31,39,33,109,"{'recombination': 49, 'background_transfer': 95, 'coalescence': 22, 'species_boundary': 68}",234,106,425521152,ARG_simulation,48,222.23418123562968,45.50107968998782
+32,39,9,113,"{'recombination': 50, 'background_transfer': 96, 'coalescence': 22, 'species_boundary': 68}",236,108,425521152,ARG_simulation,46,224.11401444112147,45.75111823499901
+31,38,227,115,"{'recombination': 50, 'background_transfer': 98, 'coalescence': 23, 'species_boundary': 68}",239,109,425521152,ARG_simulation,47,226.04348383602263,46.001078688990674
+31,38,255,119,"{'recombination': 51, 'background_transfer': 99, 'coalescence': 24, 'species_boundary': 68}",242,111,425521152,ARG_simulation,45,227.76556718752062,46.25059802699252
+31,38,90,119,"{'recombination': 51, 'background_transfer': 99, 'coalescence': 24, 'species_boundary': 68}",242,111,425521152,ARG_simulation,45,229.72469432985545,46.500411080996855
+30,38,130,119,"{'recombination': 51, 'background_transfer': 101, 'coalescence': 25, 'species_boundary': 68}",245,111,425521152,ARG_simulation,45,231.6397495688208,46.751113526988775
+30,38,131,119,"{'recombination': 51, 'background_transfer': 102, 'coalescence': 25, 'species_boundary': 68}",246,111,425521152,ARG_simulation,45,233.67446614313496,47.000269732991
+30,38,132,119,"{'recombination': 51, 'background_transfer': 104, 'coalescence': 25, 'species_boundary': 68}",248,111,425521152,ARG_simulation,45,235.71120779679228,47.25108297499537
+27,37,2,119,"{'recombination': 51, 'background_transfer': 104, 'coalescence': 28, 'species_boundary': 68}",251,111,425521152,ARG_simulation,45,237.9241336011323,47.50031515599403
+28,38,214,121,"{'recombination': 52, 'background_transfer': 104, 'coalescence': 28, 'species_boundary': 68}",252,113,425521152,ARG_simulation,46,239.97878913562113,47.751120053988416
+28,38,105,121,"{'recombination': 52, 'background_transfer': 105, 'coalescence': 28, 'species_boundary': 68}",253,113,425521152,ARG_simulation,46,242.05874099111932,48.001098638997064
+30,40,256,134,"{'recombination': 54, 'background_transfer': 106, 'coalescence': 28, 'species_boundary': 68}",256,117,425521152,ARG_simulation,44,243.92775553276525,48.250123145990074
+29,40,9,134,"{'recombination': 54, 'background_transfer': 106, 'coalescence': 29, 'species_boundary': 68}",257,117,425521152,ARG_simulation,44,245.82351558918808,48.50111657699745
+29,40,36,134,"{'recombination': 54, 'background_transfer': 108, 'coalescence': 29, 'species_boundary': 68}",259,117,425521152,ARG_simulation,44,248.00680584672764,48.75090510598966
+35,47,258,205,"{'recombination': 74, 'background_transfer': 109, 'coalescence': 43, 'species_boundary': 68}",294,162,425521152,ARG_simulation,53,308.65726182398475,49.001052986990544
+37,88,66,1319,"{'recombination': 308, 'background_transfer': 109, 'coalescence': 275, 'species_boundary': 68}",760,671,425521152,ARG_simulation,104,1061.52954806644,49.25045320398931
+29,109,60,2816,"{'recombination': 538, 'background_transfer': 109, 'coalescence': 513, 'species_boundary': 68}",1228,1167,425549824,ARG_simulation,161,1973.9986373311108,49.50090081799135
+28,79,435,4685,"{'recombination': 798, 'background_transfer': 109, 'coalescence': 773, 'species_boundary': 68}",1748,1721,425598976,ARG_simulation,168,3157.002338628539,49.750790017991676
+22,45,245,6476,"{'recombination': 1113, 'background_transfer': 109, 'coalescence': 1095, 'species_boundary': 68}",2385,2388,425611264,ARG_simulation,200,6058.31962797395,50.00107871698856
+,,,,,,,429809664,validity,,,50.25107621199277

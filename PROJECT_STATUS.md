@@ -746,3 +746,47 @@ Details: [consolidation audit and validation](docs/msrc_arg_consolidation_valida
   task, not part of this validation.
 
 Report: [exact Moran/ARG/SMC′ validation](docs/MSRC_MORAN_THEORY_ARG_SMC_VALIDATION.md).
+
+## 2026-11-22 — 10-Mb MSRC-ARG scalability benchmark
+
+- Added `validation/chromosome_scalability/`: isolated resource-bounded length,
+  taxon-count, seed and rate/suppression benchmarks; complete/censored metrics,
+  carrier/segment traces, exact-theory attempt, export audit, figures and examples.
+- Optimized ARG completed-material retirement with an endpoint sweep, bounded
+  built-in rate memoization, and ordered same-population pair indexing. Preserved
+  rates, biological rules, event/RNG order and shared-history boundaries. Added
+  `generations` tree-sequence time-unit metadata. SMC′ source is unchanged.
+- Three original four-taxon MSRC seeds complete 10 Mb in 87.29–98.09 seconds,
+  236.70–237.91 MiB including inline history generation and exports. They have
+  571–622 marginal intervals and 543–580 distinct dated genealogies. Cached
+  history workflows use about 409–410 MiB; scientific outputs match inline
+  replay byte-for-byte. Replays are not additional independent chromosomes.
+- Neutral 30-taxon 10-Mb controls finish in 80.16/17.65 seconds (uniform/low-map),
+  yielding 2522/1379 intervals. MSRC-ARG at 30 taxa remains time-limited at 300
+  seconds, generation 54.34, about 1.14 GiB. Its history generation succeeded;
+  the initial cache serialization exceeded 1.5 GiB, separately from the genuine
+  inline ARG scheduling bottleneck. No completion cost was extrapolated.
+- All 67 dataset attempts are retained: 50 complete, 15 time-limited, two
+  blocked-history cases; six history/cache jobs are recorded separately. Every
+  completed tree/export passes coverage, labels, branch times and species checks.
+  Neutral suppressed regions show longer spatial persistence. MSRC's contrast
+  is weaker under the recent-origin baseline, with most coalescences older than
+  origin. Three-chromosome figures are descriptive, not equivalence evidence.
+- Large-M exact Moran validation is unresolved: the unmodified msrc-paper
+  binomial inheritance kernel overflows at M=2000. No constant-p prediction
+  replaced the target. Neutral MSC predictions are explicitly separate.
+- Tests: 343 passed, one existing warning; four pinned unoptimized-engine
+  scientific digests match; three inline/cache file comparisons match; 50
+  completed export audits pass. Eight new automated tests added.
+- Readiness: CONDITIONAL for four-taxon proof-of-scale; NOT READY for requested
+  replicated approximately 30-taxon MSRC Positional ASTRAL datasets. Coordinate
+  exports exist but direct consumer integration is untested without its format
+  contract. Population-genetic statistics (Phase 8) are deferred because of
+  unresolved multitaxon performance and matched large-M validation.
+- Next: stabilize/revalidate exact binomial theory numerics, compact shared
+  histories and optimize 30-taxon scheduling without changing the generator,
+  increase independent chromosome replication, specify Positional ASTRAL adapter,
+  and separately develop a validated position-dependent SMC′. Add multisample
+  population labels, mutation/outgroup semantics and statistics after these gates.
+
+Report: [MSRC-ARG 10-Mb scalability](docs/MSRC_ARG_10MB_SCALABILITY.md).

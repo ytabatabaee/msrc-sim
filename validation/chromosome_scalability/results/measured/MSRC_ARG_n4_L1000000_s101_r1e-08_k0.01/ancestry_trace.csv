@@ -1,0 +1,45 @@
+active_carriers,active_intervals,candidate_options,edges,event_counts,logged_events,nodes,peak_rss_bytes,stage,stored_segments,time_generations,wall
+,,,,,,,423358464,history_load,,,1.1970902570028557
+4,4,,,,0,,,ARG_simulation,4,0.0,1.197684383005253
+4,4,4,0,{},0,4,423448576,ARG_simulation,4,1.2074893820279093,1.25010055200255
+4,4,4,0,{},0,4,423456768,ARG_simulation,4,7.688201314640123,1.5010909200063907
+4,4,4,0,{},0,4,423456768,ARG_simulation,4,13.352863807698174,1.751095619998523
+4,4,1,0,{},0,4,423456768,ARG_simulation,4,18.844475850868438,2.000220853005885
+4,4,4,0,{},0,4,423456768,ARG_simulation,4,25.45839585278789,2.2511174789979123
+4,4,0,0,{},0,4,423456768,ARG_simulation,4,31.237906852803107,2.501102745998651
+4,4,2,0,{},0,4,423456768,ARG_simulation,4,36.79087776224577,2.7511310870031593
+4,4,3,0,{},0,4,423456768,ARG_simulation,4,42.73123241220693,3.000636149998172
+4,4,4,0,{},0,4,423456768,ARG_simulation,4,49.535200598368334,3.2510782629979076
+4,4,4,0,{},0,4,423456768,ARG_simulation,4,56.820474945302024,3.5011066059960285
+4,4,0,0,{},0,4,423456768,ARG_simulation,4,63.241749624556775,3.7509890729998006
+4,4,2,0,{},0,4,423456768,ARG_simulation,4,69.9225437406342,4.0001545139966765
+4,4,4,0,{},0,4,423456768,ARG_simulation,4,77.00227968692447,4.251086165997549
+4,4,4,0,{},0,4,423460864,ARG_simulation,4,83.63553039658952,4.501163634995464
+5,5,6,2,{'recombination': 1},1,6,423469056,ARG_simulation,5,88.75578001599563,4.7510824680066435
+5,5,6,2,{'recombination': 1},1,6,423473152,ARG_simulation,5,93.44457228685603,5.0007295469986275
+5,5,2,2,{'recombination': 1},1,6,423473152,ARG_simulation,5,98.01316876164115,5.251125722003053
+6,6,2,4,"{'recombination': 2, 'species_boundary': 5}",7,8,425115648,ARG_simulation,6,104.32919000639775,5.501097194995964
+6,6,1,4,"{'recombination': 2, 'species_boundary': 5}",7,8,425115648,ARG_simulation,6,112.35520852491692,5.751073784995242
+7,7,14,6,"{'recombination': 3, 'species_boundary': 5}",8,10,425115648,ARG_simulation,7,120.41023214075577,6.000795871994342
+7,7,6,6,"{'recombination': 3, 'species_boundary': 5}",8,10,425115648,ARG_simulation,7,127.17333838127593,6.251084789997549
+7,7,3,6,"{'recombination': 3, 'species_boundary': 5}",8,10,425115648,ARG_simulation,7,134.8439988910385,6.501075236999895
+8,8,2,8,"{'recombination': 4, 'species_boundary': 5}",9,12,425115648,ARG_simulation,8,142.13145923322924,6.751127847004682
+9,9,3,10,"{'recombination': 5, 'species_boundary': 5}",10,14,425115648,ARG_simulation,9,148.03632480679883,7.00107499799924
+10,10,20,12,"{'recombination': 6, 'species_boundary': 5}",11,16,425115648,ARG_simulation,10,153.41261731776106,7.251100926005165
+10,10,7,12,"{'recombination': 6, 'species_boundary': 5}",11,16,425115648,ARG_simulation,10,158.29921949426011,7.501112979007303
+10,10,20,12,"{'recombination': 6, 'species_boundary': 5}",11,16,425115648,ARG_simulation,10,163.17630405274406,7.751077228007489
+11,11,17,14,"{'recombination': 7, 'species_boundary': 5}",12,18,425115648,ARG_simulation,11,167.86107934851702,8.001074100000551
+11,11,4,14,"{'recombination': 7, 'species_boundary': 5}",12,18,425115648,ARG_simulation,11,172.0379332304072,8.250317747995723
+11,11,17,14,"{'recombination': 7, 'species_boundary': 5}",12,18,425123840,ARG_simulation,11,176.13863161288253,8.501112701997044
+11,11,22,14,"{'recombination': 7, 'species_boundary': 5, 'background_transfer': 1}",13,18,425123840,ARG_simulation,11,180.07700884614667,8.75068150300649
+11,11,18,14,"{'recombination': 7, 'species_boundary': 5, 'background_transfer': 1}",13,18,425123840,ARG_simulation,11,183.94154789968474,9.001086436997866
+11,11,20,14,"{'recombination': 7, 'species_boundary': 5, 'background_transfer': 1}",13,18,425123840,ARG_simulation,11,187.89085873560055,9.251087837998057
+11,11,22,14,"{'recombination': 7, 'species_boundary': 5, 'background_transfer': 1}",13,18,425422848,ARG_simulation,11,192.092632969395,9.501221344995429
+11,11,20,14,"{'recombination': 7, 'species_boundary': 5, 'background_transfer': 1}",13,18,425422848,ARG_simulation,11,196.24932500962194,9.751108997996198
+11,11,38,14,"{'recombination': 7, 'species_boundary': 16, 'background_transfer': 1}",24,18,425635840,ARG_simulation,11,200.55235628179412,10.000365853993571
+11,11,23,14,"{'recombination': 7, 'species_boundary': 16, 'background_transfer': 3}",26,18,425635840,ARG_simulation,11,208.65082368122142,10.250801757996669
+11,11,0,14,"{'recombination': 7, 'species_boundary': 16, 'background_transfer': 3}",26,18,425635840,ARG_simulation,11,216.57869137161876,10.500594854005612
+10,10,31,16,"{'recombination': 7, 'species_boundary': 16, 'background_transfer': 3, 'coalescence': 1}",27,19,425635840,ARG_simulation,12,225.3087682331052,10.750791305006715
+11,11,38,18,"{'recombination': 8, 'species_boundary': 16, 'background_transfer': 3, 'coalescence': 1}",28,21,425635840,ARG_simulation,13,233.64218304320582,11.00054655999702
+9,10,1,20,"{'recombination': 8, 'species_boundary': 16, 'background_transfer': 3, 'coalescence': 3}",30,22,425635840,ARG_simulation,14,243.04443297221468,11.251074704996427
+,,,,,,,426479616,tree_sequence_build,,,11.59007527200447

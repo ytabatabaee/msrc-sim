@@ -1,0 +1,78 @@
+{
+  "job": {
+    "ne": 1000,
+    "divergence_step": 100,
+    "root_extension": 50,
+    "selection": 0.0,
+    "rss_gib": 1.5,
+    "seconds": 30,
+    "kind": "neutral_low",
+    "taxa": 4,
+    "length": 1000000,
+    "seed": 101,
+    "rate": 1e-08,
+    "kappa": 0.01
+  },
+  "status": "complete",
+  "wall_seconds": 0.15791817200079095,
+  "peak_rss_bytes": 74838016,
+  "simulation_seconds": 0.01977310300571844,
+  "raw_nodes": 162,
+  "raw_edges": 278,
+  "peak_carriers": 14,
+  "peak_stored_segments": 26,
+  "event_counts": {
+    "recombination": 67,
+    "species_boundary": 12,
+    "coalescence": 70
+  },
+  "metadata": {
+    "background_model": "neutral",
+    "background_model_version": "neutral",
+    "coalescence_boundary_policy": "ordinary_MSC",
+    "marker_exchange_policy": null,
+    "sampled_backgrounds": {
+      "A": "neutral",
+      "B": "neutral",
+      "C": "neutral",
+      "D": "neutral"
+    },
+    "structured_origin_age": null
+  },
+  "build_seconds": 0.11987942700216081,
+  "simplify_seconds": 0.000908745001652278,
+  "validity": {
+    "valid": true,
+    "covered_length": 1000000.0,
+    "sample_taxa": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "minimum_branch_generations": 1.3125304751151248,
+    "validated_internal_nodes": 90
+  },
+  "validity_seconds": 0.008479062002152205,
+  "tree_file_bytes": 11116,
+  "dump_seconds": 0.00129969599947799,
+  "event_export_seconds": 0.0017276730068260804,
+  "event_log_bytes": 18854,
+  "export_seconds": 0.002832434998708777,
+  "marginal_trees": 30,
+  "ts_nodes": 28,
+  "ts_edges": 92,
+  "runtime_per_tree": 0.000659103433523948,
+  "newick_bytes": 3600,
+  "coordinate_tree_bytes": 5580,
+  "diagnostic_seconds": 0.0024745419941609725,
+  "distinct_dated_genealogies": 30,
+  "genealogy_changes": 29,
+  "quartet_topology_changes": 5,
+  "event_positions_inside": {
+    "recombination": 0,
+    "background_transfer": 0
+  },
+  "last_stage": "diagnostics",
+  "process_wall_seconds": 1.0367780130036408
+}

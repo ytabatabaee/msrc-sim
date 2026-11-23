@@ -1,0 +1,24 @@
+{
+  "total_attempts": 67,
+  "statuses": {
+    "time_limit": 15,
+    "blocked_history": 2,
+    "complete": 50
+  },
+  "complete_10Mb_4taxon_cohorts": [
+    "neutral_uniform",
+    "neutral_low",
+    "MSRC_ARG"
+  ],
+  "cohort_seeds": [
+    101,
+    202,
+    303
+  ],
+  "replication": "one independent chromosome per seed; paired settings reuse histories/streams; no genomic windows pooled",
+  "interval": "window bands are observed min-max across three chromosomes, not CIs; selected positions use exact binomial/Bonferroni intervals",
+  "exact_theory_status": "unavailable",
+  "branch_units": "generations",
+  "statistical_limit": "three chromosomes are descriptive, not sufficient for tight marginal equivalence tests",
+  "phase8": "deferred while 30-taxon MSRC scalability and matched-theory validation remain unresolved"
+}

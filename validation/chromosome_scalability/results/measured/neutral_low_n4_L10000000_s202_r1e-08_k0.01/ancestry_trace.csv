@@ -1,0 +1,17 @@
+active_carriers,active_intervals,candidate_options,edges,event_counts,logged_events,nodes,peak_rss_bytes,stage,stored_segments,time_generations,wall
+4,4,,,,0,,,ARG_simulation,4,0.0,0.00019890199473593384
+40,83,861,831,"{'recombination': 233, 'coalescence': 196, 'species_boundary': 61}",490,504,66031616,ARG_simulation,95,650.754030205246,0.2537899979943177
+35,101,1,1719,"{'recombination': 389, 'coalescence': 358, 'species_boundary': 61}",808,838,66514944,ARG_simulation,111,1031.3153368665548,0.5007300329889404
+36,99,255,3000,"{'recombination': 586, 'coalescence': 554, 'species_boundary': 61}",1201,1265,67121152,ARG_simulation,132,1651.2134649096702,0.750123164994875
+34,113,595,4083,"{'recombination': 761, 'coalescence': 731, 'species_boundary': 61}",1553,1638,67723264,ARG_simulation,162,2173.344622982153,1.000096299991128
+41,124,435,5180,"{'recombination': 933, 'coalescence': 896, 'species_boundary': 61}",1890,1997,68235264,ARG_simulation,203,2690.240524828604,1.2508613819954917
+41,127,100,5813,"{'recombination': 1021, 'coalescence': 984, 'species_boundary': 61}",2066,2181,68521984,ARG_simulation,228,2932.978249898558,1.5002050639886875
+26,98,378,6526,"{'recombination': 1134, 'coalescence': 1111, 'species_boundary': 61}",2306,2419,68882432,ARG_simulation,192,3276.9953978901226,1.750779824986239
+42,111,688,7668,"{'recombination': 1311, 'coalescence': 1273, 'species_boundary': 61}",2645,2790,69431296,ARG_simulation,248,3810.8178843564965,2.001076172993635
+35,115,211,7937,"{'recombination': 1363, 'coalescence': 1332, 'species_boundary': 61}",2756,2898,69648384,ARG_simulation,256,3959.9626929733595,2.250081139995018
+38,111,79,8774,"{'recombination': 1490, 'coalescence': 1456, 'species_boundary': 61}",3007,3162,70012928,ARG_simulation,269,4428.760220590504,2.501139465995948
+31,91,121,10003,"{'recombination': 1663, 'coalescence': 1636, 'species_boundary': 61}",3360,3526,70516736,ARG_simulation,274,5202.253341685033,2.7511003199906554
+30,83,0,11142,"{'recombination': 1866, 'coalescence': 1840, 'species_boundary': 61}",3767,3953,71118848,ARG_simulation,304,6015.365494183876,3.0010560489899945
+14,26,105,12269,"{'recombination': 2090, 'coalescence': 2078, 'species_boundary': 61}",4229,4427,71729152,ARG_simulation,244,9385.248966438325,3.2504521919909166
+,,,,,,,72949760,tree_sequence_build,,,3.50075138999091
+,,,,,,,83312640,validity,,,3.7502175369882025

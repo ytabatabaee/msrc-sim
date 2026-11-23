@@ -1,0 +1,78 @@
+{
+  "job": {
+    "ne": 1000,
+    "divergence_step": 100,
+    "root_extension": 50,
+    "selection": 0.0,
+    "rss_gib": 1.5,
+    "seconds": 60,
+    "kind": "neutral_uniform",
+    "taxa": 4,
+    "length": 10000000,
+    "seed": 303,
+    "rate": 1e-08,
+    "kappa": 0.01
+  },
+  "status": "complete",
+  "wall_seconds": 13.549925386003451,
+  "peak_rss_bytes": 100720640,
+  "simulation_seconds": 13.024758727988228,
+  "raw_nodes": 11634,
+  "raw_edges": 38787,
+  "peak_carriers": 74,
+  "peak_stored_segments": 535,
+  "event_counts": {
+    "recombination": 5593,
+    "coalescence": 5590,
+    "species_boundary": 98
+  },
+  "metadata": {
+    "background_model": "neutral",
+    "background_model_version": "neutral",
+    "coalescence_boundary_policy": "ordinary_MSC",
+    "marker_exchange_policy": null,
+    "sampled_backgrounds": {
+      "A": "neutral",
+      "B": "neutral",
+      "C": "neutral",
+      "D": "neutral"
+    },
+    "structured_origin_age": null
+  },
+  "build_seconds": 0.23569512901303824,
+  "simplify_seconds": 0.012125389010179788,
+  "validity": {
+    "valid": true,
+    "covered_length": 10000000.0,
+    "sample_taxa": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "minimum_branch_generations": 7.648247475353742,
+    "validated_internal_nodes": 1836
+  },
+  "validity_seconds": 0.12022699700901285,
+  "tree_file_bytes": 96284,
+  "dump_seconds": 0.0015702680102549493,
+  "event_export_seconds": 0.08416186799877323,
+  "event_log_bytes": 1580449,
+  "export_seconds": 0.025930871997843497,
+  "marginal_trees": 612,
+  "ts_nodes": 448,
+  "ts_edges": 1598,
+  "runtime_per_tree": 0.02128228550324874,
+  "newick_bytes": 73530,
+  "coordinate_tree_bytes": 114096,
+  "diagnostic_seconds": 0.04220122499100398,
+  "distinct_dated_genealogies": 556,
+  "genealogy_changes": 611,
+  "quartet_topology_changes": 61,
+  "event_positions_inside": {
+    "recombination": 2971,
+    "background_transfer": 0
+  },
+  "last_stage": "diagnostics",
+  "process_wall_seconds": 14.614121262988192
+}

@@ -1,0 +1,78 @@
+{
+  "job": {
+    "ne": 1000,
+    "divergence_step": 100,
+    "root_extension": 50,
+    "selection": 0.0,
+    "rss_gib": 1.5,
+    "seconds": 30,
+    "kind": "neutral_low",
+    "taxa": 4,
+    "length": 500000,
+    "seed": 202,
+    "rate": 1e-08,
+    "kappa": 0.01
+  },
+  "status": "complete",
+  "wall_seconds": 0.13146306699491106,
+  "peak_rss_bytes": 74465280,
+  "simulation_seconds": 0.004844623006647453,
+  "raw_nodes": 44,
+  "raw_edges": 64,
+  "peak_carriers": 6,
+  "peak_stored_segments": 10,
+  "event_counts": {
+    "species_boundary": 10,
+    "recombination": 15,
+    "coalescence": 18
+  },
+  "metadata": {
+    "background_model": "neutral",
+    "background_model_version": "neutral",
+    "coalescence_boundary_policy": "ordinary_MSC",
+    "marker_exchange_policy": null,
+    "sampled_backgrounds": {
+      "A": "neutral",
+      "B": "neutral",
+      "C": "neutral",
+      "D": "neutral"
+    },
+    "structured_origin_age": null
+  },
+  "build_seconds": 0.11849595099920407,
+  "simplify_seconds": 0.0008065570000326261,
+  "validity": {
+    "valid": true,
+    "covered_length": 500000.0,
+    "sample_taxa": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "minimum_branch_generations": 224.73423231818765,
+    "validated_internal_nodes": 27
+  },
+  "validity_seconds": 0.0014223899925127625,
+  "tree_file_bytes": 7820,
+  "dump_seconds": 0.0012421349965734407,
+  "event_export_seconds": 0.0007873699942138046,
+  "event_log_bytes": 4697,
+  "export_seconds": 0.0021412339992821217,
+  "marginal_trees": 9,
+  "ts_nodes": 14,
+  "ts_edges": 28,
+  "runtime_per_tree": 0.0005382914451830503,
+  "newick_bytes": 1072,
+  "coordinate_tree_bytes": 1684,
+  "diagnostic_seconds": 0.0011756630119634792,
+  "distinct_dated_genealogies": 9,
+  "genealogy_changes": 8,
+  "quartet_topology_changes": 1,
+  "event_positions_inside": {
+    "recombination": 0,
+    "background_transfer": 0
+  },
+  "last_stage": "diagnostics",
+  "process_wall_seconds": 1.029655770995305
+}

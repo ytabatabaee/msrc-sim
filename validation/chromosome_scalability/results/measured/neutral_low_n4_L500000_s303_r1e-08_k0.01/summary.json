@@ -1,0 +1,78 @@
+{
+  "job": {
+    "ne": 1000,
+    "divergence_step": 100,
+    "root_extension": 50,
+    "selection": 0.0,
+    "rss_gib": 1.5,
+    "seconds": 30,
+    "kind": "neutral_low",
+    "taxa": 4,
+    "length": 500000,
+    "seed": 303,
+    "rate": 1e-08,
+    "kappa": 0.01
+  },
+  "status": "complete",
+  "wall_seconds": 0.1529727089946391,
+  "peak_rss_bytes": 74788864,
+  "simulation_seconds": 0.01315453699498903,
+  "raw_nodes": 119,
+  "raw_edges": 246,
+  "peak_carriers": 10,
+  "peak_stored_segments": 26,
+  "event_counts": {
+    "recombination": 46,
+    "species_boundary": 12,
+    "coalescence": 49
+  },
+  "metadata": {
+    "background_model": "neutral",
+    "background_model_version": "neutral",
+    "coalescence_boundary_policy": "ordinary_MSC",
+    "marker_exchange_policy": null,
+    "sampled_backgrounds": {
+      "A": "neutral",
+      "B": "neutral",
+      "C": "neutral",
+      "D": "neutral"
+    },
+    "structured_origin_age": null
+  },
+  "build_seconds": 0.12299211400386412,
+  "simplify_seconds": 0.0008879759989213198,
+  "validity": {
+    "valid": true,
+    "covered_length": 500000.0,
+    "sample_taxa": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "minimum_branch_generations": 1.1338659452678712,
+    "validated_internal_nodes": 90
+  },
+  "validity_seconds": 0.007345404999796301,
+  "tree_file_bytes": 10980,
+  "dump_seconds": 0.0015375910006696358,
+  "event_export_seconds": 0.0011145850003231317,
+  "event_log_bytes": 13077,
+  "export_seconds": 0.0027378590020816773,
+  "marginal_trees": 30,
+  "ts_nodes": 27,
+  "ts_edges": 90,
+  "runtime_per_tree": 0.0004384845664996343,
+  "newick_bytes": 3637,
+  "coordinate_tree_bytes": 5628,
+  "diagnostic_seconds": 0.00273606700648088,
+  "distinct_dated_genealogies": 30,
+  "genealogy_changes": 29,
+  "quartet_topology_changes": 3,
+  "event_positions_inside": {
+    "recombination": 0,
+    "background_transfer": 0
+  },
+  "last_stage": "diagnostics",
+  "process_wall_seconds": 1.0452144890005002
+}

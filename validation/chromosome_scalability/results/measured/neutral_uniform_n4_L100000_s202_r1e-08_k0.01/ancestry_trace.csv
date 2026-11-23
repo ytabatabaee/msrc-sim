@@ -1,0 +1,3 @@
+active_carriers,active_intervals,logged_events,peak_rss_bytes,stage,stored_segments,time_generations,wall
+4,4,0,,ARG_simulation,4,0.0,0.0003041279996978119
+,,,67813376,tree_sequence_build,,,0.25083092400745954

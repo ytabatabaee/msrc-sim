@@ -1,0 +1,1 @@
+{"wall": 60.00110616200254, "stage": "ARG_simulation", "peak_rss_bytes": 424124416, "time_generations": 179.75318247426662, "active_carriers": 59, "stored_segments": 75, "active_intervals": 71, "nodes": 184, "edges": 197, "logged_events": 379, "event_counts": {"recombination": 89, "background_transfer": 216, "coalescence": 34, "species_boundary": 40}, "candidate_options": 103}

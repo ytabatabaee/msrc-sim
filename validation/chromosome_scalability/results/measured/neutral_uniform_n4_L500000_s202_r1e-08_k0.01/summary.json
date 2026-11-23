@@ -1,0 +1,78 @@
+{
+  "job": {
+    "ne": 1000,
+    "divergence_step": 100,
+    "root_extension": 50,
+    "selection": 0.0,
+    "rss_gib": 1.5,
+    "seconds": 30,
+    "kind": "neutral_uniform",
+    "taxa": 4,
+    "length": 500000,
+    "seed": 202,
+    "rate": 1e-08,
+    "kappa": 0.01
+  },
+  "status": "complete",
+  "wall_seconds": 0.14669792899803724,
+  "peak_rss_bytes": 74694656,
+  "simulation_seconds": 0.010867062010220252,
+  "raw_nodes": 100,
+  "raw_edges": 162,
+  "peak_carriers": 13,
+  "peak_stored_segments": 22,
+  "event_counts": {
+    "species_boundary": 12,
+    "recombination": 39,
+    "coalescence": 42
+  },
+  "metadata": {
+    "background_model": "neutral",
+    "background_model_version": "neutral",
+    "coalescence_boundary_policy": "ordinary_MSC",
+    "marker_exchange_policy": null,
+    "sampled_backgrounds": {
+      "A": "neutral",
+      "B": "neutral",
+      "C": "neutral",
+      "D": "neutral"
+    },
+    "structured_origin_age": null
+  },
+  "build_seconds": 0.1214098620112054,
+  "simplify_seconds": 0.0008234769920818508,
+  "validity": {
+    "valid": true,
+    "covered_length": 500000.0,
+    "sample_taxa": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "minimum_branch_generations": 126.20475430212196,
+    "validated_internal_nodes": 57
+  },
+  "validity_seconds": 0.006045465997885913,
+  "tree_file_bytes": 9180,
+  "dump_seconds": 0.001582305005285889,
+  "event_export_seconds": 0.0012669319985434413,
+  "event_log_bytes": 11202,
+  "export_seconds": 0.002258740001707338,
+  "marginal_trees": 19,
+  "ts_nodes": 22,
+  "ts_edges": 50,
+  "runtime_per_tree": 0.0005719506321168554,
+  "newick_bytes": 2263,
+  "coordinate_tree_bytes": 3536,
+  "diagnostic_seconds": 0.001971963996766135,
+  "distinct_dated_genealogies": 17,
+  "genealogy_changes": 18,
+  "quartet_topology_changes": 3,
+  "event_positions_inside": {
+    "recombination": 22,
+    "background_transfer": 0
+  },
+  "last_stage": "diagnostics",
+  "process_wall_seconds": 1.4048651749908458
+}

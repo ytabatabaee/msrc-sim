@@ -1,0 +1,78 @@
+{
+  "job": {
+    "ne": 1000,
+    "divergence_step": 100,
+    "root_extension": 50,
+    "selection": 0.0,
+    "rss_gib": 1.5,
+    "seconds": 30,
+    "kind": "neutral_uniform",
+    "taxa": 4,
+    "length": 1000000,
+    "seed": 101,
+    "rate": 1e-08,
+    "kappa": 0.01
+  },
+  "status": "complete",
+  "wall_seconds": 0.1724674569995841,
+  "peak_rss_bytes": 75497472,
+  "simulation_seconds": 0.02903261300525628,
+  "raw_nodes": 236,
+  "raw_edges": 392,
+  "peak_carriers": 12,
+  "peak_stored_segments": 37,
+  "event_counts": {
+    "recombination": 99,
+    "species_boundary": 15,
+    "coalescence": 101
+  },
+  "metadata": {
+    "background_model": "neutral",
+    "background_model_version": "neutral",
+    "coalescence_boundary_policy": "ordinary_MSC",
+    "marker_exchange_policy": null,
+    "sampled_backgrounds": {
+      "A": "neutral",
+      "B": "neutral",
+      "C": "neutral",
+      "D": "neutral"
+    },
+    "structured_origin_age": null
+  },
+  "build_seconds": 0.1238192400051048,
+  "simplify_seconds": 0.0009101879986701533,
+  "validity": {
+    "valid": true,
+    "covered_length": 1000000.0,
+    "sample_taxa": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "minimum_branch_generations": 103.14842151671985,
+    "validated_internal_nodes": 117
+  },
+  "validity_seconds": 0.008326243012561463,
+  "tree_file_bytes": 12164,
+  "dump_seconds": 0.0014938560052542016,
+  "event_export_seconds": 0.002026411995757371,
+  "event_log_bytes": 27500,
+  "export_seconds": 0.0031857200083322823,
+  "marginal_trees": 39,
+  "ts_nodes": 38,
+  "ts_edges": 101,
+  "runtime_per_tree": 0.0007444259744937507,
+  "newick_bytes": 4660,
+  "coordinate_tree_bytes": 7232,
+  "diagnostic_seconds": 0.003127062998828478,
+  "distinct_dated_genealogies": 38,
+  "genealogy_changes": 38,
+  "quartet_topology_changes": 3,
+  "event_positions_inside": {
+    "recombination": 35,
+    "background_transfer": 0
+  },
+  "last_stage": "diagnostics",
+  "process_wall_seconds": 1.0811068110051565
+}

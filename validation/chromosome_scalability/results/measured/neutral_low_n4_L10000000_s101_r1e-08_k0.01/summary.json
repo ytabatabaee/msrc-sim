@@ -1,0 +1,78 @@
+{
+  "job": {
+    "ne": 1000,
+    "divergence_step": 100,
+    "root_extension": 50,
+    "selection": 0.0,
+    "rss_gib": 1.5,
+    "seconds": 60,
+    "kind": "neutral_low",
+    "taxa": 4,
+    "length": 10000000,
+    "seed": 101,
+    "rate": 1e-08,
+    "kappa": 0.01
+  },
+  "status": "complete",
+  "wall_seconds": 2.6123274300043704,
+  "peak_rss_bytes": 82165760,
+  "simulation_seconds": 2.349159696008428,
+  "raw_nodes": 4263,
+  "raw_edges": 11591,
+  "peak_carriers": 51,
+  "peak_stored_segments": 277,
+  "event_counts": {
+    "recombination": 2014,
+    "coalescence": 2010,
+    "species_boundary": 63
+  },
+  "metadata": {
+    "background_model": "neutral",
+    "background_model_version": "neutral",
+    "coalescence_boundary_policy": "ordinary_MSC",
+    "marker_exchange_policy": null,
+    "sampled_backgrounds": {
+      "A": "neutral",
+      "B": "neutral",
+      "C": "neutral",
+      "D": "neutral"
+    },
+    "structured_origin_age": null
+  },
+  "build_seconds": 0.1534158670110628,
+  "simplify_seconds": 0.0047066569968592376,
+  "validity": {
+    "valid": true,
+    "covered_length": 10000000.0,
+    "sample_taxa": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "minimum_branch_generations": 1.7225179750623738,
+    "validated_internal_nodes": 933
+  },
+  "validity_seconds": 0.04141426901333034,
+  "tree_file_bytes": 53348,
+  "dump_seconds": 0.0013605099957203493,
+  "event_export_seconds": 0.02746678800031077,
+  "event_log_bytes": 563273,
+  "export_seconds": 0.012874031002866104,
+  "marginal_trees": 311,
+  "ts_nodes": 235,
+  "ts_edges": 846,
+  "runtime_per_tree": 0.007553568154367936,
+  "newick_bytes": 37240,
+  "coordinate_tree_bytes": 57808,
+  "diagnostic_seconds": 0.020502366998698562,
+  "distinct_dated_genealogies": 295,
+  "genealogy_changes": 310,
+  "quartet_topology_changes": 45,
+  "event_positions_inside": {
+    "recombination": 10,
+    "background_transfer": 0
+  },
+  "last_stage": "diagnostics",
+  "process_wall_seconds": 3.499893806001637
+}

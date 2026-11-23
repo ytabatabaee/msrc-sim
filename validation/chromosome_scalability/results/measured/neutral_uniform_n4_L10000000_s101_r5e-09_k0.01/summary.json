@@ -1,0 +1,79 @@
+{
+  "job": {
+    "ne": 1000,
+    "divergence_step": 100,
+    "root_extension": 50,
+    "selection": 0.0,
+    "rss_gib": 1.5,
+    "seconds": 60,
+    "kind": "neutral_uniform",
+    "taxa": 4,
+    "length": 10000000,
+    "seed": 101,
+    "rate": 5e-09,
+    "kappa": 0.01
+  },
+  "status": "complete",
+  "wall_seconds": 1.5220804849959677,
+  "peak_rss_bytes": 78835712,
+  "validation_algorithm": "cached_species_MRCA_v1",
+  "simulation_seconds": 1.2696826989995316,
+  "raw_nodes": 2402,
+  "raw_edges": 6001,
+  "peak_carriers": 44,
+  "peak_stored_segments": 184,
+  "event_counts": {
+    "recombination": 1103,
+    "coalescence": 1103,
+    "species_boundary": 48
+  },
+  "metadata": {
+    "background_model": "neutral",
+    "background_model_version": "neutral",
+    "coalescence_boundary_policy": "ordinary_MSC",
+    "marker_exchange_policy": null,
+    "sampled_backgrounds": {
+      "A": "neutral",
+      "B": "neutral",
+      "C": "neutral",
+      "D": "neutral"
+    },
+    "structured_origin_age": null
+  },
+  "build_seconds": 0.19623978799791075,
+  "simplify_seconds": 0.0031956550083123147,
+  "validity": {
+    "valid": true,
+    "covered_length": 10000000.0,
+    "sample_taxa": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "minimum_branch_generations": 0.7371011537470054,
+    "validated_internal_nodes": 738
+  },
+  "validity_seconds": 0.005701620000763796,
+  "tree_file_bytes": 44532,
+  "dump_seconds": 0.0016670530021656305,
+  "event_export_seconds": 0.015523520996794105,
+  "event_log_bytes": 308139,
+  "export_seconds": 0.012215269991429523,
+  "marginal_trees": 246,
+  "ts_nodes": 196,
+  "ts_edges": 682,
+  "runtime_per_tree": 0.005161311784550942,
+  "newick_bytes": 29353,
+  "coordinate_tree_bytes": 45615,
+  "diagnostic_seconds": 0.01678017299855128,
+  "distinct_dated_genealogies": 233,
+  "genealogy_changes": 245,
+  "quartet_topology_changes": 34,
+  "event_positions_inside": {
+    "recombination": 625,
+    "background_transfer": 0
+  },
+  "last_stage": "diagnostics",
+  "process_wall_seconds": 2.840530608998961
+}

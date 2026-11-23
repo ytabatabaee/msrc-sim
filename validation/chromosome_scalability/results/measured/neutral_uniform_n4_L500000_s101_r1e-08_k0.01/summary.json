@@ -1,0 +1,78 @@
+{
+  "job": {
+    "ne": 1000,
+    "divergence_step": 100,
+    "root_extension": 50,
+    "selection": 0.0,
+    "rss_gib": 1.5,
+    "seconds": 30,
+    "kind": "neutral_uniform",
+    "taxa": 4,
+    "length": 500000,
+    "seed": 101,
+    "rate": 1e-08,
+    "kappa": 0.01
+  },
+  "status": "complete",
+  "wall_seconds": 0.15996454100240953,
+  "peak_rss_bytes": 74919936,
+  "simulation_seconds": 0.014066037008888088,
+  "raw_nodes": 131,
+  "raw_edges": 203,
+  "peak_carriers": 10,
+  "peak_stored_segments": 19,
+  "event_counts": {
+    "recombination": 52,
+    "species_boundary": 12,
+    "coalescence": 55
+  },
+  "metadata": {
+    "background_model": "neutral",
+    "background_model_version": "neutral",
+    "coalescence_boundary_policy": "ordinary_MSC",
+    "marker_exchange_policy": null,
+    "sampled_backgrounds": {
+      "A": "neutral",
+      "B": "neutral",
+      "C": "neutral",
+      "D": "neutral"
+    },
+    "structured_origin_age": null
+  },
+  "build_seconds": 0.1287264880083967,
+  "simplify_seconds": 0.0008748209947953001,
+  "validity": {
+    "valid": true,
+    "covered_length": 500000.0,
+    "sample_taxa": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "minimum_branch_generations": 1.491549919682086,
+    "validated_internal_nodes": 78
+  },
+  "validity_seconds": 0.00757159800559748,
+  "tree_file_bytes": 10396,
+  "dump_seconds": 0.001526619991636835,
+  "event_export_seconds": 0.0013355239934753627,
+  "event_log_bytes": 14714,
+  "export_seconds": 0.003136749000987038,
+  "marginal_trees": 26,
+  "ts_nodes": 27,
+  "ts_edges": 74,
+  "runtime_per_tree": 0.0005410014234187726,
+  "newick_bytes": 3107,
+  "coordinate_tree_bytes": 4833,
+  "diagnostic_seconds": 0.0022350829967763275,
+  "distinct_dated_genealogies": 26,
+  "genealogy_changes": 25,
+  "quartet_topology_changes": 3,
+  "event_positions_inside": {
+    "recombination": 29,
+    "background_transfer": 0
+  },
+  "last_stage": "diagnostics",
+  "process_wall_seconds": 1.1384871320042294
+}

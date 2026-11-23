@@ -1,0 +1,86 @@
+{
+  "job": {
+    "ne": 1000,
+    "divergence_step": 100,
+    "root_extension": 50,
+    "selection": 0.0,
+    "rss_gib": 1.5,
+    "seconds": 30,
+    "kind": "neutral_uniform",
+    "taxa": 8,
+    "length": 100000,
+    "seed": 101,
+    "rate": 1e-08,
+    "kappa": 0.01
+  },
+  "status": "complete",
+  "wall_seconds": 0.1803524099959759,
+  "peak_rss_bytes": 75091968,
+  "simulation_seconds": 0.003448291012318805,
+  "raw_nodes": 34,
+  "raw_edges": 47,
+  "peak_carriers": 11,
+  "peak_stored_segments": 11,
+  "event_counts": {
+    "species_boundary": 28,
+    "recombination": 7,
+    "coalescence": 14
+  },
+  "metadata": {
+    "background_model": "neutral",
+    "background_model_version": "neutral",
+    "coalescence_boundary_policy": "ordinary_MSC",
+    "marker_exchange_policy": null,
+    "sampled_backgrounds": {
+      "T00": "neutral",
+      "T01": "neutral",
+      "T02": "neutral",
+      "T03": "neutral",
+      "T04": "neutral",
+      "T05": "neutral",
+      "T06": "neutral",
+      "T07": "neutral"
+    },
+    "structured_origin_age": null
+  },
+  "build_seconds": 0.15856890799477696,
+  "simplify_seconds": 0.001328589001786895,
+  "validity": {
+    "valid": true,
+    "covered_length": 100000.0,
+    "sample_taxa": [
+      "T00",
+      "T01",
+      "T02",
+      "T03",
+      "T04",
+      "T05",
+      "T06",
+      "T07"
+    ],
+    "minimum_branch_generations": 51.08907221385169,
+    "validated_internal_nodes": 42
+  },
+  "validity_seconds": 0.009135701999184676,
+  "tree_file_bytes": 8316,
+  "dump_seconds": 0.0022638919908786193,
+  "event_export_seconds": 0.0007238430116558447,
+  "event_log_bytes": 3754,
+  "export_seconds": 0.0026748939999379218,
+  "marginal_trees": 6,
+  "ts_nodes": 20,
+  "ts_edges": 31,
+  "runtime_per_tree": 0.0005747151687198008,
+  "newick_bytes": 1726,
+  "coordinate_tree_bytes": 2134,
+  "diagnostic_seconds": 0.001456761994631961,
+  "distinct_dated_genealogies": 6,
+  "genealogy_changes": 5,
+  "quartet_topology_changes": null,
+  "event_positions_inside": {
+    "recombination": 3,
+    "background_transfer": 0
+  },
+  "last_stage": "diagnostics",
+  "process_wall_seconds": 1.4897492489981232
+}

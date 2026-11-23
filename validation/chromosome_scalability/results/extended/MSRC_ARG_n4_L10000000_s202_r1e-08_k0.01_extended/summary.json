@@ -1,0 +1,113 @@
+{
+  "job": {
+    "ne": 1000,
+    "divergence_step": 100,
+    "root_extension": 50,
+    "selection": 0.0,
+    "rss_gib": 1.5,
+    "seconds": 300,
+    "kind": "MSRC_ARG",
+    "taxa": 4,
+    "length": 10000000,
+    "seed": 202,
+    "rate": 1e-08,
+    "kappa": 0.01,
+    "history_path": "/private/tmp/chrom-scale/measured/histories/n4_s202.pkl"
+  },
+  "status": "complete",
+  "wall_seconds": 74.09999456399237,
+  "peak_rss_bytes": 429887488,
+  "validation_algorithm": "cached_species_MRCA_v1",
+  "history_load_seconds": 1.0999371849902673,
+  "history_records": 308465,
+  "origin": 250.0,
+  "states": {
+    "A": 0,
+    "B": 1,
+    "C": 0,
+    "D": 0
+  },
+  "simulation_seconds": 72.52266990499629,
+  "raw_nodes": 10354,
+  "raw_edges": 30955,
+  "peak_carriers": 82,
+  "peak_stored_segments": 465,
+  "event_counts": {
+    "recombination": 4960,
+    "background_transfer": 279,
+    "coalescence": 4950,
+    "species_boundary": 88
+  },
+  "metadata": {
+    "background_model": "msrc_reservoir_v1",
+    "background_model_version": "reservoir_v1",
+    "coalescence_boundary_policy": "reject_absent_occupied_background",
+    "marker_exchange_policy": "reservoir_independent_of_stored_marker",
+    "sampled_backgrounds": {
+      "A": 0,
+      "B": 1,
+      "C": 0,
+      "D": 0
+    },
+    "structured_origin_age": 250.0,
+    "seed": {
+      "kind": "SeedSequence",
+      "entropy": [
+        202,
+        4,
+        1
+      ],
+      "spawn_key": [],
+      "pool_size": 4,
+      "n_children_spawned": 0
+    },
+    "rng_source": "seed",
+    "marker": 0.0,
+    "suppressed_region": [
+      3000000.0,
+      7000000.0
+    ],
+    "cross_background_suppression": 0.01
+  },
+  "build_seconds": 0.21056069500627927,
+  "simplify_seconds": 0.010001788003137335,
+  "validity": {
+    "valid": true,
+    "covered_length": 10000000.0,
+    "sample_taxa": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "minimum_branch_generations": 0.28348288893448625,
+    "validated_internal_nodes": 1866
+  },
+  "validity_seconds": 0.011952019005548209,
+  "background_validity": {
+    "valid": true,
+    "structured_coalescences": 52,
+    "ordinary_ancestral_coalescences": 4898
+  },
+  "tree_file_bytes": 99716,
+  "dump_seconds": 0.0014540509873768315,
+  "event_export_seconds": 0.07060572900809348,
+  "event_log_bytes": 1336940,
+  "export_seconds": 0.024522457999410108,
+  "marginal_trees": 622,
+  "ts_nodes": 434,
+  "ts_edges": 1723,
+  "runtime_per_tree": 0.11659593232314516,
+  "newick_bytes": 74517,
+  "coordinate_tree_bytes": 115741,
+  "diagnostic_seconds": 0.041129701989120804,
+  "distinct_dated_genealogies": 580,
+  "genealogy_changes": 621,
+  "quartet_topology_changes": 78,
+  "event_positions_inside": {
+    "recombination": 2287,
+    "background_transfer": 84
+  },
+  "last_stage": "diagnostics",
+  "process_wall_seconds": 75.49252048699418
+}

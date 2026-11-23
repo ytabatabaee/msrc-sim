@@ -1,0 +1,466 @@
+[
+  {
+    "id": "neutral_uniform_n4_L100000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.001,
+    "population_scaled_4Ne_map": 4.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 1.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "neutral_low_n4_L100000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.000604,
+    "population_scaled_4Ne_map": 2.4160000000000004,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 0.6040000000000001,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "MSRC_ARG_n4_L100000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.001,
+    "population_scaled_4Ne_map": 4.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 1.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "neutral_uniform_n4_L500000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.005,
+    "population_scaled_4Ne_map": 20.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 5.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "neutral_low_n4_L500000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.00302,
+    "population_scaled_4Ne_map": 12.08,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 3.02,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "MSRC_ARG_n4_L500000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.005,
+    "population_scaled_4Ne_map": 20.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 5.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "neutral_uniform_n4_L1000000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.01,
+    "population_scaled_4Ne_map": 40.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 10.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "neutral_low_n4_L1000000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.00604,
+    "population_scaled_4Ne_map": 24.16,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 6.04,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "MSRC_ARG_n4_L1000000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.01,
+    "population_scaled_4Ne_map": 40.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 10.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "neutral_uniform_n4_L5000000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.05,
+    "population_scaled_4Ne_map": 200.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 50.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "neutral_low_n4_L5000000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.0302,
+    "population_scaled_4Ne_map": 120.80000000000001,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 30.200000000000003,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "MSRC_ARG_n4_L5000000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.05,
+    "population_scaled_4Ne_map": 200.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 50.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "neutral_uniform_n4_L10000000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.1,
+    "population_scaled_4Ne_map": 400.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 100.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "neutral_low_n4_L10000000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.0604,
+    "population_scaled_4Ne_map": 241.60000000000002,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 60.400000000000006,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "MSRC_ARG_n4_L10000000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.1,
+    "population_scaled_4Ne_map": 400.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 100.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "neutral_uniform_n8_L100000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.001,
+    "population_scaled_4Ne_map": 4.0,
+    "origin_age": 350.0,
+    "initial_lineage_max_structured_marks": 2.8000000000000003,
+    "moran_expected_changes_upper_bound": 725000.0
+  },
+  {
+    "id": "neutral_low_n8_L100000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.000604,
+    "population_scaled_4Ne_map": 2.4160000000000004,
+    "origin_age": 350.0,
+    "initial_lineage_max_structured_marks": 1.6912,
+    "moran_expected_changes_upper_bound": 725000.0
+  },
+  {
+    "id": "MSRC_ARG_n8_L100000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.001,
+    "population_scaled_4Ne_map": 4.0,
+    "origin_age": 350.0,
+    "initial_lineage_max_structured_marks": 2.8000000000000003,
+    "moran_expected_changes_upper_bound": 725000.0
+  },
+  {
+    "id": "neutral_uniform_n8_L10000000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.1,
+    "population_scaled_4Ne_map": 400.0,
+    "origin_age": 350.0,
+    "initial_lineage_max_structured_marks": 280.0,
+    "moran_expected_changes_upper_bound": 725000.0
+  },
+  {
+    "id": "neutral_low_n8_L10000000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.0604,
+    "population_scaled_4Ne_map": 241.60000000000002,
+    "origin_age": 350.0,
+    "initial_lineage_max_structured_marks": 169.12,
+    "moran_expected_changes_upper_bound": 725000.0
+  },
+  {
+    "id": "MSRC_ARG_n8_L10000000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.1,
+    "population_scaled_4Ne_map": 400.0,
+    "origin_age": 350.0,
+    "initial_lineage_max_structured_marks": 280.0,
+    "moran_expected_changes_upper_bound": 725000.0
+  },
+  {
+    "id": "neutral_uniform_n16_L100000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.001,
+    "population_scaled_4Ne_map": 4.0,
+    "origin_age": 450.0,
+    "initial_lineage_max_structured_marks": 7.2,
+    "moran_expected_changes_upper_bound": 1525000.0
+  },
+  {
+    "id": "neutral_low_n16_L100000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.000604,
+    "population_scaled_4Ne_map": 2.4160000000000004,
+    "origin_age": 450.0,
+    "initial_lineage_max_structured_marks": 4.348800000000001,
+    "moran_expected_changes_upper_bound": 1525000.0
+  },
+  {
+    "id": "MSRC_ARG_n16_L100000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.001,
+    "population_scaled_4Ne_map": 4.0,
+    "origin_age": 450.0,
+    "initial_lineage_max_structured_marks": 7.2,
+    "moran_expected_changes_upper_bound": 1525000.0
+  },
+  {
+    "id": "neutral_uniform_n16_L10000000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.1,
+    "population_scaled_4Ne_map": 400.0,
+    "origin_age": 450.0,
+    "initial_lineage_max_structured_marks": 720.0,
+    "moran_expected_changes_upper_bound": 1525000.0
+  },
+  {
+    "id": "neutral_low_n16_L10000000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.0604,
+    "population_scaled_4Ne_map": 241.60000000000002,
+    "origin_age": 450.0,
+    "initial_lineage_max_structured_marks": 434.88,
+    "moran_expected_changes_upper_bound": 1525000.0
+  },
+  {
+    "id": "MSRC_ARG_n16_L10000000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.1,
+    "population_scaled_4Ne_map": 400.0,
+    "origin_age": 450.0,
+    "initial_lineage_max_structured_marks": 720.0,
+    "moran_expected_changes_upper_bound": 1525000.0
+  },
+  {
+    "id": "neutral_uniform_n30_L100000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.001,
+    "population_scaled_4Ne_map": 4.0,
+    "origin_age": 550.0,
+    "initial_lineage_max_structured_marks": 16.5,
+    "moran_expected_changes_upper_bound": 3025000.0
+  },
+  {
+    "id": "neutral_low_n30_L100000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.000604,
+    "population_scaled_4Ne_map": 2.4160000000000004,
+    "origin_age": 550.0,
+    "initial_lineage_max_structured_marks": 9.966000000000001,
+    "moran_expected_changes_upper_bound": 3025000.0
+  },
+  {
+    "id": "MSRC_ARG_n30_L100000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.001,
+    "population_scaled_4Ne_map": 4.0,
+    "origin_age": 550.0,
+    "initial_lineage_max_structured_marks": 16.5,
+    "moran_expected_changes_upper_bound": 3025000.0
+  },
+  {
+    "id": "neutral_uniform_n30_L10000000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.1,
+    "population_scaled_4Ne_map": 400.0,
+    "origin_age": 550.0,
+    "initial_lineage_max_structured_marks": 1650.0,
+    "moran_expected_changes_upper_bound": 3025000.0
+  },
+  {
+    "id": "neutral_low_n30_L10000000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.0604,
+    "population_scaled_4Ne_map": 241.60000000000002,
+    "origin_age": 550.0,
+    "initial_lineage_max_structured_marks": 996.6,
+    "moran_expected_changes_upper_bound": 3025000.0
+  },
+  {
+    "id": "MSRC_ARG_n30_L10000000_s101_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.1,
+    "population_scaled_4Ne_map": 400.0,
+    "origin_age": 550.0,
+    "initial_lineage_max_structured_marks": 1650.0,
+    "moran_expected_changes_upper_bound": 3025000.0
+  },
+  {
+    "id": "neutral_uniform_n4_L100000_s202_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.001,
+    "population_scaled_4Ne_map": 4.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 1.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "neutral_low_n4_L100000_s202_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.000604,
+    "population_scaled_4Ne_map": 2.4160000000000004,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 0.6040000000000001,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "MSRC_ARG_n4_L100000_s202_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.001,
+    "population_scaled_4Ne_map": 4.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 1.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "neutral_uniform_n4_L500000_s202_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.005,
+    "population_scaled_4Ne_map": 20.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 5.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "neutral_low_n4_L500000_s202_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.00302,
+    "population_scaled_4Ne_map": 12.08,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 3.02,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "MSRC_ARG_n4_L500000_s202_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.005,
+    "population_scaled_4Ne_map": 20.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 5.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "neutral_uniform_n4_L10000000_s202_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.1,
+    "population_scaled_4Ne_map": 400.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 100.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "neutral_low_n4_L10000000_s202_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.0604,
+    "population_scaled_4Ne_map": 241.60000000000002,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 60.400000000000006,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "MSRC_ARG_n4_L10000000_s202_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.1,
+    "population_scaled_4Ne_map": 400.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 100.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "neutral_uniform_n4_L100000_s303_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.001,
+    "population_scaled_4Ne_map": 4.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 1.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "neutral_low_n4_L100000_s303_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.000604,
+    "population_scaled_4Ne_map": 2.4160000000000004,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 0.6040000000000001,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "MSRC_ARG_n4_L100000_s303_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.001,
+    "population_scaled_4Ne_map": 4.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 1.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "neutral_uniform_n4_L500000_s303_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.005,
+    "population_scaled_4Ne_map": 20.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 5.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "neutral_low_n4_L500000_s303_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.00302,
+    "population_scaled_4Ne_map": 12.08,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 3.02,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "MSRC_ARG_n4_L500000_s303_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.005,
+    "population_scaled_4Ne_map": 20.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 5.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "neutral_uniform_n4_L10000000_s303_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.1,
+    "population_scaled_4Ne_map": 400.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 100.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "neutral_low_n4_L10000000_s303_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.0604,
+    "population_scaled_4Ne_map": 241.60000000000002,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 60.400000000000006,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "MSRC_ARG_n4_L10000000_s303_r1e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.1,
+    "population_scaled_4Ne_map": 400.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 100.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "MSRC_ARG_n4_L10000000_s101_r1e-08_k0.0",
+    "chromosomal_rate_per_lineage": 0.1,
+    "population_scaled_4Ne_map": 400.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 100.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "MSRC_ARG_n4_L10000000_s101_r1e-08_k0.1",
+    "chromosomal_rate_per_lineage": 0.1,
+    "population_scaled_4Ne_map": 400.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 100.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "MSRC_ARG_n4_L10000000_s101_r1e-08_k1.0",
+    "chromosomal_rate_per_lineage": 0.1,
+    "population_scaled_4Ne_map": 400.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 100.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "neutral_uniform_n4_L10000000_s101_r5e-09_k0.01",
+    "chromosomal_rate_per_lineage": 0.05,
+    "population_scaled_4Ne_map": 200.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 50.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "MSRC_ARG_n4_L10000000_s101_r5e-09_k0.01",
+    "chromosomal_rate_per_lineage": 0.05,
+    "population_scaled_4Ne_map": 200.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 50.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "neutral_uniform_n4_L10000000_s101_r2e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.2,
+    "population_scaled_4Ne_map": 800.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 200.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  },
+  {
+    "id": "MSRC_ARG_n4_L10000000_s101_r2e-08_k0.01",
+    "chromosomal_rate_per_lineage": 0.2,
+    "population_scaled_4Ne_map": 800.0,
+    "origin_age": 250.0,
+    "initial_lineage_max_structured_marks": 200.0,
+    "moran_expected_changes_upper_bound": 325000.0
+  }
+]

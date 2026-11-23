@@ -264,3 +264,11 @@ The `examples/` directory contains ready-to-run configs:
 If you use `msrc-sim`, please cite:
 
 > Yasamin Tabatabaee, Siavash Mirarab, and Jian Ma. *Suppressed recombination generates introgression-like signals and biases phylogenomic inference.* 2026.
+
+## Chromosome-scale MSRC-ARG benchmark
+
+The [10-Mb scalability report](docs/MSRC_ARG_10MB_SCALABILITY.md) records completed
+four-taxon chromosomes, neutral 30-taxon controls, the remaining structured
+30-taxon bottleneck, validation limits and Positional ASTRAL readiness. See the
+[reproducible benchmark workflow](validation/chromosome_scalability/README.md)
+for commands, figures, example coordinate-indexed trees and all measured attempts.

@@ -1,0 +1,78 @@
+{
+  "job": {
+    "ne": 1000,
+    "divergence_step": 100,
+    "root_extension": 50,
+    "selection": 0.0,
+    "rss_gib": 1.5,
+    "seconds": 30,
+    "kind": "neutral_low",
+    "taxa": 4,
+    "length": 500000,
+    "seed": 101,
+    "rate": 1e-08,
+    "kappa": 0.01
+  },
+  "status": "complete",
+  "wall_seconds": 0.1366828699974576,
+  "peak_rss_bytes": 74670080,
+  "simulation_seconds": 0.005637244001263753,
+  "raw_nodes": 57,
+  "raw_edges": 97,
+  "peak_carriers": 10,
+  "peak_stored_segments": 14,
+  "event_counts": {
+    "recombination": 20,
+    "species_boundary": 10,
+    "coalescence": 23
+  },
+  "metadata": {
+    "background_model": "neutral",
+    "background_model_version": "neutral",
+    "coalescence_boundary_policy": "ordinary_MSC",
+    "marker_exchange_policy": null,
+    "sampled_backgrounds": {
+      "A": "neutral",
+      "B": "neutral",
+      "C": "neutral",
+      "D": "neutral"
+    },
+    "structured_origin_age": null
+  },
+  "build_seconds": 0.12223225399793591,
+  "simplify_seconds": 0.0008293129940284416,
+  "validity": {
+    "valid": true,
+    "covered_length": 500000.0,
+    "sample_taxa": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "minimum_branch_generations": 54.07113642659942,
+    "validated_internal_nodes": 39
+  },
+  "validity_seconds": 0.0018026550096692517,
+  "tree_file_bytes": 8660,
+  "dump_seconds": 0.0013970760046504438,
+  "event_export_seconds": 0.000842310008010827,
+  "event_log_bytes": 6037,
+  "export_seconds": 0.002082395993056707,
+  "marginal_trees": 13,
+  "ts_nodes": 17,
+  "ts_edges": 45,
+  "runtime_per_tree": 0.00043363415394336556,
+  "newick_bytes": 1562,
+  "coordinate_tree_bytes": 2442,
+  "diagnostic_seconds": 0.0013990970037411898,
+  "distinct_dated_genealogies": 13,
+  "genealogy_changes": 12,
+  "quartet_topology_changes": 2,
+  "event_positions_inside": {
+    "recombination": 0,
+    "background_transfer": 0
+  },
+  "last_stage": "diagnostics",
+  "process_wall_seconds": 1.0367524869943736
+}

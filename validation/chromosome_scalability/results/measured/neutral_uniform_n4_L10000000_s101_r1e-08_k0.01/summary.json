@@ -1,0 +1,78 @@
+{
+  "job": {
+    "ne": 1000,
+    "divergence_step": 100,
+    "root_extension": 50,
+    "selection": 0.0,
+    "rss_gib": 1.5,
+    "seconds": 60,
+    "kind": "neutral_uniform",
+    "taxa": 4,
+    "length": 10000000,
+    "seed": 101,
+    "rate": 1e-08,
+    "kappa": 0.01
+  },
+  "status": "complete",
+  "wall_seconds": 10.97645007999381,
+  "peak_rss_bytes": 95756288,
+  "simulation_seconds": 10.525255211003241,
+  "raw_nodes": 10316,
+  "raw_edges": 29943,
+  "peak_carriers": 73,
+  "peak_stored_segments": 481,
+  "event_counts": {
+    "recombination": 4958,
+    "coalescence": 4955,
+    "species_boundary": 85
+  },
+  "metadata": {
+    "background_model": "neutral",
+    "background_model_version": "neutral",
+    "coalescence_boundary_policy": "ordinary_MSC",
+    "marker_exchange_policy": null,
+    "sampled_backgrounds": {
+      "A": "neutral",
+      "B": "neutral",
+      "C": "neutral",
+      "D": "neutral"
+    },
+    "structured_origin_age": null
+  },
+  "build_seconds": 0.21083207399351522,
+  "simplify_seconds": 0.008682521991431713,
+  "validity": {
+    "valid": true,
+    "covered_length": 10000000.0,
+    "sample_taxa": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "minimum_branch_generations": 1.8249144275210938,
+    "validated_internal_nodes": 1650
+  },
+  "validity_seconds": 0.09983765699143987,
+  "tree_file_bytes": 88196,
+  "dump_seconds": 0.001455302000977099,
+  "event_export_seconds": 0.07035452401032671,
+  "event_log_bytes": 1396946,
+  "export_seconds": 0.02094043800025247,
+  "marginal_trees": 550,
+  "ts_nodes": 400,
+  "ts_edges": 1473,
+  "runtime_per_tree": 0.01913682765636953,
+  "newick_bytes": 65876,
+  "coordinate_tree_bytes": 102339,
+  "diagnostic_seconds": 0.036164176010061055,
+  "distinct_dated_genealogies": 518,
+  "genealogy_changes": 549,
+  "quartet_topology_changes": 72,
+  "event_positions_inside": {
+    "recombination": 2301,
+    "background_transfer": 0
+  },
+  "last_stage": "diagnostics",
+  "process_wall_seconds": 11.951158412994118
+}

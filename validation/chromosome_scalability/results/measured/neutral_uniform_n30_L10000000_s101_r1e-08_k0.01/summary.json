@@ -1,0 +1,63 @@
+{
+  "job": {
+    "ne": 1000,
+    "divergence_step": 100,
+    "root_extension": 50,
+    "selection": 0.0,
+    "rss_gib": 1.5,
+    "seconds": 60,
+    "kind": "neutral_uniform",
+    "taxa": 30,
+    "length": 10000000,
+    "seed": 101,
+    "rate": 1e-08,
+    "kappa": 0.01
+  },
+  "status": "time_limit",
+  "wall_seconds": 60.00898862899339,
+  "peak_rss_bytes": 79675392,
+  "failed_stage": "ARG_simulation",
+  "last_snapshot": {
+    "wall": 60.00032500499219,
+    "stage": "ARG_simulation",
+    "peak_rss_bytes": 79667200,
+    "time_generations": 649.7230880480063,
+    "active_carriers": 102,
+    "stored_segments": 442,
+    "active_intervals": 368,
+    "nodes": 6966,
+    "edges": 16527,
+    "logged_events": 7909,
+    "event_counts": {
+      "recombination": 3131,
+      "coalescence": 3059,
+      "species_boundary": 1719
+    },
+    "candidate_options": 2775
+  },
+  "last_stage": "ARG_simulation",
+  "partial_event_counts": {
+    "recombination": 3131,
+    "coalescence": 3059,
+    "species_boundary": 1719
+  },
+  "partial_state": {
+    "wall": 60.00032500499219,
+    "stage": "ARG_simulation",
+    "peak_rss_bytes": 79667200,
+    "time_generations": 649.7230880480063,
+    "active_carriers": 102,
+    "stored_segments": 442,
+    "active_intervals": 368,
+    "nodes": 6966,
+    "edges": 16527,
+    "logged_events": 7909,
+    "event_counts": {
+      "recombination": 3131,
+      "coalescence": 3059,
+      "species_boundary": 1719
+    },
+    "candidate_options": 2775
+  },
+  "process_wall_seconds": 61.190128739996
+}

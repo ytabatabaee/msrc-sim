@@ -1,0 +1,7 @@
+active_carriers,active_intervals,candidate_options,edges,event_counts,logged_events,nodes,peak_rss_bytes,stage,stored_segments,time_generations,wall
+4,4,,,,0,,,ARG_simulation,4,0.0,0.0002016119979089126
+37,69,703,1086,"{'recombination': 266, 'coalescence': 233, 'species_boundary': 48}",547,598,66293760,ARG_simulation,80,1003.3819429188442,0.2522988310083747
+34,101,595,2451,"{'recombination': 505, 'coalescence': 475, 'species_boundary': 48}",1028,1108,67010560,ARG_simulation,136,1978.3423810401978,0.5010785890044644
+29,89,465,4039,"{'recombination': 777, 'coalescence': 752, 'species_boundary': 48}",1577,1689,67796992,ARG_simulation,173,3266.7622075638055,0.7510805150086526
+13,25,0,5755,"{'recombination': 1049, 'coalescence': 1038, 'species_boundary': 48}",2135,2277,68562944,ARG_simulation,147,6350.55021407516,1.0008232450054493
+,,,,,,,77107200,tree_sequence_build,,,1.250303883003653

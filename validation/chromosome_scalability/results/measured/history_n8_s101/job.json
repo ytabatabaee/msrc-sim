@@ -1,0 +1,12 @@
+{
+  "ne": 1000,
+  "divergence_step": 100,
+  "root_extension": 50,
+  "selection": 0.0,
+  "rss_gib": 1.5,
+  "seconds": 60,
+  "kind": "history",
+  "taxa": 8,
+  "seed": 101,
+  "history_path": "/private/tmp/chrom-scale/measured/histories/n8_s101.pkl"
+}

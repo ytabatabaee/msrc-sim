@@ -1,0 +1,4 @@
+active_carriers,active_intervals,logged_events,peak_rss_bytes,stage,stored_segments,time_generations,wall
+30,30,0,,ARG_simulation,30,0.0,0.0009217479964718223
+,,,74743808,validity,,,0.25484860700089484
+,,,74772480,validity,,,0.5003386850003153

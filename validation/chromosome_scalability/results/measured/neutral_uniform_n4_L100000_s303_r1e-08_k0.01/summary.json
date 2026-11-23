@@ -1,0 +1,78 @@
+{
+  "job": {
+    "ne": 1000,
+    "divergence_step": 100,
+    "root_extension": 50,
+    "selection": 0.0,
+    "rss_gib": 1.5,
+    "seconds": 30,
+    "kind": "neutral_uniform",
+    "taxa": 4,
+    "length": 100000,
+    "seed": 303,
+    "rate": 1e-08,
+    "kappa": 0.01
+  },
+  "status": "complete",
+  "wall_seconds": 0.14411855398793705,
+  "peak_rss_bytes": 74313728,
+  "simulation_seconds": 0.0015456450055353343,
+  "raw_nodes": 12,
+  "raw_edges": 13,
+  "peak_carriers": 4,
+  "peak_stored_segments": 4,
+  "event_counts": {
+    "species_boundary": 8,
+    "coalescence": 5,
+    "recombination": 2
+  },
+  "metadata": {
+    "background_model": "neutral",
+    "background_model_version": "neutral",
+    "coalescence_boundary_policy": "ordinary_MSC",
+    "marker_exchange_policy": null,
+    "sampled_backgrounds": {
+      "A": "neutral",
+      "B": "neutral",
+      "C": "neutral",
+      "D": "neutral"
+    },
+    "structured_origin_age": null
+  },
+  "build_seconds": 0.13650474599853624,
+  "simplify_seconds": 0.0007854209979996085,
+  "validity": {
+    "valid": true,
+    "covered_length": 100000.0,
+    "sample_taxa": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "minimum_branch_generations": 122.32983972299135,
+    "validated_internal_nodes": 6
+  },
+  "validity_seconds": 0.0004009910044260323,
+  "tree_file_bytes": 6684,
+  "dump_seconds": 0.0011711429979186505,
+  "event_export_seconds": 0.0005035639915149659,
+  "event_log_bytes": 1289,
+  "export_seconds": 0.002093114992021583,
+  "marginal_trees": 2,
+  "ts_nodes": 8,
+  "ts_edges": 8,
+  "runtime_per_tree": 0.0007728225027676672,
+  "newick_bytes": 236,
+  "coordinate_tree_bytes": 383,
+  "diagnostic_seconds": 0.0006645840039709583,
+  "distinct_dated_genealogies": 2,
+  "genealogy_changes": 1,
+  "quartet_topology_changes": 0,
+  "event_positions_inside": {
+    "recombination": 2,
+    "background_transfer": 0
+  },
+  "last_stage": "diagnostics",
+  "process_wall_seconds": 1.2426294460019562
+}

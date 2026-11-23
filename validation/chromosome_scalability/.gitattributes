@@ -1,0 +1,2 @@
+# Preserve raw csv.writer CRLF output; carriage returns are intentional.
+*.csv whitespace=cr-at-eol

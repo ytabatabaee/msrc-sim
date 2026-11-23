@@ -1,0 +1,18 @@
+active_carriers,active_intervals,candidate_options,edges,event_counts,logged_events,nodes,peak_rss_bytes,stage,stored_segments,time_generations,wall
+4,4,,,,0,,,ARG_simulation,4,0.0,0.00021042399748694152
+33,66,126,728,"{'recombination': 209, 'coalescence': 180, 'species_boundary': 66}",455,460,66043904,ARG_simulation,79,559.9257768668491,0.250116627998068
+41,97,903,1451,"{'recombination': 381, 'coalescence': 343, 'species_boundary': 66}",790,817,66547712,ARG_simulation,106,942.9476866090216,0.5003427880001254
+43,123,990,2155,"{'recombination': 515, 'coalescence': 476, 'species_boundary': 66}",1057,1102,67018752,ARG_simulation,142,1190.765501054663,0.7510836440051207
+49,131,335,2958,"{'recombination': 648, 'coalescence': 603, 'species_boundary': 66}",1317,1387,67420160,ARG_simulation,151,1470.8450905663603,1.0010721379949246
+45,150,0,3680,"{'recombination': 763, 'coalescence': 722, 'species_boundary': 66}",1551,1633,67780608,ARG_simulation,189,1689.624409766134,1.2510637920058798
+45,164,1035,4474,"{'recombination': 885, 'coalescence': 844, 'species_boundary': 66}",1795,1888,68173824,ARG_simulation,208,1922.1183971102341,1.5011166460026288
+49,174,0,5476,"{'recombination': 1018, 'coalescence': 973, 'species_boundary': 66}",2057,2170,68599808,ARG_simulation,237,2180.7055254545717,1.7504119520017412
+44,174,9,6699,"{'recombination': 1170, 'coalescence': 1130, 'species_boundary': 66}",2366,2492,69152768,ARG_simulation,257,2531.015631812105,2.001083341005142
+38,167,339,8163,"{'recombination': 1325, 'coalescence': 1291, 'species_boundary': 66}",2682,2823,69636096,ARG_simulation,278,2943.983603413613,2.251105542993173
+37,145,703,9756,"{'recombination': 1513, 'coalescence': 1480, 'species_boundary': 66}",3059,3218,70246400,ARG_simulation,299,3489.5945786474467,2.500485234995722
+29,113,465,11228,"{'recombination': 1699, 'coalescence': 1673, 'species_boundary': 66}",3438,3610,70799360,ARG_simulation,273,4048.784172273557,2.7503895389963873
+32,113,528,12733,"{'recombination': 1909, 'coalescence': 1881, 'species_boundary': 66}",3856,4042,71438336,ARG_simulation,329,4904.292404580713,3.001073674997315
+26,82,378,14124,"{'recombination': 2118, 'coalescence': 2095, 'species_boundary': 66}",4279,4477,72105984,ARG_simulation,269,5734.19526314822,3.250751283005229
+26,71,70,15584,"{'recombination': 2346, 'coalescence': 2323, 'species_boundary': 66}",4735,4949,72753152,ARG_simulation,308,6867.775883136192,3.50107714200567
+12,18,78,16951,"{'recombination': 2643, 'coalescence': 2633, 'species_boundary': 66}",5342,5574,73527296,ARG_simulation,270,10448.394977588234,3.7511142250004923
+,,,,,,,85573632,validity,,,4.001049287006026

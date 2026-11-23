@@ -1,0 +1,78 @@
+{
+  "job": {
+    "ne": 1000,
+    "divergence_step": 100,
+    "root_extension": 50,
+    "selection": 0.0,
+    "rss_gib": 1.5,
+    "seconds": 60,
+    "kind": "neutral_uniform",
+    "taxa": 4,
+    "length": 10000000,
+    "seed": 202,
+    "rate": 1e-08,
+    "kappa": 0.01
+  },
+  "status": "complete",
+  "wall_seconds": 11.475131130006048,
+  "peak_rss_bytes": 96428032,
+  "simulation_seconds": 11.00890006699774,
+  "raw_nodes": 9854,
+  "raw_edges": 31236,
+  "peak_carriers": 76,
+  "peak_stored_segments": 538,
+  "event_counts": {
+    "recombination": 4717,
+    "coalescence": 4712,
+    "species_boundary": 87
+  },
+  "metadata": {
+    "background_model": "neutral",
+    "background_model_version": "neutral",
+    "coalescence_boundary_policy": "ordinary_MSC",
+    "marker_exchange_policy": null,
+    "sampled_backgrounds": {
+      "A": "neutral",
+      "B": "neutral",
+      "C": "neutral",
+      "D": "neutral"
+    },
+    "structured_origin_age": null
+  },
+  "build_seconds": 0.21236267399217468,
+  "simplify_seconds": 0.009156291009276174,
+  "validity": {
+    "valid": true,
+    "covered_length": 10000000.0,
+    "sample_taxa": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "minimum_branch_generations": 1.0050348742206552,
+    "validated_internal_nodes": 1770
+  },
+  "validity_seconds": 0.1100473550031893,
+  "tree_file_bytes": 94076,
+  "dump_seconds": 0.0014178960118442774,
+  "event_export_seconds": 0.06550822900317144,
+  "event_log_bytes": 1327517,
+  "export_seconds": 0.023329009010922164,
+  "marginal_trees": 590,
+  "ts_nodes": 420,
+  "ts_edges": 1596,
+  "runtime_per_tree": 0.018659152655928372,
+  "newick_bytes": 70747,
+  "coordinate_tree_bytes": 109860,
+  "diagnostic_seconds": 0.04157954799302388,
+  "distinct_dated_genealogies": 550,
+  "genealogy_changes": 589,
+  "quartet_topology_changes": 90,
+  "event_positions_inside": {
+    "recombination": 2264,
+    "background_transfer": 0
+  },
+  "last_stage": "diagnostics",
+  "process_wall_seconds": 12.547807939001359
+}

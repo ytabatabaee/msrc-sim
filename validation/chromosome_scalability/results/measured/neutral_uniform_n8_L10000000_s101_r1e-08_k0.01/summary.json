@@ -1,0 +1,86 @@
+{
+  "job": {
+    "ne": 1000,
+    "divergence_step": 100,
+    "root_extension": 50,
+    "selection": 0.0,
+    "rss_gib": 1.5,
+    "seconds": 60,
+    "kind": "neutral_uniform",
+    "taxa": 8,
+    "length": 10000000,
+    "seed": 101,
+    "rate": 1e-08,
+    "kappa": 0.01
+  },
+  "status": "complete",
+  "wall_seconds": 18.543903849000344,
+  "peak_rss_bytes": 99287040,
+  "simulation_seconds": 17.188131843999145,
+  "raw_nodes": 11464,
+  "raw_edges": 36107,
+  "peak_carriers": 134,
+  "peak_stored_segments": 491,
+  "event_counts": {
+    "recombination": 5410,
+    "coalescence": 5407,
+    "species_boundary": 313
+  },
+  "metadata": {
+    "background_model": "neutral",
+    "background_model_version": "neutral",
+    "coalescence_boundary_policy": "ordinary_MSC",
+    "marker_exchange_policy": null,
+    "sampled_backgrounds": {
+      "T00": "neutral",
+      "T01": "neutral",
+      "T02": "neutral",
+      "T03": "neutral",
+      "T04": "neutral",
+      "T05": "neutral",
+      "T06": "neutral",
+      "T07": "neutral"
+    },
+    "structured_origin_age": null
+  },
+  "build_seconds": 0.31923497999378014,
+  "simplify_seconds": 0.014743188003194518,
+  "validity": {
+    "valid": true,
+    "covered_length": 10000000.0,
+    "sample_taxa": [
+      "T00",
+      "T01",
+      "T02",
+      "T03",
+      "T04",
+      "T05",
+      "T06",
+      "T07"
+    ],
+    "minimum_branch_generations": 1.211996769847417,
+    "validated_internal_nodes": 6566
+  },
+  "validity_seconds": 0.7858113499969477,
+  "tree_file_bytes": 160148,
+  "dump_seconds": 0.0020567229948937893,
+  "event_export_seconds": 0.08116737900127191,
+  "event_log_bytes": 1536505,
+  "export_seconds": 0.06774171500001103,
+  "marginal_trees": 938,
+  "ts_nodes": 644,
+  "ts_edges": 2974,
+  "runtime_per_tree": 0.018324234375265612,
+  "newick_bytes": 269673,
+  "coordinate_tree_bytes": 331911,
+  "diagnostic_seconds": 0.08177197899203748,
+  "distinct_dated_genealogies": 919,
+  "genealogy_changes": 937,
+  "quartet_topology_changes": null,
+  "event_positions_inside": {
+    "recombination": 2732,
+    "background_transfer": 0
+  },
+  "last_stage": "diagnostics",
+  "process_wall_seconds": 19.542022691006423
+}

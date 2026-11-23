@@ -1,0 +1,88 @@
+{
+  "job": {
+    "ne": 1000,
+    "divergence_step": 100,
+    "root_extension": 50,
+    "selection": 0.0,
+    "rss_gib": 1.5,
+    "seconds": 60,
+    "kind": "neutral_low",
+    "taxa": 30,
+    "length": 10000000,
+    "seed": 101,
+    "rate": 1e-08,
+    "kappa": 0.01
+  },
+  "status": "time_limit",
+  "wall_seconds": 60.00161511699844,
+  "peak_rss_bytes": 93814784,
+  "simulation_seconds": 19.241432488997816,
+  "raw_nodes": 9211,
+  "raw_edges": 25214,
+  "peak_carriers": 319,
+  "peak_stored_segments": 546,
+  "event_counts": {
+    "recombination": 4152,
+    "coalescence": 4176,
+    "species_boundary": 1118
+  },
+  "metadata": {
+    "background_model": "neutral",
+    "background_model_version": "neutral",
+    "coalescence_boundary_policy": "ordinary_MSC",
+    "marker_exchange_policy": null,
+    "sampled_backgrounds": {
+      "T00": "neutral",
+      "T01": "neutral",
+      "T02": "neutral",
+      "T03": "neutral",
+      "T04": "neutral",
+      "T05": "neutral",
+      "T06": "neutral",
+      "T07": "neutral",
+      "T08": "neutral",
+      "T09": "neutral",
+      "T10": "neutral",
+      "T11": "neutral",
+      "T12": "neutral",
+      "T13": "neutral",
+      "T14": "neutral",
+      "T15": "neutral",
+      "T16": "neutral",
+      "T17": "neutral",
+      "T18": "neutral",
+      "T19": "neutral",
+      "T20": "neutral",
+      "T21": "neutral",
+      "T22": "neutral",
+      "T23": "neutral",
+      "T24": "neutral",
+      "T25": "neutral",
+      "T26": "neutral",
+      "T27": "neutral",
+      "T28": "neutral",
+      "T29": "neutral"
+    },
+    "structured_origin_age": null
+  },
+  "build_seconds": 0.2665512149978895,
+  "simplify_seconds": 0.010720313002821058,
+  "failed_stage": "validity",
+  "last_snapshot": {
+    "wall": 60.000870873001986,
+    "stage": "validity",
+    "peak_rss_bytes": 93814784
+  },
+  "last_stage": "validity",
+  "partial_event_counts": {
+    "recombination": 3909,
+    "coalescence": 3910,
+    "species_boundary": 1118
+  },
+  "partial_state": {
+    "wall": 60.000870873001986,
+    "stage": "validity",
+    "peak_rss_bytes": 93814784
+  },
+  "process_wall_seconds": 61.133094586999505
+}

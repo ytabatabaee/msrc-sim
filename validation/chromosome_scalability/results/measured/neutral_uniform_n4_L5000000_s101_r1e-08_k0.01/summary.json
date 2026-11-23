@@ -1,0 +1,78 @@
+{
+  "job": {
+    "ne": 1000,
+    "divergence_step": 100,
+    "root_extension": 50,
+    "selection": 0.0,
+    "rss_gib": 1.5,
+    "seconds": 60,
+    "kind": "neutral_uniform",
+    "taxa": 4,
+    "length": 5000000,
+    "seed": 101,
+    "rate": 1e-08,
+    "kappa": 0.01
+  },
+  "status": "complete",
+  "wall_seconds": 1.3665007130039157,
+  "peak_rss_bytes": 79130624,
+  "simulation_seconds": 1.0857514860108495,
+  "raw_nodes": 2402,
+  "raw_edges": 6001,
+  "peak_carriers": 44,
+  "peak_stored_segments": 184,
+  "event_counts": {
+    "recombination": 1103,
+    "coalescence": 1103,
+    "species_boundary": 48
+  },
+  "metadata": {
+    "background_model": "neutral",
+    "background_model_version": "neutral",
+    "coalescence_boundary_policy": "ordinary_MSC",
+    "marker_exchange_policy": null,
+    "sampled_backgrounds": {
+      "A": "neutral",
+      "B": "neutral",
+      "C": "neutral",
+      "D": "neutral"
+    },
+    "structured_origin_age": null
+  },
+  "build_seconds": 0.19567646601353772,
+  "simplify_seconds": 0.002640625010826625,
+  "validity": {
+    "valid": true,
+    "covered_length": 5000000.0,
+    "sample_taxa": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "minimum_branch_generations": 0.7371011537470054,
+    "validated_internal_nodes": 738
+  },
+  "validity_seconds": 0.033760413993149996,
+  "tree_file_bytes": 44532,
+  "dump_seconds": 0.0014771720016142353,
+  "event_export_seconds": 0.016387658994062804,
+  "event_log_bytes": 308341,
+  "export_seconds": 0.0115204510075273,
+  "marginal_trees": 246,
+  "ts_nodes": 196,
+  "ts_edges": 682,
+  "runtime_per_tree": 0.004413623926873372,
+  "newick_bytes": 29353,
+  "coordinate_tree_bytes": 45814,
+  "diagnostic_seconds": 0.018242074991576374,
+  "distinct_dated_genealogies": 233,
+  "genealogy_changes": 245,
+  "quartet_topology_changes": 34,
+  "event_positions_inside": {
+    "recombination": 625,
+    "background_transfer": 0
+  },
+  "last_stage": "diagnostics",
+  "process_wall_seconds": 2.4218396649957867
+}

@@ -1,0 +1,29 @@
+[
+  {
+    "seed": 101,
+    "identical_scientific_files": {
+      "events.csv": true,
+      "local_trees.csv": true,
+      "local_trees.nwk": true,
+      "marginals.csv": true
+    }
+  },
+  {
+    "seed": 202,
+    "identical_scientific_files": {
+      "events.csv": true,
+      "local_trees.csv": true,
+      "local_trees.nwk": true,
+      "marginals.csv": true
+    }
+  },
+  {
+    "seed": 303,
+    "identical_scientific_files": {
+      "events.csv": true,
+      "local_trees.csv": true,
+      "local_trees.nwk": true,
+      "marginals.csv": true
+    }
+  }
+]

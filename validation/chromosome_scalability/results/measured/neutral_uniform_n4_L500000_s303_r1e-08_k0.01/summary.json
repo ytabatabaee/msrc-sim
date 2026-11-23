@@ -1,0 +1,78 @@
+{
+  "job": {
+    "ne": 1000,
+    "divergence_step": 100,
+    "root_extension": 50,
+    "selection": 0.0,
+    "rss_gib": 1.5,
+    "seconds": 30,
+    "kind": "neutral_uniform",
+    "taxa": 4,
+    "length": 500000,
+    "seed": 303,
+    "rate": 1e-08,
+    "kappa": 0.01
+  },
+  "status": "complete",
+  "wall_seconds": 0.1620163070037961,
+  "peak_rss_bytes": 74952704,
+  "simulation_seconds": 0.019059671001741663,
+  "raw_nodes": 169,
+  "raw_edges": 300,
+  "peak_carriers": 11,
+  "peak_stored_segments": 38,
+  "event_counts": {
+    "recombination": 67,
+    "species_boundary": 16,
+    "coalescence": 69
+  },
+  "metadata": {
+    "background_model": "neutral",
+    "background_model_version": "neutral",
+    "coalescence_boundary_policy": "ordinary_MSC",
+    "marker_exchange_policy": null,
+    "sampled_backgrounds": {
+      "A": "neutral",
+      "B": "neutral",
+      "C": "neutral",
+      "D": "neutral"
+    },
+    "structured_origin_age": null
+  },
+  "build_seconds": 0.1241980019985931,
+  "simplify_seconds": 0.000886287001776509,
+  "validity": {
+    "valid": true,
+    "covered_length": 500000.0,
+    "sample_taxa": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "minimum_branch_generations": 41.55766900415682,
+    "validated_internal_nodes": 102
+  },
+  "validity_seconds": 0.008062278997385874,
+  "tree_file_bytes": 11612,
+  "dump_seconds": 0.0015466150071006268,
+  "event_export_seconds": 0.0013475260057020932,
+  "event_log_bytes": 18905,
+  "export_seconds": 0.003459180996287614,
+  "marginal_trees": 34,
+  "ts_nodes": 35,
+  "ts_edges": 92,
+  "runtime_per_tree": 0.0005605785588747548,
+  "newick_bytes": 4070,
+  "coordinate_tree_bytes": 6324,
+  "diagnostic_seconds": 0.0028505930094979703,
+  "distinct_dated_genealogies": 33,
+  "genealogy_changes": 33,
+  "quartet_topology_changes": 5,
+  "event_positions_inside": {
+    "recombination": 24,
+    "background_transfer": 0
+  },
+  "last_stage": "diagnostics",
+  "process_wall_seconds": 1.0877619219972985
+}

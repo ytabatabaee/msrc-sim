@@ -1,0 +1,41 @@
+         44966265 function calls (44966145 primitive calls) in 18.081 seconds
+
+   Ordered by: cumulative time
+   List reduced from 104 to 35 due to restriction <35>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    1.737    1.737   30.001   30.001 engine.py:56(simulate_arg)
+      378    3.786    0.010   26.219    0.069 engine.py:104(refresh_completed_material)
+166443/166363    2.570    0.000   19.804    0.000 {built-in method builtins.sum}
+ 29029719    5.060    0.000    5.063    0.000 engine.py:115(<genexpr>)
+  8572017    1.426    0.000    1.426    0.000 engine.py:113(<genexpr>)
+    24473    0.092    0.000    1.281    0.000 lineages.py:43(with_active)
+   207256    0.745    0.000    1.051    0.000 {built-in method builtins.sorted}
+   130017    0.408    0.000    1.044    0.000 segments.py:52(interval_union)
+    25733    0.209    0.000    0.754    0.000 lineages.py:20(__post_init__)
+    52005    0.061    0.000    0.600    0.000 recombination_map.py:55(crossover_hazard_and_region)
+  2098124    0.496    0.000    0.496    0.000 {method 'append' of 'list' objects}
+    52444    0.050    0.000    0.332    0.000 recombination_map.py:39(eligible_crossover_region)
+  1580638    0.330    0.000    0.330    0.000 neutral.py:8(coalescence_rate)
+   473805    0.268    0.000    0.289    0.000 segments.py:54(<genexpr>)
+  1630928    0.248    0.000    0.249    0.000 engine.py:155(<genexpr>)
+    52005    0.112    0.000    0.211    0.000 recombination_map.py:32(integrated_rate)
+    26111    0.087    0.000    0.180    0.000 segments.py:19(normalize)
+      439    0.009    0.000    0.081    0.000 recombination.py:8(recombine)
+   252713    0.064    0.000    0.065    0.000 {built-in method builtins.max}
+    52444    0.060    0.000    0.060    0.000 recombination_map.py:28(_pieces)
+       60    0.003    0.000    0.051    0.001 worker.py:65(sample)
+   119263    0.042    0.000    0.042    0.000 lineages.py:28(<genexpr>)
+      378    0.010    0.000    0.042    0.000 coalescence.py:7(union_lineage)
+       60    0.001    0.000    0.035    0.001 __init__.py:799(write_text)
+      878    0.020    0.000    0.034    0.000 recombination.py:29(remap)
+    52276    0.022    0.000    0.030    0.000 engine.py:252(<genexpr>)
+       60    0.000    0.000    0.022    0.000 __init__.py:763(open)
+       60    0.019    0.000    0.022    0.000 {built-in method _io.open}
+    74145    0.021    0.000    0.021    0.000 {built-in method builtins.min}
+    72198    0.021    0.000    0.021    0.000 lineages.py:26(<genexpr>)
+      439    0.004    0.000    0.020    0.000 recombination_map.py:64(sample_position)
+    47901    0.017    0.000    0.017    0.000 segments.py:20(<lambda>)
+    53263    0.017    0.000    0.017    0.000 {built-in method builtins.hasattr}
+       60    0.012    0.000    0.012    0.000 {method '__exit__' of '_io._IOBase' objects}
+    61809    0.010    0.000    0.010    0.000 {built-in method builtins.len}

@@ -1,0 +1,406 @@
+{
+  "cases": [
+    {
+      "case": "MSRC_ARG_n4_L10000000_s101_r5e-09_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 236,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "MSRC_ARG_n4_L1000000_s101_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 60,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "MSRC_ARG_n4_L100000_s101_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 7,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "MSRC_ARG_n4_L100000_s202_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 5,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "MSRC_ARG_n4_L100000_s303_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 4,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "MSRC_ARG_n4_L5000000_s101_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 236,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "MSRC_ARG_n4_L500000_s101_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 26,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "MSRC_ARG_n4_L500000_s202_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 38,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "MSRC_ARG_n4_L500000_s303_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 28,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_low_n16_L10000000_s101_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 979,
+      "taxa": 16,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_low_n16_L100000_s101_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 8,
+      "taxa": 16,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_low_n30_L100000_s101_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 14,
+      "taxa": 30,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_low_n4_L10000000_s101_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 311,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_low_n4_L10000000_s202_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 354,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_low_n4_L10000000_s303_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 404,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_low_n4_L1000000_s101_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 30,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_low_n4_L100000_s101_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 2,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_low_n4_L100000_s202_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 3,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_low_n4_L100000_s303_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 5,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_low_n4_L5000000_s101_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 172,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_low_n4_L500000_s101_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 13,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_low_n4_L500000_s202_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 9,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_low_n4_L500000_s303_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 30,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_low_n8_L10000000_s101_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 593,
+      "taxa": 8,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_low_n8_L100000_s101_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 6,
+      "taxa": 8,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_uniform_n16_L10000000_s101_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 1582,
+      "taxa": 16,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_uniform_n16_L100000_s101_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 17,
+      "taxa": 16,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_uniform_n30_L100000_s101_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 22,
+      "taxa": 30,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_uniform_n4_L10000000_s101_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 550,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_uniform_n4_L10000000_s101_r5e-09_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 246,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_uniform_n4_L10000000_s202_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 590,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_uniform_n4_L10000000_s303_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 612,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_uniform_n4_L1000000_s101_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 39,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_uniform_n4_L100000_s101_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 2,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_uniform_n4_L100000_s202_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 4,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_uniform_n4_L100000_s303_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 2,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_uniform_n4_L5000000_s101_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 246,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_uniform_n4_L500000_s101_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 26,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_uniform_n4_L500000_s202_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 19,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_uniform_n4_L500000_s303_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 34,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_uniform_n8_L10000000_s101_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 938,
+      "taxa": 8,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_uniform_n8_L100000_s101_r1e-08_k0.01",
+      "root": "/private/tmp/chrom-scale/measured",
+      "intervals": 6,
+      "taxa": 8,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "MSRC_ARG_n4_L10000000_s101_r1e-08_k0.01_extended",
+      "root": "/private/tmp/chrom-scale/extended",
+      "intervals": 571,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "MSRC_ARG_n4_L10000000_s202_r1e-08_k0.01_extended",
+      "root": "/private/tmp/chrom-scale/extended",
+      "intervals": 622,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "MSRC_ARG_n4_L10000000_s303_r1e-08_k0.01_extended",
+      "root": "/private/tmp/chrom-scale/extended",
+      "intervals": 612,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "unknown"
+    },
+    {
+      "case": "neutral_low_n30_L10000000_s101_r1e-08_k0.01_extended",
+      "root": "/private/tmp/chrom-scale/extended",
+      "intervals": 1379,
+      "taxa": 30,
+      "valid": true,
+      "raw_time_units": "generations"
+    },
+    {
+      "case": "neutral_uniform_n30_L10000000_s101_r1e-08_k0.01_extended",
+      "root": "/private/tmp/chrom-scale/extended",
+      "intervals": 2522,
+      "taxa": 30,
+      "valid": true,
+      "raw_time_units": "generations"
+    },
+    {
+      "case": "MSRC_ARG_n4_L10000000_s101_fresh",
+      "root": "/private/tmp/chrom-scale/fresh_cohort",
+      "intervals": 571,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "generations"
+    },
+    {
+      "case": "MSRC_ARG_n4_L10000000_s202_fresh",
+      "root": "/private/tmp/chrom-scale/fresh_cohort",
+      "intervals": 622,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "generations"
+    },
+    {
+      "case": "MSRC_ARG_n4_L10000000_s303_fresh",
+      "root": "/private/tmp/chrom-scale/fresh_cohort",
+      "intervals": 612,
+      "taxa": 4,
+      "valid": true,
+      "raw_time_units": "generations"
+    }
+  ],
+  "wall_seconds": 4.709565260011004,
+  "consumer_integration": "not tested; no Positional ASTRAL input contract available"
+}

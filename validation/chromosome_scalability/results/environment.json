@@ -1,0 +1,15 @@
+{
+  "platform": "macOS-26.6.2-x86_64-i386-64bit-Mach-O",
+  "python": "3.14.5",
+  "libraries": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "tskit": "1.0.4",
+    "msprime": "1.4.5",
+    "pytest": "9.1.1"
+  },
+  "hw.model": "unavailable in sandbox",
+  "machdep.cpu.brand_string": "unavailable in sandbox",
+  "hw.ncpu": "unavailable in sandbox",
+  "hw.memsize": "unavailable in sandbox"
+}

@@ -11,10 +11,11 @@ import numpy as np
 from ..species_tree import SpeciesTree
 from .backgrounds.neutral import NeutralBackground
 from .backgrounds.msrc_two_state import MSRCTwoBackground
-from .coalescence import union_lineage
+from .coalescence import union_lineage, retire_completed_material
 from .events import ARGEvent
 from .lineages import ARGLineage
 from .recombination import recombine
+from .rates import RateCache
 from .recombination_map import PiecewiseConstantRecombinationMap
 from .segments import Segment, interval_union, split, total_length
 
@@ -70,6 +71,7 @@ def simulate_arg(tree: SpeciesTree, config: ARGConfig, rng: np.random.Generator)
         background = config.background_model
     if abs(config.recombination_map.length - config.sequence_length_bp) > 1e-9:
         raise ValueError("recombination map length must equal sequence_length_bp")
+    rate_cache = RateCache(background, config.recombination_map) if RateCache.supported(background, config.recombination_map) else None
     start = time.perf_counter()
     nodes: list[dict] = []
     edges: list[tuple[float, float, int, int]] = []
@@ -102,21 +104,8 @@ def simulate_arg(tree: SpeciesTree, config: ARGConfig, rng: np.random.Generator)
         return node_id
 
     def refresh_completed_material():
-        """Retire intervals with one remaining active carrier."""
-        boundaries = {x for lineage in lineages for interval in lineage.active for x in interval}
-        if len(boundaries) < 2:
-            return
-        replacements = []
-        for lineage in lineages:
-            keep = []
-            for left, right in zip(sorted(boundaries), sorted(boundaries)[1:]):
-                if not any(a <= left and right <= b for a, b in lineage.active):
-                    continue
-                carriers = sum(any(a <= left and right <= b for a, b in other.active) for other in lineages)
-                if carriers > 1:
-                    keep.append((left, right))
-            replacements.append(lineage.with_active(keep))
-        lineages[:] = [lineage for lineage in replacements if lineage.active]
+        """Retire completed material with the equivalent coverage sweep."""
+        lineages[:] = retire_completed_material(lineages)
 
     while len(lineages) > 1:
         # Boundary transitions are deterministic and must happen before events.
@@ -134,29 +123,37 @@ def simulate_arg(tree: SpeciesTree, config: ARGConfig, rng: np.random.Generator)
             continue
 
         options = []
+        if rate_cache is not None:
+            rate_cache.epoch()
+        previous_by_population = {}
         for i, a in enumerate(lineages):
-            if hasattr(background, "recombination_hazard"):
+            if rate_cache is not None:
+                hazard = rate_cache.recombination(a, t)
+            elif hasattr(background, "recombination_hazard"):
                 hazard = background.recombination_hazard(a.population, a.background, a.active,
                                                          a.segments, t, config.recombination_map)
             else:
                 hazard, _ = config.recombination_map.crossover_hazard_and_region(a.active)
             if hazard > 0:
                 options.append(("recombination", (i,), hazard))
-            for j in range(i):
+            for j in previous_by_population.get(a.population, ()):
                 b = lineages[j]
-                if a.population != b.population:
-                    continue
-                rate = background.coalescence_rate(a.population, a.background, b.background,
-                                                   tree.branches[a.population].effective_population_size, t)
+                if rate_cache is not None:
+                    rate = rate_cache.coalescence(a, b, tree.branches[a.population].effective_population_size, t)
+                else:
+                    rate = background.coalescence_rate(a.population, a.background, b.background,
+                                                       tree.branches[a.population].effective_population_size, t)
                 if rate < 0:
                     raise ValueError("coalescence rates must be nonnegative")
                 if rate > 0:
                     options.append(("coalescence", (j, i), rate))
+            previous_by_population.setdefault(a.population, []).append(i)
         total = sum(x[2] for x in options)
         boundaries = [tree.branches[l.population].older_age for l in lineages
                       if tree.branches[l.population].parent_branch_id is not None]
         if hasattr(background, "next_boundary"):
-            boundaries.extend(background.next_boundary(l.population, t) for l in lineages)
+            boundaries.extend((rate_cache.boundary(l.population, t) if rate_cache is not None
+                               else background.next_boundary(l.population, t)) for l in lineages)
         next_boundary = min(boundaries + [float("inf")])
         if total <= 0:
             if next_boundary == float("inf"):

@@ -1,0 +1,29 @@
+{
+  "job": {
+    "ne": 1000,
+    "divergence_step": 100,
+    "root_extension": 50,
+    "selection": 0.0,
+    "rss_gib": 1.5,
+    "seconds": 60,
+    "kind": "history",
+    "taxa": 4,
+    "seed": 303,
+    "history_path": "/private/tmp/chrom-scale/measured/histories/n4_s303.pkl"
+  },
+  "status": "complete",
+  "wall_seconds": 3.2273496330017224,
+  "peak_rss_bytes": 270233600,
+  "generation_seconds": 2.3006509709957754,
+  "history_records": 308638,
+  "origin": 250.0,
+  "states": {
+    "A": 0,
+    "B": 0,
+    "C": 0,
+    "D": 0
+  },
+  "history_bytes": 37620278,
+  "last_stage": "history_write",
+  "process_wall_seconds": 4.285782146995189
+}

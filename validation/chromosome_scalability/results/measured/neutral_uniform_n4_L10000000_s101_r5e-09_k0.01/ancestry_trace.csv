@@ -1,0 +1,8 @@
+active_carriers,active_intervals,candidate_options,edges,event_counts,logged_events,nodes,peak_rss_bytes,stage,stored_segments,time_generations,wall
+4,4,,,,0,,,ARG_simulation,4,0.0,0.0002451959881000221
+34,64,196,684,"{'recombination': 178, 'coalescence': 148, 'species_boundary': 48}",374,400,66056192,ARG_simulation,77,674.510780433571,0.25989021599525586
+31,70,528,1248,"{'recombination': 301, 'coalescence': 273, 'species_boundary': 48}",622,676,66437120,ARG_simulation,80,1176.9840197212113,0.5011227689974476
+37,103,741,2509,"{'recombination': 517, 'coalescence': 484, 'species_boundary': 48}",1049,1132,67096576,ARG_simulation,138,2008.0778299422382,0.7508411000017077
+30,90,396,3918,"{'recombination': 754, 'coalescence': 728, 'species_boundary': 48}",1530,1641,67776512,ARG_simulation,171,3153.4861999216932,1.0010887339885812
+10,18,66,5889,"{'recombination': 1078, 'coalescence': 1069, 'species_boundary': 48}",2195,2342,68743168,ARG_simulation,73,7567.222414428088,1.2507913799927337
+,,,,,,,78823424,newick_export,,,1.5001304379984504

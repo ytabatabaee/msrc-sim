@@ -1,0 +1,78 @@
+{
+  "job": {
+    "ne": 1000,
+    "divergence_step": 100,
+    "root_extension": 50,
+    "selection": 0.0,
+    "rss_gib": 1.5,
+    "seconds": 60,
+    "kind": "neutral_low",
+    "taxa": 4,
+    "length": 5000000,
+    "seed": 101,
+    "rate": 1e-08,
+    "kappa": 0.01
+  },
+  "status": "complete",
+  "wall_seconds": 0.7432212840067223,
+  "peak_rss_bytes": 77484032,
+  "simulation_seconds": 0.5338294960092753,
+  "raw_nodes": 1849,
+  "raw_edges": 4374,
+  "peak_carriers": 33,
+  "peak_stored_segments": 172,
+  "event_counts": {
+    "recombination": 854,
+    "species_boundary": 27,
+    "coalescence": 853
+  },
+  "metadata": {
+    "background_model": "neutral",
+    "background_model_version": "neutral",
+    "coalescence_boundary_policy": "ordinary_MSC",
+    "marker_exchange_policy": null,
+    "sampled_backgrounds": {
+      "A": "neutral",
+      "B": "neutral",
+      "C": "neutral",
+      "D": "neutral"
+    },
+    "structured_origin_age": null
+  },
+  "build_seconds": 0.13981328399677295,
+  "simplify_seconds": 0.002229689998785034,
+  "validity": {
+    "valid": true,
+    "covered_length": 5000000.0,
+    "sample_taxa": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "minimum_branch_generations": 0.9603706387548527,
+    "validated_internal_nodes": 516
+  },
+  "validity_seconds": 0.02452311699744314,
+  "tree_file_bytes": 32188,
+  "dump_seconds": 0.0013338590069906786,
+  "event_export_seconds": 0.013915745003032498,
+  "event_log_bytes": 237558,
+  "export_seconds": 0.010886914998991415,
+  "marginal_trees": 172,
+  "ts_nodes": 141,
+  "ts_edges": 449,
+  "runtime_per_tree": 0.0031036598605190427,
+  "newick_bytes": 20513,
+  "coordinate_tree_bytes": 31897,
+  "diagnostic_seconds": 0.015483410999877378,
+  "distinct_dated_genealogies": 166,
+  "genealogy_changes": 171,
+  "quartet_topology_changes": 18,
+  "event_positions_inside": {
+    "recombination": 9,
+    "background_transfer": 0
+  },
+  "last_stage": "diagnostics",
+  "process_wall_seconds": 1.6243156650016317
+}

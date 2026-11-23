@@ -1,0 +1,57 @@
+{
+  "parent": {
+    "config": {
+      "ne": 1000,
+      "divergence_step": 100,
+      "root_extension": 50,
+      "selection": 0.0,
+      "rate": 1e-08,
+      "kappa": 0.01,
+      "lengths": [
+        100000,
+        500000,
+        1000000,
+        5000000,
+        10000000
+      ],
+      "taxa": [
+        4,
+        8,
+        16,
+        30
+      ],
+      "seeds": [
+        101,
+        202,
+        303
+      ],
+      "replicated_lengths": [
+        100000,
+        500000,
+        10000000
+      ],
+      "rss_gib": 1.5,
+      "small_seconds": 30,
+      "large_seconds": 60,
+      "history_seconds": 60,
+      "region_fraction": [
+        0.3,
+        0.7
+      ],
+      "marker_fraction": 0.0,
+      "notes": "Recently diverged populations/species, Ne=1000 diploids (2000 copies), native neutral Moran histories. A low-Ne compact-population model; not a claim about Ne=1e5 or ancient origins. The 10-Mb region is [3,7] Mb."
+    },
+    "base_commit": "5138370aa455eedc54b694c13f5aba91c9de5fa6",
+    "engine_source_sha256": {
+      "msrcsim/arg/engine.py": "a87452a706a7634a3f1de5e85e594e7319eb882a87f493d85f028c1fe6cca134",
+      "msrcsim/arg/coalescence.py": "af7df669546492f0a3d411d5e10eceadf174887a9a97ecc2426cab093154a196",
+      "msrcsim/arg/rates.py": "f3bbdf03a29ae9a543e9c7074f3343ccb2ad13d3a95245098a6de689248afe87"
+    },
+    "python": "3.14.5 (main, May 10 2026, 19:20:54) [Clang 22.1.3 ]",
+    "rng_streams": "SeedSequence([replicate_seed,taxa,0]) for Moran and terminal sampling; independent stream 1 for ARG",
+    "telemetry": "SIGALRM wall-clock samples; no RNG draws; baseline timings unprofiled",
+    "limits": "each job in a fresh process; wall and RSS limits; parent timeout backup"
+  },
+  "design": "all original 4-taxon seeds replayed inline; same chromosomes, not additional independent replicates",
+  "seconds": 300
+}

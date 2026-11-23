@@ -1,0 +1,86 @@
+{
+  "job": {
+    "ne": 1000,
+    "divergence_step": 100,
+    "root_extension": 50,
+    "selection": 0.0,
+    "rss_gib": 1.5,
+    "seconds": 60,
+    "kind": "neutral_low",
+    "taxa": 8,
+    "length": 10000000,
+    "seed": 101,
+    "rate": 1e-08,
+    "kappa": 0.01
+  },
+  "status": "complete",
+  "wall_seconds": 5.564787363997311,
+  "peak_rss_bytes": 85184512,
+  "simulation_seconds": 4.716143828001805,
+  "raw_nodes": 5464,
+  "raw_edges": 14929,
+  "peak_carriers": 92,
+  "peak_stored_segments": 254,
+  "event_counts": {
+    "recombination": 2523,
+    "coalescence": 2523,
+    "species_boundary": 243
+  },
+  "metadata": {
+    "background_model": "neutral",
+    "background_model_version": "neutral",
+    "coalescence_boundary_policy": "ordinary_MSC",
+    "marker_exchange_policy": null,
+    "sampled_backgrounds": {
+      "T00": "neutral",
+      "T01": "neutral",
+      "T02": "neutral",
+      "T03": "neutral",
+      "T04": "neutral",
+      "T05": "neutral",
+      "T06": "neutral",
+      "T07": "neutral"
+    },
+    "structured_origin_age": null
+  },
+  "build_seconds": 0.18551801299327053,
+  "simplify_seconds": 0.006141031000879593,
+  "validity": {
+    "valid": true,
+    "covered_length": 10000000.0,
+    "sample_taxa": [
+      "T00",
+      "T01",
+      "T02",
+      "T03",
+      "T04",
+      "T05",
+      "T06",
+      "T07"
+    ],
+    "minimum_branch_generations": 0.6508709008778624,
+    "validated_internal_nodes": 4151
+  },
+  "validity_seconds": 0.5264388200012036,
+  "tree_file_bytes": 105492,
+  "dump_seconds": 0.001473377997172065,
+  "event_export_seconds": 0.039095922009437345,
+  "event_log_bytes": 713767,
+  "export_seconds": 0.04262827799539082,
+  "marginal_trees": 593,
+  "ts_nodes": 418,
+  "ts_edges": 1926,
+  "runtime_per_tree": 0.007953025005062064,
+  "newick_bytes": 170636,
+  "coordinate_tree_bytes": 210013,
+  "diagnostic_seconds": 0.04554647600161843,
+  "distinct_dated_genealogies": 580,
+  "genealogy_changes": 592,
+  "quartet_topology_changes": null,
+  "event_positions_inside": {
+    "recombination": 18,
+    "background_transfer": 0
+  },
+  "last_stage": "diagnostics",
+  "process_wall_seconds": 6.984680285997456
+}
