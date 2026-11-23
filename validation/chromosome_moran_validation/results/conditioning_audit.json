@@ -1,0 +1,14 @@
+{
+  "fixed_prior_attempts": 64,
+  "acceptances1010": 1,
+  "probability": 0.015625,
+  "ci_low": 0.00039551251405066395,
+  "ci_high": 0.08401032643435369,
+  "accepted_seeds": [
+    30
+  ],
+  "lost_tip_populations": 23,
+  "fixed_tip_populations": 14,
+  "note": "tip populations on the same chromosome are correlated; CI is for whole-chromosome terminal pattern",
+  "forward_history_seconds": 262.90960025299955
+}

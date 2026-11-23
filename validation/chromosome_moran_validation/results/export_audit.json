@@ -1,0 +1,45 @@
+{
+  "completed_chromosomes": [
+    {
+      "case": "sensitivity_T200_seed0",
+      "intervals": 495,
+      "hashes": {
+        "chromosome.trees": "8a6a48e2f2688040cf9152f6c684418faeea05589cd397e784ef3182404631fb",
+        "local_trees.csv": "49eef943f0fe96775ff3ef6b3a64fcf561ba285beaa6e0b535bee5e4ca9b34ee",
+        "local_trees.nwk": "b7033abb4ccae4b192d3d61a2da032ffa9b570b0719d5c46037e38590542e2be"
+      },
+      "export_valid": true,
+      "time_units": "generations"
+    },
+    {
+      "case": "A_seed1_extended",
+      "intervals": 515,
+      "hashes": {
+        "chromosome.trees": "ed3321692509ea70126d91396579de027083b218f36dfe343485dd481242ee6a",
+        "local_trees.csv": "5bcf49a7953fa0eb232350afef98135371e0f81bea8a5cae252214e59412a934",
+        "local_trees.nwk": "d8e404da9813fc95bc94438dadc1aeee80a7e40fd8a386fcf299a55255f68ad8"
+      },
+      "export_valid": true,
+      "time_units": "generations"
+    },
+    {
+      "case": "B_seed64",
+      "intervals": 438,
+      "hashes": {
+        "chromosome.trees": "45a1e49cc8e43e27555319aa1106cca1f9d087f05479b4f90cfbac78d89ca74d",
+        "local_trees.csv": "f4aa48b7e580ca41e53a4f3954136f02a792d7f9c8bae0219823cb0e00b99512",
+        "local_trees.nwk": "fdcfb17c6307dbd882c434f619b26b311cf5e7e62f9d1d7ebc64c88a5769fc9a"
+      },
+      "export_valid": true,
+      "time_units": "generations"
+    }
+  ],
+  "total_intervals": 1448,
+  "checks": [
+    "native tree validity in worker",
+    "CSV/native coordinate equality",
+    "Newick parsed ultrametric with expected ABCD labels",
+    "generation metadata"
+  ],
+  "consumer_integration": "not tested"
+}

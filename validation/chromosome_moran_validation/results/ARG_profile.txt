@@ -1,0 +1,38 @@
+Mon Nov 23 10:32:01 2026    /tmp/moran-ARG.pstats
+
+         22792194 function calls (22769376 primitive calls) in 28.168 seconds
+
+   Ordered by: cumulative time
+   List reduced from 2724 to 30 due to restriction <30>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        2    0.227    0.114   32.247   16.123 worker.py:1(<module>)
+        1    0.001    0.001   31.962   31.962 worker.py:16(run)
+        1    0.002    0.002   30.003   30.003 msrc.py:20(simulate_msrc_arg)
+51678/51673    5.334    0.000   18.838    0.000 {method 'extend' of 'list' objects}
+        1    0.000    0.000   16.449   16.449 engine.py:57(simulate_arg)
+        1    0.012    0.012   13.142   13.142 moran.py:157(simulate_frequency_history)
+        7    4.017    0.574   13.117    1.874 moran.py:99(_simulate_branch_events)
+   582738    2.445    0.000    6.078    0.000 moran.py:63(_record)
+       72    0.008    0.000    5.541    0.077 __init__.py:1(<module>)
+   696253    1.765    0.000    4.194    0.000 rates.py:31(recombination)
+  1320646    0.797    0.000    2.255    0.000 rates.py:56(coalescence)
+   582730    1.709    0.000    2.249    0.000 moran.py:30(moran_rates)
+   742533    0.467    0.000    2.095    0.000 engine.py:155(<genexpr>)
+    668/8    0.009    0.000    1.941    0.243 <frozen importlib._bootstrap>:1360(_find_and_load)
+    658/8    0.009    0.000    1.940    0.243 <frozen importlib._bootstrap>:1308(_find_and_load_unlocked)
+   640/11    0.006    0.000    1.935    0.176 <frozen importlib._bootstrap>:914(_load_unlocked)
+    543/7    0.004    0.000    1.934    0.276 <frozen importlib._bootstrap_external>:753(exec_module)
+  2009/18    0.011    0.000    1.931    0.107 <frozen importlib._bootstrap>:483(_call_with_frames_removed)
+  1019/27    0.004    0.000    1.837    0.068 {built-in method builtins.__import__}
+   365559    0.573    0.000    1.775    0.000 reservoir.py:27(frequency)
+   696231    0.315    0.000    1.628    0.000 rates.py:63(boundary)
+        1    0.000    0.000    1.593    1.593 theory_grid.py:1(<module>)
+        1    0.000    0.000    1.589    1.589 theory.py:1(<module>)
+   175418    0.403    0.000    1.506    0.000 reservoir.py:33(coalescence_rate)
+   366274    0.636    0.000    1.502    0.000 wright_fisher.py:31(frequency_at)
+   876622    0.727    0.000    1.428    0.000 msrc_two_state.py:53(_structured)
+   185212    0.439    0.000    1.313    0.000 msrc_two_state.py:66(next_boundary)
+  3501314    1.172    0.000    1.172    0.000 {method 'append' of 'list' objects}
+    46363    0.573    0.000    0.955    0.000 {built-in method builtins.sum}
+        1    0.000    0.000    0.947    0.947 hybridization.py:1(<module>)

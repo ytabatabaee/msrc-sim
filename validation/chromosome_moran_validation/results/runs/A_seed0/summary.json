@@ -1,0 +1,26 @@
+{
+  "job": {
+    "length": 10000000,
+    "model": "Moran_A",
+    "duration": 1000,
+    "kappa": 0.01,
+    "pattern": "sampled",
+    "seed": 0,
+    "history_seed": 0
+  },
+  "status": "incomplete",
+  "history_seconds": 4.040157859999908,
+  "history_records": 582738,
+  "terminal_pattern": "1111",
+  "terminal_frequencies": {
+    "A": 0.925,
+    "B": 0.971,
+    "C": 0.8735,
+    "D": 0.924
+  },
+  "origin": 1200.0,
+  "error": "TimeoutError('180 seconds or 1.5 GiB limit')",
+  "traceback": "Traceback (most recent call last):\n  File \"/Users/ytabatabaee/Desktop/msrc-sim/validation/chromosome_moran_validation/worker.py\", line 39, in run\n    else:result=simulate_msrc_arg(t,rec,h,c['marker'],c['suppressed_region'],job['kappa'],'reservoir_v1',np.random.SeedSequence([20261123,job['history_seed'],1]),states)\n                ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/ytabatabaee/Desktop/msrc-sim/msrcsim/arg/msrc.py\", line 63, in simulate_msrc_arg\n    result = simulate_arg(tree, ARGConfig(rec_map.length, rec_map, model, record_events,\n                                          history, sampled_backgrounds), rng)\n  File \"/Users/ytabatabaee/Desktop/msrc-sim/msrcsim/arg/engine.py\", line 149, in simulate_arg\n    options.append((\"coalescence\", (j, i), rate))\n    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/ytabatabaee/Desktop/msrc-sim/validation/chromosome_moran_validation/worker.py\", line 23, in tick\n    if time.perf_counter()-start>180 or resource.getrusage(resource.RUSAGE_SELF).ru_maxrss>1.5*2**30:stop()\n                                                                                                     ~~~~^^\n  File \"/Users/ytabatabaee/Desktop/msrc-sim/validation/chromosome_moran_validation/worker.py\", line 21, in stop\n    def stop(*args):raise TimeoutError('180 seconds or 1.5 GiB limit')\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTimeoutError: 180 seconds or 1.5 GiB limit\n",
+  "seconds": 180.00617219399987,
+  "rss": 369287168
+}

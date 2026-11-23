@@ -1,0 +1,26 @@
+{
+  "job": {
+    "length": 10000000,
+    "model": "Moran_A",
+    "duration": 1000,
+    "kappa": 0.01,
+    "pattern": "sampled",
+    "seed": 1,
+    "history_seed": 1
+  },
+  "status": "incomplete",
+  "history_seconds": 4.107032183000001,
+  "history_records": 561144,
+  "terminal_pattern": "0000",
+  "terminal_frequencies": {
+    "A": 0.1395,
+    "B": 0.1405,
+    "C": 0.0725,
+    "D": 0.0095
+  },
+  "origin": 1200.0,
+  "error": "TimeoutError('180 seconds or 1.5 GiB limit')",
+  "traceback": "Traceback (most recent call last):\n  File \"/Users/ytabatabaee/Desktop/msrc-sim/validation/chromosome_moran_validation/worker.py\", line 39, in run\n    with (out/'history_trace.csv').open('w',newline='') as f:\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/ytabatabaee/Desktop/msrc-sim/msrcsim/arg/msrc.py\", line 63, in simulate_msrc_arg\n    result = simulate_arg(tree, ARGConfig(rec_map.length, rec_map, model, record_events,\n                                          history, sampled_backgrounds), rng)\n  File \"/Users/ytabatabaee/Desktop/msrc-sim/msrcsim/arg/engine.py\", line 148, in simulate_arg\n    if rate > 0:\n       ^^^^^^^^\n  File \"/Users/ytabatabaee/Desktop/msrc-sim/validation/chromosome_moran_validation/worker.py\", line 23, in tick\n    f=frame\n    \n  File \"/Users/ytabatabaee/Desktop/msrc-sim/validation/chromosome_moran_validation/worker.py\", line 21, in stop\n    def stop(*args):raise TimeoutError('configured time or 1.5 GiB limit')\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTimeoutError: 180 seconds or 1.5 GiB limit\n",
+  "seconds": 180.0114097249998,
+  "rss": 361791488
+}

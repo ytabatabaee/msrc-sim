@@ -1,0 +1,903 @@
+{
+  "planned": 64,
+  "completed": 64,
+  "rows": [
+    {
+      "seed": 0,
+      "pattern": "1111",
+      "seconds": 4.081703525999956,
+      "records": 582738,
+      "terminal_frequencies": {
+        "A": 0.925,
+        "B": 0.971,
+        "C": 0.8735,
+        "D": 0.924
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 1,
+      "pattern": "0000",
+      "seconds": 3.980548120000094,
+      "records": 561144,
+      "terminal_frequencies": {
+        "A": 0.1395,
+        "B": 0.1405,
+        "C": 0.0725,
+        "D": 0.0095
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 2,
+      "pattern": "0100",
+      "seconds": 4.9722046849999515,
+      "records": 740642,
+      "terminal_frequencies": {
+        "A": 0.648,
+        "B": 0.482,
+        "C": 0.301,
+        "D": 0.3735
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 3,
+      "pattern": "0010",
+      "seconds": 4.435085802999993,
+      "records": 658928,
+      "terminal_frequencies": {
+        "A": 0.231,
+        "B": 0.2305,
+        "C": 0.485,
+        "D": 0.6045
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 4,
+      "pattern": "0010",
+      "seconds": 4.115374357999826,
+      "records": 533925,
+      "terminal_frequencies": {
+        "A": 0.089,
+        "B": 0.1465,
+        "C": 0.208,
+        "D": 0.162
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 5,
+      "pattern": "1111",
+      "seconds": 1.9146313839999038,
+      "records": 293383,
+      "terminal_frequencies": {
+        "A": 1.0,
+        "B": 1.0,
+        "C": 1.0,
+        "D": 1.0
+      },
+      "lost_tips": 0,
+      "fixed_tips": 4
+    },
+    {
+      "seed": 6,
+      "pattern": "1011",
+      "seconds": 4.76406449000001,
+      "records": 709634,
+      "terminal_frequencies": {
+        "A": 0.7375,
+        "B": 0.6125,
+        "C": 0.708,
+        "D": 0.674
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 7,
+      "pattern": "1101",
+      "seconds": 5.10211815599996,
+      "records": 715652,
+      "terminal_frequencies": {
+        "A": 0.543,
+        "B": 0.858,
+        "C": 0.6025,
+        "D": 0.73
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 8,
+      "pattern": "1000",
+      "seconds": 4.274142242999915,
+      "records": 625816,
+      "terminal_frequencies": {
+        "A": 0.1735,
+        "B": 0.1405,
+        "C": 0.2535,
+        "D": 0.0365
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 9,
+      "pattern": "1111",
+      "seconds": 4.474382891999994,
+      "records": 642267,
+      "terminal_frequencies": {
+        "A": 0.8705,
+        "B": 0.5315,
+        "C": 0.894,
+        "D": 0.7415
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 10,
+      "pattern": "0000",
+      "seconds": 1.4254498140001033,
+      "records": 204709,
+      "terminal_frequencies": {
+        "A": 0.0,
+        "B": 0.0,
+        "C": 0.0,
+        "D": 0.0
+      },
+      "lost_tips": 4,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 11,
+      "pattern": "1111",
+      "seconds": 1.0399049790000845,
+      "records": 168697,
+      "terminal_frequencies": {
+        "A": 1.0,
+        "B": 1.0,
+        "C": 1.0,
+        "D": 1.0
+      },
+      "lost_tips": 0,
+      "fixed_tips": 4
+    },
+    {
+      "seed": 12,
+      "pattern": "0000",
+      "seconds": 4.785169820999954,
+      "records": 694967,
+      "terminal_frequencies": {
+        "A": 0.812,
+        "B": 0.678,
+        "C": 0.634,
+        "D": 0.7165
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 13,
+      "pattern": "0011",
+      "seconds": 4.912823389999858,
+      "records": 686433,
+      "terminal_frequencies": {
+        "A": 0.148,
+        "B": 0.2425,
+        "C": 0.2325,
+        "D": 0.4135
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 14,
+      "pattern": "1111",
+      "seconds": 3.607836464999991,
+      "records": 528173,
+      "terminal_frequencies": {
+        "A": 0.935,
+        "B": 0.932,
+        "C": 0.9435,
+        "D": 0.825
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 15,
+      "pattern": "0010",
+      "seconds": 5.365005216999862,
+      "records": 754006,
+      "terminal_frequencies": {
+        "A": 0.628,
+        "B": 0.618,
+        "C": 0.75,
+        "D": 0.48
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 16,
+      "pattern": "0001",
+      "seconds": 2.292796893000059,
+      "records": 352872,
+      "terminal_frequencies": {
+        "A": 0.125,
+        "B": 0.058,
+        "C": 0.073,
+        "D": 0.1725
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 17,
+      "pattern": "0010",
+      "seconds": 4.222847881999996,
+      "records": 620866,
+      "terminal_frequencies": {
+        "A": 0.2035,
+        "B": 0.336,
+        "C": 0.288,
+        "D": 0.3815
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 18,
+      "pattern": "0000",
+      "seconds": 2.199987962000023,
+      "records": 335843,
+      "terminal_frequencies": {
+        "A": 0.0,
+        "B": 0.0,
+        "C": 0.0,
+        "D": 0.0
+      },
+      "lost_tips": 4,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 19,
+      "pattern": "1111",
+      "seconds": 3.8532488920000105,
+      "records": 572615,
+      "terminal_frequencies": {
+        "A": 0.877,
+        "B": 0.9295,
+        "C": 0.92,
+        "D": 0.781
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 20,
+      "pattern": "1011",
+      "seconds": 5.069710124000039,
+      "records": 753981,
+      "terminal_frequencies": {
+        "A": 0.696,
+        "B": 0.607,
+        "C": 0.588,
+        "D": 0.645
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 21,
+      "pattern": "0010",
+      "seconds": 5.444589871000062,
+      "records": 770271,
+      "terminal_frequencies": {
+        "A": 0.3925,
+        "B": 0.4605,
+        "C": 0.3065,
+        "D": 0.3685
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 22,
+      "pattern": "0000",
+      "seconds": 1.0298025760000655,
+      "records": 170029,
+      "terminal_frequencies": {
+        "A": 0.0,
+        "B": 0.0,
+        "C": 0.0,
+        "D": 0.0
+      },
+      "lost_tips": 4,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 23,
+      "pattern": "1100",
+      "seconds": 4.930510112999855,
+      "records": 725789,
+      "terminal_frequencies": {
+        "A": 0.66,
+        "B": 0.4655,
+        "C": 0.1675,
+        "D": 0.1895
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 24,
+      "pattern": "1111",
+      "seconds": 2.8855423659999815,
+      "records": 449607,
+      "terminal_frequencies": {
+        "A": 0.9955,
+        "B": 0.9745,
+        "C": 0.9715,
+        "D": 0.989
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 25,
+      "pattern": "0100",
+      "seconds": 4.773656585000026,
+      "records": 708014,
+      "terminal_frequencies": {
+        "A": 0.801,
+        "B": 0.794,
+        "C": 0.614,
+        "D": 0.5995
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 26,
+      "pattern": "0011",
+      "seconds": 5.413693193999961,
+      "records": 786062,
+      "terminal_frequencies": {
+        "A": 0.5065,
+        "B": 0.5385,
+        "C": 0.415,
+        "D": 0.548
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 27,
+      "pattern": "0011",
+      "seconds": 5.163973345999921,
+      "records": 767325,
+      "terminal_frequencies": {
+        "A": 0.377,
+        "B": 0.3195,
+        "C": 0.6285,
+        "D": 0.645
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 28,
+      "pattern": "1111",
+      "seconds": 3.4451943230001234,
+      "records": 488755,
+      "terminal_frequencies": {
+        "A": 0.8995,
+        "B": 0.969,
+        "C": 0.863,
+        "D": 0.7855
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 29,
+      "pattern": "1101",
+      "seconds": 5.10996552000006,
+      "records": 752676,
+      "terminal_frequencies": {
+        "A": 0.572,
+        "B": 0.598,
+        "C": 0.5505,
+        "D": 0.7165
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 30,
+      "pattern": "1010",
+      "seconds": 5.163457825000023,
+      "records": 780476,
+      "terminal_frequencies": {
+        "A": 0.285,
+        "B": 0.3415,
+        "C": 0.501,
+        "D": 0.4765
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 31,
+      "pattern": "0001",
+      "seconds": 4.683676854999931,
+      "records": 700981,
+      "terminal_frequencies": {
+        "A": 0.194,
+        "B": 0.43,
+        "C": 0.4255,
+        "D": 0.5315
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 32,
+      "pattern": "0000",
+      "seconds": 2.671540957999923,
+      "records": 422396,
+      "terminal_frequencies": {
+        "A": 0.0,
+        "B": 0.0,
+        "C": 0.0,
+        "D": 0.0
+      },
+      "lost_tips": 4,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 33,
+      "pattern": "0011",
+      "seconds": 3.7898650290001115,
+      "records": 570219,
+      "terminal_frequencies": {
+        "A": 0.1805,
+        "B": 0.1445,
+        "C": 0.254,
+        "D": 0.3375
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 34,
+      "pattern": "0000",
+      "seconds": 4.910143482999956,
+      "records": 740365,
+      "terminal_frequencies": {
+        "A": 0.3915,
+        "B": 0.3605,
+        "C": 0.16,
+        "D": 0.4105
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 35,
+      "pattern": "1111",
+      "seconds": 4.547869496999965,
+      "records": 684222,
+      "terminal_frequencies": {
+        "A": 0.669,
+        "B": 0.6475,
+        "C": 0.703,
+        "D": 0.623
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 36,
+      "pattern": "1011",
+      "seconds": 5.036398222000116,
+      "records": 763106,
+      "terminal_frequencies": {
+        "A": 0.6345,
+        "B": 0.382,
+        "C": 0.7905,
+        "D": 0.7275
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 37,
+      "pattern": "1111",
+      "seconds": 4.786625757000138,
+      "records": 721855,
+      "terminal_frequencies": {
+        "A": 0.403,
+        "B": 0.567,
+        "C": 0.809,
+        "D": 0.712
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 38,
+      "pattern": "0000",
+      "seconds": 3.86210840800004,
+      "records": 579483,
+      "terminal_frequencies": {
+        "A": 0.3025,
+        "B": 0.449,
+        "C": 0.089,
+        "D": 0.22
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 39,
+      "pattern": "1100",
+      "seconds": 4.588095322999834,
+      "records": 690419,
+      "terminal_frequencies": {
+        "A": 0.8435,
+        "B": 0.875,
+        "C": 0.7135,
+        "D": 0.3365
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 40,
+      "pattern": "0110",
+      "seconds": 4.365963049999891,
+      "records": 657746,
+      "terminal_frequencies": {
+        "A": 0.2765,
+        "B": 0.2595,
+        "C": 0.135,
+        "D": 0.2465
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 41,
+      "pattern": "0000",
+      "seconds": 3.534155546999955,
+      "records": 536460,
+      "terminal_frequencies": {
+        "A": 0.1845,
+        "B": 0.082,
+        "C": 0.1435,
+        "D": 0.1515
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 42,
+      "pattern": "0011",
+      "seconds": 4.7075737580000805,
+      "records": 717881,
+      "terminal_frequencies": {
+        "A": 0.4065,
+        "B": 0.3995,
+        "C": 0.8165,
+        "D": 0.928
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 43,
+      "pattern": "0110",
+      "seconds": 4.8704390259999855,
+      "records": 740336,
+      "terminal_frequencies": {
+        "A": 0.202,
+        "B": 0.255,
+        "C": 0.443,
+        "D": 0.309
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 44,
+      "pattern": "0000",
+      "seconds": 4.782228127000053,
+      "records": 733468,
+      "terminal_frequencies": {
+        "A": 0.516,
+        "B": 0.492,
+        "C": 0.412,
+        "D": 0.2365
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 45,
+      "pattern": "1110",
+      "seconds": 4.503692099000091,
+      "records": 682664,
+      "terminal_frequencies": {
+        "A": 0.9435,
+        "B": 0.904,
+        "C": 0.7765,
+        "D": 0.64
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 46,
+      "pattern": "0100",
+      "seconds": 2.0000079060000644,
+      "records": 318615,
+      "terminal_frequencies": {
+        "A": 0.0,
+        "B": 0.178,
+        "C": 0.0,
+        "D": 0.0
+      },
+      "lost_tips": 3,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 47,
+      "pattern": "0101",
+      "seconds": 4.67799163199993,
+      "records": 708225,
+      "terminal_frequencies": {
+        "A": 0.3165,
+        "B": 0.509,
+        "C": 0.236,
+        "D": 0.349
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 48,
+      "pattern": "1110",
+      "seconds": 4.2861999769997965,
+      "records": 660207,
+      "terminal_frequencies": {
+        "A": 0.8825,
+        "B": 0.8685,
+        "C": 0.625,
+        "D": 0.524
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 49,
+      "pattern": "1111",
+      "seconds": 2.187998708000123,
+      "records": 354680,
+      "terminal_frequencies": {
+        "A": 1.0,
+        "B": 1.0,
+        "C": 0.878,
+        "D": 0.948
+      },
+      "lost_tips": 0,
+      "fixed_tips": 2
+    },
+    {
+      "seed": 50,
+      "pattern": "0000",
+      "seconds": 4.557190477999939,
+      "records": 701624,
+      "terminal_frequencies": {
+        "A": 0.6525,
+        "B": 0.881,
+        "C": 0.636,
+        "D": 0.411
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 51,
+      "pattern": "0011",
+      "seconds": 3.0363173050000114,
+      "records": 488088,
+      "terminal_frequencies": {
+        "A": 0.5845,
+        "B": 0.9015,
+        "C": 0.8465,
+        "D": 0.961
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 52,
+      "pattern": "1000",
+      "seconds": 4.308401946999993,
+      "records": 663789,
+      "terminal_frequencies": {
+        "A": 0.256,
+        "B": 0.084,
+        "C": 0.3485,
+        "D": 0.29
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 53,
+      "pattern": "0011",
+      "seconds": 4.244486895000136,
+      "records": 636136,
+      "terminal_frequencies": {
+        "A": 0.038,
+        "B": 0.056,
+        "C": 0.2115,
+        "D": 0.3085
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 54,
+      "pattern": "0000",
+      "seconds": 4.753299395999875,
+      "records": 648528,
+      "terminal_frequencies": {
+        "A": 0.1555,
+        "B": 0.0955,
+        "C": 0.374,
+        "D": 0.37
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 55,
+      "pattern": "1001",
+      "seconds": 6.945915046999971,
+      "records": 764443,
+      "terminal_frequencies": {
+        "A": 0.319,
+        "B": 0.4295,
+        "C": 0.52,
+        "D": 0.6495
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 56,
+      "pattern": "1111",
+      "seconds": 1.8161764379999568,
+      "records": 284879,
+      "terminal_frequencies": {
+        "A": 1.0,
+        "B": 1.0,
+        "C": 1.0,
+        "D": 1.0
+      },
+      "lost_tips": 0,
+      "fixed_tips": 4
+    },
+    {
+      "seed": 57,
+      "pattern": "1110",
+      "seconds": 4.095956939999951,
+      "records": 559840,
+      "terminal_frequencies": {
+        "A": 0.844,
+        "B": 0.7905,
+        "C": 0.676,
+        "D": 0.7125
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 58,
+      "pattern": "0010",
+      "seconds": 3.6467775480000455,
+      "records": 425801,
+      "terminal_frequencies": {
+        "A": 0.0145,
+        "B": 0.0425,
+        "C": 0.1455,
+        "D": 0.3205
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 59,
+      "pattern": "1100",
+      "seconds": 6.302854116999924,
+      "records": 674127,
+      "terminal_frequencies": {
+        "A": 0.8305,
+        "B": 0.868,
+        "C": 0.596,
+        "D": 0.556
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 60,
+      "pattern": "0000",
+      "seconds": 1.571893836000072,
+      "records": 205395,
+      "terminal_frequencies": {
+        "A": 0.0,
+        "B": 0.0,
+        "C": 0.0,
+        "D": 0.0
+      },
+      "lost_tips": 4,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 61,
+      "pattern": "1111",
+      "seconds": 4.497594160000062,
+      "records": 536038,
+      "terminal_frequencies": {
+        "A": 0.8085,
+        "B": 0.826,
+        "C": 0.9965,
+        "D": 0.9795
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 62,
+      "pattern": "1000",
+      "seconds": 4.320519009000009,
+      "records": 528572,
+      "terminal_frequencies": {
+        "A": 0.212,
+        "B": 0.181,
+        "C": 0.1285,
+        "D": 0.1205
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    },
+    {
+      "seed": 63,
+      "pattern": "0001",
+      "seconds": 5.7702209599999605,
+      "records": 691718,
+      "terminal_frequencies": {
+        "A": 0.4565,
+        "B": 0.272,
+        "C": 0.6675,
+        "D": 0.7125
+      },
+      "lost_tips": 0,
+      "fixed_tips": 0
+    }
+  ],
+  "elapsed": 271.731070369
+}

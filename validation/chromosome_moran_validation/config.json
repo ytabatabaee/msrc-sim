@@ -1,0 +1,40 @@
+{
+  "seed_namespace": 20261123,
+  "target_chromosomes_per_condition": 100,
+  "pilot_chromosomes_per_condition": 2,
+  "fixed_prior_attempts": 64,
+  "Ne": 1000,
+  "M": 2000,
+  "root_initial_count": 1000,
+  "root_age": 200,
+  "structured_root_duration": 1000,
+  "origin_age": 1200,
+  "chromosome_length": 10000000,
+  "marker": 5000000,
+  "suppressed_region": [
+    3000000,
+    7000000
+  ],
+  "r": 1e-08,
+  "kappa": 0.01,
+  "selection": 0,
+  "per_job_seconds": 180,
+  "per_job_GiB": 1.5,
+  "window_sizes": [
+    250000,
+    50000,
+    25000,
+    10000
+  ],
+  "conditional_selection": "first two sampled 1010 configurations in a fixed 64-prior-draw audit, before any genealogy; no replacement after genealogy failure",
+  "extended_per_job_seconds": 600,
+  "conditional_rejection_extension": {
+    "first_seed": 64,
+    "max_additional_trials": 64,
+    "stopping_rule": "first further sampled1010 before any genealogy"
+  },
+  "accepted_conditional_seeds": [
+    30,
+    64
+  ]
+}

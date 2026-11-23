@@ -1,0 +1,29 @@
+{
+  "job": {
+    "length": 10000000,
+    "model": "Moran_A",
+    "duration": 1000,
+    "kappa": 0.01,
+    "pattern": "sampled",
+    "seed": 0,
+    "history_seed": 0,
+    "seconds": 30
+  },
+  "status": "incomplete",
+  "history_seconds": 13.179049087000067,
+  "history_records": 582738,
+  "terminal_pattern": "1111",
+  "terminal_frequencies": {
+    "A": 0.925,
+    "B": 0.971,
+    "C": 0.8735,
+    "D": 0.924
+  },
+  "origin": 1200.0,
+  "partial_generation": 69.25473096864839,
+  "partial_carriers": 26,
+  "error": "TimeoutError('configured time or 1.5 GiB limit')",
+  "traceback": "Traceback (most recent call last):\n  File \"validation/chromosome_moran_validation/worker.py\", line 45, in run\n    else:result=simulate_msrc_arg(t,rec,h,c['marker'],c['suppressed_region'],job['kappa'],'reservoir_v1',np.random.SeedSequence([20261123,job['history_seed'],1]),states)\n                ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/ytabatabaee/Desktop/msrc-sim/msrcsim/arg/msrc.py\", line 63, in simulate_msrc_arg\n    result = simulate_arg(tree, ARGConfig(rec_map.length, rec_map, model, record_events,\n                                          history, sampled_backgrounds), rng)\n  File \"/Users/ytabatabaee/Desktop/msrc-sim/msrcsim/arg/engine.py\", line 155, in simulate_arg\n    boundaries.extend((rate_cache.boundary(l.population, t) if rate_cache is not None\n    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n                       else background.next_boundary(l.population, t)) for l in lineages)\n                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/ytabatabaee/Desktop/msrc-sim/msrcsim/arg/engine.py\", line 155, in <genexpr>\n    boundaries.extend((rate_cache.boundary(l.population, t) if rate_cache is not None\n                       ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/Users/ytabatabaee/Desktop/msrc-sim/msrcsim/arg/rates.py\", line 65, in boundary\n    self.boundaries[population] = self.background.next_boundary(population, time)\n                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/Users/ytabatabaee/Desktop/msrc-sim/msrcsim/arg/backgrounds/msrc_two_state.py\", line 68, in next_boundary\n    origin = self.structured_origin_age\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/ytabatabaee/Desktop/msrc-sim/msrcsim/arg/backgrounds/msrc_two_state.py\", line 35, in structured_origin_age\n    @property\n    \n  File \"validation/chromosome_moran_validation/worker.py\", line 29, in tick\n    if time.perf_counter()-start>job.get('seconds',180) or resource.getrusage(resource.RUSAGE_SELF).ru_maxrss>1.5*2**30:stop()\n                                                                                                                        ~~~~^^\n  File \"validation/chromosome_moran_validation/worker.py\", line 21, in stop\n    def stop(*args):raise TimeoutError('configured time or 1.5 GiB limit')\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTimeoutError: configured time or 1.5 GiB limit\n",
+  "seconds": 30.01789405799991,
+  "rss": 368087040
+}

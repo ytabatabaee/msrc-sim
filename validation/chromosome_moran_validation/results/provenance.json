@@ -1,0 +1,33 @@
+{
+  "date": "2026-11-23",
+  "simulator_base": "eec06567ced4ff0a181de68cfcb987c40303d484",
+  "theory_commit": "d5edd651bbc9cb6a4acff0310c74de8ae7dc5877",
+  "scripts": {
+    "worker.py": "049f06d46cfccf42895cabfcbd072962302f422df014ef2531860b3d32500a7d",
+    "small_M.py": "6766e2a8dd58f80eb5f2d5d613b6ce51bf60b613d0549520d7fd523b1322e609",
+    "reproduce.py": "86670b472181ed7eb03481da4a793460e8efb972c124cca0c0f19339d53e2d11",
+    "assess.py": "12dee8c67aa8e05d21383f683cb33a9cc9da866804e08fae26984b65e4c56100",
+    "windows.py": "849a6ab0651cd7e69c00391c74a765959032792d12a900439ad579c014f16b91",
+    "history_pool.py": "e6d0c692ee19320687f8e58edf86d538830c6a56ba7faa5afab17196d662fa1e",
+    "supplement.py": "c891d5cfe420aeb1a32a97e0f506754578f834c0747b13f95e44f492e1160904",
+    "conditional_extension.py": "0cfbb5cba1339f91e65d868534f180c70e671626fbd83e23697eb9e536fb6faa",
+    "analyze.py": "e1fcc1b354d7f97bd59461c0254a20eeb68873e4bf215793728fe643f8ec037c"
+  },
+  "production": {
+    "msrcsim/moran.py": "852cc0d2c24ccf7a9a835309be0c1e8bee21d125f466ab710197f4278f94121d",
+    "msrcsim/arg/engine.py": "a87452a706a7634a3f1de5e85e594e7319eb882a87f493d85f028c1fe6cca134",
+    "msrcsim/arg/rates.py": "f3bbdf03a29ae9a543e9c7074f3343ccb2ad13d3a95245098a6de689248afe87",
+    "msrcsim/arg/coalescence.py": "af7df669546492f0a3d411d5e10eceadf174887a9a97ecc2426cab093154a196"
+  },
+  "python": "3.14.5",
+  "platform": "macOS-26.6.2-x86_64-i386-64bit-Mach-O",
+  "libraries": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "tskit": "1.0.4",
+    "pytest": "9.1.1"
+  },
+  "scope": "production ARG/Moran/SMC unchanged; genuine finite-population histories; no population-genetic statistics",
+  "concurrency": "Some resource diagnostics ran concurrently; not a controlled speed benchmark",
+  "scientific_tests_sha256": "78b55079063d54f2d30548871949ea519c0c795a2c4f0383374a120100314c4c"
+}

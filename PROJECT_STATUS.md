@@ -820,3 +820,44 @@ Report: [MSRC-ARG 10-Mb scalability](docs/MSRC_ARG_10MB_SCALABILITY.md).
   histories with correct conditioning.
 
 Report: [chromosome biological validation](docs/MSRC_ARG_CHROMOSOME_BIOLOGICAL_VALIDATION.md).
+
+## 2026-11-23 — Genuine stochastic Moran chromosome validation
+
+- Added `validation/chromosome_moran_validation/`: native continuous-time Moran
+  histories, shared across all positions, binomial daughter inheritance, explicit
+  initial count K=1000 of M=2000, and terminal Bernoulli sampling. No event
+  generator/SMC changes or population-genetic statistics.
+- Fixed 64-prior-draw audit: one 1010 (1.56%, exact 95% interval .0396–8.401%);
+  23 lost and 14 fixed terminal populations among 256 correlated populations.
+  A separate, explicit rejection extension immediately accepted seed 64. No
+  tip labels are forced and no failed genealogy is replaced.
+- Main 1000-generation structured-root pilots: unconditional seed 1 completes
+  10Mb in 446.21s/356.30MiB, 515 marginal intervals; conditional 1010 seed 64
+  completes in 521.92s/421.87MiB, 438 intervals/407 distinct dated genealogies.
+  Seed 0 unconditional and seed 30 conditional hit 600 seconds before origin 1200;
+  original 180-second attempts and a 30-second profile are retained separately.
+  Each main condition has one completed of two prespecified independent subjects.
+  The 100-replicate target and adequate large-M statistical precision are unmet.
+- Conditional completed example has inside q2=.8655 versus outside .1907,
+  longer internal branches and same/opposite sampled-background time contrasts.
+  These are realized-chromosome descriptions, not population/posterior estimates.
+  Completed subsets of censored cohorts receive no bootstrap CIs; missing-outcome
+  bounds retain the full planned denominator. Failed attempts remain visible.
+- Same native trees summarized with exact span intersections into 40/200/400/1000
+  windows. Per-chromosome tracks, native tree sequences/coordinate Newick, branch
+  and within-topology tables, six PNG/SVG figures, histories, tracts, spatial
+  dependence, profiles and resource records are archived. Separate T200
+  sensitivity completes in 244.73s and is not pooled into the main demography.
+- Independent smaller-M audit: 4000 prior ARG chromosomes, 100 sampled 1010,
+  no failures; full balanced stochastic multispecies theory with nonzero
+  populations. All 15 unconditional q criteria meet +/- .05 interval equivalence;
+  conditional 3/15 meet it, 12 unresolved. Max errors .01022/.05979 retained.
+- Large-M exact target remains unavailable after a separately profiled attempt,
+  dominated by sparse count propagation. No approximation supplies that target.
+- Tests: 346 passed, one existing warning; three new scientific tests added.
+  Original fixed-frequency positive-control files and production sources unchanged.
+- Next: exact-preserving scheduling/history engineering, faster finite-M
+  propagation and sufficient independent replication. Positional ASTRAL readiness
+  and a full selected/root-law sensitivity study are not established by pilots.
+
+Report: [10-Mb Moran validation](docs/MSRC_ARG_10MB_MORAN_VALIDATION.md).

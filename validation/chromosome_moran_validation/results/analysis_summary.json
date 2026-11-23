@@ -1,0 +1,133 @@
+{
+  "completed_unique": {
+    "neutral": 20,
+    "fixed_half": 20,
+    "unconditional": 1,
+    "conditional1010": 1
+  },
+  "attempted": [
+    {
+      "job": {
+        "length": 10000000,
+        "model": "Moran_A",
+        "duration": 1000,
+        "kappa": 0.01,
+        "pattern": "sampled",
+        "seed": 0,
+        "history_seed": 0
+      },
+      "status": "incomplete",
+      "seconds": 180.00617219399987,
+      "rss": 369287168
+    },
+    {
+      "job": {
+        "length": 10000000,
+        "model": "Moran_A",
+        "duration": 1000,
+        "kappa": 0.01,
+        "pattern": "sampled",
+        "seed": 0,
+        "history_seed": 0,
+        "seconds": 600
+      },
+      "status": "incomplete",
+      "seconds": 600.025725126,
+      "rss": 371814400
+    },
+    {
+      "job": {
+        "length": 10000000,
+        "model": "Moran_A",
+        "duration": 1000,
+        "kappa": 0.01,
+        "pattern": "sampled",
+        "seed": 1,
+        "history_seed": 1
+      },
+      "status": "incomplete",
+      "seconds": 180.0114097249998,
+      "rss": 361791488
+    },
+    {
+      "job": {
+        "length": 10000000,
+        "model": "Moran_A",
+        "duration": 1000,
+        "kappa": 0.01,
+        "pattern": "sampled",
+        "seed": 1,
+        "history_seed": 1,
+        "seconds": 600
+      },
+      "status": "complete",
+      "seconds": 446.2087248410003,
+      "rss": 373612544
+    },
+    {
+      "job": {
+        "length": 10000000,
+        "model": "Moran_B",
+        "duration": 1000,
+        "kappa": 0.01,
+        "pattern": "sampled",
+        "seed": 30,
+        "history_seed": 30,
+        "condition": "1010",
+        "seconds": 600
+      },
+      "status": "incomplete",
+      "seconds": 600.0186316060001,
+      "rss": 477085696
+    },
+    {
+      "job": {
+        "length": 10000000,
+        "model": "Moran_B",
+        "duration": 1000,
+        "kappa": 0.01,
+        "pattern": "sampled",
+        "seed": 64,
+        "history_seed": 64,
+        "condition": "1010",
+        "seconds": 600
+      },
+      "status": "complete",
+      "seconds": 521.9246187520002,
+      "rss": 442363904
+    },
+    {
+      "job": {
+        "length": 10000000,
+        "model": "Moran_A",
+        "duration": 1000,
+        "kappa": 0.01,
+        "pattern": "sampled",
+        "seed": 0,
+        "history_seed": 0,
+        "seconds": 30
+      },
+      "status": "incomplete",
+      "seconds": 30.01789405799991,
+      "rss": 368087040
+    },
+    {
+      "job": {
+        "length": 10000000,
+        "model": "Moran_A",
+        "duration": 200,
+        "kappa": 0.01,
+        "pattern": "sampled",
+        "seed": 0,
+        "history_seed": 0,
+        "seconds": 600
+      },
+      "status": "complete",
+      "seconds": 244.72689097400007,
+      "rss": 257318912
+    }
+  ],
+  "pool_completed": 64,
+  "conditional_prior_acceptance": 0.015625,
+  "large_M_theory": "unavailable; no approximation substituted"
+}

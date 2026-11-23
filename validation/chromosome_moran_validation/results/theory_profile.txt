@@ -1,0 +1,43 @@
+Mon Nov 23 10:30:48 2026    /tmp/moran-theory.pstats
+
+         22335368 function calls (22295297 primitive calls) in 33.211 seconds
+
+   Ordered by: cumulative time
+   List reduced from 3804 to 35 due to restriction <35>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000   33.220   33.220 theory_check.py:1(<module>)
+        2    0.006    0.003   33.216   16.608 theory.py:91(predict)
+        1    0.000    0.000   29.094   29.094 full_species_tree.py:180(full_species_tree_quartet_probabilities)
+        1    0.000    0.000   29.094   29.094 _expm_multiply.py:109(expm_multiply)
+        1    0.000    0.000   29.019   29.019 _expm_multiply.py:214(_expm_multiply_simple)
+        1    0.000    0.000   29.019   29.019 _expm_multiply.py:280(_expm_multiply_simple_core)
+652778/652777    5.264    0.000   13.193    0.000 _expm_multiply.py:17(_exact_inf_norm)
+   321659    0.530    0.000   12.563    0.000 _base.py:647(dot)
+   321835    0.384    0.000   10.767    0.000 _base.py:1006(__matmul__)
+   321836    0.566    0.000    8.579    0.000 _base.py:875(_matmul_dispatch)
+   652777    3.863    0.000    8.358    0.000 _linalg.py:2598(norm)
+   321659    1.515    0.000    7.730    0.000 _compressed.py:387(_matmul_vector)
+       79    0.007    0.000    6.731    0.085 __init__.py:1(<module>)
+   321659    4.460    0.000    4.460    0.000 {built-in method scipy.sparse._sparsetools.csc_matvec}
+   652781    0.628    0.000    3.942    0.000 {method 'max' of 'numpy.ndarray' objects}
+   652781    0.368    0.000    3.315    0.000 _methods.py:39(_amax)
+   849/12    0.013    0.000    3.189    0.266 <frozen importlib._bootstrap>:1360(_find_and_load)
+   810/12    0.009    0.000    3.189    0.266 <frozen importlib._bootstrap>:1308(_find_and_load_unlocked)
+   794/14    0.005    0.000    3.184    0.227 <frozen importlib._bootstrap>:914(_load_unlocked)
+   669/11    0.004    0.000    3.183    0.289 <frozen importlib._bootstrap_external>:753(exec_module)
+  2544/25    0.009    0.000    3.175    0.127 <frozen importlib._bootstrap>:483(_call_with_frames_removed)
+   652927    2.957    0.000    2.957    0.000 {method 'reduce' of 'numpy.ufunc' objects}
+  2340960    1.246    0.000    2.503    0.000 {built-in method builtins.isinstance}
+   643520    1.157    0.000    2.361    0.000 numeric.py:1911(isscalar)
+  1215/92    0.004    0.000    2.203    0.024 {built-in method builtins.__import__}
+   321840    0.457    0.000    1.803    0.000 _sputils.py:344(isscalarlike)
+    47/13    0.000    0.000    1.760    0.135 __init__.py:71(import_module)
+    47/13    0.000    0.000    1.760    0.135 <frozen importlib._bootstrap>:1394(_gcd_import)
+        1    0.000    0.000    1.651    1.651 theory.py:15(load_theory)
+        1    0.000    0.000    1.629    1.629 full_species_tree.py:1(<module>)
+   659023    0.348    0.000    1.558    0.000 _sparse.py:10(issparse)
+  698/330    0.003    0.000    1.376    0.004 <frozen importlib._bootstrap>:1409(_handle_fromlist)
+        1    0.000    0.000    1.332    1.332 theory.py:1(<module>)
+  1302842    0.605    0.000    1.257    0.000 <frozen abc>:117(__instancecheck__)
+      604    0.002    0.000    1.091    0.002 _docscrape.py:579(__init__)

@@ -1,0 +1,36 @@
+{
+  "job": {
+    "length": 10000000,
+    "model": "Moran_B",
+    "duration": 1000,
+    "kappa": 0.01,
+    "pattern": "sampled",
+    "seed": 64,
+    "history_seed": 64,
+    "condition": "1010",
+    "seconds": 600
+  },
+  "status": "complete",
+  "history_seconds": 12.040445483999974,
+  "history_records": 731900,
+  "terminal_pattern": "1010",
+  "terminal_frequencies": {
+    "A": 0.2745,
+    "B": 0.487,
+    "C": 0.324,
+    "D": 0.174
+  },
+  "origin": 1200.0,
+  "partial_generation": 6517.948304898404,
+  "partial_carriers": 29,
+  "events": {
+    "recombination": 3460,
+    "background_transfer": 919,
+    "coalescence": 3450,
+    "species_boundary": 94
+  },
+  "intervals": 438,
+  "peak_carriers": 70,
+  "seconds": 521.9246187520002,
+  "rss": 442363904
+}

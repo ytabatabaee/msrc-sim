@@ -1,0 +1,11 @@
+{
+  "stopping_rule": "first additional 1010 or 64 more prior attempts; no genealogy outcomes used",
+  "rows": [
+    {
+      "seed": 64,
+      "pattern": "1010",
+      "seconds": 8.625020216999928
+    }
+  ],
+  "elapsed": 9.057937042000049
+}

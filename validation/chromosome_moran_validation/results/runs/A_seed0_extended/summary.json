@@ -1,0 +1,29 @@
+{
+  "job": {
+    "length": 10000000,
+    "model": "Moran_A",
+    "duration": 1000,
+    "kappa": 0.01,
+    "pattern": "sampled",
+    "seed": 0,
+    "history_seed": 0,
+    "seconds": 600
+  },
+  "status": "incomplete",
+  "history_seconds": 4.270882482999923,
+  "history_records": 582738,
+  "terminal_pattern": "1111",
+  "terminal_frequencies": {
+    "A": 0.925,
+    "B": 0.971,
+    "C": 0.8735,
+    "D": 0.924
+  },
+  "origin": 1200.0,
+  "partial_generation": 1161.8493284979818,
+  "partial_carriers": 40,
+  "error": "TimeoutError('configured time or 1.5 GiB limit')",
+  "traceback": "Traceback (most recent call last):\n  File \"/Users/ytabatabaee/Desktop/msrc-sim/validation/chromosome_moran_validation/worker.py\", line 44, in run\n    if job['model'] in ('A','B'):result=simulate_arg(t,ARGConfig(L,rec),np.random.default_rng(job['seed']))\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/ytabatabaee/Desktop/msrc-sim/msrcsim/arg/msrc.py\", line 63, in simulate_msrc_arg\n    result = simulate_arg(tree, ARGConfig(rec_map.length, rec_map, model, record_events,\n                                          history, sampled_backgrounds), rng)\n  File \"/Users/ytabatabaee/Desktop/msrc-sim/msrcsim/arg/engine.py\", line 148, in simulate_arg\n    if rate > 0:\n       ^^^^^^^^\n  File \"/Users/ytabatabaee/Desktop/msrc-sim/validation/chromosome_moran_validation/worker.py\", line 28, in tick\n    (out/'heartbeat.json').write_text(json.dumps(dict(seconds=time.perf_counter()-start,generation=summary.get('partial_generation'),carriers=summary.get('partial_carriers'))))\n                                                                                                                        ^^^^^^\n  File \"/Users/ytabatabaee/Desktop/msrc-sim/validation/chromosome_moran_validation/worker.py\", line 21, in stop\n    def stop(*args):raise TimeoutError('configured time or 1.5 GiB limit')\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTimeoutError: configured time or 1.5 GiB limit\n",
+  "seconds": 600.025725126,
+  "rss": 371814400
+}
